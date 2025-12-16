@@ -1,0 +1,58 @@
+export const mentorsData = [
+  {
+    name: "Amit Dwivedi",
+    experience: "8+ Years",
+    location: "Mumbai, Maharashtra",
+    segment: "Equity",
+    image: "/image.png",
+  },
+  {
+    name: "Amit Dwivedi",
+    experience: "8+ Years",
+    location: "Mumbai, Maharashtra",
+    segment: "Equity",
+    image: "/image.png",
+  },
+  {
+    name: "Amit Dwivedi",
+    experience: "8+ Years",
+    location: "Mumbai, Maharashtra",
+    segment: "Equity",
+    image: "/image.png",
+  },
+  {
+    name: "Amit Dwivedi",
+    experience: "8+ Years",
+    location: "Mumbai, Maharashtra",
+    segment: "Equity",
+    image: "/image.png",
+  },
+  {
+    name: "Amit Dwivedi",
+    experience: "8+ Years",
+    location: "Mumbai, Maharashtra",
+    segment: "Equity",
+    image: "/image.png",
+  },
+  {
+    name: "Amit Dwivedi",
+    experience: "8+ Years",
+    location: "Mumbai, Maharashtra",
+    segment: "Equity",
+    image: "/image.png",
+  },
+  {
+    name: "Amit Dwivedi",
+    experience: "8+ Years",
+    location: "Mumbai, Maharashtra",
+    segment: "Equity",
+    image: "/image.png",
+  },
+  {
+    name: "Amit Dwivedi",
+    experience: "8+ Years",
+    location: "Mumbai, Maharashtra",
+    segment: "Equity",
+    image: "/image.png",
+  },
+];

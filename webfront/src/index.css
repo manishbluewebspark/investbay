@@ -1,0 +1,124 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=KoHo:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+@import "tailwindcss";
+
+
+
+body {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+@layer components {
+  .active-text {
+    @apply bg-[linear-gradient(144.29deg,#3A4EFB_35%,#33A4FA_100%)] 
+           bg-clip-text 
+           text-transparent 
+           ;
+  }
+
+  .default-text {
+    @apply text-gray-800 
+           hover:text-blue-500 
+           transition-all 
+           duration-200 
+           font-medium;
+  }
+}
+
+
+/* 🌈 Gradient Border Utility */
+.gradientborder {
+  position: relative;
+  border-radius: 1rem; /* matches rounded-2xl */
+  padding: 1px; /* thin gradient ring */
+  background: linear-gradient(90deg, #D8DCFF 8.65%, #3A4EFB 50%, #D8DCFF 90.87%);
+}
+
+.gradientborder > * {
+  background: white; /* inner content */
+  border-radius: inherit;
+  display: block;
+}
+
+
+
+.gradient-text {
+  background: linear-gradient(90deg, #3A4EFB 50%, #33A4FA 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+
+.koho-bold {
+  font-family: "KoHo", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+
+.gradient-borders {
+  position: relative;
+  border-radius: 0.75rem;
+  z-index: 0;
+}
+
+.gradient-borders::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 2px;
+  background: linear-gradient(90deg, #BEFFF6 0%, #00BFA6 50%, #BEFFF6 100%);
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  z-index: -1;
+}
+
+/* ✨ For dark cards: add a subtle blurred glow */
+.gradient-grid-bg {
+  position: relative;
+  z-index: 0;
+}
+
+.gradient-grid-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #FFFFFF 20%, #3A4EFB 50%, #FFFFFF 70%);
+  filter: blur(100px);
+  opacity: 0.1;
+  z-index: -1;
+  border-radius: 1rem;
+}
+
+
+
+
+.text{
+  background: linear-gradient(90deg, #00BFA6 50%, #BEFFF6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  font-weight: 600; /* matches font-semibold */
+}
+
+
+/* hide only the scrollbar visuals but keep scrolling fully functional */
+.hide-scrollbar {
+  -ms-overflow-style: none; /* IE, Edge */
+  scrollbar-width: none; /* Firefox */
+  -webkit-overflow-scrolling: touch; /* smooth scrolling on iOS */
+}
+.hide-scrollbar::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
