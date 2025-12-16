@@ -19,12 +19,12 @@ export default function HeaderLinks({ onClick }) {
       <NavLink to="/subscriptions" onClick={onClick} className={linkClass}>
         Subscriptions
       </NavLink>
-      <NavLink to="/learn" onClick={onClick} className={linkClass}>
+      {/* <NavLink to="/learn" onClick={onClick} className={linkClass}>
         Learn
       </NavLink>
       <NavLink to="/course" onClick={onClick} className={linkClass}>
         Course
-      </NavLink>
+      </NavLink> */}
       <NavLink
         to="/admin"
         onClick={onClick}
