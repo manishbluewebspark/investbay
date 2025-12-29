@@ -77,7 +77,7 @@ export default function PanelSignals() {
     }, [dropdownOpen]);
 
     const handleView = (signal) => {
-        navigate(`/admin/signal/details/${signal?.id || ""}`, { state: { signal } });
+        navigate(`/admin/signals/details/${signal?.id || ""}`, { state: { signal } });
         setDropdownOpen(null);
     };
 

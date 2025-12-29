@@ -8,6 +8,8 @@ import authRoutes from './routes/authRoutes.js';
 import researchAnalystRoutes from './routes/researchAnalystRoutes.js';
 import planRoutes from './routes/planRoutes.js';
 import signalRoutes from './routes/signalRoutes.js';
+import CourseRoutes from './routes/courseRoutes.js';
+import videoRoutes from './routes/videoRoutes.js';
 import { initDB } from './db.js';
 
 dotenv.config();
@@ -36,6 +38,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/research-analyst", researchAnalystRoutes);
 app.use("/api/plans", planRoutes);
 app.use("/api/signals", signalRoutes);
+app.use("/api/courses", CourseRoutes);
+app.use("/api/videos", videoRoutes);
 
 
 app.get('/api/health', (_req, res) => res.json({ ok: true }));

@@ -1,21 +1,85 @@
+// import multer from "multer";
+// import path from "path";
+// import fs from "fs";
+
+// const uploadDir = path.resolve("uploads");
+// if (!fs.existsSync(uploadDir)) {
+//   fs.mkdirSync(uploadDir, { recursive: true });
+// }
+
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, uploadDir);
+//   },
+//   filename: (req, file, cb) => {
+//     cb(null, `${Date.now()}-${file.originalname}`);
+//   },
+// });
+
+// const upload = multer({ storage });
+
+// export default upload;
 import multer from "multer";
 import path from "path";
 import fs from "fs";
 
+// base folders
 const uploadDir = path.resolve("uploads");
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
+const imageDir = path.join(uploadDir, "images");
+const videoDir = path.join(uploadDir, "videos");
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadDir);
-  },
-  filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`);
-  },
+// create folders if not exist
+[uploadDir, imageDir, videoDir].forEach(dir => {
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
 });
 
-const upload = multer({ storage });
+// storage config
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    if (file.fieldname === "uplodedImages") {
+      cb(null, imageDir);
+    } 
+    else if (file.fieldname === "videoFile") {
+      cb(null, videoDir);
+    } 
+    else {
+      cb(new Error("Invalid field name"), null);
+    }
+  },
+
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  }
+});
+
+// file filter
+const fileFilter = (req, file, cb) => {
+  if (
+    file.fieldname === "uplodedImage" &&
+    file.mimetype.startsWith("image")
+  ) {
+    cb(null, true);
+  } 
+  else if (
+    file.fieldname === "videoFile" &&
+    file.mimetype.startsWith("video")
+  ) {
+    cb(null, true);
+  } 
+  else {
+    cb(new Error("Invalid file type"), false);
+  }
+};
+
+// multer instance
+const upload = multer({
+  storage,
+  fileFilter,
+  limits: {
+    fileSize: 100 * 1024 * 1024 // 100MB (video support)
+  }
+});
 
 export default upload;

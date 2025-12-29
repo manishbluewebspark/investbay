@@ -57,7 +57,7 @@ export const deletePlan = async (req, res) => {
     const { id } = req.params;
     const { userId } = req.body;
 
-    console.log("REQ BODY:", req.body); // 🔥 DEBUG
+    console.log("REQ BODY:", req.body);
     console.log("Delete plan called with:", id, userId);
 
     if (!userId) {
@@ -115,4 +115,35 @@ export const updatePlanStatus = async (req, res) => {
         console.error(error);
         res.status(500).json({ message: "Server error" });
     }
+};
+
+
+// =============================================== get plan name by userId ===============================================
+
+
+export const getPlanNameByUserId = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const plans = await Plan.findAll({ 
+      where: { userId },
+      attributes: ['id', 'planName']
+    });
+
+    if (!plans || plans.length === 0) {
+      return res.status(404).json({ message: "No plans found for this user" });
+    }
+
+    const planData = plans.map(plan => ({
+      id: plan.id,
+      name: plan.planName,
+    }));
+
+    res.status(200).json(planData); 
+  } catch (error) {
+    console.error("Get plan name by user ID error:", error);
+    res.status(500).json({ 
+      message: "Internal server error", 
+      error: error.message 
+    });
+  }
 };

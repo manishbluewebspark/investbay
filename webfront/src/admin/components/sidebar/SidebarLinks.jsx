@@ -34,7 +34,7 @@ const sidebarLinks = [
   {
     name: "Courses",
     icon: Course,
-    path: "/admin/course",
+    path: "/admin/courses",
     roles: ["RA"],
   },
     {

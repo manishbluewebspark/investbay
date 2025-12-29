@@ -22,6 +22,8 @@ import Plan from "./admin/pages/ra/Plan";
 import AddPlans from "./admin/pages/ra/AddPlans";
 import PlanDetails from "./admin/pages/ra/PlanDetails";
 import SignalDetails from "./admin/pages/ra/SignalDetails";
+import Courses from "./admin/pages/ra/Courses";
+import CourseDetails from "./admin/pages/ra/CourseDetails";
 
 function PrivateRoute({ children }) {
   const token = localStorage.getItem("token");
@@ -66,7 +68,9 @@ function App() {
         <Route path="/admin/plan"element={ <PrivateRoute><Layout><Plan /></Layout></PrivateRoute>} />
         <Route path="/admin/plan/add"element={ <PrivateRoute><Layout><AddPlans /></Layout></PrivateRoute>} />
         <Route path="/admin/plan/details/:id"element={ <PrivateRoute><Layout><PlanDetails /></Layout></PrivateRoute>} />
-        <Route path="/admin/signal/details/:id"element={ <PrivateRoute><Layout><SignalDetails /></Layout></PrivateRoute>} />
+        <Route path="/admin/signals/details/:id"element={ <PrivateRoute><Layout><SignalDetails /></Layout></PrivateRoute>} />
+        <Route path="/admin/courses"element={ <PrivateRoute><Layout><Courses /></Layout></PrivateRoute>} />
+        <Route path="/admin/courses/details/:id"element={ <PrivateRoute><Layout><CourseDetails /></Layout></PrivateRoute>} />
 
       </Routes>
     </Router>

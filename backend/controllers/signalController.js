@@ -89,3 +89,40 @@ export const getSignals = async (req, res) => {
         });
     }
 };
+
+
+// =============================================== delete Signal ===============================================
+
+export const deleteSignal = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { userId } = req.body;
+
+    if (!userId || !id) {
+      return res.status(400).json({
+        success: false,
+        message: "User ID and Signal ID are required",
+      });
+    }
+    const deletedCount = await Signal.destroy({
+      where: { id, userId },
+    });
+    if (deletedCount === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Signal not found or already deleted",
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Signal deleted successfully",
+    });
+  } catch (error) {
+    console.error("Error deleting signal:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+}
