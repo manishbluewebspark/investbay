@@ -29,7 +29,7 @@ export default function Testimonials() {
   };
 
   return (
-    <section className="py-16 px-0 relative overflow-hidden">
+    <section className="py-16 px-6 lg:px-10 relative overflow-hidden">
       <div className="absolute left-0 top-0 w-[100px] h-full bg-white z-10 pointer-events-none"></div>
       <div className="flex items-center justify-between mb-10 px-26 relative z-20">
         <div>
@@ -50,15 +50,15 @@ export default function Testimonials() {
         <div className="flex gap-3">
           <button
             onClick={() => handleScroll("left")}
-            className="p-2 border rounded-full hover:bg-gray-100 transition"
+            className="p-2 border border-gray-500 rounded-full hover:bg-gray-100 transition"
           >
-            <ChevronLeft className="w-5 h-5 text-gray-700" />
+            <ChevronLeft className="w-5 h-5 text-gray-500" />
           </button>
           <button
             onClick={() => handleScroll("right")}
-            className="p-2 border rounded-full hover:bg-gray-100 transition"
+            className="p-2 border border-gray-500 rounded-full hover:bg-gray-100 transition"
           >
-            <ChevronRight className="w-5 h-5 text-gray-700" />
+            <ChevronRight className="w-5 h-5 text-gray-500" />
           </button>
         </div>
       </div>

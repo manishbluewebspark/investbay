@@ -10,13 +10,18 @@ import ScrollToTop from "./components/ScrollToTop";
 
 // ===== Admin Imports =====
 import Login from "./admin/pages/Login";
-import Dashboard from "./admin/pages/Dashboard";
+import GeneralDashboard from "./admin/pages/GeneralDashboard";
 import Layout from "./admin/components/Layout";
 import ResearchAnalyst from "./admin/pages/ResearchAnalyst";
 import AnalystView from "./admin/pages/AnalystView";
 import ForgotPassword from "./admin/pages/ForgotPassword";
 import VerifyPassword from "./admin/pages/VerifyPassword";
 import UpdatePassword from "./admin/pages/UpdatePassword";
+import PanelSignals from "./admin/pages/ra/PanelSignals";
+import Plan from "./admin/pages/ra/Plan";
+import AddPlans from "./admin/pages/ra/AddPlans";
+import PlanDetails from "./admin/pages/ra/PlanDetails";
+import SignalDetails from "./admin/pages/ra/SignalDetails";
 
 function PrivateRoute({ children }) {
   const token = localStorage.getItem("token");
@@ -54,9 +59,14 @@ function App() {
         <Route path="/admin/verify-password" element={<VerifyPassword />} />
         <Route path="/admin/update-password" element={<UpdatePassword />} />
 
-        <Route path="/admin/dashboard"element={ <PrivateRoute><Layout><Dashboard /></Layout></PrivateRoute>} />
+        <Route path="/admin/dashboard"element={ <PrivateRoute><Layout><GeneralDashboard /></Layout></PrivateRoute>} />
         <Route path="/admin/research-analyst"element={ <PrivateRoute><Layout><ResearchAnalyst /></Layout></PrivateRoute>} />
         <Route path="/admin/research-analyst/:id"element={ <PrivateRoute><Layout><AnalystView /></Layout></PrivateRoute>} />
+        <Route path="/admin/signals"element={ <PrivateRoute><Layout><PanelSignals /></Layout></PrivateRoute>} />
+        <Route path="/admin/plan"element={ <PrivateRoute><Layout><Plan /></Layout></PrivateRoute>} />
+        <Route path="/admin/plan/add"element={ <PrivateRoute><Layout><AddPlans /></Layout></PrivateRoute>} />
+        <Route path="/admin/plan/details/:id"element={ <PrivateRoute><Layout><PlanDetails /></Layout></PrivateRoute>} />
+        <Route path="/admin/signal/details/:id"element={ <PrivateRoute><Layout><SignalDetails /></Layout></PrivateRoute>} />
 
       </Routes>
     </Router>

@@ -5,7 +5,7 @@ export default function Newsletter() {
   return (
     <section className="w-full bg-white flex justify-center items-center">
       <div
-        className="w-full max-w-7xl py-12 flex justify-center items-center bg-cover bg-center bg-no-repeat rounded-t-2xl"
+        className="w-full max-w-6xl py-12 flex justify-center items-center bg-cover bg-center bg-no-repeat rounded-t-2xl"
         style={{ backgroundImage: `url(${bgImage})` }}
       >
         <div className="text-center w-full max-w-xl px-4">

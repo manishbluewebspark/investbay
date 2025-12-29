@@ -2,17 +2,17 @@ import React from "react";
 import { Linkedin, Twitter, Facebook, X } from "lucide-react";
 
 export default function Footer() {
+  const currentYear = new Date().getFullYear();
   return (
     <footer className="bg-[#0E0E10] text-gray-400 py-12 px-6 md:px-16 lg:px-24">
-      {/* Top Section */}
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-20">
-        {/* Left */}
+      <div className="max-w-full mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-20 lg:px-24">
         <div>
           <div className="flex items-center gap-2 mb-4">
             <img
               src="/footer.svg"
               alt="InvestBay Logo"
               className="w-50 h-10 object-contain"
+              draggable={false}
             />
           </div>
           <p className="text-sm leading-relaxed max-w-xs">
@@ -21,22 +21,18 @@ export default function Footer() {
             platform.
           </p>
         </div>
-
-        {/* Middle */}
         <div className="flex flex-col">
           <h3 className="text-white font-semibold mb-4">Services</h3>
           <ul className="space-y-2 text-sm">
-            <li><a href="#" className="hover:text-teal-400 transition-colors">About Us</a></li>
-            <li><a href="#" className="hover:text-teal-400 transition-colors">Contact Us</a></li>
-            <li><a href="#" className="hover:text-teal-400 transition-colors">Terms of Use</a></li>
-            <li><a href="#" className="hover:text-teal-400 transition-colors">Privacy Policy</a></li>
-            <li><a href="#" className="hover:text-teal-400 transition-colors">Refund Policy</a></li>
-            <li><a href="#" className="hover:text-teal-400 transition-colors">SEBI Scores</a></li>
-            <li><a href="#" className="hover:text-teal-400 transition-colors">Investor Charter</a></li>
+            <li><a href="#" className="hover:text-blue-400 transition-colors">About Us</a></li>
+            <li><a href="#" className="hover:text-blue-400 transition-colors">Contact Us</a></li>
+            <li><a href="#" className="hover:text-blue-400 transition-colors">Terms of Use</a></li>
+            <li><a href="#" className="hover:text-blue-400 transition-colors">Privacy Policy</a></li>
+            <li><a href="#" className="hover:text-blue-400 transition-colors">Refund Policy</a></li>
+            <li><a href="#" className="hover:text-blue-400 transition-colors">SEBI Scores</a></li>
+            <li><a href="#" className="hover:text-blue-400 transition-colors">Investor Charter</a></li>
           </ul>
         </div>
-
-        {/* Right */}
         <div className="flex flex-col">
           <h3 className="text-white font-semibold mb-4">We Offerings</h3>
           <ul className="space-y-2 text-sm">
@@ -51,13 +47,10 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Divider */}
-      <div className="border-t border-gray-700 mt-10 max-w-7xl"></div>
-
-      {/* Bottom Section */}
-      <div className="max-w-7xl  mt-6 flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
+      <div className="border-t border-gray-700 mt-10 max-w-full"></div>
+      <div className="max-w-full  mt-6 flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left px-6 lg:px-24">
         <p className="text-xs text-gray-500">
-          © 2025 KatalX Technologies Pvt Ltd
+          © {currentYear} InvestBay All rights reserved.
         </p>
 
         <div className="flex items-center gap-3">

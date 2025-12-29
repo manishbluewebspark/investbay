@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import axios from 'axios';
 
 export default function VerifyPassword() {
   const [code, setCode] = useState(["", "", "", ""]);
@@ -26,17 +26,21 @@ export default function VerifyPassword() {
       setErr("Please enter the complete code.");
       return;
     }
+
     setErr("");
     setLoading(true);
+
     try {
-      // Simulated verify API
-      await axios.post("/api/auth/verify", {
-        method: "POST",
-        body: { code: otp },
+      const email = localStorage.getItem("resetEmail");
+
+      await axios.post(`${apiUrl}/auth/verify-password`, {
+        email,
+        code: otp,
       });
-      navigate("/new-password");
+
+      navigate("/admin/update-password");
     } catch (e) {
-      setErr(e.message || "Verification failed");
+      setErr(e.response?.data?.message || "Verification failed");
     } finally {
       setLoading(false);
     }
@@ -44,7 +48,6 @@ export default function VerifyPassword() {
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row px-4 py-4">
-      {/* Left Section - Keep unchanged */}
       <div
         className="hidden md:flex md:w-2/5 bg-cover bg-center text-white flex-col justify-between rounded-[20px] p-10"
         style={{
@@ -53,7 +56,7 @@ export default function VerifyPassword() {
       >
         <div className="flex flex-col justify-between h-full">
           <div className="rounded-full p-2 mt-4 w-60">
-            <img src="/logo.svg" alt="Logo" className="h-10 w-50" />
+            <img src="/adminlogo.svg" alt="Logo" className="h-10 w-50" />
           </div>
           <div className="mb-6">
             <p className="text-white text-4xl">
@@ -63,21 +66,14 @@ export default function VerifyPassword() {
         </div>
       </div>
 
-      {/* Right Section - Verification Form */}
       <div className="w-full md:w-3/5 flex items-center justify-center bg-white">
-        <form
-          onSubmit={submit}
-          className="w-full max-w-md px-4"
-        >
-          <h1 className="text-3xl  mb-2 text-gray-800">
-            Verify It’s You
-          </h1>
+        <form onSubmit={submit} className="w-full max-w-md px-4">
+          <h1 className="text-3xl mb-2 text-gray-800">Verify It’s You</h1>
           <p className="text-sm text-gray-500 mb-6">
             Enter the code we just sent to confirm your Email
           </p>
 
-          {/* OTP Inputs */}
-          <div className="flex  gap-3 mb-6">
+          <div className="flex gap-3 mb-6">
             {code.map((num, i) => (
               <input
                 key={i}

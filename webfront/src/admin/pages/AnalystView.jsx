@@ -3,6 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ArrowLeft, Download } from "lucide-react";
 import Verify from "../../assets/verify.png";
+import { HiDownload } from "react-icons/hi";
+import { FaFilePdf } from "react-icons/fa";
 
 export default function AnalystView() {
     const { id } = useParams();
@@ -63,13 +65,6 @@ export default function AnalystView() {
 
     return (
         <div className="min-h-screen bg-gray-50 p-6">
-            {/* <button
-        onClick={() => navigate(-1)}
-        className="flex items-center gap-2 text-gray-700 hover:text-black transition mb-6"
-      >
-        <ArrowLeft size={18} /> Back
-      </button> */}
-
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-full mx-auto">
                 <div className="bg-white rounded-2xl shadow-sm overflow-hidden md:col-span-1">
                     <img
@@ -85,7 +80,7 @@ export default function AnalystView() {
                     <div
                         className="p-5 rounded-2xl"
                         style={{
-                            background: "linear-gradient(to bottom, #BFFFD2 10%, #FFFFFF 100%)",
+                            background: "linear-gradient(to bottom, #CED3FF 10%, #FFFFFF 100%)",
                         }}
                     >
                         <div className="flex justify-between items-center">
@@ -229,7 +224,8 @@ export default function AnalystView() {
 
                         <div className="grid sm:grid-cols-2 gap-4">
                             <div className="flex items-center justify-between bg-gray-50 px-4 py-3 rounded-lg ">
-                                <div>
+                                <div className="flex items-center gap-2">
+                                    <FaFilePdf size={23} className="text-blue-600"/>
                                     <p className="font-medium text-gray-800 text-md">
                                         Pan Card.pdf
                                     </p>
@@ -238,12 +234,13 @@ export default function AnalystView() {
                                     onClick={() => handleDownload(analyst.panFile)}
                                     className="text-gray-600 hover:text-black"
                                 >
-                                    <Download size={18} />
+                                    <HiDownload size={23} className="bg-gray-400 text-white rounded-sm p-1" />
                                 </button>
                             </div>
 
                             <div className="flex items-center justify-between bg-gray-50 px-4 py-3 rounded-lg ">
-                                <div>
+                                <div className="flex items-center gap-2">
+                                    <FaFilePdf size={23} className="text-blue-600"/>
                                     <p className="font-medium text-gray-800 text-md">
                                         SEBI Certificate.pdf
                                     </p>
@@ -252,12 +249,13 @@ export default function AnalystView() {
                                     onClick={() => handleDownload(analyst.sebiFile)}
                                     className="text-gray-600 hover:text-black"
                                 >
-                                    <Download size={18} />
+                                    <HiDownload size={23} className="bg-gray-400 text-white rounded-sm p-1" />
                                 </button>
                             </div>
 
                             <div className="flex items-center justify-between bg-gray-50 px-4 py-3 rounded-lg ">
-                                <div>
+                                <div className="flex items-center gap-2">
+                                    <FaFilePdf size={23} className="text-blue-600"/>
                                     <p className="font-medium text-gray-800 text-md">
                                         Document.pdf
                                     </p>
@@ -266,7 +264,7 @@ export default function AnalystView() {
                                     onClick={() => handleDownload(analyst.professionalDocument)}
                                     className="text-gray-600 hover:text-black"
                                 >
-                                    <Download size={18} />
+                                    <HiDownload size={23} className="bg-gray-400 text-white rounded-sm p-1" />
                                 </button>
                             </div>
                         </div>

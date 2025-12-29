@@ -31,7 +31,7 @@ export default function Topbar() {
 
   return (
     <header className={`fixed top-0 left-0 w-full h-16 bg-white transition-all duration-300 z-50 ${
-      isScrolled ? "shadow-lg border-b border-gray-100" : "border-b border-gray-100"
+      isScrolled ? " border-b border-gray-100" : "border-b border-gray-100"
     }`}>
       <div className="max-w-full px-6 h-full flex items-center justify-between">
         
@@ -119,7 +119,7 @@ export default function Topbar() {
                     onClick={() => {
                       localStorage.removeItem("token");
                       localStorage.removeItem("user");
-                      window.location.href = "/";
+                      window.location.href = "/admin";
                     }}
                     className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-red-50 text-red-600 transition-colors"
                   >

@@ -71,7 +71,7 @@ export default function DashboardSection() {
 
       <div className="relative z-20 w-[90%] md:w-[70%] gradient-border p-1 bg-white rounded-2xl">
         <img
-          src="/dashboard.jpg"
+          src="/dashboard.png"
           alt="Dashboard Preview"
           className="w-full h-auto rounded-2xl"
         />

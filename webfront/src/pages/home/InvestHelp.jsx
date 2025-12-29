@@ -18,7 +18,7 @@ export default function InvestHelp() {
       </div>
 
       {/* ✅ Responsive container with padding adjustments */}
-      <div className="relative w-full mx-auto px-4 sm:px-6 md:px-10 lg:px-30 gradient-grid-bg">
+      <div className="relative w-full mx-auto px-4 sm:px-6 md:px-10 lg:px-40 gradient-grid-bg">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10">
           {investData.map((item, index) => (
             <div

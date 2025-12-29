@@ -170,7 +170,7 @@ export default function ResearchAnalyst() {
                     {ra.specialization}
                   </td>
                   <td className="px-4 py-3">
-                    {ra.status === "Active" ? (
+                    {ra.status === "active" ? (
                       <span className="flex items-center gap-1 text-sm text-green-700 bg-green-50 px-2 py-1 rounded-full">
                         <span className="w-2 h-2 bg-green-500 rounded-full"></span>
                         Active

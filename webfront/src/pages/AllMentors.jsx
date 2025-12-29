@@ -8,7 +8,7 @@ export default function AllMentors() {
 
   return (
 <>
-    <section className="py-10 px-4 sm:px-8 bg-[#F9FAFB] min-h-screen">
+    <section className="py-10 px-4 sm:px-8 lg:px-40 bg-[#F9FAFB] min-h-screen">
       {/* Top Filters */}
       <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center mb-10 gap-4">
         {/* Buttons */}

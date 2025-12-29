@@ -7,7 +7,7 @@ export default function FeaturedCalls() {
   const navigate = useNavigate();
 
   return (
-    <section className="w-full bg-white py-20 px-4 sm:px-8 md:px-12  lg:px-30">
+    <section className="w-full bg-white py-20 px-4 sm:px-8 md:px-12  lg:px-40">
       {/* Heading */}
       <div className="w-full mb-12 flex flex-col md:flex-row items-center justify-between text-center md:text-left gap-6">
         <div className="w-full md:w-auto">

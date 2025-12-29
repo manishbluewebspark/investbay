@@ -8,7 +8,7 @@ export default function FeaturedSubscriptions() {
     const navigate = useNavigate();
     return (
         <section className="py-14 px-6 bg-white">
-            <div className="max-w-7xl mx-auto">
+            <div className="max-w-full px:6 lg:px-40">
                 {/* Header */}
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-10 text-center md:text-left">
                     <div>
@@ -96,14 +96,14 @@ export default function FeaturedSubscriptions() {
                                     </p>
                                 </div>
 
-                                <div className="mt-5 flex items-center gap-3 ">
+                                <div className="mt-5 flex justify-between items-center">
                                     <div className="text-sm">
                                         <span className="text-[#00BFA6] font-semibold text-base">
                                             Starting {sub.price}
                                         </span>{" "}
                                         <span className="line-through text-gray-400">{sub.oldPrice}</span>
                                     </div>
-                                    <button className="bg-black text-white text-sm px-15 py-2 rounded-lg hover:bg-gray-800">
+                                    <button className="bg-black text-white text-sm px-12 py-2 rounded-lg hover:bg-gray-800">
                                         Buy Now
                                     </button>
                                 </div>

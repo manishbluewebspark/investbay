@@ -12,7 +12,7 @@ export default function FeaturedSubscriptions() {
     ];
     return (
 <>
-        <section className="py-14 px-6 bg-white">
+        <section className="py-14 px-6 lg:px-40 bg-white">
             <div className="max-w-7xl mx-auto">
                 {/* Header */}
                 <div className="max-w-7xl mx-auto flex items-center justify-between mb-10">
@@ -98,14 +98,14 @@ export default function FeaturedSubscriptions() {
                                     </p>
                                 </div>
 
-                                <div className="mt-5 flex items-center gap-3 ">
+                                <div className="mt-5 flex items-center gap-5">
                                     <div className="text-sm">
                                         <span className="text-[#00BFA6] font-semibold text-base">
                                             Starting {sub.price}
                                         </span>{" "}
                                         <span className="line-through text-gray-400">{sub.oldPrice}</span>
                                     </div>
-                                    <button className="bg-black text-white text-sm px-19 py-2 rounded-lg hover:bg-gray-800">
+                                    <button className="bg-black text-white text-sm px-12 py-2 rounded-lg hover:bg-gray-800">
                                         Buy Now
                                     </button>
                                 </div>

@@ -4,9 +4,10 @@ import cookieParser from 'cookie-parser';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
-
-import authRoutes from './routes/auth.js';
+import authRoutes from './routes/authRoutes.js';
 import researchAnalystRoutes from './routes/researchAnalystRoutes.js';
+import planRoutes from './routes/planRoutes.js';
+import signalRoutes from './routes/signalRoutes.js';
 import { initDB } from './db.js';
 
 dotenv.config();
@@ -31,11 +32,10 @@ app.use(cookieParser());
 
 app.use("/api/uploads", express.static(path.join(__dirname, "uploads")));
 
-app.use('/api/login-user', (req, res, next) => {
-  console.log('hello ji kese ho');
-  next();
-}, authRoutes);
+app.use("/api/auth", authRoutes);
 app.use("/api/research-analyst", researchAnalystRoutes);
+app.use("/api/plans", planRoutes);
+app.use("/api/signals", signalRoutes);
 
 
 app.get('/api/health', (_req, res) => res.json({ ok: true }));
