@@ -23,6 +23,8 @@ export const createCourse = async (req, res) => {
       });
     }
 
+    const uplodedImage = req.file ? req.file.filename : null;
+
     const newCourse = await Course.create({
       userId,
       courseTitle: title,
@@ -33,7 +35,7 @@ export const createCourse = async (req, res) => {
       coursePrice: Number(price),
       discount: discount ? Number(discount) : 0,
       description,
-      uplodedImage: req.file?.path || null
+      uplodedImage
     });
 
     return res.status(201).json({

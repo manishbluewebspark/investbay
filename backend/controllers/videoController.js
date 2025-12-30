@@ -4,13 +4,12 @@ import { Video } from "../models/Video.js";
 export const addVideo = async (req, res) => {
     try {
         const { courseId, userId, videoTitle, videoDuration } = req.body;
-        const videoFile = req.file; // File from multer middleware
+        const videoFile = req.file;
         
         if (!videoFile) {
             return res.status(400).json({ error: 'No video file uploaded' });
         }
 
-        // File path will be automatically /uploads/filename.ext from multer config
         const videoUrl = `${videoFile.filename}`;
 
         const newVideo = await Video.create({
@@ -18,7 +17,7 @@ export const addVideo = async (req, res) => {
             userId,
             videoTitle,
             videoDuration,
-            videoUrl, // This will be /uploads/video123.mp4
+            videoUrl,
         });
 
         res.status(201).json({

@@ -176,7 +176,7 @@ const AddVideoModal = ({ isOpen, onClose, courseId, userId }) => {
         <div className="flex items-center justify-end gap-3 border-t border-gray-300 px-6 py-4">
           <button
             onClick={onClose}
-            className="rounded-lg border px-12 py-2 text-sm text-gray-700 hover:bg-gray-100 disabled:opacity-50"
+            className="rounded-lg border border-gray-300 px-12 py-2 text-sm text-gray-700 hover:bg-gray-100 disabled:opacity-50"
             disabled={uploading}
           >
             Cancel
