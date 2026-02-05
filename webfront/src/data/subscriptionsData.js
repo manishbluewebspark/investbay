@@ -1,0 +1,110 @@
+export const subscriptionsData = [
+  {
+    id: 1,
+    name: "Amit Dwivedi",
+    role: "Equity Investing",
+    calls: "1 Daily",
+    capital: "₹50,000",
+    stoploss: "20%",
+    segment: "Equity",
+    price: "₹99",
+    oldPrice: "₹100",
+    img: "/profile.png"
+  },
+  {
+    id: 2,
+    name: "Rohit Sharma",
+    role: "Swing Trading",
+    calls: "2 Daily",
+    capital: "₹75,000",
+    stoploss: "15%",
+    segment: "Equity",
+    price: "₹149",
+    oldPrice: "₹199",
+    img: "/profile.png"
+  },
+  {
+    id: 3,
+    name: "Neha Patel",
+    role: "Options Trading",
+    calls: "3 Weekly",
+    capital: "₹1,00,000",
+    stoploss: "10%",
+    segment: "Derivatives",
+    price: "₹199",
+    oldPrice: "₹249",
+    img: "/profile.png"
+  },
+  {
+    id: 4,
+    name: "Vikas Mehta",
+    role: "Long Term Investing",
+    calls: "2 Weekly",
+    capital: "₹2,00,000",
+    stoploss: "12%",
+    segment: "Equity",
+    price: "₹249",
+    oldPrice: "₹299",
+    img: "/profile.png"
+  },
+  {
+    id: 5,
+    name: "Priya Singh",
+    role: "Intraday Trading",
+    calls: "3 Daily",
+    capital: "₹80,000",
+    stoploss: "8%",
+    segment: "Equity",
+    price: "₹179",
+    oldPrice: "₹229",
+    img: "/profile.png"
+  },
+  {
+    id: 6,
+    name: "Rahul Verma",
+    role: "Commodity Analyst",
+    calls: "2 Daily",
+    capital: "₹1,50,000",
+    stoploss: "10%",
+    segment: "Commodity",
+    price: "₹199",
+    oldPrice: "₹249",
+    img: "/profile.png"
+  },
+  {
+    id: 7,
+    name: "Sneha Kapoor",
+    role: "Index Options",
+    calls: "1 Daily",
+    capital: "₹1,00,000",
+    stoploss: "12%",
+    segment: "Index",
+    price: "₹129",
+    oldPrice: "₹169",
+    img: "/profile.png"
+  },
+  {
+    id: 8,
+    name: "Karan Joshi",
+    role: "Swing Trading",
+    calls: "2 Weekly",
+    capital: "₹60,000",
+    stoploss: "18%",
+    segment: "Equity",
+    price: "₹159",
+    oldPrice: "₹199",
+    img: "/profile.png"
+  },
+  {
+    id: 9,
+    name: "Ritika Sharma",
+    role: "Positional Trading",
+    calls: "1 Weekly",
+    capital: "₹1,20,000",
+    stoploss: "10%",
+    segment: "Equity",
+    price: "₹189",
+    oldPrice: "₹239",
+    img: "/profile.png"
+  }
+];
