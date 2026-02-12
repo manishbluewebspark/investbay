@@ -44,6 +44,8 @@ import Earnings from "./admin/pages/ra/Earnings";
 import CourseEarningView from "./admin/pages/ra/CourseEarningView";
 import PlanEarningView from "./admin/pages/ra/PlanEarningView";
 import FeedView from "./admin/pages/ra/FeedView";
+import Users from "./admin/pages/Users";
+import AdminLoginLogs from "./admin/pages/AdminLoginLogs";
 
 function PrivateRoute({ children }) {
   const token = localStorage.getItem("token");
@@ -104,9 +106,11 @@ function App() {
         <Route path="/login-profile-form" element={<LoginProfileForm />} />
         
         <Route path="/admin/profile" element={<PrivateRoute><Layout><Profile /></Layout></PrivateRoute>} />
+        <Route path="/admin/logs" element={<PrivateRoute><Layout><AdminLoginLogs /></Layout></PrivateRoute>} />
         <Route path="/admin/dashboard" element={<PrivateRoute><Layout><GeneralDashboard /></Layout></PrivateRoute>} />
         <Route path="/admin/research-analyst" element={<PrivateRoute><Layout><ResearchAnalyst /></Layout></PrivateRoute>} />
         <Route path="/admin/research-analyst/:id" element={<PrivateRoute><Layout><AnalystView /></Layout></PrivateRoute>} />
+         <Route path="/admin/users" element={<PrivateRoute><Layout><Users /></Layout></PrivateRoute>} />
         <Route path="/admin/signals" element={<PrivateRoute><Layout><PanelSignals /></Layout></PrivateRoute>} />
         <Route path="/admin/plan" element={<PrivateRoute><Layout><Plan /></Layout></PrivateRoute>} />
         <Route path="/admin/plan/add" element={<PrivateRoute><Layout><AddPlans /></Layout></PrivateRoute>} />
@@ -120,6 +124,7 @@ function App() {
         <Route path="/admin/earnings/plan-view" element={<PrivateRoute><Layout><PlanEarningView /></Layout></PrivateRoute>} />
         <Route path="/admin/adminfeed" element={<PrivateRoute><Layout><AdminFeed /></Layout></PrivateRoute>} />
         <Route path="/admin/adminfeed/view/:id" element={<PrivateRoute><Layout><FeedView /></Layout></PrivateRoute>} />
+        
 
 
 

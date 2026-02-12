@@ -138,8 +138,7 @@ export const getWebsiteRaData = async (req, res) => {
   try {
     const { id } = req.params;
 
-    console.log('hiiiii')
-    
+
     // Validate ID
     const userId = parseInt(id);
     if (!userId || isNaN(userId)) {
@@ -174,6 +173,40 @@ export const getWebsiteRaData = async (req, res) => {
 
   } catch (error) {
     console.error('RA Data Error:', error.message);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch data'
+    });
+  }
+};
+
+
+
+
+export const allUsers = async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT * FROM users 
+       WHERE role = $1 AND is_verified = $2 
+       ORDER BY created_at DESC`,
+      ['user', true]
+    );
+
+    // ✅ Fixed: result.rows instead of result.row
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No users found"
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: result.rows  // ✅ CORRECTED (was result.row)
+    });
+
+  } catch (error) {
+    console.error('User Data Error:', error.message);
     res.status(500).json({
       success: false,
       message: 'Failed to fetch data'

@@ -2104,10 +2104,282 @@ const generateRandomPassword = () => {
 };
 
 // ================================= admin login ============================================
+// export const adminLogin = async (req, res) => {
+//   try {
+//     const { email, password } = req.body || {};
+
+//     if (!email || !password) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "Email/UserID and password are required"
+//       });
+//     }
+
+//     const loginValue = email.toLowerCase();
+//     let user = null;
+//     let role = null;
+
+//     /* ============================
+//        1️⃣ FIRST: Check USER table
+//     ============================ */
+//     const userResult = await pool.query(
+//       `SELECT * FROM users WHERE LOWER(email) = $1 LIMIT 1`,
+//       [loginValue]
+//     );
+
+//     if (userResult.rows.length > 0) {
+//       user = userResult.rows[0];
+//       role = user.role || "user"; // admin / user
+//     }
+
+//     /* ============================
+//        2️⃣ SECOND: If not found → RA table
+//     ============================ */
+//     if (!user) {
+//       const raResult = await pool.query(
+//         `SELECT * FROM research_analysts WHERE LOWER(email) = $1 OR user_id = $2 LIMIT 1`,
+//         [loginValue, loginValue]
+//       );
+
+//       if (raResult.rows.length > 0) {
+//         user = raResult.rows[0];
+//         role = "ra";
+//       }
+//     }
+
+//     /* ============================
+//        3️⃣ If still not found
+//     ============================ */
+//     if (!user) {
+//       return res.status(401).json({
+//         success: false,
+//         message: "Invalid credentials"
+//       });
+//     }
+
+//     /* ============================
+//        4️⃣ Password check
+//     ============================ */
+//     if (!user.password_hash) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "Password not set. Contact administrator."
+//       });
+//     }
+
+//     const isMatch = await bcrypt.compare(password, user.password_hash);
+//     if (!isMatch) {
+//       return res.status(401).json({
+//         success: false,
+//         message: "Invalid credentials"
+//       });
+//     }
+
+//     /* ============================
+//        5️⃣ Generate JWT
+//     ============================ */
+//     const token = jwt.sign(
+//       {
+//         userId: user.id,
+//         email: user.email,
+//         role,
+//         isAdmin: role === "admin",
+//         isRA: role === "ra"
+//       },
+//       process.env.JWT_SECRET,
+//       { expiresIn: "7d" }
+//     );
+
+//     /* ============================
+//        6️⃣ Response
+//     ============================ */
+//     return res.status(200).json({
+//       success: true,
+//       message: "Login successful",
+//       token,
+//       user: {
+//         id: user.id,
+//         email: user.email,
+//         name: user.name,
+//         role,
+//         isAdmin: role === "admin",
+//         isRA: role === "ra"
+//       }
+//     });
+
+//   } catch (err) {
+//     console.error("Login error:", err);
+//     return res.status(500).json({
+//       success: false,
+//       message: "Server error"
+//     });
+//   }
+// };
+
+// export const adminLogin = async (req, res) => {
+//   const client = await pool.connect(); // ✅ Transaction client
+  
+//   try {
+//     const { email, password } = req.body || {};
+
+//     // Validation
+//     if (!email || !password) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "Email/UserID and password are required"
+//       });
+//     }
+
+//     const loginValue = email.toLowerCase();
+//     let user = null;
+//     let role = null;
+
+//     // 🔥 Start Transaction
+//     await client.query('BEGIN');
+
+//     try {
+//       /* ============================
+//          1️⃣ FIRST: Check USER table
+//       ============================ */
+//       const userResult = await client.query(
+//         `SELECT * FROM users WHERE LOWER(email) = $1 LIMIT 1`,
+//         [loginValue]
+//       );
+
+//       if (userResult.rows.length > 0) {
+//         user = userResult.rows[0];
+//         role = user.role || "user"; // admin / user
+//       }
+
+//       /* ============================
+//          2️⃣ SECOND: If not found → RA table
+//       ============================ */
+//       if (!user) {
+//         const raResult = await client.query(
+//           `SELECT * FROM research_analysts WHERE LOWER(email) = $1 OR user_id = $2 LIMIT 1`,
+//           [loginValue, loginValue]
+//         );
+
+//         if (raResult.rows.length > 0) {
+//           user = raResult.rows[0];
+//           role = "ra";
+//         }
+//       }
+
+//       /* ============================
+//          3️⃣ If still not found
+//       ============================ */
+//       if (!user) {
+//         throw new Error("Invalid credentials");
+//       }
+
+//       /* ============================
+//          4️⃣ Password check
+//       ============================ */
+//       if (!user.password_hash) {
+//         throw new Error("Password not set. Contact administrator.");
+//       }
+
+//       const isMatch = await bcrypt.compare(password, user.password_hash);
+//       if (!isMatch) {
+//         throw new Error("Invalid credentials");
+//       }
+
+//       /* ============================
+//          5️⃣ Generate JWT
+//       ============================ */
+//       const token = jwt.sign(
+//         {
+//           userId: user.id,
+//           email: user.email,
+//           role,
+//           isAdmin: role === "admin",
+//           isRA: role === "ra"
+//         },
+//         process.env.JWT_SECRET,
+//         { expiresIn: "7d" }
+//       );
+
+//       /* 🔥 6️⃣ LOGIN LOG - Transaction Safe */
+//       await client.query(`
+//         INSERT INTO login_logs (user_id, ip_address, user_agent, role, action)
+//         VALUES ($1, $2, $3, $4, 'LOGIN')
+//       `, [
+//         user.id,
+//         req.ip || req.connection.remoteAddress || 'unknown',
+//         req.get('User-Agent') || 'unknown',
+//         role
+//       ]);
+
+//       // ✅ Commit Transaction
+//       await client.query('COMMIT');
+
+//       console.log(`✅ ADMIN LOGIN LOG: User ${user.id} (${role}) from ${req.ip || 'unknown'}`);
+
+//       /* ============================
+//          7️⃣ Success Response
+//       ============================ */
+//       return res.status(200).json({
+//         success: true,
+//         message: "Login successful",
+//         token,
+//         user: {
+//           id: user.id,
+//           email: user.email,
+//           name: user.name,
+//           role,
+//           isAdmin: role === "admin",
+//           isRA: role === "ra"
+//         }
+//       });
+
+//     } catch (authError) {
+//       // Rollback on auth failure
+//       await client.query('ROLLBACK');
+      
+//       if (authError.message === "Invalid credentials") {
+//         return res.status(401).json({
+//           success: false,
+//           message: "Invalid credentials"
+//         });
+//       }
+      
+//       if (authError.message === "Password not set. Contact administrator.") {
+//         return res.status(400).json({
+//           success: false,
+//           message: "Password not set. Contact administrator."
+//         });
+//       }
+      
+//       throw authError; // Re-throw for general errors
+//     }
+
+//   } catch (err) {
+//     // Final rollback & error handling
+//     try {
+//       await client.query('ROLLBACK');
+//     } catch (rollbackError) {
+//       console.error("Rollback failed:", rollbackError);
+//     }
+    
+//     console.error("Admin login error:", err);
+//     return res.status(500).json({
+//       success: false,
+//       message: "Server error"
+//     });
+//   } finally {
+//     client.release(); 
+//   }
+// };
+
+
 export const adminLogin = async (req, res) => {
+  const client = await pool.connect(); // ✅ Transaction client
+  
   try {
     const { email, password } = req.body || {};
 
+    // Validation
     if (!email || !password) {
       return res.status(400).json({
         success: false,
@@ -2118,103 +2390,182 @@ export const adminLogin = async (req, res) => {
     const loginValue = email.toLowerCase();
     let user = null;
     let role = null;
+    let userIdForLog = null; // ✅ This will store the integer ID from users table
 
-    /* ============================
-       1️⃣ FIRST: Check USER table
-    ============================ */
-    const userResult = await pool.query(
-      `SELECT * FROM users WHERE LOWER(email) = $1 LIMIT 1`,
-      [loginValue]
-    );
+    // 🔥 Start Transaction
+    await client.query('BEGIN');
 
-    if (userResult.rows.length > 0) {
-      user = userResult.rows[0];
-      role = user.role || "user"; // admin / user
-    }
-
-    /* ============================
-       2️⃣ SECOND: If not found → RA table
-    ============================ */
-    if (!user) {
-      const raResult = await pool.query(
-        `SELECT * FROM research_analysts WHERE LOWER(email) = $1 OR user_id = $2 LIMIT 1`,
-        [loginValue, loginValue]
+    try {
+      /* ============================
+         1️⃣ FIRST: Check USER table
+      ============================ */
+      const userResult = await client.query(
+        `SELECT * FROM users WHERE LOWER(email) = $1 AND is_verified = true LIMIT 1`,
+        [loginValue]
       );
 
-      if (raResult.rows.length > 0) {
-        user = raResult.rows[0];
-        role = "ra";
+      if (userResult.rows.length > 0) {
+        user = userResult.rows[0];
+        role = user.role || "user";
+        userIdForLog = user.id; // ✅ Integer ID from users table
       }
-    }
 
-    /* ============================
-       3️⃣ If still not found
-    ============================ */
-    if (!user) {
-      return res.status(401).json({
-        success: false,
-        message: "Invalid credentials"
-      });
-    }
+      /* ============================
+         2️⃣ SECOND: If not found → RA table
+      ============================ */
+      if (!user) {
+        const raResult = await client.query(
+          `SELECT * FROM research_analysts WHERE LOWER(email) = $1 OR user_id = $2 LIMIT 1`,
+          [loginValue, loginValue]
+        );
 
-    /* ============================
-       4️⃣ Password check
-    ============================ */
-    if (!user.password_hash) {
-      return res.status(400).json({
-        success: false,
-        message: "Password not set. Contact administrator."
-      });
-    }
-
-    const isMatch = await bcrypt.compare(password, user.password_hash);
-    if (!isMatch) {
-      return res.status(401).json({
-        success: false,
-        message: "Invalid credentials"
-      });
-    }
-
-    /* ============================
-       5️⃣ Generate JWT
-    ============================ */
-    const token = jwt.sign(
-      {
-        userId: user.id,
-        email: user.email,
-        role,
-        isAdmin: role === "admin",
-        isRA: role === "ra"
-      },
-      process.env.JWT_SECRET,
-      { expiresIn: "7d" }
-    );
-
-    /* ============================
-       6️⃣ Response
-    ============================ */
-    return res.status(200).json({
-      success: true,
-      message: "Login successful",
-      token,
-      user: {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        role,
-        isAdmin: role === "admin",
-        isRA: role === "ra"
+        if (raResult.rows.length > 0) {
+          user = raResult.rows[0];
+          role = "ra";
+          
+          // ❌ DON'T use user.id here as it's a string like "RAKB9D8462"
+          // ✅ Instead, we need to find the corresponding user in users table
+          
+          // Check if there's a linked user account
+          const linkedUserResult = await client.query(
+            `SELECT id FROM users WHERE LOWER(email) = $1 LIMIT 1`,
+            [user.email.toLowerCase()]
+          );
+          
+          if (linkedUserResult.rows.length > 0) {
+            // ✅ Use the existing user's ID from users table
+            userIdForLog = linkedUserResult.rows[0].id;
+          } else {
+            // Option 1: Create a user record for this RA (recommended)
+            const newUserResult = await client.query(
+              `INSERT INTO users (email, name, role, password_hash, created_at)
+               VALUES ($1, $2, 'ra', $3, NOW())
+               RETURNING id`,
+              [user.email, user.name || user.email, user.password_hash]
+            );
+            userIdForLog = newUserResult.rows[0].id;
+            
+            // Optionally update the research_analysts table with the new user_id
+            await client.query(
+              `UPDATE research_analysts SET user_id = $1 WHERE id = $2`,
+              [userIdForLog, user.id]
+            );
+          }
+        }
       }
-    });
+
+      /* ============================
+         3️⃣ If still not found
+      ============================ */
+      if (!user) {
+        throw new Error("Invalid credentials");
+      }
+
+      /* ============================
+         4️⃣ Password check
+      ============================ */
+      if (!user.password_hash) {
+        throw new Error("Password not set. Contact administrator.");
+      }
+
+      const isMatch = await bcrypt.compare(password, user.password_hash);
+      if (!isMatch) {
+        throw new Error("Invalid credentials");
+      }
+
+      /* ============================
+         5️⃣ Generate JWT
+      ============================ */
+      const token = jwt.sign(
+        {
+          userId: user.id, // This can be string ID for RA, integer for regular users
+          email: user.email,
+          role,
+          isAdmin: role === "admin",
+          isRA: role === "ra"
+        },
+        process.env.JWT_SECRET,
+        { expiresIn: "7d" }
+      );
+
+      /* 🔥 6️⃣ LOGIN LOG - Transaction Safe */
+      // Only insert login_logs if we have a valid integer user_id
+      if (userIdForLog) {
+        await client.query(`
+          INSERT INTO login_logs (user_id, ip_address, user_agent, role, action)
+          VALUES ($1, $2, $3, $4, 'LOGIN')
+        `, [
+          userIdForLog, // ✅ This is now guaranteed to be an integer from users table
+          req.ip || req.connection.remoteAddress || 'unknown',
+          req.get('User-Agent') || 'unknown',
+          role
+        ]);
+      } else {
+        // Log to console if no user_id is available
+        console.log(`⚠️ Login log skipped for RA ${user.id} - no linked user account`);
+      }
+
+      // ✅ Commit Transaction
+      await client.query('COMMIT');
+
+      console.log(`✅ ADMIN LOGIN LOG: User ${user.id} (${role}) from ${req.ip || 'unknown'}`);
+
+      /* ============================
+         7️⃣ Success Response
+      ============================ */
+      return res.status(200).json({
+        success: true,
+        message: "Login successful",
+        token,
+        user: {
+          id: user.id,
+          email: user.email,
+          name: user.name,
+          role,
+          isAdmin: role === "admin",
+          isRA: role === "ra"
+        }
+      });
+
+    } catch (authError) {
+      // Rollback on auth failure
+      await client.query('ROLLBACK');
+      
+      if (authError.message === "Invalid credentials") {
+        return res.status(401).json({
+          success: false,
+          message: "Invalid credentials"
+        });
+      }
+      
+      if (authError.message === "Password not set. Contact administrator.") {
+        return res.status(400).json({
+          success: false,
+          message: "Password not set. Contact administrator."
+        });
+      }
+      
+      throw authError;
+    }
 
   } catch (err) {
-    console.error("Login error:", err);
+    // Final rollback & error handling
+    try {
+      await client.query('ROLLBACK');
+    } catch (rollbackError) {
+      console.error("Rollback failed:", rollbackError);
+    }
+    
+    console.error("Admin login error:", err);
     return res.status(500).json({
       success: false,
       message: "Server error"
     });
+  } finally {
+    client.release(); 
   }
 };
+
 
 // ================================= seed ============================================
 export const seedAdmin = async (_req, res) => {
@@ -2367,6 +2718,8 @@ export const login = async (req, res) => {
     // ==========================
     // 5️⃣ Generate JWT
     // ==========================
+
+    
     const token = signToken({
       id: user.id,
       email: user.email,
@@ -2375,9 +2728,16 @@ export const login = async (req, res) => {
       isRA: role === "ra",
     });
 
-    // ==========================
-    // 6️⃣ Response
-    // ==========================
+
+    const raResult = await pool.query(`
+      INSERT INTO login_logs (user_id, ip_address, user_agent, role, action)
+      VALUES ($1, $2, $3, $4, 'LOGIN')
+    `, [user.id, req.ip || req.connection.remoteAddress, req.get('User-Agent'), role]);
+    
+  
+    console.log(`✅ LOGIN: User ${user.id} (${role}) from ${req.ip}`);
+
+
     return res.json({
       token,
       user: {
@@ -2393,6 +2753,16 @@ export const login = async (req, res) => {
     return res.status(500).json({ message: "Server error" });
   }
 };
+
+
+
+
+
+
+
+
+
+
 
 // ===================================== me ==========================================
 export const me = async (req, res) => {
@@ -3092,11 +3462,254 @@ export const checkAndSendOTP = async (req, res) => {
 };
 
 // =================================== verify otp and login ======================================
+// export const verifyOTPAndLogin = async (req, res) => {
+//   try {
+//     const { email, otp } = req.body;
+
+//     console.log('Verifying OTP for:', email);
+
+//     if (!email || !otp) {
+//       return res.status(400).json({
+//         success: false,
+//         message: 'Email and OTP are required'
+//       });
+//     }
+
+//     // ==========================
+//     // 1️⃣ Find user with valid OTP
+//     // ==========================
+//     const userResult = await pool.query(
+//       `SELECT * FROM users 
+//        WHERE LOWER(email) = $1 
+//          AND reset_code = $2 
+//          AND reset_code_expiry > NOW()
+//        LIMIT 1`,
+//       [email.toLowerCase(), otp]
+//     );
+
+//     if (userResult.rows.length === 0) {
+//       return res.status(400).json({
+//         success: false,
+//         message: 'Invalid OTP or OTP expired'
+//       });
+//     }
+
+//     const user = userResult.rows[0];
+
+//     // ==========================
+//     // 2️⃣ Clear OTP & mark verified
+//     // ==========================
+//     const isVerified = user.is_verified || true; // mark verified if first login
+
+//     await pool.query(
+//       `UPDATE users
+//        SET reset_code = NULL,
+//            reset_code_expiry = NULL,
+//            is_verified = $1,
+//            updated_at = NOW()
+//        WHERE id = $2`,
+//       [isVerified, user.id]
+//     );
+
+//     // ==========================
+//     // 3️⃣ Generate JWT token
+//     // ==========================
+//     const token = jwt.sign(
+//       {
+//         userId: user.id,
+//         email: user.email,
+//         name: user.name,
+//         role: user.role,
+//         pan: user.pan
+//       },
+//       process.env.JWT_SECRET,
+//       { expiresIn: '7d' }
+//     );
+
+//     // ==========================
+//     // 4️⃣ Set cookie (optional)
+//     // ==========================
+//     res.cookie('token', token, {
+//       httpOnly: true,
+//       secure: process.env.NODE_ENV === 'production',
+//       maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+//     });
+
+//     // ==========================
+//     // 5️⃣ Response
+//     // ==========================
+//     res.json({
+//       success: true,
+//       message: 'Login successful',
+//       token,
+//       user: {
+//         id: user.id,
+//         email: user.email,
+//         name: user.name,
+//         gender: user.gender,
+//         dob: user.dob,
+//         pan: user.pan,
+//         state: user.state,
+//         role: user.role,
+//         isVerified: true
+//       }
+//     });
+
+//   } catch (error) {
+//     console.error('Error in verifyOTPAndLogin:', error);
+//     res.status(500).json({
+//       success: false,
+//       message: 'Internal server error'
+//     });
+//   }
+// };
+
+// export const verifyOTPAndLogin = async (req, res) => {
+//   const client = await pool.connect(); // ✅ Transaction client
+  
+//   try {
+//     const { email, otp } = req.body;
+
+//     console.log('Verifying OTP for:', email);
+
+//     if (!email || !otp) {
+//       return res.status(400).json({
+//         success: false,
+//         message: 'Email and OTP are required'
+//       });
+//     }
+
+//     // 🔥 Start Transaction
+//     await client.query('BEGIN');
+
+//     try {
+//       // ==========================
+//       // 1️⃣ Find user with valid OTP
+//       // ==========================
+//       const userResult = await client.query(
+//         `SELECT * FROM users 
+//          WHERE LOWER(email) = $1 
+//            AND reset_code = $2 
+//            AND reset_code_expiry > NOW()
+//          LIMIT 1`,
+//         [email.toLowerCase(), otp]
+//       );
+
+//       if (userResult.rows.length === 0) {
+//         await client.query('ROLLBACK');
+//         return res.status(400).json({
+//           success: false,
+//           message: 'Invalid OTP or OTP expired'
+//         });
+//       }
+
+//       const user = userResult.rows[0];
+
+//       // ==========================
+//       // 2️⃣ Clear OTP & mark verified
+//       // ==========================
+//       const isVerified = user.is_verified || true;
+
+//       await client.query(
+//         `UPDATE users
+//          SET reset_code = NULL,
+//              reset_code_expiry = NULL,
+//              is_verified = $1,
+//              updated_at = NOW()
+//          WHERE id = $2`,
+//         [isVerified, user.id]
+//       );
+
+//       // 🔥 3️⃣ LOGIN LOG - OTP Login भी track होगा
+//       await client.query(`
+//         INSERT INTO login_logs (user_id, ip_address, user_agent, role, action)
+//         VALUES ($1, $2, $3, $4, 'OTP_LOGIN')
+//       `, [
+//         user.id,
+//         req.ip || req.connection.remoteAddress || 'unknown',
+//         req.get('User-Agent') || 'unknown',
+//         user.role || 'user'
+//       ]);
+
+//       // ==========================
+//       // 4️⃣ Generate JWT token
+//       // ==========================
+//       const token = jwt.sign(
+//         {
+//           userId: user.id,
+//           email: user.email,
+//           name: user.name,
+//           role: user.role,
+//           pan: user.pan
+//         },
+//         process.env.JWT_SECRET,
+//         { expiresIn: '7d' }
+//       );
+
+//       // ✅ Commit Transaction
+//       await client.query('COMMIT');
+
+//       console.log(`✅ OTP LOGIN LOG: User ${user.id} (${user.role || 'user'}) from ${req.ip || 'unknown'}`);
+
+//       // ==========================
+//       // 5️⃣ Set cookie (optional)
+//       // ==========================
+//       res.cookie('token', token, {
+//         httpOnly: true,
+//         secure: process.env.NODE_ENV === 'production',
+//         maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+//       });
+
+//       // ==========================
+//       // 6️⃣ Success Response
+//       // ==========================
+//       res.json({
+//         success: true,
+//         message: 'Login successful via OTP',
+//         token,
+//         user: {
+//           id: user.id,
+//           email: user.email,
+//           name: user.name,
+//           gender: user.gender,
+//           dob: user.dob,
+//           pan: user.pan,
+//           state: user.state,
+//           role: user.role,
+//           isVerified: true
+//         }
+//       });
+
+//     } catch (authError) {
+//       // Rollback on auth/OTP failure
+//       await client.query('ROLLBACK');
+//       throw authError;
+//     }
+
+//   } catch (error) {
+//     // Final error handling with rollback
+//     try {
+//       await client.query('ROLLBACK');
+//     } catch (rollbackError) {
+//       console.error('Rollback failed:', rollbackError);
+//     }
+    
+//     console.error('Error in verifyOTPAndLogin:', error);
+//     res.status(500).json({
+//       success: false,
+//       message: 'Internal server error'
+//     });
+//   } finally {
+//     client.release(); // Always release connection
+//   }
+// };
+
+
 export const verifyOTPAndLogin = async (req, res) => {
+  const client = await pool.connect();
+  
   try {
     const { email, otp } = req.body;
-
-    console.log('Verifying OTP for:', email);
 
     if (!email || !otp) {
       return res.status(400).json({
@@ -3105,94 +3718,116 @@ export const verifyOTPAndLogin = async (req, res) => {
       });
     }
 
-    // ==========================
-    // 1️⃣ Find user with valid OTP
-    // ==========================
-    const userResult = await pool.query(
-      `SELECT * FROM users 
-       WHERE LOWER(email) = $1 
-         AND reset_code = $2 
-         AND reset_code_expiry > NOW()
-       LIMIT 1`,
-      [email.toLowerCase(), otp]
-    );
+    await client.query('BEGIN');
 
-    if (userResult.rows.length === 0) {
-      return res.status(400).json({
-        success: false,
-        message: 'Invalid OTP or OTP expired'
+    try {
+      // 1️⃣ Find user with valid OTP
+      const userResult = await client.query(
+        `SELECT * FROM users 
+         WHERE LOWER(email) = $1 
+           AND reset_code = $2 
+           AND reset_code_expiry > NOW()
+         LIMIT 1`,
+        [email.toLowerCase(), otp]
+      );
+
+      if (userResult.rows.length === 0) {
+        await client.query('ROLLBACK');
+        return res.status(400).json({
+          success: false,
+          message: 'Invalid OTP or OTP expired'
+        });
+      }
+
+      const user = userResult.rows[0];
+
+      // 2️⃣ Clear OTP & mark verified
+      const isVerified = user.is_verified || true;
+      await client.query(
+        `UPDATE users
+         SET reset_code = NULL,
+             reset_code_expiry = NULL,
+             is_verified = $1,
+             updated_at = NOW()
+         WHERE id = $2`,
+        [isVerified, user.id]
+      );
+
+      // 🔥 3️⃣ LOGIN LOG - Use 'LOGIN' instead of 'OTP_LOGIN'
+      await client.query(`
+        INSERT INTO login_logs (user_id, ip_address, user_agent, role, action)
+        VALUES ($1, $2, $3, $4, 'LOGIN')  -- ✅ Changed to 'LOGIN'
+      `, [
+        user.id,
+        req.ip || req.connection.remoteAddress || 'unknown',
+        req.get('User-Agent') || 'unknown',
+        user.role || 'user'
+      ]);
+
+      // 4️⃣ Generate JWT
+      const token = jwt.sign(
+        {
+          userId: user.id,
+          email: user.email,
+          name: user.name,
+          role: user.role,
+          pan: user.pan
+        },
+        process.env.JWT_SECRET,
+        { expiresIn: '7d' }
+      );
+
+      await client.query('COMMIT');
+
+      console.log(`✅ OTP LOGIN: User ${user.id} (${user.role || 'user'})`);
+
+      // 5️⃣ Response
+      res.cookie('token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: 7 * 24 * 60 * 60 * 1000
       });
+
+      res.json({
+        success: true,
+        message: 'Login successful via OTP',
+        token,
+        user: {
+          id: user.id,
+          email: user.email,
+          name: user.name,
+          gender: user.gender,
+          dob: user.dob,
+          pan: user.pan,
+          state: user.state,
+          role: user.role,
+          isVerified: true,
+          loginMethod: 'OTP'  // Frontend के लिए extra info
+        }
+      });
+
+    } catch (authError) {
+      await client.query('ROLLBACK');
+      throw authError;
     }
 
-    const user = userResult.rows[0];
-
-    // ==========================
-    // 2️⃣ Clear OTP & mark verified
-    // ==========================
-    const isVerified = user.is_verified || true; // mark verified if first login
-
-    await pool.query(
-      `UPDATE users
-       SET reset_code = NULL,
-           reset_code_expiry = NULL,
-           is_verified = $1,
-           updated_at = NOW()
-       WHERE id = $2`,
-      [isVerified, user.id]
-    );
-
-    // ==========================
-    // 3️⃣ Generate JWT token
-    // ==========================
-    const token = jwt.sign(
-      {
-        userId: user.id,
-        email: user.email,
-        name: user.name,
-        role: user.role,
-        pan: user.pan
-      },
-      process.env.JWT_SECRET,
-      { expiresIn: '7d' }
-    );
-
-    // ==========================
-    // 4️⃣ Set cookie (optional)
-    // ==========================
-    res.cookie('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
-    });
-
-    // ==========================
-    // 5️⃣ Response
-    // ==========================
-    res.json({
-      success: true,
-      message: 'Login successful',
-      token,
-      user: {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        gender: user.gender,
-        dob: user.dob,
-        pan: user.pan,
-        state: user.state,
-        role: user.role,
-        isVerified: true
-      }
-    });
-
   } catch (error) {
-    console.error('Error in verifyOTPAndLogin:', error);
+    try {
+      await client.query('ROLLBACK');
+    } catch (rollbackError) {
+      console.error('Rollback failed:', rollbackError);
+    }
+    
+    console.error('OTP Login error:', error);
     res.status(500).json({
       success: false,
-      message: 'Internal server error'
+      message: 'Login failed'
     });
+  } finally {
+    client.release();
   }
 };
+
 
 // ====================================== resend otp =====================================
 export const resendOTP = async (req, res) => {
@@ -4153,4 +4788,198 @@ export const verifyPANOTP = async (req, res) => {
     } finally {
         client.release();
     }
+};
+
+
+// -------------------------------------------------------------------
+
+
+
+export const logout = async (req, res) => {
+  const client = await pool.connect();
+  
+  try {
+    const { user_id, ip_address, user_agent, role } = req.body;
+    
+    // Insert logout log
+    const logQuery = `
+      INSERT INTO login_logs (user_id, ip_address, user_agent, role, action, created_at)
+      VALUES ($1, $2, $3, $4, 'LOGOUT', NOW())
+      RETURNING *
+    `;
+    
+    await client.query(logQuery, [user_id, ip_address || req.ip || req.connection.remoteAddress, user_agent, role]);
+    
+    console.log(`✅ LOGOUT: User ${user_id} (${role}) from ${ip_address}`);
+    
+    res.json({ 
+      success: true, 
+      message: "Logged out successfully" 
+    });
+    
+  } catch (error) {
+    console.error("Logout log error:", error);
+    res.status(500).json({ 
+      success: false, 
+      message: "Logout failed" 
+    });
+  } finally {
+    client.release();
+  }
+};
+
+
+
+// export const getLoginLogs = async (req, res) => {
+//   const client = await pool.connect();
+  
+//   try {
+//     // 🔥 Dynamic query with proper table joining based on role
+//     const logsQuery = `
+//       SELECT 
+//         ll.id,
+//         ll.user_id,
+//         ll.ip_address,
+//         ll.user_agent,
+//         ll.role,
+//         ll.action,
+//         ll.created_at,
+//         COALESCE(u.name, ra.name, 'Unknown') as user_name,
+//         COALESCE(u.email, ra.email, 'Unknown') as user_email,
+//         CASE 
+//           WHEN ll.role = 'user' THEN 'users'
+//           WHEN ll.role = 'ra' THEN 'research_analysts'
+//           ELSE 'unknown'
+//         END as table_source
+//       FROM login_logs ll
+//       LEFT JOIN users u ON (ll.role = 'user' AND ll.user_id = u.id)
+//       LEFT JOIN research_analysts ra ON (ll.role = 'ra' AND ll.user_id = ra.id)
+//       ORDER BY ll.created_at DESC
+//       LIMIT 100
+//     `;
+
+//     const { rows } = await client.query(logsQuery);
+    
+//     return res.status(200).json({
+//       success: true,
+//       message: 'Login logs fetched successfully',
+//       data: rows,
+//       total: rows.length
+//     });
+
+//   } catch (error) {
+//     console.error('Get login logs error:', error);
+//     return res.status(500).json({
+//       success: false,
+//       message: 'Failed to fetch login logs'
+//     });
+//   } finally {
+//     client.release();
+//   }
+// };
+
+
+
+
+
+
+
+
+export const getLoginLogs = async (req, res) => {
+  const client = await pool.connect();
+  
+  try {
+    const { 
+      role, 
+      action, 
+      start_date, 
+      end_date, 
+      user_id,
+      limit = 100,
+      page = 1 
+    } = req.query;
+
+    console.log('📊 Login logs params:', req.query);
+
+    // 🔥 Base condition: Exclude admin logs
+    let whereConditions = ["ll.role != 'admin'"];
+    const queryParams = [];
+
+    // Role filter (user/ra only)
+    if (role && ['user', 'ra'].includes(role)) {
+      whereConditions.push(`ll.role = $${queryParams.length + 1}`);
+      queryParams.push(role);
+    }
+
+    // Action filter
+    if (action && ['LOGIN', 'LOGOUT', 'OTP_LOGIN'].includes(action)) {
+      whereConditions.push(`ll.action = $${queryParams.length + 1}`);
+      queryParams.push(action);
+    }
+
+    // User ID filter
+    if (user_id) {
+      whereConditions.push(`ll.user_id = $${queryParams.length + 1}`);
+      queryParams.push(parseInt(user_id));
+    }
+
+    // Start date filter
+    if (start_date) {
+      whereConditions.push(`ll.created_at >= $${queryParams.length + 1}`);
+      queryParams.push(`${start_date} 00:00:00`);
+    }
+
+    // End date filter
+    if (end_date) {
+      whereConditions.push(`ll.created_at <= $${queryParams.length + 1}`);
+      queryParams.push(`${end_date} 23:59:59`);
+    }
+
+    const whereClause = whereConditions.join(' AND ');
+
+    // Pagination
+    const limitVal = Math.min(parseInt(limit), 500); // Max 500
+    const offset = (parseInt(page) - 1) * limitVal;
+    queryParams.push(limitVal, offset);
+
+    // Main query
+    const logsQuery = `
+      SELECT 
+        ll.id, ll.user_id, ll.ip_address, ll.user_agent,
+        ll.role, ll.action, ll.created_at,
+        COALESCE(u.name, ra.name, 'Unknown') as user_name,
+        COALESCE(u.email, ra.email, 'Unknown') as user_email
+      FROM login_logs ll
+      LEFT JOIN users u ON (ll.role = 'user' AND ll.user_id = u.id)
+      LEFT JOIN research_analysts ra ON (ll.role = 'ra' AND ll.user_id = ra.id)
+      WHERE ${whereClause}
+      ORDER BY ll.created_at DESC
+      LIMIT $${queryParams.length - 1} OFFSET $${queryParams.length}
+    `;
+
+    const { rows } = await client.query(logsQuery, queryParams);
+
+    // Count query
+    const countParams = queryParams.slice(0, -2);
+    const countQuery = `SELECT COUNT(*) as total FROM login_logs ll WHERE ${whereClause}`;
+    const countResult = await client.query(countQuery, countParams);
+    const totalRecords = parseInt(countResult.rows[0].total);
+
+    res.json({
+      success: true,
+      data: rows,
+      pagination: {
+        total: totalRecords,
+        page: parseInt(page),
+        limit: limitVal,
+        totalPages: Math.ceil(totalRecords / limitVal)
+      }
+    });
+
+  } catch (error) {
+    console.error('Login logs error:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  } finally {
+    client.release();
+  }
 };

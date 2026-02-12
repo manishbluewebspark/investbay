@@ -1,4 +1,6 @@
-import { SiGoogleanalytics } from "react-icons/si";
+import { SiGoogleanalytics ,} from "react-icons/si";
+import { FaUser } from "react-icons/fa";
+import { IoLogIn } from "react-icons/io5";
 import { MdSwapCalls } from "react-icons/md";
 import Dashboard from "../../../assets/sidebar/Dashboard.svg";
 import Course from "../../../assets/sidebar/course.svg";
@@ -6,6 +8,10 @@ import Earning from "../../../assets/sidebar/Earning.svg";
 import Plan from "../../../assets/sidebar/plan.svg";
 import Feed from "../../../assets/sidebar/feed.svg";
 import Price from "../../../assets/sidebar/price.svg";
+
+const userRole = JSON.parse(localStorage.getItem('user'))?.role;
+const feedTitle = userRole === 'admin' ? 'Feeds' : 'My Feeds';
+console.log(feedTitle)
 
 
 const sidebarLinks = [
@@ -29,6 +35,12 @@ const sidebarLinks = [
     path: "/admin/research-analyst",
     roles: ["admin"],
   },
+    {
+    name: "Users",
+    icon: FaUser,
+    path: "/admin/users",
+    roles: ["admin"],
+  },
   {
     name: "Signals",
     icon: MdSwapCalls,
@@ -42,11 +54,19 @@ const sidebarLinks = [
     roles: ["ra"],
   },
   {
-    name: "Feed",
+    name: feedTitle,
     icon: Feed,
     path: "/admin/adminfeed",
-    roles: ["ra"],
+    roles: ["admin","ra"],
   },
+
+  {
+    name: "Logs",
+    icon: IoLogIn,
+    path: "/admin/logs",
+    roles: ["admin"],
+  },
+
     {
     name: "Earnings",
     icon: Price,

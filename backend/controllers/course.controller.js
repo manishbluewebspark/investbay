@@ -300,15 +300,62 @@ export const updateCourse = async (req, res) => {
 };
 
 // ================================================= delete course =================================================
+// export const deleteCourse = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+
+//     // First, get the course to check if it exists and get the image key
+//     const getQuery = `SELECT * FROM courses WHERE id = $1`;
+//     const getResult = await pool.query(getQuery, [id]);
+
+//     if (getResult.rows.length === 0) {
+//       return res.status(404).json({
+//         success: false,
+//         message: "Course not found"
+//       });
+//     }
+
+//     const course = getResult.rows[0];
+
+//     // Delete image from S3
+//     if (course.image_key) {
+//       await deleteFromS3(course.image_key);
+//     }
+
+//     // Delete course from database
+//     const deleteQuery = `DELETE FROM courses WHERE id = $1`;
+//     await pool.query(deleteQuery, [id]);
+
+//     return res.status(200).json({
+//       success: true,
+//       message: "Course deleted successfully"
+//     });
+
+//   } catch (error) {
+//     console.error("Delete Course Error:", error);
+//     return res.status(500).json({
+//       success: false,
+//       message: "Server Error",
+//       error: error.message
+//     });
+//   }
+// };
+
+
 export const deleteCourse = async (req, res) => {
+  const client = await pool.connect(); // Use single client for transaction
+
   try {
+    await client.query('BEGIN'); // Start transaction
+
     const { id } = req.params;
 
-    // First, get the course to check if it exists and get the image key
-    const getQuery = `SELECT * FROM courses WHERE id = $1`;
-    const getResult = await pool.query(getQuery, [id]);
+    // 1. Get course details
+    const getQuery = `SELECT * FROM courses WHERE id = $1 FOR UPDATE`;
+    const getResult = await client.query(getQuery, [id]);
 
     if (getResult.rows.length === 0) {
+      await client.query('ROLLBACK');
       return res.status(404).json({
         success: false,
         message: "Course not found"
@@ -317,29 +364,54 @@ export const deleteCourse = async (req, res) => {
 
     const course = getResult.rows[0];
 
-    // Delete image from S3
+    // 2. Get ALL related videos
+    const videosQuery = `SELECT video_key FROM videos WHERE course_id = $1`;
+    const videosResult = await client.query(videosQuery, [id]);
+    const videos = videosResult.rows;
+
+    // 3. Delete course image from S3
     if (course.image_key) {
       await deleteFromS3(course.image_key);
     }
 
-    // Delete course from database
-    const deleteQuery = `DELETE FROM courses WHERE id = $1`;
-    await pool.query(deleteQuery, [id]);
+    // 4. Delete ALL video files from S3
+    let deletedVideoCount = 0;
+    for (const video of videos) {
+      if (video.video_key) {
+        await deleteFromS3(video.video_key);
+        deletedVideoCount++;
+      }
+    }
+
+    // 5. Delete ALL videos from database
+    const deleteVideosQuery = `DELETE FROM videos WHERE course_id = $1`;
+    await client.query(deleteVideosQuery, [id]);
+
+    // 6. Delete course from database
+    const deleteCourseQuery = `DELETE FROM courses WHERE id = $1`;
+    await client.query(deleteCourseQuery, [id]);
+
+    await client.query('COMMIT'); // Commit transaction
 
     return res.status(200).json({
       success: true,
-      message: "Course deleted successfully"
+      message: `Course deleted successfully along with ${deletedVideoCount} related video(s)`
     });
 
   } catch (error) {
+    await client.query('ROLLBACK'); // Rollback on error
     console.error("Delete Course Error:", error);
     return res.status(500).json({
       success: false,
-      message: "Server Error",
+      message: "Failed to delete course",
       error: error.message
     });
+  } finally {
+    client.release(); // Always release client
   }
 };
+
+
 
 // ========================================= get all courses ================================
 export const getAllCourses = async (req, res) => {

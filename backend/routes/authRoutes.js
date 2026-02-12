@@ -89,7 +89,9 @@ import {
   verifyPhoneOTP,
   sendPhoneOTP,
   sendPANOTP,
-  verifyPANOTP
+  verifyPANOTP,
+  logout,
+  getLoginLogs
 } from "../controllers/auth.controller.js";
 
 import { authRequired } from "../middleware/auth.js";
@@ -102,12 +104,17 @@ router.post("/admin/login", adminLogin);
 
 
 router.post("/login", login);
+
+router.post("/logout", logout);
+
 router.get("/me", authRequired, me);
 
 // Password reset routes (for research analysts)
 router.post("/forgot-password", forgotPassword);
 router.post("/verify-password", verifyCode);
 router.post("/update-password", updatePassword);
+
+router.get('/login-logs', getLoginLogs);
 
 // New user registration and login flow
 router.post('/register-with-email', registerWithProfile);

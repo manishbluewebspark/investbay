@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Search, Bell, User, LogOut, Settings, ChevronDown } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function Topbar() {
   const [open, setOpen] = useState(false);
@@ -29,6 +30,36 @@ export default function Topbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+
+
+  const handleLogout = async () => {
+  try {
+    const user = JSON.parse(localStorage.getItem('user'));
+    
+    // Logout API call with log
+    await axios.post(`${import.meta.env.VITE_API_URL}/auth/logout`, {
+      user_id: user.id,
+      ip_address: '', // Backend will handle
+      user_agent: navigator.userAgent,
+      role: user.role
+    });
+    
+    console.log('✅ Logout log sent successfully!');
+  } catch (error) {
+    console.error('Logout log failed:', error);
+    // Continue anyway - log failure shouldn't block logout
+  } finally {
+    // Always clear storage & redirect
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+
+    navigate('/admin')
+
+  }
+};
+
+
 
   return (
     <header className={`fixed top-0 left-0 w-full h-16 bg-white transition-all duration-300 z-50 ${isScrolled ? " border-b border-gray-100" : "border-b border-gray-100"
@@ -120,11 +151,7 @@ export default function Topbar() {
                   <div className="h-px bg-gray-100 my-1"></div>
 
                   <button
-                    onClick={() => {
-                      localStorage.removeItem("token");
-                      localStorage.removeItem("user");
-                      window.location.href = "/admin";
-                    }}
+                    onClick={() => handleLogout()}
                     className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-red-50 text-red-600 transition-colors"
                   >
                     <LogOut className="h-4 w-4" />

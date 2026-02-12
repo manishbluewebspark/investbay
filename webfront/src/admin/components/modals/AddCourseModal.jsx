@@ -393,7 +393,7 @@ const AddCourseModal = ({ onClose, onSuccess }) => {
                                         </>
                                     ) : (
                                         <>
-                                            Next
+                                            Submit
                                         </>
                                     )}
                                 </button>

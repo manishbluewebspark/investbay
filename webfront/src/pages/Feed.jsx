@@ -157,12 +157,13 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export default function Feed() {
+    const [activeTab, setActiveTab] = useState("Free Calls");
+
+  const tabs = ["Free Calls", "Subscription Based"];
   const [signals, setSignals] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [activeTab, setActiveTab] = useState("Free Calls");
 
-  const tabs = ["Free Calls", "Subscription Based"];
 
   const apiUrl = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
@@ -191,27 +192,55 @@ export default function Feed() {
     fetchSignals();
   }, [fetchSignals]);
 
-  console.log(signals, "signals...");
+ 
 
-  // Format date to readable format
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-IN", {
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-    });
-  };
+  // // Format date to readable format
+  // const formatDate = (dateString) => {
+  //   const date = new Date(dateString);
+  //   return date.toLocaleDateString("en-IN", {
+  //     day: "numeric",
+  //     month: "short",
+  //     year: "numeric",
+  //   });
+  // };
 
-  // Format time to readable format
-  const formatTime = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleTimeString("en-IN", {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
-    });
-  };
+  // // Format time to readable format
+  // const formatTime = (dateString) => {
+  //   const date = new Date(dateString);
+  //   return date.toLocaleTimeString("en-IN", {
+  //     hour: "2-digit",
+  //     minute: "2-digit",
+  //     hour12: true,
+  //   });
+  // };
+
+
+  // 🔥 PERFECT IST CONVERSION
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  if (isNaN(date.getTime())) return "Invalid Date";
+  
+  return date.toLocaleDateString("en-IN", {
+    timeZone: "Asia/Kolkata",     // ✅ FORCE IST
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+};
+
+const formatTime = (dateString) => {
+  const date = new Date(dateString);
+  if (isNaN(date.getTime())) return "Invalid Time";
+  
+  return date.toLocaleTimeString("en-IN", {
+    timeZone: "Asia/Kolkata",     // ✅ FORCE IST
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
+};
+
+
 
   const getGradient = (segment, tradeDirection) => {
     if (tradeDirection === "BUY") {
