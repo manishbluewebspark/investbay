@@ -363,9 +363,9 @@ export default function FeaturedSubscriptions() {
                         onClick={() =>
                           navigate(`/subscription/${sub.id}`)
                         }
-                        className="bg-black text-white text-sm px-8 py-2 rounded-lg hover:bg-gray-800"
+                        className="bg-black text-white text-sm px-8 py-2 rounded-sm hover:bg-gray-800"
                       >
-                        Buy Now
+                        View Details
                       </button>
                     </div>
                   </div>

@@ -163,11 +163,13 @@ import React, { useCallback, useEffect, useState } from "react";
 import Verify from "../../assets/Verify.svg";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 export default function FeaturedSubscriptions() {
   const [subscriptions, setSubscriptions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const user = localStorage.getItem('user')
   
   const apiUrl = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
@@ -328,7 +330,28 @@ export default function FeaturedSubscriptions() {
 
                 <button 
                   className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 px-3 rounded-lg text-sm font-medium transition-colors"
-                  onClick={() => navigate(`/subscription/${sub.id}`)}
+                  onClick={() => {
+                    
+                    if(user===null)
+                    {
+
+                       navigate(`/login`)
+                       toast.warn('Please login first to view subscription', {
+                               duration: 3000,
+                               position: 'top-center',
+                               style: {
+                                 background: '#3959fb',
+                                 color: '#fff',
+                                 padding: '16px',
+                                 borderRadius: '10px',
+                               }})
+                    }
+                    else
+                    {
+                    navigate(`/subscription/${sub.id}`)
+                     }
+                  
+                  }}
                 >
                   Subscribe Now
                 </button>
@@ -341,7 +364,30 @@ export default function FeaturedSubscriptions() {
         {subscriptions.length > 4 && (
           <div className="text-center">
             <button
-              onClick={() => navigate('/subscriptions')}
+              onClick={() => 
+              {
+                
+                  if(user===null)
+                    {
+
+                       navigate(`/login`)
+                        toast.warn('Please login first to view subscriptions', {
+                               duration: 3000,
+                               position: 'top-center',
+                               style: {
+                                 background: '#3959fb',
+                                 color: '#fff',
+                                 padding: '16px',
+                                 borderRadius: '10px',
+                               }})
+                    }
+                    else
+                    {
+                navigate('/subscriptions')
+                    }
+              
+                    }
+              }
               className="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-2.5 rounded-lg font-medium text-sm transition-colors"
             >
               View All {subscriptions.length} Plans →

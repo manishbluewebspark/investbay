@@ -4,12 +4,45 @@ import { useRef, useState } from "react";
 export default function UploadSignatureModal({ open, onClose, onProceed }) {
   const fileInputRef = useRef(null);
   const [file, setFile] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const [error, setError] = useState('');
 
   if (!open) return null;
 
   const handleFileSelect = (e) => {
     const selected = e.target.files[0];
-    if (selected) setFile(selected);
+    setError('');
+    
+    if (selected) {
+      // Check file size (max 2MB)
+      if (selected.size > 2 * 1024 * 1024) {
+        setError('File size should be less than 2MB');
+        setFile(null);
+        return;
+      }
+      
+      // Check file type
+      if (!selected.type.startsWith('image/')) {
+        setError('Please upload an image file');
+        setFile(null);
+        return;
+      }
+      
+      setFile(selected);
+    }
+  };
+
+  const handleProceed = async () => {
+    if (!file) return;
+    
+    setIsUploading(true);
+    try {
+      await onProceed?.(file);
+    } catch (error) {
+      console.error('Error uploading signature:', error);
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   return (
@@ -44,17 +77,26 @@ export default function UploadSignatureModal({ open, onClose, onProceed }) {
               <span className="font-medium text-blue-600">Click here</span>{" "}
               to upload or drop here
             </p>
+            <p className="text-xs text-gray-500 mt-1">
+              Max file size: 2MB (JPEG, PNG)
+            </p>
 
             {file && (
-              <p className="mt-2 text-xs text-gray-500">
-                Selected file: {file.name}
-              </p>
+              <div className="mt-2">
+                <p className="text-xs text-green-600">
+                  ✓ {file.name} ({(file.size / 1024).toFixed(1)} KB)
+                </p>
+              </div>
+            )}
+
+            {error && (
+              <p className="mt-2 text-xs text-red-500">{error}</p>
             )}
 
             <input
               ref={fileInputRef}
               type="file"
-              accept="image/*"
+              accept="image/jpeg,image/png,image/jpg"
               onChange={handleFileSelect}
               className="hidden"
             />
@@ -67,22 +109,28 @@ export default function UploadSignatureModal({ open, onClose, onProceed }) {
         <div className="flex justify-end gap-4 px-6 py-4">
           <button
             onClick={onClose}
-            className="rounded-md border border-gray-400 px-10 py-2 text-sm text-gray-600 hover:bg-gray-100"
+            disabled={isUploading}
+            className="rounded-md border border-gray-400 px-10 py-2 text-sm text-gray-600 hover:bg-gray-100 disabled:opacity-50"
           >
             Cancel
           </button>
 
           <button
-            disabled={!file}
-            onClick={() => onProceed?.(file)}
+            disabled={!file || isUploading || error}
+            onClick={handleProceed}
             className={`rounded-md px-10 py-2 text-sm font-medium text-white
               ${
-                file
+                file && !isUploading && !error
                   ? "bg-black hover:bg-gray-900"
                   : "cursor-not-allowed bg-gray-300"
               }`}
           >
-            Proceed
+            {isUploading ? (
+              <span className="flex items-center gap-2">
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                Uploading...
+              </span>
+            ) : 'Proceed'}
           </button>
         </div>
       </div>

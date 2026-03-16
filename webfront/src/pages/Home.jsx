@@ -12,10 +12,15 @@ export default function Home() {
     <>
     <Hero/>
     <InvestHelp/>
+
+    
     <FeaturedCalls/>
     <Mentors/>
     <FeaturedSubscriptions/>
     <FeaturedCourses/>
+
+
+
     <Testimonials/> 
     <Newsletter/>
     </>

@@ -1,17 +1,43 @@
-// import React, { useState, useRef, useEffect } from "react";
-// import { NavLink, useNavigate } from "react-router-dom";
-// import { FaUserCircle, FaSignOutAlt, FaUser, FaCog } from "react-icons/fa";
+// import axios from 'axios'; // Add this import at top
+// import { useCallback, useEffect, useRef, useState } from 'react'; // Add this import
+// import { FaCog, FaSignOutAlt, FaUser, FaUserCircle } from 'react-icons/fa';
+// import { NavLink, useNavigate } from 'react-router-dom';
 
 // export default function HeaderLinks({ onClick, onLoginClick }) {
 //   const [showDropdown, setShowDropdown] = useState(false);
 //   const dropdownRef = useRef(null);
 //   const navigate = useNavigate();
-  
+
 //   const linkClass = ({ isActive }) =>
 //     isActive ? "active-text" : "default-text";
 
 //   const user = JSON.parse(localStorage.getItem("user")) || {};
-  
+
+//   // 🔥 Updated handleLogout with API call
+//   const handleLogout = useCallback(async () => {
+//     try {
+//       // First call logout API to log in backend
+//       if (user?.id) {
+//         await axios.post(`${import.meta.env.VITE_API_URL}/auth/logout`, {
+//           user_id: user.id,
+//           ip_address: '', // Backend will handle from req.ip
+//           user_agent: navigator.userAgent,
+//           role: user.role
+//         });
+//         console.log('✅ Logout log sent to backend!');
+//       }
+//     } catch (error) {
+//       console.error('❌ Logout API failed:', error);
+//       // Don't block logout even if API fails
+//     } finally {
+//       // Always clear storage and navigate
+//       localStorage.removeItem("user");
+//       localStorage.removeItem("token");
+//       setShowDropdown(false);
+//       navigate("/login");
+//     }
+//   }, [user?.id, navigate]);
+
 //   useEffect(() => {
 //     const handleClickOutside = (event) => {
 //       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -25,16 +51,6 @@
 //     };
 //   }, []);
 
-//   const handleLogout = () => {
-//     localStorage.removeItem("user");
-//     localStorage.removeItem("token");
-//     setShowDropdown(false);
-//     navigate("/login");
-//   };
-
-
-
-
 //   const handleProfileClick = () => {
 //     setShowDropdown(!showDropdown);
 //   };
@@ -47,7 +63,10 @@
 
 //   return (
 //     <>
-//       <NavLink to="/feed" onClick={onClick} className={linkClass}>
+//     <NavLink to="/" onClick={onClick} className={linkClass}>
+//         News
+//       </NavLink>
+//       {/* <NavLink to="/feed" onClick={onClick} className={linkClass}>
 //         Feed
 //       </NavLink>
 //       <NavLink to="/signals" onClick={onClick} className={linkClass}>
@@ -59,12 +78,9 @@
 //       <NavLink to="/subscriptions" onClick={onClick} className={linkClass}>
 //         Subscriptions
 //       </NavLink>
-//       {/* <NavLink to="/learn" onClick={onClick} className={linkClass}>
-//         Learn
-//       </NavLink> */}
 //       <NavLink to="/courses" onClick={onClick} className={linkClass}>
 //         Course
-//       </NavLink>
+//       </NavLink> */}
 
 //       {user?.name ? (
 //         <div className="relative" ref={dropdownRef}>
@@ -92,7 +108,7 @@
 //                 <p className="text-sm font-semibold text-gray-900">{user.name}</p>
 //                 <p className="text-xs text-gray-500 truncate">{user.email}</p>
 //               </div>
-              
+
 //               <button
 //                 onClick={handleProfileNavigate}
 //                 className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -100,7 +116,7 @@
 //                 <FaUser className="mr-3" />
 //                 My Profile
 //               </button>
-              
+
 //               <button
 //                 onClick={() => {
 //                   setShowDropdown(false);
@@ -111,9 +127,9 @@
 //                 <FaCog className="mr-3" />
 //                 Settings
 //               </button>
-              
+
 //               <div className="border-t border-gray-100 my-1"></div>
-              
+
 //               <button
 //                 onClick={handleLogout}
 //                 className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
@@ -132,34 +148,38 @@
 //         >
 //           Login
 //         </NavLink>
+
 //       )}
 //     </>
 //   );
 // }
 
-import axios from 'axios'; // Add this import at top
-import { useCallback, useEffect, useRef, useState } from 'react'; // Add this import
-import { FaCog, FaSignOutAlt, FaUser, FaUserCircle } from 'react-icons/fa';
+
+
+import axios from 'axios';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { FaCog, FaSignOutAlt, FaUser, FaUserCircle, FaBell } from 'react-icons/fa';
 import { NavLink, useNavigate } from 'react-router-dom';
+import SubscribeModal from './SubscribeModal'; // Import the modal
 
 export default function HeaderLinks({ onClick, onLoginClick }) {
   const [showDropdown, setShowDropdown] = useState(false);
+  const [showSubscribeModal, setShowSubscribeModal] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
-  
+
   const linkClass = ({ isActive }) =>
     isActive ? "active-text" : "default-text";
 
   const user = JSON.parse(localStorage.getItem("user")) || {};
-  
-  // 🔥 Updated handleLogout with API call
+
+  // Logout function
   const handleLogout = useCallback(async () => {
     try {
-      // First call logout API to log in backend
       if (user?.id) {
         await axios.post(`${import.meta.env.VITE_API_URL}/auth/logout`, {
           user_id: user.id,
-          ip_address: '', // Backend will handle from req.ip
+          ip_address: '',
           user_agent: navigator.userAgent,
           role: user.role
         });
@@ -167,9 +187,7 @@ export default function HeaderLinks({ onClick, onLoginClick }) {
       }
     } catch (error) {
       console.error('❌ Logout API failed:', error);
-      // Don't block logout even if API fails
     } finally {
-      // Always clear storage and navigate
       localStorage.removeItem("user");
       localStorage.removeItem("token");
       setShowDropdown(false);
@@ -200,23 +218,37 @@ export default function HeaderLinks({ onClick, onLoginClick }) {
     if (onClick) onClick();
   };
 
+
+const handleUnsubscribe = async () => {
+  try {
+    const response = await axios.put(`${apiUrl}/api/unsubscribe`, {
+      phone: user.phone // or get from somewhere
+    });
+    
+    if (response.data.success) {
+      alert('Successfully unsubscribed from news updates');
+    }
+  } catch (error) {
+    console.error('Unsubscribe error:', error);
+    alert('Failed to unsubscribe');
+  }
+};
+
+
   return (
     <>
-      <NavLink to="/feed" onClick={onClick} className={linkClass}>
-        Feed
+      <NavLink to="/" onClick={onClick} className={linkClass}>
+        News
       </NavLink>
-      <NavLink to="/signals" onClick={onClick} className={linkClass}>
-        Signals
-      </NavLink>
-      <NavLink to="/mentors" onClick={onClick} className={linkClass}>
-        Mentors
-      </NavLink>
-      <NavLink to="/subscriptions" onClick={onClick} className={linkClass}>
-        Subscriptions
-      </NavLink>
-      <NavLink to="/courses" onClick={onClick} className={linkClass}>
-        Course
-      </NavLink>
+
+      {/* NEW: Subscribe Button - Shows for both logged in and logged out users */}
+      <button
+        onClick={() => setShowSubscribeModal(true)}
+        className="bg-green-600 text-white text-sm font-medium px-6 py-2 rounded-full hover:bg-green-700 transition-colors flex items-center gap-2"
+      >
+        <FaBell className="w-3 h-3" />
+        Subscribe
+      </button>
 
       {user?.name ? (
         <div className="relative" ref={dropdownRef}>
@@ -244,7 +276,7 @@ export default function HeaderLinks({ onClick, onLoginClick }) {
                 <p className="text-sm font-semibold text-gray-900">{user.name}</p>
                 <p className="text-xs text-gray-500 truncate">{user.email}</p>
               </div>
-              
+
               <button
                 onClick={handleProfileNavigate}
                 className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -252,7 +284,7 @@ export default function HeaderLinks({ onClick, onLoginClick }) {
                 <FaUser className="mr-3" />
                 My Profile
               </button>
-              
+
               <button
                 onClick={() => {
                   setShowDropdown(false);
@@ -263,9 +295,9 @@ export default function HeaderLinks({ onClick, onLoginClick }) {
                 <FaCog className="mr-3" />
                 Settings
               </button>
-              
+
               <div className="border-t border-gray-100 my-1"></div>
-              
+
               <button
                 onClick={handleLogout}
                 className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
@@ -277,17 +309,28 @@ export default function HeaderLinks({ onClick, onLoginClick }) {
           )}
         </div>
       ) : (
-        <NavLink
-          to="/login"
-          type="button"
-          className="bg-gray-900 text-white text-sm font-medium px-6 py-2 rounded-full hover:bg-gray-800"
-        >
-          Login
-        </NavLink>
+
+        <>
+
+          {/* <NavLink
+            to="/login"
+            type="button"
+            className="bg-gray-900 text-white text-sm font-medium px-6 py-2 rounded-full hover:bg-gray-800"
+          >
+            Login
+          </NavLink> */}
+
+
+          <SubscribeModal
+            isOpen={showSubscribeModal}
+            onClose={() => setShowSubscribeModal(false)}
+          />
+
+        </>
       )}
+
+
+
     </>
   );
 }
-
-
-

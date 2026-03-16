@@ -1,4 +1,5 @@
 import express from 'express';
+import bodyParser from 'body-parser';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import path from 'path';
@@ -13,7 +14,13 @@ import videoRoutes from './routes/videoRoutes.js';
 import authFirebaseRoutes from './routes/authFirebaseRoutes.js'
 import userRoutes from "./routes/userRoute.js";
 import feedRoutes from "./routes/feedRoutes.js";
+import newsRoutes from "./routes/newsRoutes.js";
+import termsRoutes from "./routes/termsRoutes.js";
+import logRoutes from "./routes/logRoutes.js";
+import notifyRoutes from "./routes/notifyRoutes.js";
+import subscriberRoutes from "./routes/subscriberRoutes.js";
 import { initDB } from './db.js';
+import { connectWhatsApp } from './whatsapp.service.js';
 
 
 
@@ -21,6 +28,17 @@ dotenv.config();
 
 const app = express();
 
+
+
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+
+
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
+
+
+// await connectWhatsApp()
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -48,7 +66,15 @@ app.use("/api/courses", CourseRoutes);
 app.use("/api/videos", videoRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/feeds", feedRoutes);
+app.use("/api/news", newsRoutes);
+app.use('/api/terms', termsRoutes);
 
+
+
+
+app.use('/api', subscriberRoutes)
+app.use('/api', notifyRoutes)
+app.use('/api', logRoutes)
 
 
 app.get('/api/health', (_req, res) => res.json({ ok: true }));

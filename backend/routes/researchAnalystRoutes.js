@@ -4,7 +4,7 @@ import { addResearchAnalyst, deleteResearchAnalyst, getResearchAnalystById, getA
 
 const router = express.Router();
 
-router.post("/create", upload.fields([{ name: "profileImage", maxCount: 1 },{ name: "panFile", maxCount: 1 },{ name: "sebiFile", maxCount: 1 }, { name: "professionalDocument", maxCount: 1 },]),addResearchAnalyst);
+router.post("/create", upload.fields([{ name: "profileImage", maxCount: 1 },{ name: "panFile", maxCount: 1 },{ name: "sebiFile", maxCount: 1 }, { name: "professionalDocument", maxCount: 1 }, { name: "signature", maxCount: 1 }]),addResearchAnalyst);
 
 router.get("/all", getAllResearchAnalysts);
 

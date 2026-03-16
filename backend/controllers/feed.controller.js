@@ -1512,3 +1512,107 @@ shareFeed: async (req, res) => {
     }
   }
 };
+
+
+
+export const getFeedById = async (req, res) => {
+  const client = await pool.connect();
+  try {
+    const { feed_id } = req.params;
+    const user_id = req.user?.id;
+
+    // 🔥 SIMPLE QUERY - Sirf do tables with WHERE clause
+    const query = `
+      SELECT 
+        f.*,
+        COALESCE(fl.feed_likes, '[]'::jsonb) as feed_likes,
+        COALESCE(fl.feed_comments, '[]'::jsonb) as feed_comments,
+        COALESCE(fl.feed_shares, '[]'::jsonb) as feed_shares
+      FROM feeds f
+      LEFT JOIN feed_logs fl ON f.id = fl.feed_id
+      WHERE f.id = $1
+    `;
+
+    const result = await client.query(query, [feed_id]);
+    
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Feed not found"
+      });
+    }
+
+    const feed = result.rows[0];
+    
+    const likes = feed.feed_likes || [];
+    const comments = feed.feed_comments || [];
+    const shares = feed.feed_shares || [];
+
+    // Fetch user_name for comments if not present
+    const commentsWithUserNames = await Promise.all(comments.map(async (comment) => {
+      if (!comment.user_name) {
+        try {
+          const userResult = await client.query(
+            'SELECT name FROM users WHERE id = $1',
+            [comment.user_id]
+          );
+          comment.user_name = userResult.rows[0]?.name || 'User';
+        } catch (err) {
+          comment.user_name = 'User';
+        }
+      }
+      return comment;
+    }));
+
+    // Sort comments by date
+    const sortedComments = commentsWithUserNames.sort((a, b) => 
+      new Date(b.created_at) - new Date(a.created_at)
+    );
+
+    // ✅ Use ACTUAL array lengths for counts
+    const actualLikeCount = likes.length;
+    const actualCommentCount = comments.length;
+    const actualShareCount = shares.length;
+
+    const feedWithStats = {
+      id: feed.id,
+      ra_id: feed.ra_id,
+      ra_name: feed.ra_name,
+      ra_avatar: feed.ra_avatar,
+      feed_text: feed.feed_text,
+      feed_tags: feed.feed_tags || [],
+      feed_documents: feed.feed_documents || [],
+      
+      // ✅ Send ACTUAL counts from arrays
+      feed_like_count: actualLikeCount,
+      feed_comment_count: actualCommentCount,
+      feed_share_count: actualShareCount,
+      
+      // Send arrays for detailed data
+      feed_likes: likes,
+      feed_comments: sortedComments,
+      feed_shares: shares,
+      comments: sortedComments,
+      
+      // Check if current user liked this post
+      is_liked_by_user: user_id ? likes.some(like => like.user_id === user_id) : false,
+      
+      created_at: feed.created_at,
+      updated_at: feed.updated_at
+    };
+
+    res.json({
+      success: true,
+      data: feedWithStats
+    });
+
+  } catch (error) {
+    console.error("❌ Get Feed By ID Error:", error);
+    res.status(500).json({ 
+      success: false, 
+      message: "Internal server error" 
+    });
+  } finally {
+    client.release();
+  }
+};

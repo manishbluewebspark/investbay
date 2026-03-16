@@ -318,7 +318,7 @@ export default function AnalystView() {
                 </div>
 
                 {/* SIGNALS SECTION */}
-                <div className="mt-10">
+                {/* <div className="mt-10">
                     <h1 className="text-2xl font-semibold mb-6">Recent Signals</h1>
                     
                     <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-20 place-items-center">
@@ -357,7 +357,7 @@ export default function AnalystView() {
                             </div>
                         ) : null}
                     </div>
-                </div>
+                </div> */}
             </div>
         </div>
     );

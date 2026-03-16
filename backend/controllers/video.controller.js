@@ -86,6 +86,30 @@ export const getVideosByCourseWithUserId = async (req, res) => {
     }
 };
 
+
+export const getVideosByCourseId = async (req, res) => {
+    try {
+        const { courseId } = req.params;
+        
+        // Raw SQL query to fetch videos
+        const query = `
+            SELECT * FROM videos 
+            WHERE course_id = $1 
+            ORDER BY created_at DESC
+        `;
+        
+        const result = await pool.query(query, [courseId]);
+        
+        res.status(200).json({
+            success: true,
+            data: result.rows
+        });
+    } catch (error) {
+        console.error('Get videos error:', error);
+        res.status(500).json({ error: 'Failed to fetch videos' });
+    }
+};
+
 // ========================================= delete video =========================================
 export const deleteVideo = async (req, res) => {
     try {

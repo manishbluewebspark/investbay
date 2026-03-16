@@ -125,12 +125,13 @@ import leftImg from "../../assets/left.png";
 import rightImg from "../../assets/right.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 export default function Mentors() {
   const [analysts, setAnalysts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  
+  const user=localStorage.getItem('user')
   const apiUrl = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
 
@@ -317,7 +318,27 @@ export default function Mentors() {
       {/* ✅ View All Button */}
       <div className="text-center mt-16 relative z-10">
         <button 
-          onClick={() => navigate('/mentors')} 
+          onClick={() => {
+            
+            if(user===null)
+            {
+              navigate('login')
+              toast.warn('Please login first to view mentors', {
+        duration: 3000,
+        position: 'top-center',
+        style: {
+          background: '#3959fb',
+          color: '#fff',
+          padding: '16px',
+          borderRadius: '10px',
+        },
+      });
+            }
+            else
+            {
+            navigate('/mentors')}} 
+            }
+
           className="px-10 py-4 bg-white text-black font-bold text-lg rounded-3xl shadow-2xl hover:shadow-3xl hover:bg-gray-50 hover:-translate-y-1 transition-all duration-300 border-4 border-white/20 backdrop-blur-sm"
           disabled={loading}
         >

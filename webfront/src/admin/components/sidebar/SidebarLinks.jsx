@@ -2,6 +2,7 @@ import { SiGoogleanalytics ,} from "react-icons/si";
 import { FaUser } from "react-icons/fa";
 import { IoLogIn } from "react-icons/io5";
 import { MdSwapCalls } from "react-icons/md";
+import { FaNewspaper } from "react-icons/fa6";
 import Dashboard from "../../../assets/sidebar/Dashboard.svg";
 import Course from "../../../assets/sidebar/course.svg";
 import Earning from "../../../assets/sidebar/Earning.svg";
@@ -58,6 +59,12 @@ const sidebarLinks = [
     icon: Feed,
     path: "/admin/adminfeed",
     roles: ["admin","ra"],
+  },
+  {
+    name: "News",
+    icon: FaNewspaper,
+    path: "/admin/News",
+    roles: ["admin"],
   },
 
   {

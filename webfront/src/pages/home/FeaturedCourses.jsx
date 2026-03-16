@@ -139,6 +139,7 @@ export default function FeaturedCourses() {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const apiUrl = import.meta.env.VITE_API_URL;
+  const user=localStorage.getItem('user')
   const navigate = useNavigate();
 
   console.log(courses, 'courses...');
@@ -268,7 +269,33 @@ export default function FeaturedCourses() {
                   </div>
                   <button 
                     className="flex-1 sm:flex-none bg-gradient-to-r from-[#00BFA6] to-[#00D4B1] text-white py-3 px-6 rounded-xl font-medium hover:from-[#00A894] hover:to-[#00C4A1] transition-all duration-300 shadow-lg hover:shadow-xl text-sm"
-                    onClick={() => navigate(`/courses/${course.id}`)}
+                    onClick={() => 
+                      
+                      {
+                       if(user===null)
+                                  {
+                                    navigate('login')
+                                    toast.warn('Please login first to view course', {
+                              duration: 3000,
+                              position: 'top-center',
+                              style: {
+                                background: '#3959fb',
+                                color: '#fff',
+                                padding: '16px',
+                                borderRadius: '10px',
+                              },
+                            });
+                                  }
+                                  else
+                                  {
+                      
+                      navigate(`/courses/${course.id}`)
+                    
+                                  }
+                    }
+
+
+                    }
                   >
                     View Details
                   </button>
@@ -293,7 +320,36 @@ export default function FeaturedCourses() {
 
       <div className="flex justify-center mt-16">
         <button
-          onClick={() => navigate("/courses")}
+          onClick={() =>
+            
+            
+
+                      {
+                       if(user===null)
+                                  {
+                                    navigate('login')
+                                    toast.warn('Please login first to view courses', {
+                              duration: 3000,
+                              position: 'top-center',
+                              style: {
+                                background: '#3959fb',
+                                color: '#fff',
+                                padding: '16px',
+                                borderRadius: '10px',
+                              },
+                            });
+                                  }
+                                  else
+                                  {
+                      
+                      navigate("/courses")}
+                    
+                                  }
+                    }
+            
+            
+            
+           
           className="bg-white/90 backdrop-blur-sm text-black px-8 py-4 rounded-full font-semibold text-lg hover:bg-white hover:shadow-xl transition-all duration-300 border border-white/30 shadow-lg"
         >
           View All Courses →

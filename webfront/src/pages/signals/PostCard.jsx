@@ -395,7 +395,7 @@ export default function PostCard({ post: initialPost, onUpdate }) {
     setShowShareOptions(false);
 
     try {
-      const shareUrl = `${window.location.origin}/feed/${post.id}`;
+      const shareUrl = `${window.location.origin}/feed-view/${post.id}`;
       
       switch(platform) {
         case 'twitter':

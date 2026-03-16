@@ -64,6 +64,12 @@ export default function DocumentUploadModal({ data, parentData, onSubmit, onBack
       formDataToSend.append("address", p.address || "");
       formDataToSend.append("aboutUs", p.aboutUs || "");
 
+      // ✅ IMPORTANT: Add signature file if it exists
+      if (p.signature) {
+        formDataToSend.append("signature", p.signature);
+        console.log("Signature file appended:", p.signature);
+      }
+
       // Professional
       formDataToSend.append("sebiNumber", prof.sebiNumber || "");
       formDataToSend.append("specialization", prof.specialization || "");
@@ -152,6 +158,7 @@ export default function DocumentUploadModal({ data, parentData, onSubmit, onBack
               type="text"
               value={terms}
               onChange={(e) => setTerms(e.target.value)}
+              placeholder="Enter Terms & Declaration"
               className={`w-full border rounded-lg px-3 py-2 text-sm ${errors.terms ? "border-red-500" : "border-gray-300"}`}
             />
             {errors.terms && <p className="text-red-500 text-sm mt-1">{errors.terms}</p>}

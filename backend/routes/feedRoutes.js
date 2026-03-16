@@ -1,6 +1,6 @@
 import express from 'express';
 import upload from '../middleware/upload.js';
-import { createFeed, deleteFeed, feedLogController, getFeedAll, getFeedByRaId, updateFeed } from "../controllers/feed.controller.js";
+import { createFeed, deleteFeed, feedLogController, getFeedAll, getFeedById, getFeedByRaId, updateFeed } from "../controllers/feed.controller.js";
 
 const router = express.Router();
 
@@ -30,6 +30,8 @@ router.delete('/feeds/:feed_id/comments/:comment_id', feedLogController.deleteCo
 
 // 📌 Share routes
 router.post('/feeds/:feed_id/share', feedLogController.shareFeed);
+
+router.get('/feeds/:feed_id', getFeedById);
 
 // 📌 Get logs for a specific feed
 router.get('/feeds/:feed_id/logs', feedLogController.getFeedLogs);

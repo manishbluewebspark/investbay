@@ -46,11 +46,24 @@ import PlanEarningView from "./admin/pages/ra/PlanEarningView";
 import FeedView from "./admin/pages/ra/FeedView";
 import Users from "./admin/pages/Users";
 import AdminLoginLogs from "./admin/pages/AdminLoginLogs";
+import SinglePostView from "./admin/pages/SinglePostView";
+import PlanPage from "./pages/Planpage";
+import AdminNews from "./admin/pages/ra/AdminNews";
+import News from "./pages/News";
+import NewsDetail from "./pages/ NewsDetail";
 
 function PrivateRoute({ children }) {
   const token = localStorage.getItem("token");
   return token ? children : <Navigate to="/admin" replace />;
 }
+
+
+function PrivateRouteUser({ children }) {
+  const token = localStorage.getItem("user");
+  return token ? children : <Navigate to="/" replace />;
+}
+
+
 
 function App() {
   return (
@@ -75,17 +88,25 @@ function App() {
               <Header />
               <main className="min-h-screen pt-16">
                 <Routes>
-                  <Route path="/" element={<Home />} />
+                  {/* <Route path="/" element={<Home />} /> */}
+                  <Route path="/" element={<News />} />
+
+                  
                   <Route path="/feed" element={<Signals />} />
+                  
+                  
                   <Route path="/signals" element={<Feed />} />
                   <Route path="/subscriptions" element={<Subscription />} />
-                  <Route path="/subscription/:id" element={<SubscriptionDetails  />} />
+                  <Route path="/subscription/:id" element={<PrivateRouteUser><SubscriptionDetails  /></PrivateRouteUser>} />
                   <Route path="/mentors" element={<AllMentors />} />
-                  <Route path="/mentor/:id" element={<MentorProfile />} />
+                  <Route path="/mentor/:id" element={<PrivateRouteUser><MentorProfile /></PrivateRouteUser>} />
+                  <Route path="/plans/:id" element={<PrivateRouteUser><PlanPage /></PrivateRouteUser>} />
                   <Route path="/profile" element={<ProfilePage />} />
                   <Route path="/courses" element={<AllCourses />} />
-                  <Route path="/courses/:id" element={<CourseDataDetails />} />
-                  <Route path="/afterbeforesubscription" element={<AfterBeforeSubscription />} />
+                  <Route path="/courses/:id" element={<PrivateRouteUser><CourseDataDetails /></PrivateRouteUser>} />
+                  <Route path="/feed-view/:feed_id" element={<PrivateRouteUser><SinglePostView /></PrivateRouteUser>} />
+                  <Route path="/afterbeforesubscription/:id" element={<PrivateRouteUser><AfterBeforeSubscription /></PrivateRouteUser>} />
+                   <Route path="/news/:id" element={<NewsDetail />} />
                   
                 </Routes>
               </main>
@@ -124,6 +145,7 @@ function App() {
         <Route path="/admin/earnings/plan-view" element={<PrivateRoute><Layout><PlanEarningView /></Layout></PrivateRoute>} />
         <Route path="/admin/adminfeed" element={<PrivateRoute><Layout><AdminFeed /></Layout></PrivateRoute>} />
         <Route path="/admin/adminfeed/view/:id" element={<PrivateRoute><Layout><FeedView /></Layout></PrivateRoute>} />
+        <Route path="/admin/News" element={<PrivateRoute><Layout><AdminNews /></Layout></PrivateRoute>} />
         
 
 

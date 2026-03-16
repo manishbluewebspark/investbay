@@ -18,6 +18,8 @@ export default function ProfessionalDetailsModal({ data, onNext, onBack, onClose
   const [selectedFile, setSelectedFile] = useState(null);
   const [touched, setTouched] = useState(false);
   const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
+  const [isEducationOpen, setIsEducationOpen] = useState(false);
+
 
   const languageOptions = [
     { value: "english", label: "English" },
@@ -31,6 +33,52 @@ export default function ProfessionalDetailsModal({ data, onNext, onBack, onClose
     { value: "portuguese", label: "Portuguese" },
     { value: "russian", label: "Russian" },
   ];
+
+
+  const EDUCATION_OPTIONS = [
+  // 🔥 FINANCE CERTIFICATIONS
+  { value: "cfa", label: "CFA (Chartered Financial Analyst)" },
+  { value: "cpa", label: "CPA (Certified Public Accountant)" },
+  { value: "ca", label: "CA (Chartered Accountant)" },
+  { value: "cma", label: "CMA (Certified Management Accountant)" },
+  { value: "cs", label: "CS (Company Secretary)" },
+  { value: "cfp", label: "CFP (Certified Financial Planner)" },
+  { value: "nism", label: "NISM Certifications" },
+  { value: "ncfm", label: "NCFM (NSE Certifications)" },
+  { value: "sebi-ria", label: "SEBI RIA Certification" },
+  
+  // 💻 TECH CERTIFICATIONS
+  { value: "aws-cloud", label: "AWS Certified Cloud Practitioner" },
+  { value: "azure-cloud", label: "Microsoft Azure Fundamentals" },
+  { value: "google-cloud", label: "Google Cloud Associate" },
+  { value: "cybersecurity", label: "CompTIA Security+" },
+  { value: "data-science", label: "Google Data Analytics" },
+  
+  // 🎓 FINANCE DEGREES
+  { value: "mba-finance", label: "MBA Finance" },
+  { value: "mba", label: "MBA" },
+  { value: "bcom", label: "B.Com" },
+  { value: "mcom", label: "M.Com" },
+  { value: "bsc-finance", label: "B.Sc Finance" },
+  { value: "msc-finance", label: "M.Sc Finance" },
+  
+  // 💾 TECH DEGREES
+  { value: "btech-cse", label: "B.Tech Computer Science" },
+  { value: "btech-it", label: "B.Tech Information Technology" },
+  { value: "mca", label: "MCA (Master of Computer Applications)" },
+  { value: "bsc-cs", label: "B.Sc Computer Science" },
+  { value: "msc-cs", label: "M.Sc Computer Science" },
+  
+  // 📱 OTHER TECH
+  { value: "fullstack", label: "Full Stack Development" },
+  { value: "react-developer", label: "React Developer Certification" },
+  { value: "nodejs", label: "Node.js Certification" },
+  
+  // ✅ OTHER
+  { value: "other", label: "Other" },
+];
+
+
 
   const handleInputChange = (field, value) => {
     setForm({ ...form, [field]: value });
@@ -58,9 +106,9 @@ export default function ProfessionalDetailsModal({ data, onNext, onBack, onClose
     const requiredFields = [
       "sebiNumber",
       "specialization",
-      "education",
+      // "education",
       "experience",
-      "companyName",
+      // "companyName",
       "segment",
       "description",
     ];
@@ -90,6 +138,20 @@ export default function ProfessionalDetailsModal({ data, onNext, onBack, onClose
 
     return selectedLabels.join(", ");
   };
+
+
+  // Education handlers
+const toggleEducationDropdown = () => setIsEducationOpen(!isEducationOpen);
+const handleEducationSelect = (educationValue) => {
+  setForm({ ...form, education: educationValue });
+  setIsEducationOpen(false);
+};
+const getEducationLabel = (value) => {
+  const education = EDUCATION_OPTIONS.find((opt) => opt.value === value);
+  return education ? education.label : "Select Education/Certification";
+};
+
+
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50 backdrop-blur-sm">
@@ -136,17 +198,50 @@ export default function ProfessionalDetailsModal({ data, onNext, onBack, onClose
           </div>
 
           <div>
-            <label className="block text-md font-medium text-gray-700 mb-1">
-              Education / Certification<span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              placeholder="Enter education"
-              value={form.education}
-              onChange={(e) => handleInputChange("education", e.target.value)}
-              className={`w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${isInvalid("education") ? "border-red-500" : "border-gray-300"
-                }`}
-            />
+           <label className="block text-md font-medium text-gray-700 mb-1">
+    Education / Certification<span className="text-red-500"></span>
+  </label>
+  <button
+    type="button"
+    onClick={toggleEducationDropdown}
+    className={`w-full border rounded-lg px-3 py-2 focus:outline-none bg-white cursor-pointer transition-all duration-200 text-left flex items-center justify-between ${
+      isInvalid("education") 
+        ? "border-red-500" 
+        : isEducationOpen 
+          ? "border-blue-500 ring-2 ring-blue-200" 
+          : "border-gray-300 hover:border-gray-400"
+    }`}
+  >
+    <span className={form.education ? "text-gray-700" : "text-gray-400"}>
+      {getEducationLabel(form.education)}
+    </span>
+    <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${isEducationOpen ? "rotate-180" : ""}`} />
+  </button>
+
+  {isEducationOpen && (
+    <div className="absolute z-20 w-150 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+      {EDUCATION_OPTIONS.map((education) => (
+        <button
+          key={education.value}
+          type="button"
+          onClick={() => handleEducationSelect(education.value)}
+          className={`w-full px-3 py-2 text-left transition-all duration-200 hover:bg-gray-50 flex items-center gap-3 ${
+            form.education === education.value
+              ? "bg-blue-50 text-blue-600 border-r-2 border-blue-500"
+              : "text-gray-700"
+          }`}
+        >
+          <div className={`w-2 h-2 rounded-full ${
+            form.education === education.value ? "bg-blue-500" : "bg-gray-300"
+          }`} />
+          <span className="font-medium">{education.label}</span>
+        </button>
+      ))}
+    </div>
+  )}
+  {isInvalid("education") && (
+    <p className="text-red-500 text-sm mt-1">Please select education/certification</p>
+  )}
           </div>
 
           <div className="grid grid-cols-2 gap-4">
@@ -181,7 +276,7 @@ export default function ProfessionalDetailsModal({ data, onNext, onBack, onClose
 
           <div>
             <label className="block text-md font-medium text-gray-700 mb-1">
-              Current Firm / Company Name<span className="text-red-500">*</span>
+              Current Firm / Company Name<span className="text-red-500"></span>
             </label>
             <input
               type="text"
@@ -324,7 +419,7 @@ export default function ProfessionalDetailsModal({ data, onNext, onBack, onClose
             </label>
             <input
               type="text"
-              placeholder="Enter about us"
+              placeholder="Enter Description.."
               value={form.description}
               onChange={(e) => setForm({ ...form, description: e.target.value })}
               className={`w-full border 
