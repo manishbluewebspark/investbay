@@ -326,9 +326,9 @@ const AdminNews = () => {
                     <div className="flex items-center">
                       {item.images && item.images.length > 0 && (
                         <img 
-                          src={item.images[0]} 
+                          src={item?.images[0]?.url} 
                           alt={item.title}
-                          className="h-10 w-10 rounded object-cover mr-3"
+                          className="h-30 w-30 rounded object-cover mr-3"
                         />
                       )}
                       <div>
@@ -450,7 +450,7 @@ const AdminNews = () => {
               {selectedNews.images && selectedNews.images.length > 0 && (
                 <div className="grid grid-cols-2 gap-4 mb-6">
                   {selectedNews.images.map((img, idx) => (
-                    <img key={idx} src={img} alt={`Preview ${idx + 1}`} className="rounded-lg w-full h-48 object-cover" />
+                    <img key={idx} src={img.url} alt={`Preview ${idx + 1}`} className="rounded-lg w-full h-48 object-cover" />
                   ))}
                 </div>
               )}
