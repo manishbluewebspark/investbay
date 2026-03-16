@@ -482,16 +482,7 @@ export default function Login() {
             </p>
           </div>
 
-          <div className="mt-8 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-            <p className="text-sm text-yellow-700 font-medium mb-1">Default Admin Credentials:</p>
-            <p className="text-xs text-yellow-600">
-              Email: <span className="font-mono">admin@investbay.com</span><br/>
-              Password: <span className="font-mono">Admin@123</span>
-            </p>
-            <p className="text-xs text-yellow-600 mt-2">
-              Run <span className="font-mono">/api/auth/seed</span> to create admin if not exists
-            </p>
-          </div>
+       
         </form>
       </div>
     </div>
