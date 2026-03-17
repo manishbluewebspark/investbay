@@ -1,5 +1,4 @@
-// components/modals/AddNewsModal.jsx
-import { X, Upload, Trash2, ImageIcon, Calendar, Clock } from "lucide-react";
+import { X, Upload, Trash2, ImageIcon, Calendar, Clock, Film } from "lucide-react";
 import { useState, useRef, useEffect, useCallback } from "react";
 import axios from "axios";
 import DatePicker from "react-datepicker";
@@ -20,8 +19,11 @@ export default function AddNewsModal({ open, onClose, onSuccess, editData = null
     fullArticle: ""
   });
   
-  const [images, setImages] = useState([]);
-  const [imagePreviews, setImagePreviews] = useState([]);
+  // Media states - combined for images and videos
+  const [media, setMedia] = useState([]); // New files to upload
+  const [mediaPreviews, setMediaPreviews] = useState([]); // All media (existing + new previews)
+  const [existingMedia, setExistingMedia] = useState([]); // Store existing media separately
+  console.log(existingMedia,1000)
   const [tags, setTags] = useState([]);
   const [tagInput, setTagInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -29,6 +31,8 @@ export default function AddNewsModal({ open, onClose, onSuccess, editData = null
   const [error, setError] = useState("");
   
   const fileInputRef = useRef(null);
+  const videoInputRef = useRef(null);
+  
   const [categories] = useState([
     "Market News",
     "Stock Analysis",
@@ -55,36 +59,81 @@ export default function AddNewsModal({ open, onClose, onSuccess, editData = null
         title: editData.title || "",
         category: editData.category || "",
         status: editData.status || "draft",
-        scheduledDate: editData.scheduledDate ? new Date(editData.scheduledDate) : null,
-        shortDescription: editData.shortDescription || "",
-        fullArticle: editData.fullArticle || ""
+        scheduledDate: editData.scheduled_date ? new Date(editData.scheduled_date) : null,
+        shortDescription: editData.short_description || "",
+        fullArticle: editData.full_article || ""
       });
       
       if (editData.tags) {
         setTags(editData.tags);
       }
       
-      if (editData.images && editData.images.length > 0) {
-        setImagePreviews(editData.images.map((img, index) => ({
-          id: Date.now() + index,
-          url: img,
-          name: `Image ${index + 1}`,
-          type: 'existing'
-        })));
+      // Handle existing media (images + videos) properly
+      if (editData.media && editData.media.length > 0) {
+        const existingMediaObjects = editData.media.map((item, index) => {
+          // Determine if it's video or image
+          const isVideo = item.type === 'video' || 
+                         (item.url && item.url.match(/\.(mp4|webm|ogg|mov)$/i)) ||
+                         (item.mimeType && item.mimeType.startsWith('video/'));
+          
+          return {
+            id: `existing-${Date.now()}-${index}`,
+            url: typeof item === 'string' ? item : item.url,
+            name: item.originalName || `Media ${index + 1}`,
+            type: 'existing',
+            mediaType: isVideo ? 'video' : 'image',
+            key: item.key || null,
+            originalName: item.originalName || `Media ${index + 1}`,
+            thumbnail: item.thumbnail || null
+          };
+        });
+        
+        setExistingMedia(existingMediaObjects);
+        setMediaPreviews(existingMediaObjects);
       }
+      
+      // Handle old format (images array for backward compatibility)
+      else if (editData.images && editData.images.length > 0) {
+        const existingMediaObjects = editData.images.map((img, index) => ({
+          id: `existing-${Date.now()}-${index}`,
+          url: typeof img === 'string' ? img : img.url,
+          name: img.originalName || `Image ${index + 1}`,
+          type: 'existing',
+          mediaType: 'image',
+          key: img.key || null,
+          originalName: img.originalName || `Image ${index + 1}`
+        }));
+        
+        setExistingMedia(existingMediaObjects);
+        setMediaPreviews(existingMediaObjects);
+      }
+    } else {
+      // Reset form when adding new
+      setFormData({
+        title: "",
+        category: "",
+        status: "draft",
+        scheduledDate: null,
+        shortDescription: "",
+        fullArticle: ""
+      });
+      setTags([]);
+      setMedia([]);
+      setExistingMedia([]);
+      setMediaPreviews([]);
     }
   }, [editData]);
 
   // Cleanup object URLs on unmount
   useEffect(() => {
     return () => {
-      imagePreviews.forEach(preview => {
-        if (preview.previewUrl && preview.type !== 'existing') {
+      mediaPreviews.forEach(preview => {
+        if (preview.previewUrl && preview.type === 'new') {
           URL.revokeObjectURL(preview.previewUrl);
         }
       });
     };
-  }, [imagePreviews]);
+  }, [mediaPreviews]);
 
   // Tag handling functions
   const addTag = () => {
@@ -129,56 +178,91 @@ export default function AddNewsModal({ open, onClose, onSuccess, editData = null
     }
   };
 
-  const handleImageChange = (e) => {
+  const handleFileChange = (e, fileType = 'image') => {
     const selectedFiles = Array.from(e.target.files);
+    const totalMedia = existingMedia.length + media.length + selectedFiles.length;
     
-    if (selectedFiles.length + images.length > 10) {
-      setError("Maximum 10 images allowed");
+    if (totalMedia > 20) { // Increased limit for media (images + videos)
+      setError(`Maximum 20 files allowed. You can add ${20 - (existingMedia.length + media.length)} more.`);
       return;
     }
 
-    const oversizedFiles = selectedFiles.filter(file => file.size > 10 * 1024 * 1024);
+    // Filter files based on type
+    const validFiles = selectedFiles.filter(file => {
+      if (fileType === 'video') {
+        return file.type.startsWith('video/');
+      } else {
+        return file.type.startsWith('image/');
+      }
+    });
+
+    if (validFiles.length !== selectedFiles.length) {
+      setError(`Please select only ${fileType} files`);
+      return;
+    }
+
+    // Check file size (50MB for videos, 10MB for images)
+    const oversizedFiles = validFiles.filter(file => {
+      const maxSize = fileType === 'video' ? 50 * 1024 * 1024 : 10 * 1024 * 1024;
+      return file.size > maxSize;
+    });
+    
     if (oversizedFiles.length > 0) {
-      setError(`Some files exceed 10MB limit: ${oversizedFiles.map(f => f.name).join(", ")}`);
+      setError(`Some files exceed size limit: ${oversizedFiles.map(f => f.name).join(", ")} 
+        (Max: ${fileType === 'video' ? '50MB' : '10MB'} per file)`);
       return;
     }
 
-    const newPreviews = selectedFiles.map(file => {
+    const newPreviews = validFiles.map(file => {
       const previewUrl = URL.createObjectURL(file);
       
       return {
-        id: Date.now() + Math.random(),
+        id: `new-${Date.now()}-${Math.random()}`,
         file,
         name: file.name,
         previewUrl,
         size: file.size,
         formattedSize: formatFileSize(file.size),
-        type: 'new'
+        type: 'new',
+        mediaType: fileType,
+        mimeType: file.type
       };
     });
 
-    setImages(prev => [...prev, ...selectedFiles]);
-    setImagePreviews(prev => [...prev, ...newPreviews]);
+    setMedia(prev => [...prev, ...validFiles]);
+    setMediaPreviews(prev => [...prev, ...newPreviews]);
     setError("");
     
-    if (fileInputRef.current) {
+    // Reset file input
+    if (fileType === 'video' && videoInputRef.current) {
+      videoInputRef.current.value = "";
+    } else if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
   };
 
-  const removeImage = (index) => {
-    if (imagePreviews[index].previewUrl && imagePreviews[index].type !== 'existing') {
-      URL.revokeObjectURL(imagePreviews[index].previewUrl);
+  const removeMedia = (index) => {
+    const mediaToRemove = mediaPreviews[index];
+    
+    if (mediaToRemove.type === 'new') {
+      // Remove from new media array
+      setMedia(prev => prev.filter((_, i) => i !== index));
+      if (mediaToRemove.previewUrl) {
+        URL.revokeObjectURL(mediaToRemove.previewUrl);
+      }
+    } else {
+      // Remove from existing media array
+      setExistingMedia(prev => prev.filter((_, i) => i !== index));
     }
 
-    setImages(prev => prev.filter((_, i) => i !== index));
-    setImagePreviews(prev => prev.filter((_, i) => i !== index));
+    // Remove from previews
+    setMediaPreviews(prev => prev.filter((_, i) => i !== index));
   };
 
   const formatFileSize = (bytes) => {
     if (bytes === 0) return '0 Bytes';
     const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB'];
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
@@ -232,18 +316,39 @@ export default function AddNewsModal({ open, onClose, onSuccess, editData = null
         formDataToSend.append("tags", JSON.stringify(tags));
       }
 
-      // Add new images
-      images.forEach((image) => {
-    formDataToSend.append("documents", image);
+      // Add new media (images and videos)
+      media.forEach((file) => {
+        // Append with different field names based on type
+        if (file.type.startsWith('video/')) {
+          formDataToSend.append("videos", file);
+        } else {
+          formDataToSend.append("images", file);
+        }
       });
 
-      // If editing, add existing images URLs
-      const existingImages = imagePreviews
-        .filter(p => p.type === 'existing')
-        .map(p => p.url);
-      
-      if (existingImages.length > 0) {
-        formDataToSend.append("existingImages", JSON.stringify(existingImages));
+      // If editing, add existing media in the correct format
+      if (editData && existingMedia.length > 0) {
+        const existingMediaFormatted = existingMedia.map(item => ({
+          url: item.url,
+          key: item.key || null,
+          originalName: item.originalName || item.name,
+          mediaType: item.mediaType || 'image'
+        }));
+        
+        console.log("Existing media:", existingMediaFormatted);
+        formDataToSend.append("existingMedia", JSON.stringify(existingMediaFormatted));
+      }
+
+      // Log all form data entries for debugging
+      console.log("FormData entries:");
+      for (let pair of formDataToSend.entries()) {
+        if (pair[0] === 'images' || pair[0] === 'videos') {
+          console.log(pair[0], pair[1].name, pair[1].type);
+        } else if (pair[0] === 'existingMedia') {
+          console.log(pair[0], pair[1]);
+        } else {
+          console.log(pair[0], pair[1]);
+        }
       }
 
       const url = editData 
@@ -282,13 +387,14 @@ export default function AddNewsModal({ open, onClose, onSuccess, editData = null
           fullArticle: ""
         });
         setTags([]);
-        setImages([]);
-        imagePreviews.forEach(preview => {
-          if (preview.previewUrl && preview.type !== 'existing') {
+        setMedia([]);
+        setExistingMedia([]);
+        mediaPreviews.forEach(preview => {
+          if (preview.previewUrl && preview.type === 'new') {
             URL.revokeObjectURL(preview.previewUrl);
           }
         });
-        setImagePreviews([]);
+        setMediaPreviews([]);
         
         if (onSuccess) {
           onSuccess(response.data.news);
@@ -317,12 +423,41 @@ export default function AddNewsModal({ open, onClose, onSuccess, editData = null
     e.stopPropagation();
   };
 
-  const handleDrop = (e) => {
+  const handleDrop = (e, fileType = 'image') => {
     e.preventDefault();
     e.stopPropagation();
     const droppedFiles = Array.from(e.dataTransfer.files);
     const event = { target: { files: droppedFiles } };
-    handleImageChange(event);
+    handleFileChange(event, fileType);
+  };
+
+  const totalMedia = existingMedia.length + media.length;
+
+  // Media Preview Component
+  const MediaPreview = ({ media }) => {
+    if (media.mediaType === 'video') {
+      return (
+        <div className="relative w-full h-full bg-black flex items-center justify-center">
+          <video 
+            src={media.type === 'new' ? media.previewUrl : media.url}
+            className="w-full h-full object-cover"
+            controls={false}
+            muted
+          />
+          <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+            <Film className="text-white" size={24} />
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <img 
+          src={media.type === 'new' ? media.previewUrl : media.url}
+          alt={media.name}
+          className="w-full h-full object-cover"
+        />
+      );
+    }
   };
 
   return (
@@ -519,24 +654,25 @@ export default function AddNewsModal({ open, onClose, onSuccess, editData = null
             </div>
           )}
 
-          {/* Image Previews */}
-          {imagePreviews.length > 0 && (
+          {/* Media Previews (Images + Videos) */}
+          {mediaPreviews.length > 0 && (
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <h3 className="text-sm font-medium text-gray-700">
-                  Images ({imagePreviews.length}/10)
+                  Media ({totalMedia}/20)
                 </h3>
                 {!loading && (
                   <button
                     type="button"
                     onClick={() => {
-                      setImages([]);
-                      imagePreviews.forEach(preview => {
-                        if (preview.previewUrl && preview.type !== 'existing') {
+                      setMedia([]);
+                      setExistingMedia([]);
+                      mediaPreviews.forEach(preview => {
+                        if (preview.previewUrl && preview.type === 'new') {
                           URL.revokeObjectURL(preview.previewUrl);
                         }
                       });
-                      setImagePreviews([]);
+                      setMediaPreviews([]);
                     }}
                     className="text-xs text-red-600 hover:text-red-800"
                   >
@@ -546,22 +682,30 @@ export default function AddNewsModal({ open, onClose, onSuccess, editData = null
               </div>
               
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                {imagePreviews.map((preview, index) => (
+                {mediaPreviews.map((item, index) => (
                   <div
-                    key={preview.id}
+                    key={item.id}
                     className="relative group border border-gray-200 rounded-lg overflow-hidden"
                   >
                     <div className="aspect-square">
-                      {preview.type === 'existing' ? (
-                        <img 
-                          src={preview.url} 
-                          alt={preview.name}
-                          className="w-full h-full object-cover"
-                        />
+                      {item.mediaType === 'video' ? (
+                        <div className="relative w-full h-full bg-black">
+                          <video 
+                            src={item.type === 'new' ? item.previewUrl : item.url}
+                            className="w-full h-full object-cover"
+                            muted
+                          />
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <Film className="text-white opacity-70" size={30} />
+                          </div>
+                          <span className="absolute top-1 left-1 px-1 py-0.5 bg-blue-500 text-white text-xs rounded">
+                            Video
+                          </span>
+                        </div>
                       ) : (
                         <img 
-                          src={preview.previewUrl} 
-                          alt={preview.name}
+                          src={item.type === 'new' ? item.previewUrl : item.url}
+                          alt={item.name}
                           className="w-full h-full object-cover"
                         />
                       )}
@@ -569,56 +713,92 @@ export default function AddNewsModal({ open, onClose, onSuccess, editData = null
                     
                     <button
                       type="button"
-                      onClick={() => removeImage(index)}
+                      onClick={() => removeMedia(index)}
                       className="absolute top-1 right-1 p-1 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600"
                       disabled={loading}
                     >
                       <Trash2 size={14} />
                     </button>
                     
-                    {preview.type === 'existing' && (
+                    {item.type === 'existing' && (
                       <span className="absolute bottom-1 left-1 px-1 py-0.5 bg-black/50 text-white text-xs rounded">
                         Existing
                       </span>
                     )}
+                    
+                    <span className="absolute bottom-1 right-1 px-1 py-0.5 bg-black/50 text-white text-xs rounded">
+                      {formatFileSize(item.size)}
+                    </span>
                   </div>
                 ))}
               </div>
             </div>
           )}
 
-          {/* Upload box */}
-          {imagePreviews.length < 10 && (
-            <div>
-              <div
-                onDragOver={handleDragOver}
-                onDrop={handleDrop}
-                onClick={() => fileInputRef.current?.click()}
-                className="flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 py-6 text-center transition-all hover:border-blue-400 hover:bg-blue-50"
-              >
-                <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-blue-50">
-                  <Upload className="text-blue-600" size={18} />
+          {/* Upload boxes */}
+          {totalMedia < 20 && (
+            <div className="space-y-3">
+              {/* Image Upload Box */}
+              <div>
+                <div
+                  onDragOver={handleDragOver}
+                  onDrop={(e) => handleDrop(e, 'image')}
+                  onClick={() => fileInputRef.current?.click()}
+                  className="flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 py-4 text-center transition-all hover:border-blue-400 hover:bg-blue-50"
+                >
+                  <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-blue-50">
+                    <ImageIcon className="text-blue-600" size={18} />
+                  </div>
+                  <p className="text-sm font-medium text-blue-600">
+                    Click or drag to upload images
+                  </p>
+                  <p className="mt-1 text-xs text-gray-500">
+                    JPG, PNG, GIF • Max 10MB per image
+                  </p>
                 </div>
-                <p className="text-sm font-medium text-blue-600">
-                  Click or drag to upload images
-                </p>
-                <p className="mt-1 text-xs text-gray-500">
-                  Supports JPG, PNG, GIF • Max 10MB per image
-                </p>
-                <p className="mt-1 text-xs text-gray-500">
-                  {10 - imagePreviews.length} images remaining
-                </p>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  className="hidden"
+                  multiple
+                  accept="image/*"
+                  onChange={(e) => handleFileChange(e, 'image')}
+                  disabled={loading || totalMedia >= 20}
+                />
               </div>
 
-              <input
-                ref={fileInputRef}
-                type="file"
-                className="hidden"
-                multiple
-                accept="image/*"
-                onChange={handleImageChange}
-                disabled={loading || imagePreviews.length >= 10}
-              />
+              {/* Video Upload Box */}
+              <div>
+                <div
+                  onDragOver={handleDragOver}
+                  onDrop={(e) => handleDrop(e, 'video')}
+                  onClick={() => videoInputRef.current?.click()}
+                  className="flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 py-4 text-center transition-all hover:border-purple-400 hover:bg-purple-50"
+                >
+                  <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-purple-50">
+                    <Film className="text-purple-600" size={18} />
+                  </div>
+                  <p className="text-sm font-medium text-purple-600">
+                    Click or drag to upload videos
+                  </p>
+                  <p className="mt-1 text-xs text-gray-500">
+                    MP4, WebM, MOV • Max 50MB per video
+                  </p>
+                </div>
+                <input
+                  ref={videoInputRef}
+                  type="file"
+                  className="hidden"
+                  multiple
+                  accept="video/*"
+                  onChange={(e) => handleFileChange(e, 'video')}
+                  disabled={loading || totalMedia >= 20}
+                />
+              </div>
+
+              <p className="text-xs text-gray-500 text-center">
+                {20 - totalMedia} files remaining (max 20 total)
+              </p>
             </div>
           )}
         </div>
