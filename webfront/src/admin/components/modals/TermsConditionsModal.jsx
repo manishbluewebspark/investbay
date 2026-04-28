@@ -26,7 +26,7 @@ export default function TermsConditionsModal({ open, onClose, onProceed }) {
         {/* Body */}
         <div className="px-6 py-6 space-y-4">
           {/* Checkbox 1 */}
-          <label className="flex items-start gap-3 text-sm text-gray-700">
+          <label className="flex items-start gap-3 text-md text-gray-700">
             <input
               type="checkbox"
               checked={confirmEmail}
@@ -40,7 +40,7 @@ export default function TermsConditionsModal({ open, onClose, onProceed }) {
           </label>
 
           {/* Checkbox 2 */}
-          <label className="flex items-start gap-3 text-sm text-gray-700">
+          <label className="flex items-start gap-3 text-md text-gray-700">
             <input
               type="checkbox"
               checked={agreeTerms}
@@ -56,7 +56,7 @@ export default function TermsConditionsModal({ open, onClose, onProceed }) {
           <button
             disabled={!confirmEmail || !agreeTerms}
             onClick={onProceed}
-            className={`rounded-md px-8 py-2 text-sm font-medium text-white
+            className={`rounded-md px-8 py-2 text-md font-medium text-white
               ${
                 confirmEmail && agreeTerms
                   ? "bg-black hover:bg-[#08184b]"

@@ -79,7 +79,7 @@ export default function PriceLevels({ onClose, onSubmit, data, parentData }) {
             name="entryPrice"
             value={priceData.entryPrice}
             onChange={handleInputChange}
-            className="w-full h-10 rounded-lg border border-gray-200 px-3 text-sm focus:outline-none no-spinner"
+            className="w-full h-10 rounded-lg border border-gray-200 px-3 text-md focus:outline-none no-spinner"
             required
           />
         </div>
@@ -93,7 +93,7 @@ export default function PriceLevels({ onClose, onSubmit, data, parentData }) {
             name="stopLoss"
             value={priceData.stopLoss}
             onChange={handleInputChange}
-            className="w-full h-10 rounded-lg border border-gray-200 px-3 text-sm focus:outline-none no-spinner"
+            className="w-full h-10 rounded-lg border border-gray-200 px-3 text-md focus:outline-none no-spinner"
             required
           />
         </div>
@@ -109,7 +109,7 @@ export default function PriceLevels({ onClose, onSubmit, data, parentData }) {
             name="targetFirst"
             value={priceData.targetFirst}
             onChange={handleInputChange}
-            className="w-full h-10 rounded-lg border border-gray-200 px-3 text-sm focus:outline-none no-spinner"
+            className="w-full h-10 rounded-lg border border-gray-200 px-3 text-md focus:outline-none no-spinner"
             required
           />
         </div>
@@ -123,7 +123,7 @@ export default function PriceLevels({ onClose, onSubmit, data, parentData }) {
             name="targetSecond"
             value={priceData.targetSecond}
             onChange={handleInputChange}
-            className="w-full h-10 rounded-lg border border-gray-200 px-3 text-sm focus:outline-none no-spinner"
+            className="w-full h-10 rounded-lg border border-gray-200 px-3 text-md focus:outline-none no-spinner"
             placeholder="Enter target"
           />
         </div>
@@ -138,7 +138,7 @@ export default function PriceLevels({ onClose, onSubmit, data, parentData }) {
             value={priceData.targetThird}
             onChange={handleInputChange}
             placeholder="Enter target"
-            className="w-full h-10 rounded-lg border border-gray-200 px-3 text-sm focus:outline-none no-spinner"
+            className="w-full h-10 rounded-lg border border-gray-200 px-3 text-md focus:outline-none no-spinner"
           />
         </div>
       </div>
@@ -147,14 +147,14 @@ export default function PriceLevels({ onClose, onSubmit, data, parentData }) {
       <div className="mt-6 flex justify-end gap-3 border-t border-gray-300 py-2">
         <button
           onClick={handleCancel}
-          className="h-10 px-5 rounded-lg border border-gray-200 text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+          className="h-10 px-5 rounded-lg border border-gray-200 text-md text-gray-700 hover:bg-gray-50 disabled:opacity-50"
           disabled={isSubmitting}
         >
           Cancel
         </button>
         <button
           onClick={handleSubmit}
-          className="h-10 px-6 rounded-lg bg-gray-900 text-sm text-white hover:bg-black disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          className="h-10 px-6 rounded-lg bg-gray-900 text-md text-white hover:bg-black disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           disabled={isSubmitting}
         >
           {isSubmitting ? (

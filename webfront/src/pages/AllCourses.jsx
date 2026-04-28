@@ -50,7 +50,7 @@
 //                         <button
 //                             key={index}
 //                             onClick={() => setActiveTab(index)}
-//                             className={`px-4 py-1.5 rounded-full text-sm transition-all duration-300 ${activeTab === index
+//                             className={`px-4 py-1.5 rounded-full text-md transition-all duration-300 ${activeTab === index
 //                                     ? "bg-white text-black font-medium"
 //                                     : "text-gray-300 hover:text-white"
 //                                 }`}
@@ -72,11 +72,11 @@
 //                             placeholder="Search"
 //                             value={searchTerm}
 //                             onChange={(e) => setSearchTerm(e.target.value)}
-//                             className="w-full pl-10 pr-4 py-2 rounded-full border border-gray-200 focus:ring-1 focus:ring-gray-300 outline-none text-sm bg-white"
+//                             className="w-full pl-10 pr-4 py-2 rounded-full border border-gray-200 focus:ring-1 focus:ring-gray-300 outline-none text-md bg-white"
 //                         />
 //                     </div>
 
-//                     <button className="flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-gray-200 text-gray-600 text-sm shadow-sm hover:bg-gray-100 transition">
+//                     <button className="flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-gray-200 text-gray-600 text-md shadow-sm hover:bg-gray-100 transition">
 //                         <SlidersHorizontal size={16} />
 //                         Filter
 //                     </button>
@@ -107,19 +107,19 @@
 //                                 <div className="text-left space-y-2 flex-1 flex flex-col justify-between">
 //                                     <div>
 //                                         <h3 className="font-semibold text-lg">{course.courseTitle}</h3>
-//                                         <p className="text-gray-500 text-sm">By User ID: {course.userId}</p>
+//                                         <p className="text-gray-500 text-md">By User ID: {course.userId}</p>
 
 //                                         <div className="w-full my-3 h-[1.5px] bg-gradient-to-r from-gray-400 via-gray-200 to-gray-50 rounded-full"></div>
 
-//                                         <div className="flex justify-between text-sm">
+//                                         <div className="flex justify-between text-md">
 //                                             <span className="text-gray-600">Access Validity</span>
 //                                             <span className="font-medium">{course.accessValidity} month(s)</span>
 //                                         </div>
-//                                         <div className="flex justify-between text-sm">
+//                                         <div className="flex justify-between text-md">
 //                                             <span className="text-gray-600">Language</span>
 //                                             <span className="font-medium">{course.courseLanguage}</span>
 //                                         </div>
-//                                         <div className="flex justify-between text-sm">
+//                                         <div className="flex justify-between text-md">
 //                                             <span className="text-gray-600">Segment</span>
 //                                             <span className="font-medium">{course.tradingCategory}</span>
 //                                         </div>
@@ -128,7 +128,7 @@
 //                                     </div>
 
 //                                     <div className="flex justify-between items-center mt-2">
-//                                         <p className="text-sm">
+//                                         <p className="text-md">
 //                                             Incl taxes <br />
 //                                             <span className="text-[#00BFA6] text-xl">{course.coursePrice}</span>
 //                                         </p>
@@ -207,7 +207,7 @@ export default function AllCourses() {
                         <button
                             key={index}
                             onClick={() => setActiveTab(index)}
-                            className={`px-4 py-1.5 rounded-full text-sm transition-all duration-300 ${
+                            className={`px-4 py-1.5 rounded-full text-md transition-all duration-300 ${
                                 activeTab === index
                                     ? "bg-white text-black font-medium"
                                     : "text-gray-300 hover:text-white"
@@ -230,11 +230,11 @@ export default function AllCourses() {
                             placeholder="Search"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className="w-full pl-10 pr-4 py-2 rounded-full border border-gray-200 focus:ring-1 focus:ring-gray-300 outline-none text-sm bg-white"
+                            className="w-full pl-10 pr-4 py-2 rounded-full border border-gray-200 focus:ring-1 focus:ring-gray-300 outline-none text-md bg-white"
                         />
                     </div>
 
-                    <button className="flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-gray-200 text-gray-600 text-sm shadow-sm hover:bg-gray-100 transition">
+                    <button className="flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-gray-200 text-gray-600 text-md shadow-sm hover:bg-gray-100 transition">
                         <SlidersHorizontal size={16} />
                         Filter
                     </button>
@@ -270,25 +270,25 @@ export default function AllCourses() {
                                         <h3 className="font-semibold text-lg">
                                             {course.course_title || "Untitled Course"}
                                         </h3>
-                                        <p className="text-gray-500 text-sm">
+                                        <p className="text-gray-500 text-md">
                                             By User ID: {course.user_id}
                                         </p>
 
                                         <div className="w-full my-3 h-[1.5px] bg-gradient-to-r from-gray-400 via-gray-200 to-gray-50 rounded-full"></div>
 
-                                        <div className="flex justify-between text-sm">
+                                        <div className="flex justify-between text-md">
                                             <span className="text-gray-600">Access Validity</span>
                                             <span className="font-medium">
                                                 {course.access_validity || "0"} month(s)
                                             </span>
                                         </div>
-                                        <div className="flex justify-between text-sm">
+                                        <div className="flex justify-between text-md">
                                             <span className="text-gray-600">Language</span>
                                             <span className="font-medium">
                                                 {course.course_language || "N/A"}
                                             </span>
                                         </div>
-                                        <div className="flex justify-between text-sm">
+                                        <div className="flex justify-between text-md">
                                             <span className="text-gray-600">Segment</span>
                                             <span className="font-medium">
                                                 {course.trading_category || "N/A"}
@@ -299,7 +299,7 @@ export default function AllCourses() {
                                     </div>
 
                                     <div className="flex justify-between items-center mt-2">
-                                        <p className="text-sm">
+                                        <p className="text-md">
                                             Incl taxes <br />
                                             <span className="text-[#00BFA6] text-xl">
                                                 ₹{course.course_price || "0.00"}

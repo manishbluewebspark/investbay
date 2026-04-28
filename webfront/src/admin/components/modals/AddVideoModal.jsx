@@ -92,11 +92,11 @@
 //           {/* Inputs */}
 //           <div className="grid grid-cols-2 gap-4">
 //             <div>
-//               <label className="text-sm text-gray-600">Video Title</label>
+//               <label className="text-md text-gray-600">Video Title</label>
 //               <input
 //                 type="text"
 //                 placeholder="Options Intraday Pro"
-//                 className="mt-1 w-full rounded-lg border px-3 py-2 text-sm border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+//                 className="mt-1 w-full rounded-lg border px-3 py-2 text-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
 //                 value={videoTitle}
 //                 onChange={(e) => setVideoTitle(e.target.value)}
 //                 disabled={uploading}
@@ -104,11 +104,11 @@
 //             </div>
 
 //             <div>
-//               <label className="text-sm text-gray-600">Video Duration</label>
+//               <label className="text-md text-gray-600">Video Duration</label>
 //               <input
 //                 type="text"
 //                 placeholder="12 min"
-//                 className="mt-1 w-full rounded-lg border px-3 py-2 text-sm border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+//                 className="mt-1 w-full rounded-lg border px-3 py-2 text-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
 //                 value={videoDuration}
 //                 onChange={(e) => setVideoDuration(e.target.value)}
 //                 disabled={uploading}
@@ -142,11 +142,11 @@
 
 //             {selectedFile ? (
 //               <>
-//                 <p className="text-sm font-medium text-green-700 mb-1">{selectedFile.name}</p>
+//                 <p className="text-md font-medium text-green-700 mb-1">{selectedFile.name}</p>
 //                 <p className="text-xs text-gray-500">{(selectedFile.size / 1024 / 1024).toFixed(2)} MB</p>
 //               </>
 //             ) : (
-//               <p className="text-sm text-gray-600">
+//               <p className="text-md text-gray-600">
 //                 <span className="text-blue-600 cursor-pointer font-medium hover:underline">
 //                   Click here
 //                 </span>{" "}
@@ -162,7 +162,7 @@
 //         <div className="flex items-center justify-end gap-3 border-t border-gray-300 px-6 py-4">
 //           <button
 //             onClick={onClose}
-//             className="rounded-lg border border-gray-300 px-12 py-2 text-sm text-gray-700 hover:bg-gray-100 disabled:opacity-50"
+//             className="rounded-lg border border-gray-300 px-12 py-2 text-md text-gray-700 hover:bg-gray-100 disabled:opacity-50"
 //             disabled={uploading}
 //           >
 //             Cancel
@@ -170,7 +170,7 @@
 //           <button 
 //             onClick={handleSubmit}
 //             disabled={!videoTitle || !videoDuration || !selectedFile || uploading}
-//             className="rounded-lg bg-black px-12 py-2 text-sm text-white hover:bg-gray-900 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all"
+//             className="rounded-lg bg-black px-12 py-2 text-md text-white hover:bg-gray-900 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all"
 //           >
 //             {uploading ? "Uploading..." : "Next"}
 //           </button>
@@ -404,11 +404,11 @@ const AddVideoModal = ({ isOpen, onClose, courseId, userId }) => {
           {/* Inputs */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="text-sm text-gray-600">Video Title</label>
+              <label className="text-md text-gray-600">Video Title</label>
               <input
                 type="text"
                 placeholder="Options Intraday Pro"
-                className="mt-1 w-full rounded-lg border px-3 py-2 text-sm border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="mt-1 w-full rounded-lg border px-3 py-2 text-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={videoTitle}
                 onChange={(e) => setVideoTitle(e.target.value)}
                 disabled={uploading}
@@ -416,12 +416,12 @@ const AddVideoModal = ({ isOpen, onClose, courseId, userId }) => {
             </div>
 
             <div>
-              <label className="text-sm text-gray-600">Video Duration</label>
+              <label className="text-md text-gray-600">Video Duration</label>
               <div className="relative">
                 <input
                   type="text"
                   placeholder={durationCalculating ? "Calculating..." : "Auto-detected or enter manually"}
-                  className="mt-1 w-full rounded-lg border px-3 py-2 text-sm border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
+                  className="mt-1 w-full rounded-lg border px-3 py-2 text-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
                   value={videoDuration}
                   onChange={(e) => setVideoDuration(e.target.value)}
                   disabled={uploading || durationCalculating}
@@ -470,14 +470,14 @@ const AddVideoModal = ({ isOpen, onClose, courseId, userId }) => {
 
             {selectedFile ? (
               <>
-                <p className="text-sm font-medium  mb-1">{selectedFile.name}</p>
+                <p className="text-md font-medium  mb-1">{selectedFile.name}</p>
                 <p className="text-xs text-gray-500">
                   {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
                   {videoDuration && !durationCalculating && ` • ${videoDuration}`}
                 </p>
               </>
             ) : (
-              <p className="text-sm text-gray-600">
+              <p className="text-md text-gray-600">
                 <span className="text-blue-600 cursor-pointer font-medium hover:underline">
                   Click here
                 </span>{" "}
@@ -497,7 +497,7 @@ const AddVideoModal = ({ isOpen, onClose, courseId, userId }) => {
         <div className="flex items-center justify-end gap-3 border-t border-gray-300 px-6 py-4">
           <button
             onClick={onClose}
-            className="rounded-lg border border-gray-300 px-12 py-2 text-sm text-gray-700 hover:bg-gray-100 disabled:opacity-50"
+            className="rounded-lg border border-gray-300 px-12 py-2 text-md text-gray-700 hover:bg-gray-100 disabled:opacity-50"
             disabled={uploading}
           >
             Cancel
@@ -505,7 +505,7 @@ const AddVideoModal = ({ isOpen, onClose, courseId, userId }) => {
           <button 
             onClick={handleSubmit}
             disabled={!videoTitle || !videoDuration || !selectedFile || uploading || durationCalculating}
-            className="rounded-lg bg-black px-12 py-2 text-sm text-white hover:bg-gray-900 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all"
+            className="rounded-lg bg-black px-12 py-2 text-md text-white hover:bg-gray-900 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all"
           >
             {uploading ? "Uploading..." : "Add Video"}
           </button>

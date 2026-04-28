@@ -279,30 +279,30 @@ const handleSubmit = async (e) => {
                                 />
                             </label>
                             <div>
-                                <p className="text-sm font-medium">Upload Image</p>
-                                <p className="text-sm text-gray-400">
+                                <p className="text-md font-medium">Upload Image</p>
+                                <p className="text-md text-gray-400">
                                     Recommend size: 400×400px
                                 </p>
                             </div>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div className="md:col-span-2">
-                                <label className="text-sm text-gray-600 font-medium">Plan Name</label>
+                                <label className="text-md text-gray-600 font-medium">Plan Name</label>
                                 <input
                                     type="text"
                                     value={planName}
                                     onChange={(e) => setPlanName(e.target.value)}
-                                    className="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none "
+                                    className="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2.5 text-md focus:outline-none "
                                     required
                                     placeholder="Enter plan name"
                                 />
                             </div>
 
                             <div className="relative dropdown">
-                                <label className="text-sm text-gray-600 font-medium">Segment</label>
+                                <label className="text-md text-gray-600 font-medium">Segment</label>
                                 <div
                                     onClick={() => setSegmentOpen(!segmentOpen)}
-                                    className="mt-1 w-full border rounded-lg px-3 py-2.5 text-sm bg-white border-gray-300 focus:outline-none cursor-pointer flex items-center justify-between hover:bg-gray-50"
+                                    className="mt-1 w-full border rounded-lg px-3 py-2.5 text-md bg-white border-gray-300 focus:outline-none cursor-pointer flex items-center justify-between hover:bg-gray-50"
                                 >
                                     <span>{selectedSegment || "Select Segment"}</span>
                                     <FiChevronDown className={`text-gray-500 transition-transform ${segmentOpen ? "rotate-180" : ""}`} />
@@ -317,7 +317,7 @@ const handleSubmit = async (e) => {
                                                     setSelectedSegment(segment);
                                                     setSegmentOpen(false);
                                                 }}
-                                                className="px-3 py-2.5 text-sm hover:bg-blue-50 cursor-pointer flex items-center justify-between"
+                                                className="px-3 py-2.5 text-md hover:bg-blue-50 cursor-pointer flex items-center justify-between"
                                             >
                                                 <span>{segment}</span>
                                                 {selectedSegment === segment && <FiCheck className="text-blue-600" />}
@@ -329,10 +329,10 @@ const handleSubmit = async (e) => {
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div className="relative dropdown">
-                                <label className="text-sm text-gray-600 font-medium">Category</label>
+                                <label className="text-md text-gray-600 font-medium">Category</label>
                                 <div
                                     onClick={() => setCategoryOpen(!categoryOpen)}
-                                    className="mt-1 w-full border rounded-lg px-3 py-2.5 text-sm bg-white border-gray-300 focus:outline-none cursor-pointer flex items-center justify-between hover:bg-gray-50"
+                                    className="mt-1 w-full border rounded-lg px-3 py-2.5 text-md bg-white border-gray-300 focus:outline-none cursor-pointer flex items-center justify-between hover:bg-gray-50"
                                 >
                                     <span>{selectedCategory || "Select Category"}</span>
                                     <FiChevronDown className={`text-gray-500 transition-transform ${categoryOpen ? "rotate-180" : ""}`} />
@@ -347,7 +347,7 @@ const handleSubmit = async (e) => {
                                                     setSelectedCategory(category);
                                                     setCategoryOpen(false);
                                                 }}
-                                                className="px-3 py-2.5 text-sm hover:bg-blue-50 cursor-pointer flex items-center justify-between"
+                                                className="px-3 py-2.5 text-md hover:bg-blue-50 cursor-pointer flex items-center justify-between"
                                             >
                                                 <span>{category}</span>
                                                 {selectedCategory === category && <FiCheck className="text-blue-600" />}
@@ -358,10 +358,10 @@ const handleSubmit = async (e) => {
                             </div>
 
                             <div className="relative dropdown">
-                                <label className="text-sm text-gray-600 font-medium">Risk</label>
+                                <label className="text-md text-gray-600 font-medium">Risk</label>
                                 <div
                                     onClick={() => setRiskOpen(!riskOpen)}
-                                    className="mt-1 w-full border rounded-lg px-3 py-2.5 text-sm bg-white border-gray-300 focus:outline-none cursor-pointer flex items-center justify-between hover:bg-gray-50"
+                                    className="mt-1 w-full border rounded-lg px-3 py-2.5 text-md bg-white border-gray-300 focus:outline-none cursor-pointer flex items-center justify-between hover:bg-gray-50"
                                 >
                                     <span>{selectedRisk || "Select Risk Level"}</span>
                                     <FiChevronDown className={`text-gray-500 transition-transform ${riskOpen ? "rotate-180" : ""}`} />
@@ -376,7 +376,7 @@ const handleSubmit = async (e) => {
                                                     setSelectedRisk(risk);
                                                     setRiskOpen(false);
                                                 }}
-                                                className="px-3 py-2.5 text-sm hover:bg-blue-50 cursor-pointer flex items-center justify-between"
+                                                className="px-3 py-2.5 text-md hover:bg-blue-50 cursor-pointer flex items-center justify-between"
                                             >
                                                 <span>{risk}</span>
                                                 {selectedRisk === risk && <FiCheck className="text-blue-600" />}
@@ -387,22 +387,22 @@ const handleSubmit = async (e) => {
                             </div>
 
                             <div>
-                                <label className="text-sm text-gray-600 font-medium">Ideal Capital</label>
+                                <label className="text-md text-gray-600 font-medium">Ideal Capital</label>
                                 <input
                                     type="text"
                                     value={idealCapital}
                                     onChange={(e) => handleCurrencyChange(e.target.value, setIdealCapital)}
-                                    className="mt-1 w-full border rounded-lg px-3 py-2.5 text-sm border-gray-300 focus:outline-none "
+                                    className="mt-1 w-full border rounded-lg px-3 py-2.5 text-md border-gray-300 focus:outline-none "
                                     required
                                     placeholder="₹0"
                                 />
                             </div>
 
                             <div className="relative dropdown">
-                                <label className="text-sm text-gray-600 font-medium">Duration</label>
+                                <label className="text-md text-gray-600 font-medium">Duration</label>
                                 <div
                                     onClick={() => setDurationOpen(!durationOpen)}
-                                    className="mt-1 w-full border rounded-lg px-3 py-2.5 text-sm bg-white border-gray-300 focus:outline-none cursor-pointer flex items-center justify-between hover:bg-gray-50"
+                                    className="mt-1 w-full border rounded-lg px-3 py-2.5 text-md bg-white border-gray-300 focus:outline-none cursor-pointer flex items-center justify-between hover:bg-gray-50"
                                 >
                                     <span>{selectedDuration || "Select Duration"}</span>
                                     <FiChevronDown className={`text-gray-500 transition-transform ${durationOpen ? "rotate-180" : ""}`} />
@@ -417,7 +417,7 @@ const handleSubmit = async (e) => {
                                                     setSelectedDuration(duration);
                                                     setDurationOpen(false);
                                                 }}
-                                                className="px-3 py-2.5 text-sm hover:bg-blue-50 cursor-pointer flex items-center justify-between"
+                                                className="px-3 py-2.5 text-md hover:bg-blue-50 cursor-pointer flex items-center justify-between"
                                             >
                                                 <span>{duration}</span>
                                                 {selectedDuration === duration && <FiCheck className="text-blue-600" />}
@@ -428,24 +428,24 @@ const handleSubmit = async (e) => {
                             </div>
 
                             <div>
-                                <label className="text-sm text-gray-600 font-medium">Plan Price</label>
+                                <label className="text-md text-gray-600 font-medium">Plan Price</label>
                                 <input
                                     type="text"
                                     value={planPrice}
                                     onChange={(e) => handleCurrencyChange(e.target.value, setPlanPrice)}
-                                    className="mt-1 w-full border rounded-lg px-3 py-2.5 text-sm border-gray-300 focus:outline-none "
+                                    className="mt-1 w-full border rounded-lg px-3 py-2.5 text-md border-gray-300 focus:outline-none "
                                     required
                                     placeholder="₹0"
                                 />
                             </div>
 
                             <div>
-                                <label className="text-sm text-gray-600 font-medium">Discount %(Optional)</label>
+                                <label className="text-md text-gray-600 font-medium">Discount %(Optional)</label>
                                 <input
                                     type="text"
                                     value={discount}
                                     onChange={(e) => handlePercentageChange(e.target.value, setDiscount)}
-                                    className="mt-1 w-full border rounded-lg px-3 py-2.5 text-sm border-gray-300 focus:outline-none "
+                                    className="mt-1 w-full border rounded-lg px-3 py-2.5 text-md border-gray-300 focus:outline-none "
                                     placeholder="0%"
                                 />
                             </div>
@@ -454,24 +454,24 @@ const handleSubmit = async (e) => {
                         {/* Stop Loss and Avg Trades */}
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div className="md:col-span-2">
-                                <label className="text-sm text-gray-600 font-medium">Stoploss %</label>
+                                <label className="text-md text-gray-600 font-medium">Stoploss %</label>
                                 <input
                                     type="text"
                                     value={stopLoss}
                                     onChange={(e) => handlePercentageChange(e.target.value, setStopLoss)}
-                                    className="mt-1 w-full border rounded-lg px-3 py-2.5 text-sm border-gray-300 focus:outline-none "
+                                    className="mt-1 w-full border rounded-lg px-3 py-2.5 text-md border-gray-300 focus:outline-none "
                                     required
                                     placeholder="0%"
                                 />
                             </div>
 
                             <div>
-                                <label className="text-sm text-gray-600 font-medium">Avg Trades</label>
+                                <label className="text-md text-gray-600 font-medium">Avg Trades</label>
                                 <input
                                     type="text"
                                     value={avgTrades}
                                     onChange={(e) => setAvgTrades(e.target.value)}
-                                    className="mt-1 w-full border rounded-lg px-3 py-2.5 text-sm border-gray-300 focus:outline-none "
+                                    className="mt-1 w-full border rounded-lg px-3 py-2.5 text-md border-gray-300 focus:outline-none "
                                     required
                                     placeholder="e.g., 1 Daily"
                                 />
@@ -481,24 +481,24 @@ const handleSubmit = async (e) => {
                         {/* Description and Refund Policy */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                                <label className="text-sm text-gray-600 font-medium">
+                                <label className="text-md text-gray-600 font-medium">
                                     Short Description(Optional)
                                 </label>
                                 <textarea
                                     value={shortDescription}
                                     onChange={(e) => setShortDescription(e.target.value)}
                                     placeholder="Enter description"
-                                    className="mt-1 w-full h-28 border rounded-lg px-3 py-2.5 text-sm resize-none border-gray-300 focus:outline-none "
+                                    className="mt-1 w-full h-28 border rounded-lg px-3 py-2.5 text-md resize-none border-gray-300 focus:outline-none "
                                 />
                             </div>
 
                             <div>
-                                <label className="text-sm text-gray-600 font-medium">Refund Policy(Optional)</label>
+                                <label className="text-md text-gray-600 font-medium">Refund Policy(Optional)</label>
                                 <textarea
                                     value={refundPolicy}
                                     onChange={(e) => setRefundPolicy(e.target.value)}
                                     placeholder="Enter policy"
-                                    className="mt-1 w-full h-28 border rounded-lg px-3 py-2.5 text-sm resize-none border-gray-300 focus:outline-none "
+                                    className="mt-1 w-full h-28 border rounded-lg px-3 py-2.5 text-md resize-none border-gray-300 focus:outline-none "
                                 />
                             </div>
                         </div>
@@ -508,14 +508,14 @@ const handleSubmit = async (e) => {
                             <button 
                                 type="button"
                                 onClick={handleCancel}
-                                className="px-6 py-2.5 text-sm border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors font-medium"
+                                className="px-6 py-2.5 text-md border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors font-medium"
                                 disabled={isLoading}
                             >
                                 Cancel
                             </button>
                             <button 
                                 type="submit"
-                                className="px-6 py-2.5 text-sm bg-black text-white rounded-lg hover:bg-gray-800 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="px-6 py-2.5 text-md bg-black text-white rounded-lg hover:bg-gray-800 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                                 disabled={isLoading}
                             >
                                 {isLoading ? (planId ? "Updating..." : "Submitting...") : (planId ? "Update Plan" : "Create Plan")}

@@ -120,27 +120,27 @@ export default function SetPassword() {
             Set Your Password
           </h1>
           
-          <p className="text-sm text-gray-500 mb-6">
+          <p className="text-md text-gray-500 mb-6">
             Create a strong password for your account
             {email && <span className="block mt-1">for <strong>{email}</strong></span>}
           </p>
 
           {/* Success Message */}
           {success && (
-            <div className="mb-4 p-3 bg-green-50 border border-green-200 text-green-600 rounded-lg text-sm">
+            <div className="mb-4 p-3 bg-green-50 border border-green-200 text-green-600 rounded-lg text-md">
               {success}
             </div>
           )}
 
           {/* Error Message */}
           {error && (
-            <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 rounded-lg text-sm">
+            <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 rounded-lg text-md">
               {error}
             </div>
           )}
 
           {/* New Password */}
-          <label className="block text-sm mb-1 text-gray-700">
+          <label className="block text-md mb-1 text-gray-700">
             New Password *
           </label>
           <div className="relative mb-2">
@@ -204,7 +204,7 @@ export default function SetPassword() {
           )}
 
           {/* Confirm Password */}
-          <label className="block text-sm mb-1 text-gray-700">
+          <label className="block text-md mb-1 text-gray-700">
             Confirm Password *
           </label>
           <div className="relative mb-6">
@@ -228,7 +228,7 @@ export default function SetPassword() {
 
           {/* Password Match Indicator */}
           {confirmPassword && (
-            <div className={`mb-4 p-2 rounded text-sm ${
+            <div className={`mb-4 p-2 rounded text-md ${
               newPassword === confirmPassword 
                 ? 'bg-green-50 text-green-700 border border-green-200' 
                 : 'bg-red-50 text-red-700 border border-red-200'

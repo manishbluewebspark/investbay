@@ -11,18 +11,16 @@ export default function Home() {
   return(
     <>
     <Hero/>
-    <InvestHelp/>
-
-    
-    <FeaturedCalls/>
     <Mentors/>
-    <FeaturedSubscriptions/>
+    <FeaturedCalls/>
     <FeaturedCourses/>
+    <InvestHelp/>
+    {/* <FeaturedSubscriptions/> */}
 
 
 
     <Testimonials/> 
-    <Newsletter/>
+    {/* <Newsletter/> */}
     </>
   )
 }

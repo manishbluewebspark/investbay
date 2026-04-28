@@ -16,21 +16,21 @@
 //         <h3 className="text-lg font-semibold text-gray-900 mb-2 items-center text-center">
 //           {title}
 //         </h3>
-//         <p className="text-sm text-gray-500 mb-6 text-center">
+//         <p className="text-md text-gray-500 mb-6 text-center">
 //           {description}
 //         </p>
 
 //         <div className="flex items-center justify-center gap-3">
 //           <button
 //             onClick={onClose}
-//             className="px-14 py-2 text-sm rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 transition cursor-pointer"
+//             className="px-14 py-2 text-md rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 transition cursor-pointer"
 //           >
 //             No
 //           </button>
 
 //           <button
 //             onClick={onConfirm}
-//             className="px-14 py-2 text-sm rounded-lg bg-black text-white hover:bg-=black-700 transition cursor-pointer"
+//             className="px-14 py-2 text-md rounded-lg bg-black text-white hover:bg-=black-700 transition cursor-pointer"
 //           >
 //             Yes
 //           </button>
@@ -68,7 +68,7 @@ export default function DeleteModal({
           {title}
         </h3>
 
-        <p className="text-sm text-gray-500 mb-6 text-center">
+        <p className="text-md text-gray-500 mb-6 text-center">
           {description}
         </p>
 
@@ -76,7 +76,7 @@ export default function DeleteModal({
           <button
             onClick={onClose}
             disabled={loading}
-            className="px-14 py-2 text-sm rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 transition"
+            className="px-14 py-2 text-md rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 transition"
           >
             {cancelText}
           </button>
@@ -84,7 +84,7 @@ export default function DeleteModal({
           <button
             onClick={onConfirm}
             disabled={loading}
-            className="px-14 py-2 text-sm rounded-lg bg-black text-white hover:bg-gray-800 transition flex items-center justify-center gap-2"
+            className="px-14 py-2 text-md rounded-lg bg-black text-white hover:bg-gray-800 transition flex items-center justify-center gap-2"
           >
             {loading && (
               <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>

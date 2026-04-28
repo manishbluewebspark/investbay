@@ -125,54 +125,54 @@ export default function DocumentUploadModal({ data, parentData, onSubmit, onBack
           <div className={`border-2 border-dashed rounded-lg p-6 text-center ${errors.panFile ? "border-red-500" : "border-gray-300"}`}>
             <FolderUp className="w-10 h-10 mx-auto text-teal-500" />
             <p className="font-medium mt-2">PAN / Aadhar Upload</p>
-            <p className="text-gray-400 text-sm mt-1">OR</p>
+            <p className="text-gray-400 text-md mt-1">OR</p>
             <label className="inline-block mt-3">
               <input type="file" className="hidden" onChange={(e) => handleFileChange(e, setPanFile)} />
-              <span className="px-4 py-1.5 border rounded-lg text-sm cursor-pointer hover:bg-gray-50 border-gray-300">
+              <span className="px-4 py-1.5 border rounded-lg text-md cursor-pointer hover:bg-gray-50 border-gray-300">
                 Browse files
               </span>
             </label>
-            {panFile && <p className="text-sm text-gray-600 mt-2">{panFile.name}</p>}
-            {errors.panFile && <p className="text-red-500 text-sm mt-2">{errors.panFile}</p>}
+            {panFile && <p className="text-md text-gray-600 mt-2">{panFile.name}</p>}
+            {errors.panFile && <p className="text-red-500 text-md mt-2">{errors.panFile}</p>}
           </div>
 
           {/* SEBI */}
           <div className={`border-2 border-dashed rounded-lg p-6 text-center ${errors.sebiFile ? "border-red-500" : "border-gray-300"}`}>
             <FolderUp className="w-10 h-10 mx-auto text-teal-500" />
             <p className="font-medium mt-2">SEBI Certificate Upload</p>
-            <p className="text-gray-400 text-sm mt-1">OR</p>
+            <p className="text-gray-400 text-md mt-1">OR</p>
             <label className="inline-block mt-3">
               <input type="file" className="hidden" onChange={(e) => handleFileChange(e, setSebiFile)} />
-              <span className="px-4 py-1.5 border rounded-lg text-sm cursor-pointer hover:bg-gray-50 border-gray-300">
+              <span className="px-4 py-1.5 border rounded-lg text-md cursor-pointer hover:bg-gray-50 border-gray-300">
                 Browse files
               </span>
             </label>
-            {sebiFile && <p className="text-sm text-gray-600 mt-2">{sebiFile.name}</p>}
-            {errors.sebiFile && <p className="text-red-500 text-sm mt-2">{errors.sebiFile}</p>}
+            {sebiFile && <p className="text-md text-gray-600 mt-2">{sebiFile.name}</p>}
+            {errors.sebiFile && <p className="text-red-500 text-md mt-2">{errors.sebiFile}</p>}
           </div>
 
           {/* Terms */}
           <div>
-            <label className="text-sm font-medium block mb-1">Terms & Declaration</label>
+            <label className="text-md font-medium block mb-1">Terms & Declaration</label>
             <input
               type="text"
               value={terms}
               onChange={(e) => setTerms(e.target.value)}
               placeholder="Enter Terms & Declaration"
-              className={`w-full border rounded-lg px-3 py-2 text-sm ${errors.terms ? "border-red-500" : "border-gray-300"}`}
+              className={`w-full border rounded-lg px-3 py-2 text-md ${errors.terms ? "border-red-500" : "border-gray-300"}`}
             />
-            {errors.terms && <p className="text-red-500 text-sm mt-1">{errors.terms}</p>}
+            {errors.terms && <p className="text-red-500 text-md mt-1">{errors.terms}</p>}
           </div>
         </div>
 
         <div className="flex justify-end gap-3 border-t px-6 py-4 border-gray-300">
-          <button onClick={onBack} className="px-4 py-2 border rounded-lg text-sm hover:bg-gray-50">
+          <button onClick={onBack} className="px-4 py-2 border rounded-lg text-md hover:bg-gray-50">
             Cancel
           </button>
           <button
             onClick={handleSubmit}
             disabled={loading}
-            className="px-4 py-2 bg-black text-white rounded-lg text-sm hover:bg-gray-800 disabled:opacity-60"
+            className="px-4 py-2 bg-black text-white rounded-lg text-md hover:bg-gray-800 disabled:opacity-60"
           >
             {loading ? "Submitting..." : "Submit"}
           </button>

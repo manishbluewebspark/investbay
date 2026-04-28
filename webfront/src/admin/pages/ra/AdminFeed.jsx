@@ -41,7 +41,7 @@
 //       <div className="flex justify-between items-center mb-6 bg-white p-4 rounded-xl shadow">
 //         <div>
 //           <h2 className="text-3xl font-semibold text-gray-900">Feeds</h2>
-//           <p className="text-sm text-gray-500">All feeds list</p>
+//           <p className="text-md text-gray-500">All feeds list</p>
 //         </div>
 
 //         <div className="flex gap-3">
@@ -170,7 +170,7 @@ const AdminFeed = () => {
           <h2 className="text-3xl font-semibold text-gray-900">
             {getHeaderTitle()}
           </h2>
-          <p className="text-sm text-gray-500">
+          <p className="text-md text-gray-500">
             {isRA ? "Your published feeds" : "All feeds from all analysts"}
           </p>
         </div>

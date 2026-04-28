@@ -556,7 +556,7 @@ const handleSignatureComplete = async (file) => {
 
     return (
         <>
-            <section className="py-10 px-4 sm:px-8 lg:px-40 bg-[#F9FAFB] min-h-screen">
+            <section className="max-w-7xl mx-auto px-6 py-10 min-h-screen">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
                     {/* LEFT SIDE – IMAGE CARD */}
                     <div className="bg-white rounded-2xl overflow-hidden md:col-span-1 flex flex-col h-full">
@@ -583,13 +583,13 @@ const handleSignatureComplete = async (file) => {
                                     <h2 className="text-lg font-semibold text-gray-900">
                                         {plan.plan_name || "N/A"}
                                     </h2>
-                                    <p className="text-gray-600 text-sm">
+                                    <p className="text-gray-600 text-md">
                                         {plan.experience || "0"} years of experience
                                     </p>
                                 </div>
                             </div>
 
-                            <div className="space-y-3 text-sm flex-grow">
+                            <div className="space-y-3 text-md flex-grow">
                                 {infoList.map(([label, value], index) => (
                                     <div
                                         key={index}
@@ -615,7 +615,7 @@ const handleSignatureComplete = async (file) => {
                                 <button
                                     onClick={handleBuyNow}
                                     disabled={termsLoading}
-                                    className={`text-white text-sm px-6 py-2 rounded transition ${termsLoading
+                                    className={`text-white text-md px-6 py-2 rounded transition ${termsLoading
                                             ? 'bg-gray-400 cursor-not-allowed'
                                             : 'bg-black hover:bg-gray-800'
                                         }`}
@@ -634,7 +634,7 @@ const handleSignatureComplete = async (file) => {
                             <div className="grid sm:grid-cols-2 gap-4">
                                 {detailList.map(([label, value]) => (
                                     <div key={label}>
-                                        <p className="text-gray-500 text-sm">{label}</p>
+                                        <p className="text-gray-500 text-md">{label}</p>
                                         <p className="font-medium">{value ?? "N/A"}</p>
                                     </div>
                                 ))}
@@ -645,7 +645,7 @@ const handleSignatureComplete = async (file) => {
                         <div className="bg-white border border-gray-300 p-6 rounded-2xl flex-1">
                             <h1 className="text-lg font-semibold mb-4">About Description</h1>
                             <hr className="border-t border-gray-300 -mx-6 mb-4" />
-                            <p className="text-sm text-gray-700 leading-relaxed">
+                            <p className="text-md text-gray-700 leading-relaxed">
                                 {plan.short_description || "No information available"}
                             </p>
                         </div>
@@ -664,7 +664,7 @@ const handleSignatureComplete = async (file) => {
                                     />
                                     <div>
                                         <p className="font-semibold">{analyst?.name}</p>
-                                        <p className="text-gray-600 text-sm">{analyst?.sebi_number}</p>
+                                        <p className="text-gray-600 text-md">{analyst?.sebi_number}</p>
                                     </div>
                                 </div>
                                 <button

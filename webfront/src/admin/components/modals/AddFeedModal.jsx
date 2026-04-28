@@ -337,14 +337,14 @@ export default function AddFeedModal({ open, onClose, onSuccess }) {
           {/* Error Message */}
           {error && (
             <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
-              <p className="text-sm text-red-600">{error}</p>
+              <p className="text-md text-red-600">{error}</p>
             </div>
           )}
 
           {/* RA Selection - Only for Admin */}
           {!isRA && (
             <div>
-              <label className="mb-2 block text-sm font-medium text-gray-700">
+              <label className="mb-2 block text-md font-medium text-gray-700">
                 Select Research Analyst *
               </label>
               <div className="relative">
@@ -355,7 +355,7 @@ export default function AddFeedModal({ open, onClose, onSuccess }) {
                     setSelectedRA(ra);
                   }}
                   disabled={loading || analystLoading}
-                  className="w-full appearance-none rounded-lg border border-gray-300 px-3 py-2 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                  className="w-full appearance-none rounded-lg border border-gray-300 px-3 py-2 pr-10 text-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
                 >
                   <option value="">Choose Analyst</option>
                   {analysts.map((ra) => (
@@ -379,7 +379,7 @@ export default function AddFeedModal({ open, onClose, onSuccess }) {
 
           {/* About Feed */}
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">
+            <label className="mb-1 block text-md font-medium text-gray-700">
               About Feed *
             </label>
             <textarea
@@ -387,7 +387,7 @@ export default function AddFeedModal({ open, onClose, onSuccess }) {
               value={feedText}
               onChange={(e) => setFeedText(e.target.value)}
               placeholder="Share your thoughts, analysis, or updates..."
-              className="w-full resize-none rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+              className="w-full resize-none rounded-lg border border-gray-300 px-3 py-2 text-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
               disabled={loading}
             />
             <p className="mt-1 text-xs text-gray-500">
@@ -397,7 +397,7 @@ export default function AddFeedModal({ open, onClose, onSuccess }) {
 
           {/* Tags - Enhanced with chips */}
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">
+            <label className="mb-1 block text-md font-medium text-gray-700">
               Tags
             </label>
             
@@ -407,7 +407,7 @@ export default function AddFeedModal({ open, onClose, onSuccess }) {
               {tags.map((tag, index) => (
                 <span
                   key={index}
-                  className="inline-flex items-center gap-1 px-2 py-1 bg-blue-50 text-blue-700 text-sm rounded-md"
+                  className="inline-flex items-center gap-1 px-2 py-1 bg-blue-50 text-blue-700 text-md rounded-md"
                 >
                   <span>{tag}</span>
                   <button
@@ -430,7 +430,7 @@ export default function AddFeedModal({ open, onClose, onSuccess }) {
                 onKeyDown={handleTagKeyDown}
                 onBlur={handleTagInputBlur}
                 placeholder={tags.length === 0 ? "#NiftyAnalysis #MarketOutlook" : "Add more tags..."}
-                className="flex-1 min-w-[120px] outline-none text-sm bg-transparent"
+                className="flex-1 min-w-[120px] outline-none text-md bg-transparent"
                 disabled={loading}
               />
             </div>
@@ -443,7 +443,7 @@ export default function AddFeedModal({ open, onClose, onSuccess }) {
           {/* Upload Progress */}
           {uploadProgress > 0 && uploadProgress < 100 && (
             <div className="space-y-2">
-              <div className="flex justify-between text-sm">
+              <div className="flex justify-between text-md">
                 <span className="text-gray-600">Uploading...</span>
                 <span className="font-medium">{uploadProgress}%</span>
               </div>
@@ -460,7 +460,7 @@ export default function AddFeedModal({ open, onClose, onSuccess }) {
           {filePreviews.length > 0 && (
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <h3 className="text-sm font-medium text-gray-700">
+                <h3 className="text-md font-medium text-gray-700">
                   Selected Files ({filePreviews.length}/10)
                 </h3>
                 {!loading && (
@@ -513,7 +513,7 @@ export default function AddFeedModal({ open, onClose, onSuccess }) {
                       </div>
                       
                       <div className="min-w-0 flex-1">
-                        <p className="text-sm font-medium text-gray-800 truncate">
+                        <p className="text-md font-medium text-gray-800 truncate">
                           {preview.name}
                         </p>
                         <div className="flex items-center space-x-2 mt-1">
@@ -554,7 +554,7 @@ export default function AddFeedModal({ open, onClose, onSuccess }) {
                 <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-blue-50">
                   <Upload className="text-blue-600" size={22} />
                 </div>
-                <p className="text-sm font-medium text-blue-600">
+                <p className="text-md font-medium text-blue-600">
                   Click or drag to upload Images or Videos
                 </p>
                 <p className="mt-2 text-xs text-gray-500">
@@ -584,14 +584,14 @@ export default function AddFeedModal({ open, onClose, onSuccess }) {
           <button
             onClick={onClose}
             disabled={loading}
-            className="rounded-lg border border-gray-300 px-6 py-2 text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="rounded-lg border border-gray-300 px-6 py-2 text-md text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             Cancel
           </button>
           <button
             onClick={handleSubmit}
             disabled={loading || (!feedText.trim() && files.length === 0) || !getRAId()}
-            className="rounded-lg bg-black px-8 py-2 text-sm font-medium text-white hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center space-x-2"
+            className="rounded-lg bg-black px-8 py-2 text-md font-medium text-white hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center space-x-2"
           >
             {loading ? (
               <>

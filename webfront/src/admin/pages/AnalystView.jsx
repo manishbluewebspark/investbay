@@ -92,14 +92,14 @@ export default function AnalystView() {
                                 <h2 className="text-lg font-semibold text-gray-900">
                                     {analyst.name || "N/A"}
                                 </h2>
-                                <p className="text-gray-600 text-sm mb-4">
+                                <p className="text-gray-600 text-md mb-4">
                                     {analyst.experience || "0"} years of experience
                                 </p>
                             </div>
                             <img src={Verify} alt="Verified" className="w-5 h-5 mt-1" />
                         </div>
 
-                        <div className="space-y-3 text-sm">
+                        <div className="space-y-3 text-md">
                             {[
                                 ["Email", analyst.email],
                                 ["Gender", analyst.gender],
@@ -132,37 +132,37 @@ export default function AnalystView() {
                         <hr className="border-t border-gray-300 -mx-6 mb-3" />
                         <div className="grid sm:grid-cols-2 gap-y-3 gap-x-6">
                             <div>
-                                <p className="text-gray-500 text-sm">SEBI Registration Number</p>
+                                <p className="text-gray-500 text-md">SEBI Registration Number</p>
                                 <p className="font-medium text-gray-800 text-md">
                                     {analyst.sebiNumber || "N/A"}
                                 </p>
                             </div>
                             <div>
-                                <p className="text-gray-500 text-sm">Experience (in years)</p>
+                                <p className="text-gray-500 text-md">Experience (in years)</p>
                                 <p className="font-medium text-gray-800 text-md">
                                     {analyst.experience || "N/A"}
                                 </p>
                             </div>
                             <div>
-                                <p className="text-gray-500 text-sm">Specialization</p>
+                                <p className="text-gray-500 text-md">Specialization</p>
                                 <p className="font-medium text-gray-800 text-md">
                                     {analyst.specialization || "N/A"}
                                 </p>
                             </div>
                             <div>
-                                <p className="text-gray-500 text-sm">Current Firm / Company Name</p>
+                                <p className="text-gray-500 text-md">Current Firm / Company Name</p>
                                 <p className="font-medium text-gray-800 text-md">
                                     {analyst.companyName || "N/A"}
                                 </p>
                             </div>
                             <div>
-                                <p className="text-gray-500 text-sm">Education / Certification</p>
+                                <p className="text-gray-500 text-md">Education / Certification</p>
                                 <p className="font-medium text-gray-800 text-md">
                                     {analyst.education || "N/A"}
                                 </p>
                             </div>
                             <div>
-                                <p className="text-gray-500 text-sm">Languages</p>
+                                <p className="text-gray-500 text-md">Languages</p>
                                 <p className="font-medium text-gray-800 text-md">
                                     {(() => {
                                         const langs = analyst.languages;

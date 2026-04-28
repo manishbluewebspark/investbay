@@ -58,7 +58,7 @@ const SignalCard = ({ signal, index }) => {
                 )} shadow-sm`}
             >
                 {/* Date and Time */}
-                <div className="flex justify-between text-gray-700 text-xs sm:text-sm mb-3">
+                <div className="flex justify-between text-gray-700 text-xs sm:text-md mb-3">
                     <div className="flex items-center gap-1">
                         <Calendar className="w-4 h-4" />{" "}
                         {formatDate(signal.created_at)}
@@ -77,10 +77,10 @@ const SignalCard = ({ signal, index }) => {
                         className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-gray-300"
                     />
                     <div className="text-left">
-                        <h4 className="font-semibold text-gray-900 text-sm sm:text-base">
+                        <h4 className="font-semibold text-gray-900 text-md sm:text-md">
                             {signal.instrument} {signal.instrument_type || ""}
                         </h4>
-                        <p className="text-gray-700 text-xs sm:text-sm">
+                        <p className="text-gray-700 text-xs sm:text-md">
                             Status -{" "}
                             <span
                                 className={`font-medium ${
@@ -96,7 +96,7 @@ const SignalCard = ({ signal, index }) => {
                 </div>
 
                 {/* Signal Details Grid */}
-                <div className="grid grid-cols-2 text-left text-gray-900 text-xs sm:text-sm gap-y-2 mb-5">
+                <div className="grid grid-cols-2 text-left text-gray-900 text-xs sm:text-md gap-y-2 mb-5">
                     <p>
                         <span className="font-semibold">Entry:</span> ₹
                         {signal.entry_price}
@@ -141,7 +141,7 @@ const SignalCard = ({ signal, index }) => {
                         onClick={() =>
                             navigate(`/signal-details/${signal.id || index}`)
                         }
-                        className="border w-full py-2 rounded-md text-sm hover:bg-black hover:text-white transition-colors duration-300"
+                        className="border w-full py-2 rounded-md text-md hover:bg-black hover:text-white transition-colors duration-300"
                     >
                         View Details
                     </button>
@@ -150,7 +150,7 @@ const SignalCard = ({ signal, index }) => {
 
             {/* Bottom Segment Tag */}
             <div className="absolute bottom-0 left-0 right-0 translate-y-1/2 z-0">
-                <div className="py-3 sm:py-4 text-center text-white font-medium text-xs sm:text-sm bg-black rounded-b-2xl mt-8">
+                <div className="py-3 sm:py-4 text-center text-white font-medium text-xs sm:text-md bg-black rounded-b-2xl mt-8">
                     {signal.segment || "Segment"}
                 </div>
             </div>

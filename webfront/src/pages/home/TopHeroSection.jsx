@@ -37,7 +37,7 @@ export default function TopHeroSection() {
       <div className="top-pattern-bg"></div>
       <div className="relative z-20">
         <span className="gradientborder inline-block rounded-full">
-          <span className="bg-white text-sm px-4 py-1 rounded-full">
+          <span className="bg-white text-md px-4 py-1 rounded-full">
             Where knowledge turns into profit.
           </span>
         </span>

@@ -126,7 +126,7 @@
 //         <div className="space-y-5 px-6 py-5 max-h-[70vh] overflow-y-auto">
 //           {/* About Feed */}
 //           <div>
-//             <label className="mb-1 block text-sm font-medium text-gray-700">
+//             <label className="mb-1 block text-md font-medium text-gray-700">
 //               About Feed
 //             </label>
 //             <textarea
@@ -134,13 +134,13 @@
 //               value={feedText}
 //               onChange={(e) => setFeedText(e.target.value)}
 //               placeholder="Write feed details..."
-//               className="w-full resize-none rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+//               className="w-full resize-none rounded-lg border border-gray-300 px-3 py-2 text-md focus:outline-none focus:ring-2 focus:ring-blue-500"
 //             />
 //           </div>
 
 //           {/* Tags */}
 //           <div>
-//             <label className="mb-1 block text-sm font-medium text-gray-700">
+//             <label className="mb-1 block text-md font-medium text-gray-700">
 //               Tags
 //             </label>
 //             <input
@@ -148,14 +148,14 @@
 //               value={tags}
 //               onChange={(e) => setTags(e.target.value)}
 //               placeholder="#NiftyAnalysis #MarketOutlook"
-//               className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+//               className="w-full rounded-lg border border-gray-300 px-3 py-2 text-md focus:outline-none focus:ring-2 focus:ring-blue-500"
 //             />
 //           </div>
 
 //           {/* Existing Documents */}
 //           {existingDocuments.length > 0 && (
 //             <div>
-//               <label className="mb-2 block text-sm font-medium text-gray-700">
+//               <label className="mb-2 block text-md font-medium text-gray-700">
 //                 Existing Files
 //               </label>
 //               <div className="space-y-2">
@@ -179,7 +179,7 @@
 //                             <span className="text-xs">Video</span>
 //                           </div>
 //                         )}
-//                         <span className="text-sm text-gray-700 truncate max-w-[200px]">
+//                         <span className="text-md text-gray-700 truncate max-w-[200px]">
 //                           {doc.original_filename || doc.filename}
 //                         </span>
 //                       </div>
@@ -201,7 +201,7 @@
 //           {/* New Files */}
 //           {files.length > 0 && (
 //             <div>
-//               <label className="mb-2 block text-sm font-medium text-gray-700">
+//               <label className="mb-2 block text-md font-medium text-gray-700">
 //                 New Files to Upload
 //               </label>
 //               <div className="space-y-2">
@@ -219,7 +219,7 @@
 //                           <span className="text-xs">Video</span>
 //                         </div>
 //                       )}
-//                       <span className="text-sm text-gray-700 truncate max-w-[200px]">
+//                       <span className="text-md text-gray-700 truncate max-w-[200px]">
 //                         {file.name}
 //                       </span>
 //                     </div>
@@ -246,7 +246,7 @@
 //               <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-blue-50">
 //                 <Upload className="text-blue-600" size={22} />
 //               </div>
-//               <p className="text-sm font-medium text-blue-600">
+//               <p className="text-md font-medium text-blue-600">
 //                 Click here to upload Images or Videos
 //               </p>
 //               <p className="mt-1 text-xs text-gray-500">
@@ -275,14 +275,14 @@
 //           <button
 //             onClick={onClose}
 //             disabled={loading}
-//             className="rounded-lg border px-10 py-2 text-sm text-gray-600 hover:bg-gray-100 disabled:opacity-50"
+//             className="rounded-lg border px-10 py-2 text-md text-gray-600 hover:bg-gray-100 disabled:opacity-50"
 //           >
 //             Cancel
 //           </button>
 //           <button
 //             onClick={handleSubmit}
 //             disabled={loading}
-//             className="rounded-lg bg-black px-10 py-2 text-sm font-medium text-white hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
+//             className="rounded-lg bg-black px-10 py-2 text-md font-medium text-white hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
 //           >
 //             {loading ? "Updating..." : "Update Feed"}
 //           </button>
@@ -462,7 +462,7 @@
 //         <div className="space-y-5 px-6 py-5 overflow-y-auto flex-1">
 //           {/* Feed Text */}
 //           <div>
-//             <label className="mb-1 block text-sm font-medium text-gray-700">
+//             <label className="mb-1 block text-md font-medium text-gray-700">
 //               Feed Content
 //             </label>
 //             <textarea
@@ -470,13 +470,13 @@
 //               value={feedText}
 //               onChange={(e) => setFeedText(e.target.value)}
 //               placeholder="Write your feed content..."
-//               className="w-full resize-vertical rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+//               className="w-full resize-vertical rounded-lg border border-gray-300 px-3 py-2 text-md focus:outline-none focus:ring-2 focus:ring-blue-500"
 //             />
 //           </div>
 
 //           {/* Tags */}
 //           <div>
-//             <label className="mb-1 block text-sm font-medium text-gray-700">
+//             <label className="mb-1 block text-md font-medium text-gray-700">
 //               Tags (space separated)
 //             </label>
 //             <input
@@ -484,7 +484,7 @@
 //               value={tags}
 //               onChange={(e) => setTags(e.target.value)}
 //               placeholder="FII NIFTY NIFTY50"
-//               className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+//               className="w-full rounded-lg border border-gray-300 px-3 py-2 text-md focus:outline-none focus:ring-2 focus:ring-blue-500"
 //             />
 //             <p className="mt-1 text-xs text-gray-500"># will be added automatically</p>
 //           </div>
@@ -492,7 +492,7 @@
 //           {/* Existing Documents */}
 //           {existingDocuments.length > 0 && (
 //             <div>
-//               <label className="mb-2 block text-sm font-medium text-gray-700">
+//               <label className="mb-2 block text-md font-medium text-gray-700">
 //                 Existing Files ({existingDocuments.length})
 //               </label>
 //               <div className="space-y-2 max-h-48 overflow-y-auto">
@@ -519,7 +519,7 @@
 //                           </div>
 //                         )}
 //                         <div className="min-w-0 flex-1">
-//                           <p className="text-sm font-medium text-gray-900 truncate">
+//                           <p className="text-md font-medium text-gray-900 truncate">
 //                             {doc.originalName || doc.filename || 'Unknown file'}
 //                           </p>
 //                           <p className="text-xs text-gray-500">
@@ -545,7 +545,7 @@
 //           {/* New Files */}
 //           {files.length > 0 && (
 //             <div>
-//               <label className="mb-2 block text-sm font-medium text-gray-700">
+//               <label className="mb-2 block text-md font-medium text-gray-700">
 //                 New Files to Upload ({files.length})
 //               </label>
 //               <div className="space-y-2 max-h-48 overflow-y-auto">
@@ -564,7 +564,7 @@
 //                         </div>
 //                       )}
 //                       <div className="min-w-0 flex-1">
-//                         <p className="text-sm font-medium text-gray-900 truncate">{file.name}</p>
+//                         <p className="text-md font-medium text-gray-900 truncate">{file.name}</p>
 //                         <p className="text-xs text-gray-500">
 //                           {(file.size / 1024 / 1024).toFixed(2)} MB
 //                         </p>
@@ -593,7 +593,7 @@
 //               <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-blue-50">
 //                 <Upload className="text-blue-600 h-6 w-6" />
 //               </div>
-//               <p className="text-sm font-medium text-blue-600">
+//               <p className="text-md font-medium text-blue-600">
 //                 Click to upload Images or Videos
 //               </p>
 //               <p className="mt-1 text-xs text-gray-500">
@@ -622,14 +622,14 @@
 //           <button
 //             onClick={onClose}
 //             disabled={loading}
-//             className="rounded-lg border px-8 py-2.5 text-sm text-gray-600 hover:bg-gray-100 disabled:opacity-50"
+//             className="rounded-lg border px-8 py-2.5 text-md text-gray-600 hover:bg-gray-100 disabled:opacity-50"
 //           >
 //             Cancel
 //           </button>
 //           <button
 //             onClick={handleSubmit}
 //             disabled={loading || (!feedText.trim() && files.length === 0 && existingDocuments.length === 0)}
-//             className="rounded-lg bg-black px-8 py-2.5 text-sm font-medium text-white hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
+//             className="rounded-lg bg-black px-8 py-2.5 text-md font-medium text-white hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
 //           >
 //             {loading ? "Updating..." : "Update Feed"}
 //           </button>
@@ -845,7 +845,7 @@
 //           {/* RA Selection - Only for Admin */}
 //           {!isRA && (
 //             <div>
-//               <label className="mb-2 block text-sm font-medium text-gray-700">
+//               <label className="mb-2 block text-md font-medium text-gray-700">
 //                 Select Research Analyst *
 //               </label>
 //               <div className="relative">
@@ -856,7 +856,7 @@
 //                     setSelectedRA(ra);
 //                   }}
 //                   disabled={loading || analystLoading}
-//                   className="w-full appearance-none rounded-lg border border-gray-300 px-3 py-2 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+//                   className="w-full appearance-none rounded-lg border border-gray-300 px-3 py-2 pr-10 text-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
 //                 >
 //                   <option value="">Choose Analyst</option>
 //                   {analysts.map((ra) => (
@@ -878,7 +878,7 @@
 //           {/* Current RA display for RA users */}
 //           {isRA && (
 //             <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-lg">
-//               <p className="text-sm text-emerald-800 font-medium">
+//               <p className="text-md text-emerald-800 font-medium">
 //                 RA: {user?.name || "You"}
 //               </p>
 //             </div>
@@ -886,7 +886,7 @@
 
 //           {/* Feed Text */}
 //           <div>
-//             <label className="mb-1 block text-sm font-medium text-gray-700">
+//             <label className="mb-1 block text-md font-medium text-gray-700">
 //               Feed Content *
 //             </label>
 //             <textarea
@@ -894,14 +894,14 @@
 //               value={feedText}
 //               onChange={(e) => setFeedText(e.target.value)}
 //               placeholder="Write your feed content..."
-//               className="w-full resize-vertical rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+//               className="w-full resize-vertical rounded-lg border border-gray-300 px-3 py-2 text-md focus:outline-none focus:ring-2 focus:ring-blue-500"
 //               disabled={loading}
 //             />
 //           </div>
 
 //           {/* Tags */}
 //           <div>
-//             <label className="mb-1 block text-sm font-medium text-gray-700">
+//             <label className="mb-1 block text-md font-medium text-gray-700">
 //               Tags (space separated)
 //             </label>
 //             <input
@@ -909,7 +909,7 @@
 //               value={tags}
 //               onChange={(e) => setTags(e.target.value)}
 //               placeholder="FII NIFTY NIFTY50"
-//               className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+//               className="w-full rounded-lg border border-gray-300 px-3 py-2 text-md focus:outline-none focus:ring-2 focus:ring-blue-500"
 //               disabled={loading}
 //             />
 //             <p className="mt-1 text-xs text-gray-500"># will be added automatically</p>
@@ -918,7 +918,7 @@
 //           {/* Existing Documents */}
 //           {existingDocuments.length > 0 && (
 //             <div>
-//               <label className="mb-2 block text-sm font-medium text-gray-700">
+//               <label className="mb-2 block text-md font-medium text-gray-700">
 //                 Existing Files ({existingDocuments.length})
 //               </label>
 //               <div className="space-y-2 max-h-48 overflow-y-auto">
@@ -944,7 +944,7 @@
 //                           </div>
 //                         )}
 //                         <div className="min-w-0 flex-1">
-//                           <p className="text-sm font-medium text-gray-900 truncate">
+//                           <p className="text-md font-medium text-gray-900 truncate">
 //                             {doc.originalName || doc.filename || 'Unknown file'}
 //                           </p>
 //                           <p className="text-xs text-gray-500">
@@ -970,7 +970,7 @@
 //           {/* New Files */}
 //           {files.length > 0 && (
 //             <div>
-//               <label className="mb-2 block text-sm font-medium text-gray-700">
+//               <label className="mb-2 block text-md font-medium text-gray-700">
 //                 New Files to Upload ({files.length})
 //               </label>
 //               <div className="space-y-2 max-h-48 overflow-y-auto">
@@ -989,7 +989,7 @@
 //                         </div>
 //                       )}
 //                       <div className="min-w-0 flex-1">
-//                         <p className="text-sm font-medium text-gray-900 truncate">{file.name}</p>
+//                         <p className="text-md font-medium text-gray-900 truncate">{file.name}</p>
 //                         <p className="text-xs text-gray-500">
 //                           {(file.size / 1024 / 1024).toFixed(2)} MB
 //                         </p>
@@ -1019,7 +1019,7 @@
 //               <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-blue-50">
 //                 <Upload className="text-blue-600 h-6 w-6" />
 //               </div>
-//               <p className="text-sm font-medium text-blue-600">
+//               <p className="text-md font-medium text-blue-600">
 //                 Click to upload Images or Videos
 //               </p>
 //               <p className="mt-1 text-xs text-gray-500">
@@ -1048,14 +1048,14 @@
 //           <button
 //             onClick={onClose}
 //             disabled={loading}
-//             className="rounded-lg border px-8 py-2.5 text-sm text-gray-600 hover:bg-gray-100 disabled:opacity-50"
+//             className="rounded-lg border px-8 py-2.5 text-md text-gray-600 hover:bg-gray-100 disabled:opacity-50"
 //           >
 //             Cancel
 //           </button>
 //           <button
 //             onClick={handleSubmit}
 //             disabled={loading || (!feedText.trim() && files.length === 0 && existingDocuments.length === 0) || (!isRA && !getRAId())}
-//             className="rounded-lg bg-black px-8 py-2.5 text-sm font-medium text-white hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+//             className="rounded-lg bg-black px-8 py-2.5 text-md font-medium text-white hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
 //           >
 //             {loading ? (
 //               <>
@@ -1343,14 +1343,14 @@ export default function EditFeedModal({ open, onClose, feed, onUpdateSuccess }) 
           {/* Error Message */}
           {error && (
             <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
-              <p className="text-sm text-red-600">{error}</p>
+              <p className="text-md text-red-600">{error}</p>
             </div>
           )}
 
           {/* RA Selection - Only for Admin */}
           {!isRA && (
             <div>
-              <label className="mb-2 block text-sm font-medium text-gray-700">
+              <label className="mb-2 block text-md font-medium text-gray-700">
                 Select Research Analyst *
               </label>
               <div className="relative">
@@ -1361,7 +1361,7 @@ export default function EditFeedModal({ open, onClose, feed, onUpdateSuccess }) 
                     setSelectedRA(ra);
                   }}
                   disabled={loading || analystLoading}
-                  className="w-full appearance-none rounded-lg border border-gray-300 px-3 py-2 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                  className="w-full appearance-none rounded-lg border border-gray-300 px-3 py-2 pr-10 text-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
                 >
                   <option value="">Choose Analyst</option>
                   {analysts.map((ra) => (
@@ -1383,7 +1383,7 @@ export default function EditFeedModal({ open, onClose, feed, onUpdateSuccess }) 
           {/* Current RA display for RA users */}
           {isRA && (
             <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-lg">
-              <p className="text-sm text-emerald-800 font-medium">
+              <p className="text-md text-emerald-800 font-medium">
                 RA: {user?.name || "You"}
               </p>
             </div>
@@ -1391,7 +1391,7 @@ export default function EditFeedModal({ open, onClose, feed, onUpdateSuccess }) 
 
           {/* Feed Text */}
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">
+            <label className="mb-1 block text-md font-medium text-gray-700">
               Feed Content *
             </label>
             <textarea
@@ -1399,14 +1399,14 @@ export default function EditFeedModal({ open, onClose, feed, onUpdateSuccess }) 
               value={feedText}
               onChange={(e) => setFeedText(e.target.value)}
               placeholder="Write your feed content..."
-              className="w-full resize-vertical rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full resize-vertical rounded-lg border border-gray-300 px-3 py-2 text-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               disabled={loading}
             />
           </div>
 
           {/* Tags - Enhanced with chips */}
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">
+            <label className="mb-1 block text-md font-medium text-gray-700">
               Tags
             </label>
             
@@ -1416,7 +1416,7 @@ export default function EditFeedModal({ open, onClose, feed, onUpdateSuccess }) 
               {tags.map((tag, index) => (
                 <span
                   key={index}
-                  className="inline-flex items-center gap-1 px-2 py-1 bg-blue-50 text-blue-700 text-sm rounded-md"
+                  className="inline-flex items-center gap-1 px-2 py-1 bg-blue-50 text-blue-700 text-md rounded-md"
                 >
                   <span>{tag}</span>
                   <button
@@ -1438,7 +1438,7 @@ export default function EditFeedModal({ open, onClose, feed, onUpdateSuccess }) 
                 onKeyDown={handleTagKeyDown}
                 onBlur={handleTagInputBlur}
                 placeholder={tags.length === 0 ? "#NiftyAnalysis #MarketOutlook" : "Add more tags..."}
-                className="flex-1 min-w-[120px] outline-none text-sm bg-transparent"
+                className="flex-1 min-w-[120px] outline-none text-md bg-transparent"
                 disabled={loading}
               />
             </div>
@@ -1451,7 +1451,7 @@ export default function EditFeedModal({ open, onClose, feed, onUpdateSuccess }) 
           {/* Existing Documents */}
           {existingDocuments.length > 0 && (
             <div>
-              <label className="mb-2 block text-sm font-medium text-gray-700">
+              <label className="mb-2 block text-md font-medium text-gray-700">
                 Existing Files ({existingDocuments.length})
               </label>
               <div className="space-y-2 max-h-48 overflow-y-auto">
@@ -1477,7 +1477,7 @@ export default function EditFeedModal({ open, onClose, feed, onUpdateSuccess }) 
                           </div>
                         )}
                         <div className="min-w-0 flex-1">
-                          <p className="text-sm font-medium text-gray-900 truncate">
+                          <p className="text-md font-medium text-gray-900 truncate">
                             {doc.originalName || doc.filename || 'Unknown file'}
                           </p>
                           <p className="text-xs text-gray-500">
@@ -1503,7 +1503,7 @@ export default function EditFeedModal({ open, onClose, feed, onUpdateSuccess }) 
           {/* New Files */}
           {files.length > 0 && (
             <div>
-              <label className="mb-2 block text-sm font-medium text-gray-700">
+              <label className="mb-2 block text-md font-medium text-gray-700">
                 New Files to Upload ({files.length})
               </label>
               <div className="space-y-2 max-h-48 overflow-y-auto">
@@ -1522,7 +1522,7 @@ export default function EditFeedModal({ open, onClose, feed, onUpdateSuccess }) 
                         </div>
                       )}
                       <div className="min-w-0 flex-1">
-                        <p className="text-sm font-medium text-gray-900 truncate">{file.name}</p>
+                        <p className="text-md font-medium text-gray-900 truncate">{file.name}</p>
                         <p className="text-xs text-gray-500">
                           {(file.size / 1024 / 1024).toFixed(2)} MB
                         </p>
@@ -1551,7 +1551,7 @@ export default function EditFeedModal({ open, onClose, feed, onUpdateSuccess }) 
               <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-blue-50">
                 <Upload className="text-blue-600 h-6 w-6" />
               </div>
-              <p className="text-sm font-medium text-blue-600">
+              <p className="text-md font-medium text-blue-600">
                 Click to upload Images or Videos
               </p>
               <p className="mt-1 text-xs text-gray-500">
@@ -1580,14 +1580,14 @@ export default function EditFeedModal({ open, onClose, feed, onUpdateSuccess }) 
           <button
             onClick={onClose}
             disabled={loading}
-            className="rounded-lg border px-8 py-2.5 text-sm text-gray-600 hover:bg-gray-100 disabled:opacity-50"
+            className="rounded-lg border px-8 py-2.5 text-md text-gray-600 hover:bg-gray-100 disabled:opacity-50"
           >
             Cancel
           </button>
           <button
             onClick={handleSubmit}
             disabled={loading || (!feedText.trim() && files.length === 0 && existingDocuments.length === 0) || (!isRA && !getRAId())}
-            className="rounded-lg bg-black px-8 py-2.5 text-sm font-medium text-white hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            className="rounded-lg bg-black px-8 py-2.5 text-md font-medium text-white hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
           >
             {loading ? (
               <>

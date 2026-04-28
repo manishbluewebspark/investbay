@@ -42,7 +42,7 @@
 //             <div className="flex justify-between items-center mb-6 bg-white p-4 rounded-lg shadow">
 //                 <div>
 //                     <h2 className="text-3xl font-semibold text-gray-900">Course</h2>
-//                     <p className="text-sm text-gray-500">All courses list</p>
+//                     <p className="text-md text-gray-500">All courses list</p>
 //                 </div>
 
 //                 <div className="flex gap-3">
@@ -160,7 +160,7 @@ const Courses = () => {
             <div className="flex justify-between items-center mb-6 bg-white p-4 rounded-lg shadow">
                 <div>
                     <h2 className="text-3xl font-semibold text-gray-900">Courses</h2>
-                    <p className="text-sm text-gray-500">All courses list</p>
+                    <p className="text-md text-gray-500">All courses list</p>
                 </div>
 
                 <div className="flex gap-3">

@@ -24,7 +24,7 @@ const DeleteConfirmationModal = ({ onConfirm, onCancel }) => {
         <h2 className="text-lg font-semibold text-gray-900 mb-2">
           Delete RA
         </h2>
-        <p className="text-sm text-gray-500 mb-6">
+        <p className="text-md text-gray-500 mb-6">
           Are you sure you want to delete this Research Analyst
         </p>
 

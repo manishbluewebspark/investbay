@@ -45,7 +45,7 @@ export default function EsignOtpModal({ open, onClose, onVerify }) {
 
         {/* Body */}
         <div className="px-6 py-6">
-          <p className="text-sm text-gray-500 mb-5">
+          <p className="text-md text-gray-500 mb-5">
             Please check your email we’ve sent you an OTP.
           </p>
 
@@ -66,7 +66,7 @@ export default function EsignOtpModal({ open, onClose, onVerify }) {
           </div>
 
           {/* Resend */}
-          <button className="text-sm text-blue-600 hover:underline">
+          <button className="text-md text-blue-600 hover:underline">
             Resend code
           </button>
         </div>
@@ -75,7 +75,7 @@ export default function EsignOtpModal({ open, onClose, onVerify }) {
         <div className="px-6">
           <button
             onClick={() => onVerify?.(otp.join(""))}
-            className="w-full rounded-xl bg-black py-3 text-sm font-medium text-white hover:bg-gray-900"
+            className="w-full rounded-xl bg-black py-3 text-md font-medium text-white hover:bg-gray-900"
           >
             Verify
           </button>

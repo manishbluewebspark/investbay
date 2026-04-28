@@ -69,10 +69,10 @@
 //             Welcome Back to{" "}
 //             <span className="gradient-text font-semibold">InvestBay</span>
 //           </h1>
-//           <p className="text-sm text-gray-500 mb-6">
+//           <p className="text-md text-gray-500 mb-6">
 //             Securely log in to access your personalized investment dashboard.
 //           </p>
-//           <label className="block text-sm mb-1">
+//           <label className="block text-md mb-1">
 //             Email or User ID
 //           </label>
 //           <input
@@ -82,7 +82,7 @@
 //             type="text"
 //             placeholder="Enter email or user ID"
 //           />
-//           <label className="block text-sm mb-1">Password</label>
+//           <label className="block text-md mb-1">Password</label>
 //           <div className="relative mb-4">
 //             <input
 //               className="w-full border border-gray-300 rounded-lg px-3 py-2 pr-10 focus:outline-none"
@@ -101,12 +101,12 @@
 //             </button>
 //           </div>
 
-//           {err && <p className="text-sm text-red-600 mb-2">{err}</p>}
+//           {err && <p className="text-md text-red-600 mb-2">{err}</p>}
 
 //           <div className="flex justify-end mb-3">
 //             <a
 //               href="/admin/forgot-password"
-//               className="text-sm text-blue-500 hover:underline"
+//               className="text-md text-blue-500 hover:underline"
 //             >
 //               Forgot Password?
 //             </a>
@@ -407,11 +407,11 @@ export default function Login() {
           <h1 className="text-3xl mb-1">
             Login
           </h1>
-          <p className="text-sm text-gray-500 mb-6">
+          <p className="text-md text-gray-500 mb-6">
             Secure access to InvestBay Admin Dashboard
           </p>
           
-          <label className="block text-sm mb-1 text-gray-700">
+          <label className="block text-md mb-1 text-gray-700">
             Email / UserId
           </label>
           <input
@@ -423,7 +423,7 @@ export default function Login() {
             required
           />
           
-          <label className="block text-sm mb-1 text-gray-700">
+          <label className="block text-md mb-1 text-gray-700">
             Password
           </label>
           <div className="relative mb-6">
@@ -445,7 +445,7 @@ export default function Login() {
           </div>
 
           {err && (
-            <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 rounded-lg text-sm">
+            <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 rounded-lg text-md">
               {err}
             </div>
           )}

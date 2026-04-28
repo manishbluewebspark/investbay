@@ -259,7 +259,7 @@
 //             </div>
 //             <button
 //               onClick={triggerFileInput}
-//               className="mt-4 flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200 mx-auto"
+//               className="mt-4 flex items-center gap-2 text-md text-gray-600 hover:text-gray-900 transition-colors duration-200 mx-auto"
 //             >
 //               <Upload className="h-4 w-4" />
 //               {imagePreview ? "Change Photo" : "Upload Photo"}
@@ -272,7 +272,7 @@
 //           {/* Row 1: Name, Mobile, PAN, Email */}
 //           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 //             <div className="space-y-2">
-//               <label className="text-sm font-semibold text-gray-700 mb-1 block">
+//               <label className="text-md font-semibold text-gray-700 mb-1 block">
 //                 Full Name As Per PAN Card <span className="text-red-500">*</span>
 //               </label>
 //               <input
@@ -286,7 +286,7 @@
 //             </div>
 
 //             <div className="space-y-2">
-//               <label className="text-sm font-semibold text-gray-700 mb-1 block">
+//               <label className="text-md font-semibold text-gray-700 mb-1 block">
 //                 Mobile Number <span className="text-red-500">*</span>
 //               </label>
 //               <input
@@ -303,7 +303,7 @@
 //             </div>
 
 //             <div className="space-y-2">
-//               <label className="text-sm font-semibold text-gray-700 mb-1 block">
+//               <label className="text-md font-semibold text-gray-700 mb-1 block">
 //                 PAN Number <span className="text-red-500">*</span>
 //               </label>
 //               <input
@@ -318,7 +318,7 @@
 //             </div>
 
 //             <div className="space-y-2">
-//               <label className="text-sm font-semibold text-gray-700 mb-1 block">
+//               <label className="text-md font-semibold text-gray-700 mb-1 block">
 //                 Email Address <span className="text-red-500">*</span>
 //               </label>
 //               <input
@@ -336,7 +336,7 @@
 //           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 //             {/* Gender */}
 //             <div className="space-y-2">
-//               <label className="text-sm font-semibold text-gray-700 mb-1 block">Gender</label>
+//               <label className="text-md font-semibold text-gray-700 mb-1 block">Gender</label>
 //               <div className="relative" ref={genderDropdownRef}>
 //                 <button
 //                   type="button"
@@ -368,7 +368,7 @@
 
 //             {/* ✅ 3 SEPARATE DOB DROPDOWNS */}
 //             <div className="space-y-2">
-//               <label className="text-sm font-semibold text-gray-700 mb-1 block">
+//               <label className="text-md font-semibold text-gray-700 mb-1 block">
 //                 Date of Birth <span className="text-red-500">*</span>
 //               </label>
 //               <div className="grid grid-cols-3 gap-2">
@@ -457,7 +457,7 @@
 //           {/* Row 3: City & State */}
 //           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 //             <div className="space-y-2">
-//               <label className="text-sm font-semibold text-gray-700 mb-1 block">City</label>
+//               <label className="text-md font-semibold text-gray-700 mb-1 block">City</label>
 //               <input
 //                 type="text"
 //                 placeholder="Enter your city"
@@ -468,7 +468,7 @@
 //             </div>
 
 //             <div className="space-y-2">
-//               <label className="text-sm font-semibold text-gray-700 mb-1 block">
+//               <label className="text-md font-semibold text-gray-700 mb-1 block">
 //                 State <span className="text-red-500">*</span>
 //               </label>
 //               <div className="relative" ref={stateDropdownRef}>
@@ -504,7 +504,7 @@
 
 //           {/* Address */}
 //           <div className="space-y-2">
-//             <label className="text-sm font-semibold text-gray-700 mb-1 block">
+//             <label className="text-md font-semibold text-gray-700 mb-1 block">
 //               Address <span className="text-red-500">*</span>
 //             </label>
 //             <input
@@ -519,7 +519,7 @@
 
 //           {/* About */}
 //           <div className="space-y-2">
-//             <label className="text-sm font-semibold text-gray-700 mb-1 block">About Us</label>
+//             <label className="text-md font-semibold text-gray-700 mb-1 block">About Us</label>
 //             <input
 //               type="text"
 //               placeholder="Enter about us"
@@ -884,7 +884,7 @@ export default function PersonalDetailsModal({ data, onNext, onClose }) {
           {/* Row 1: Name, Mobile, PAN, Email */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <label className="text-sm font-semibold text-gray-700 mb-1 block">
+              <label className="text-md font-semibold text-gray-700 mb-1 block">
                 Full Name As Per PAN Card <span className="text-red-500">*</span>
               </label>
               <input
@@ -898,7 +898,7 @@ export default function PersonalDetailsModal({ data, onNext, onClose }) {
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-semibold text-gray-700 mb-1 block">
+              <label className="text-md font-semibold text-gray-700 mb-1 block">
                 Mobile Number <span className="text-red-500">*</span>
               </label>
               <input
@@ -915,7 +915,7 @@ export default function PersonalDetailsModal({ data, onNext, onClose }) {
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-semibold text-gray-700 mb-1 block">
+              <label className="text-md font-semibold text-gray-700 mb-1 block">
                 PAN Number <span className="text-red-500">*</span>
               </label>
               <input
@@ -930,7 +930,7 @@ export default function PersonalDetailsModal({ data, onNext, onClose }) {
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-semibold text-gray-700 mb-1 block">
+              <label className="text-md font-semibold text-gray-700 mb-1 block">
                 Email Address <span className="text-red-500">*</span>
               </label>
               <input
@@ -947,7 +947,7 @@ export default function PersonalDetailsModal({ data, onNext, onClose }) {
           {/* Row 2: Gender & DOB */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <label className="text-sm font-semibold text-gray-700 mb-1 block">Gender</label>
+              <label className="text-md font-semibold text-gray-700 mb-1 block">Gender</label>
               <div className="relative" ref={genderDropdownRef}>
                 <button
                   type="button"
@@ -976,7 +976,7 @@ export default function PersonalDetailsModal({ data, onNext, onClose }) {
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-semibold text-gray-700 mb-1 block">
+              <label className="text-md font-semibold text-gray-700 mb-1 block">
                 Date of Birth <span className="text-red-500">*</span>
               </label>
               <div className="grid grid-cols-3 gap-2">
@@ -1052,7 +1052,7 @@ export default function PersonalDetailsModal({ data, onNext, onClose }) {
           {/* Row 3: City & State */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <label className="text-sm font-semibold text-gray-700 mb-1 block">City</label>
+              <label className="text-md font-semibold text-gray-700 mb-1 block">City</label>
               <input
                 type="text"
                 placeholder="Enter your city"
@@ -1063,7 +1063,7 @@ export default function PersonalDetailsModal({ data, onNext, onClose }) {
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-semibold text-gray-700 mb-1 block">
+              <label className="text-md font-semibold text-gray-700 mb-1 block">
                 State <span className="text-red-500">*</span>
               </label>
               <div className="relative" ref={stateDropdownRef}>
@@ -1097,7 +1097,7 @@ export default function PersonalDetailsModal({ data, onNext, onClose }) {
 
           {/* Address */}
           <div className="space-y-2">
-            <label className="text-sm font-semibold text-gray-700 mb-1 block">
+            <label className="text-md font-semibold text-gray-700 mb-1 block">
               Address <span className="text-red-500">*</span>
             </label>
             <input
@@ -1112,7 +1112,7 @@ export default function PersonalDetailsModal({ data, onNext, onClose }) {
 
           {/* About */}
           <div className="space-y-2">
-            <label className="text-sm font-semibold text-gray-700 mb-1 block">About Us</label>
+            <label className="text-md font-semibold text-gray-700 mb-1 block">About Us</label>
             <input
               type="text"
               placeholder="Enter about us"

@@ -49,13 +49,13 @@ export default function ForgotPassword() {
       <div className="w-full md:w-3/5 flex items-center justify-center bg-gray-50">
         <form onSubmit={submit} className="w-full max-w-lg p-8">
           <h1 className="text-3xl mb-1">Forgot Password ?</h1>
-          <p className="text-sm text-gray-500 mb-6">
+          <p className="text-md text-gray-500 mb-6">
             Enter your registered email and we'll send you a verification code.
           </p>
 
           {err && <p className="text-red-500 mb-2">{err}</p>}
 
-          <label className="block text-sm mb-1">Email</label>
+          <label className="block text-md mb-1">Email</label>
           <input
             className="w-full border border-gray-300 rounded-lg px-3 py-2 mb-3 focus:outline-none"
             value={email}

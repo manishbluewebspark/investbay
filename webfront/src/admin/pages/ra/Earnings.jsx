@@ -32,7 +32,7 @@
 //                                 </div>
 
 //                                 <div>
-//                                     <p className="text-sm text-gray-500">{card.title}</p>
+//                                     <p className="text-md text-gray-500">{card.title}</p>
 //                                     <h2 className="text-xl font-semibold text-gray-900">
 //                                         {card.amount}
 //                                     </h2>
@@ -59,7 +59,7 @@
 //                         </p>
 //                     </div>
 
-//                     <button className="flex items-center gap-2 text-sm border px-3 py-1.5 rounded-md text-gray-600 hover:bg-gray-50">
+//                     <button className="flex items-center gap-2 text-md border px-3 py-1.5 rounded-md text-gray-600 hover:bg-gray-50">
 //                         <HiOutlineFilter size={16} />
 //                         Filter
 //                     </button>
@@ -69,7 +69,7 @@
 //                 <div className="overflow-x-auto">
 //                     <table className="min-w-full border-separate border-spacing-y-2 border-gray-200">
 //                         <thead>
-//                             <tr className="text-left text-gray-500 text-sm border-t border-gray-200">
+//                             <tr className="text-left text-gray-500 text-md border-t border-gray-200">
 //                                 <th className="px-4 py-2">User Name ↓</th>
 //                                 <th className="px-4 py-2">Plan / Course Name ↓</th>
 //                                 <th className="px-4 py-2">Type ↓</th>
@@ -98,7 +98,7 @@
 //                                     {/* Type Badge */}
 //                                     <td className="px-4 py-3">
 //                                         <span
-//                                             className={`text-sm px-2 py-1 rounded-full ${item.type === "Plan"
+//                                             className={`text-md px-2 py-1 rounded-full ${item.type === "Plan"
 //                                                     ? "text-orange-700 bg-orange-50"
 //                                                     : "text-blue-700 bg-blue-50"
 //                                                 }`}
@@ -208,7 +208,7 @@ export default function Earnings() {
             cellRenderer: (params) => {
                 const isPlan = params.value === "Plan";
                 return (
-                    <span className={`text-sm px-2 py-1 rounded-full ${
+                    <span className={`text-md px-2 py-1 rounded-full ${
                         isPlan 
                             ? "text-orange-700 bg-orange-50" 
                             : "text-blue-700 bg-blue-50"
@@ -242,7 +242,7 @@ export default function Earnings() {
                 <div className="flex justify-end">
                     <button
                         onClick={() => handleView(params.data)}
-                        className="p-1.5 text-blue-600 hover:bg-blue-100 rounded-lg transition-all text-sm"
+                        className="p-1.5 text-blue-600 hover:bg-blue-100 rounded-lg transition-all text-md"
                         title="View"
                     >
                         <FiEye size={18} />
@@ -311,7 +311,7 @@ export default function Earnings() {
                                     <Icon size={22} />
                                 </div>
                                 <div>
-                                    <p className="text-sm text-gray-500">{card.title}</p>
+                                    <p className="text-md text-gray-500">{card.title}</p>
                                     <h2 className="text-xl font-semibold text-gray-900">
                                         {card.amount}
                                     </h2>
@@ -331,7 +331,7 @@ export default function Earnings() {
                 <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8 gap-4">
                     <div>
                         <h3 className="text-3xl font-bold text-gray-900">RA Earning</h3>
-                        <p className="text-sm text-gray-500">Earning History</p>
+                        <p className="text-md text-gray-500">Earning History</p>
                     </div>
                     <div className="flex items-center gap-3">
                         <button

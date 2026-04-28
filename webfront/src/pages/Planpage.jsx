@@ -156,8 +156,8 @@ export default function PlanPage() {
     ];
 
     return (
-        <div className="min-h-screen bg-gray-50 py-6">
-            <div className="max-w-full px-6 lg:px-40">
+        <div className="min-h-screen max-w-7xl mx-auto py-10 px-6">
+            <div className="">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {/* LEFT PROFILE SECTION */}
                     <div className="bg-white rounded-2xl overflow-hidden md:col-span-1 flex flex-col h-full">
@@ -184,7 +184,7 @@ export default function PlanPage() {
                                     <h2 className="text-lg font-semibold text-gray-900">
                                         {analyst.name || "N/A"}
                                     </h2>
-                                    <p className="text-gray-600 text-sm">
+                                    <p className="text-gray-600 text-md">
                                         {analyst.experience || "0"} years of experience
                                     </p>
                                 </div>
@@ -195,7 +195,7 @@ export default function PlanPage() {
                                 />
                             </div>
 
-                            <div className="space-y-3 text-sm flex-grow">
+                            <div className="space-y-3 text-md flex-grow">
                                 {stats.map(([label, value], index) => (
                                     <div
                                         key={index}
@@ -220,49 +220,49 @@ export default function PlanPage() {
                             <hr className="border-t border-gray-300 -mx-6 mb-6" />
                             <div className="grid sm:grid-cols-2 gap-y-5 gap-x-6">
                                 <div>
-                                    <p className="text-gray-500 text-sm">SEBI Registration Number</p>
+                                    <p className="text-gray-500 text-md">SEBI Registration Number</p>
                                     <p className="font-medium text-gray-800 text-md mt-1">
                                         {analyst.sebi_number || "N/A"}
                                     </p>
                                 </div>
                                 <div>
-                                    <p className="text-gray-500 text-sm">State</p>
+                                    <p className="text-gray-500 text-md">State</p>
                                     <p className="font-medium text-gray-800 text-md mt-1">
                                         {analyst.state || "N/A"}
                                     </p>
                                 </div>
                                 <div>
-                                    <p className="text-gray-500 text-sm">Specialization</p>
+                                    <p className="text-gray-500 text-md">Specialization</p>
                                     <p className="font-medium text-gray-800 text-md mt-1">
                                         {analyst.specialization || "N/A"}
                                     </p>
                                 </div>
                                 <div>
-                                    <p className="text-gray-500 text-sm">Current Firm / Company Name</p>
+                                    <p className="text-gray-500 text-md">Current Firm / Company Name</p>
                                     <p className="font-medium text-gray-800 text-md mt-1">
                                         {analyst.company_name || "N/A"}
                                     </p>
                                 </div>
                                 <div>
-                                    <p className="text-gray-500 text-sm">Education / Certification</p>
+                                    <p className="text-gray-500 text-md">Education / Certification</p>
                                     <p className="font-medium text-gray-800 text-md mt-1">
                                         {analyst.education || "N/A"}
                                     </p>
                                 </div>
                                 <div>
-                                    <p className="text-gray-500 text-sm">Languages</p>
+                                    <p className="text-gray-500 text-md">Languages</p>
                                     <p className="font-medium text-gray-800 text-md mt-1">
                                         {formatLanguages(analyst.languages)}
                                     </p>
                                 </div>
                                 <div>
-                                    <p className="text-gray-500 text-sm">Subscription</p>
+                                    <p className="text-gray-500 text-md">Subscription</p>
                                     <p className="font-medium text-gray-800 text-md mt-1">
                                         {analyst.subcription || "N/A"}
                                     </p>
                                 </div>
                                 <div>
-                                    <p className="text-gray-500 text-sm">Courses</p>
+                                    <p className="text-gray-500 text-md">Courses</p>
                                     <p className="font-medium text-gray-800 text-md mt-1">
                                         {analyst.courses || "N/A"}
                                     </p>
@@ -273,7 +273,7 @@ export default function PlanPage() {
                         <div className="bg-white border border-gray-300 p-6 rounded-2xl flex-grow">
                             <h1 className="text-lg font-semibold mb-4">About Us</h1>
                             <hr className="border-t border-gray-300 -mx-6 mb-4" />
-                            <p className="text-sm text-gray-700 leading-relaxed">
+                            <p className="text-md text-gray-700 leading-relaxed">
                                 {analyst?.about_us || ""}
                             </p>
                         </div>
@@ -281,7 +281,7 @@ export default function PlanPage() {
                         <div className="bg-white border border-gray-300 p-6 rounded-2xl flex-grow">
                             <h1 className="text-lg font-semibold mb-4">Terms & Conditions</h1>
                             <hr className="border-t border-gray-300 -mx-6 mb-4" />
-                            <p className="text-sm text-gray-700 leading-relaxed">
+                            <p className="text-md text-gray-700 leading-relaxed">
                                 {analyst?.terms || "No description available"}
                             </p>
                         </div>

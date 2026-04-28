@@ -287,11 +287,11 @@ export default function AdminProfile() {
         return (
             <div className="space-y-2">
                 <div className="flex justify-between items-center">
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label className="block text-md font-medium text-gray-700">
                         {label} {required && <span className="text-red-500">*</span>}
                     </label>
                     {isVerified && (
-                        <span className="flex items-center text-sm text-green-600">
+                        <span className="flex items-center text-md text-green-600">
                             <CheckCircle size={14} className="mr-1" />
                             Verified
                         </span>
@@ -331,7 +331,7 @@ export default function AdminProfile() {
                 {/* OTP Input - Same for both Phone & PAN */}
                 {(isPhoneField || isPanField) && verificationState.otpSent && isEditing && (
                     <div className="mt-3 p-4 bg-blue-50 border border-blue-200 rounded-xl">
-                        <p className="text-sm text-blue-700 mb-3">
+                        <p className="text-md text-blue-700 mb-3">
                             Enter OTP sent to {isPhoneField ? `phone ${formData.phone}` : `email for PAN ${formData.pan}`}
                         </p>
                         <div className="flex space-x-2">
@@ -362,7 +362,7 @@ export default function AdminProfile() {
                 )}
                 
                 {errors[name] && (
-                    <p className="text-sm text-red-600 mt-1">{errors[name]}</p>
+                    <p className="text-md text-red-600 mt-1">{errors[name]}</p>
                 )}
             </div>
         );
@@ -371,7 +371,7 @@ export default function AdminProfile() {
     // SelectField Component
     const SelectField = ({ label, name, options, required = false }) => (
         <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-md font-medium text-gray-700">
                 {label} {required && <span className="text-red-500">*</span>}
             </label>
             <select
@@ -395,7 +395,7 @@ export default function AdminProfile() {
                 ))}
             </select>
             {errors[name] && (
-                <p className="text-sm text-red-600">{errors[name]}</p>
+                <p className="text-md text-red-600">{errors[name]}</p>
             )}
         </div>
     );
@@ -560,7 +560,7 @@ export default function AdminProfile() {
 
                     {/* Footer */}
                     <div className="px-6 py-6 bg-gray-50 border-t border-gray-200">
-                        <p className="text-sm text-gray-600 text-center">
+                        <p className="text-md text-gray-600 text-center">
                             Make sure to save your changes before leaving this page.
                         </p>
                     </div>

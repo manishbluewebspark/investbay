@@ -303,7 +303,7 @@ const EditSignal = ({ data, onNext, onClose, onSignalUpdated }) => {
 
     return (
       <div className="relative" ref={dropdownRef}>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-md font-medium text-gray-700 mb-2">
           Script/Symbol *
           {formData.scriptToken && (
             <span className="ml-2 text-xs text-green-600">
@@ -364,7 +364,7 @@ const EditSignal = ({ data, onNext, onClose, onSignalUpdated }) => {
             {loadingScrips && (
               <div className="p-6 text-center">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div>
-                <p className="text-gray-500 text-sm mt-2">Loading instruments...</p>
+                <p className="text-gray-500 text-md mt-2">Loading instruments...</p>
               </div>
             )}
 
@@ -393,7 +393,7 @@ const EditSignal = ({ data, onNext, onClose, onSignalUpdated }) => {
                                 {scrip.symbol}
                               </div>
                               {formData.script === scrip.symbol && (
-                                <FiCheck className="text-green-500 text-sm" />
+                                <FiCheck className="text-green-500 text-md" />
                               )}
                             </div>
                             <div className="text-xs text-gray-500 mt-1">
@@ -475,7 +475,7 @@ const EditSignal = ({ data, onNext, onClose, onSignalUpdated }) => {
 
     return (
       <div className="relative" ref={localRef}>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-md font-medium text-gray-700 mb-2">
           {label}
           {required && <span className="text-red-500 ml-1">*</span>}
         </label>
@@ -496,7 +496,7 @@ const EditSignal = ({ data, onNext, onClose, onSignalUpdated }) => {
         {isOpen && !loading && !disabled && (
           <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-64 overflow-y-auto">
             {(!options || options.length === 0) ? (
-              <div className="p-3 text-gray-500 text-sm text-center">
+              <div className="p-3 text-gray-500 text-md text-center">
                 No options available
               </div>
             ) : (
@@ -653,7 +653,7 @@ const EditSignal = ({ data, onNext, onClose, onSignalUpdated }) => {
                   <div className="h-6 w-6 rounded-full bg-blue-100 flex items-center justify-center">
                     <FiCheck className="text-blue-600" />
                   </div>
-                  <span className="text-sm font-medium text-blue-800">
+                  <span className="text-md font-medium text-blue-800">
                     Editing Signal ID: <strong>{data?.id}</strong>
                   </span>
                 </div>
@@ -686,7 +686,7 @@ const EditSignal = ({ data, onNext, onClose, onSignalUpdated }) => {
 
               <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
                 <div>
-                  <label className="text-sm font-medium text-gray-700 mb-2">Expiry (Optional)</label>
+                  <label className="text-md font-medium text-gray-700 mb-2">Expiry (Optional)</label>
                   <input
                     type="text"
                     name="expiry"
@@ -697,7 +697,7 @@ const EditSignal = ({ data, onNext, onClose, onSignalUpdated }) => {
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-gray-700 mb-2">Strike Price (Optional)</label>
+                  <label className="text-md font-medium text-gray-700 mb-2">Strike Price (Optional)</label>
                   <input
                     type="text"
                     name="strike_price"
@@ -738,7 +738,7 @@ const EditSignal = ({ data, onNext, onClose, onSignalUpdated }) => {
                   onSelect={handleSelect}
                 />
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Risk Reward Ratio (Optional)</label>
+                  <label className="block text-md font-medium text-gray-700 mb-2">Risk Reward Ratio (Optional)</label>
                   <input
                     type="text"
                     name="riskRewardRatio"

@@ -22,11 +22,11 @@ export default function DocumentSignedModal({
           Document Signed Successfully
         </h2>
 
-        <p className="mb-1 text-sm text-gray-500">
+        <p className="mb-1 text-md text-gray-500">
           Transaction ID: 123a1234b123c123456d1234
         </p>
 
-        <p className="mb-8 text-sm text-gray-500">
+        <p className="mb-8 text-md text-gray-500">
           Issued by: Company name
         </p>
 
@@ -34,14 +34,14 @@ export default function DocumentSignedModal({
         <div className="flex justify-center gap-4">
           <button
             onClick={onDownload}
-            className="rounded-md border border-gray-300 px-8 py-2 text-sm text-gray-600 hover:bg-gray-100"
+            className="rounded-md border border-gray-300 px-8 py-2 text-md text-gray-600 hover:bg-gray-100"
           >
             Download
           </button>
 
           <button
             onClick={onNext}
-            className="rounded-md bg-black px-10 py-2 text-sm font-medium text-white hover:bg-gray-900"
+            className="rounded-md bg-black px-10 py-2 text-md font-medium text-white hover:bg-gray-900"
           >
             Next
           </button>

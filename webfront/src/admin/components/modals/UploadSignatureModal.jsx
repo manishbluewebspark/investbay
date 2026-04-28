@@ -73,7 +73,7 @@ export default function UploadSignatureModal({ open, onClose, onProceed }) {
               <Upload className="text-blue-600" size={28} />
             </div>
 
-            <p className="text-sm text-gray-700">
+            <p className="text-md text-gray-700">
               <span className="font-medium text-blue-600">Click here</span>{" "}
               to upload or drop here
             </p>
@@ -110,7 +110,7 @@ export default function UploadSignatureModal({ open, onClose, onProceed }) {
           <button
             onClick={onClose}
             disabled={isUploading}
-            className="rounded-md border border-gray-400 px-10 py-2 text-sm text-gray-600 hover:bg-gray-100 disabled:opacity-50"
+            className="rounded-md border border-gray-400 px-10 py-2 text-md text-gray-600 hover:bg-gray-100 disabled:opacity-50"
           >
             Cancel
           </button>
@@ -118,7 +118,7 @@ export default function UploadSignatureModal({ open, onClose, onProceed }) {
           <button
             disabled={!file || isUploading || error}
             onClick={handleProceed}
-            className={`rounded-md px-10 py-2 text-sm font-medium text-white
+            className={`rounded-md px-10 py-2 text-md font-medium text-white
               ${
                 file && !isUploading && !error
                   ? "bg-black hover:bg-gray-900"

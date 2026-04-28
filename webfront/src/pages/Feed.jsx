@@ -125,10 +125,10 @@ export default function Feed() {
         toast.warning(
           <div className="flex flex-col gap-2">
             <p className="font-semibold">⚠️ Free Limit Reached!</p>
-            <p className="text-sm">You've used all 5 free calls. Subscribe for unlimited access.</p>
+            <p className="text-md">You've used all 5 free calls. Subscribe for unlimited access.</p>
             <button 
               onClick={() => navigate('/pricing')}
-              className="mt-2 bg-orange-500 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-orange-600"
+              className="mt-2 bg-orange-500 text-white px-4 py-2 rounded-lg text-md font-semibold hover:bg-orange-600"
             >
               View Plans
             </button>
@@ -190,13 +190,13 @@ export default function Feed() {
         toast.warning(
           <div className="flex flex-col gap-2">
             <p className="font-semibold">🔒 Premium Signal - {signal.requiredPlanName}</p>
-            <p className="text-sm">This signal requires an active subscription to <span className="font-bold">{signal.requiredPlanName}</span>.</p>
+            <p className="text-md">This signal requires an active subscription to <span className="font-bold">{signal.requiredPlanName}</span>.</p>
             <p className="text-xs text-gray-600">Subscribe to this plan to unlock all related signals.</p>
             <button 
               onClick={() => navigate('/pricing', { 
                 state: { selectedPlanId: signal.requiredPlanId, planName: signal.requiredPlanName }
               })}
-              className="mt-2 bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-emerald-700"
+              className="mt-2 bg-emerald-600 text-white px-4 py-2 rounded-lg text-md font-semibold hover:bg-emerald-700"
             >
               Subscribe to {signal.requiredPlanName}
             </button>
@@ -340,7 +340,7 @@ export default function Feed() {
 
   return (
     <>
-      <section className="py-10 px-4 sm:px-8 lg:px-40 bg-[#F9FAFB] min-h-screen">
+      <section className="py-10 px-4 sm:px-8 lg:px-40 min-h-screen">
         {/* Login Modal */}
         <LoginPromptModal />
 
@@ -351,7 +351,7 @@ export default function Feed() {
               <button
                 key={index}
                 onClick={() => setActiveTab(tab)}
-                className={`px-4 py-1.5 rounded-full text-sm transition-all duration-300 ${
+                className={`px-4 py-1.5 rounded-full text-md transition-all duration-300 ${
                   activeTab === tab
                     ? "bg-white text-black font-medium"
                     : "text-gray-300 hover:text-white"
@@ -362,14 +362,14 @@ export default function Feed() {
             ))}
           </div>
 
-          <button className="flex items-center gap-2 border border-gray-200 px-4 py-1.5 rounded-full text-gray-700 text-sm hover:bg-gray-50 transition-all duration-300">
+          <button className="flex items-center gap-2 border border-gray-200 px-4 py-1.5 rounded-full text-gray-700 text-md hover:bg-gray-50 transition-all duration-300">
             <Filter className="w-4 h-4" /> Filter
           </button>
         </div>
 
         {/* Tab Description */}
         <div className="max-w-6xl mx-auto mb-6">
-          <p className="text-sm text-gray-600">
+          <p className="text-md text-gray-600">
             {activeTab === "Free Calls" 
               ? user 
                 ? `You have ${accessInfo.remainingViews} free views remaining`
@@ -456,7 +456,7 @@ export default function Feed() {
                     )}
 
                     {/* Date and Time */}
-                    <div className="flex justify-between text-gray-700 text-xs sm:text-sm mb-3">
+                    <div className="flex justify-between text-gray-700 text-xs sm:text-md mb-3">
                       <div className="flex items-center gap-1">
                         <Calendar className="w-4 h-4" /> {formatDate(signal.created_at)}
                       </div>
@@ -473,10 +473,10 @@ export default function Feed() {
                         className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-gray-300"
                       />
                       <div className="text-left">
-                        <h4 className="font-semibold text-gray-900 text-sm sm:text-base">
+                        <h4 className="font-semibold text-gray-900 text-md sm:text-md">
                           {signal.instrument} {signal.instrument_type || ""}
                         </h4>
-                        <p className="text-gray-700 text-xs sm:text-sm">
+                        <p className="text-gray-700 text-xs sm:text-md">
                           Status -{" "}
                           <span
                             className={`font-medium ${
@@ -492,7 +492,7 @@ export default function Feed() {
                     </div>
 
                     {/* Signal Details Grid */}
-                    <div className="grid grid-cols-2 text-left text-gray-900 text-xs sm:text-sm gap-y-2 mb-5">
+                    <div className="grid grid-cols-2 text-left text-gray-900 text-xs sm:text-md gap-y-2 mb-5">
                       <p>
                         <span className="font-semibold">Entry:</span> ₹
                         {signal.entry_price}
@@ -536,7 +536,7 @@ export default function Feed() {
                       <button
                         onClick={() => !signal.isLocked && handleUnlockClick(signal)}
                         disabled={signal.isLocked}
-                        className={`w-full py-2 rounded-md text-sm flex items-center justify-center gap-2 transition-colors duration-300 ${
+                        className={`w-full py-2 rounded-md text-md flex items-center justify-center gap-2 transition-colors duration-300 ${
                           signal.isLocked
                             ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
                             : 'border hover:bg-black hover:text-white'
@@ -550,7 +550,7 @@ export default function Feed() {
 
                   {/* Bottom Segment Tag */}
                   <div className="absolute bottom-0 left-0 right-0 translate-y-1/2 z-0">
-                    <div className="py-3 sm:py-4 text-center text-white font-medium text-xs sm:text-sm bg-black rounded-b-2xl mt-8">
+                    <div className="py-3 sm:py-4 text-center text-white font-medium text-xs sm:text-md bg-black rounded-b-2xl mt-8">
                       {signal.segment || "Segment"}
                     </div>
                   </div>
@@ -587,7 +587,6 @@ export default function Feed() {
           ) : null}
         </div>
       </section>
-      <Newsletter />
     </>
   );
 }

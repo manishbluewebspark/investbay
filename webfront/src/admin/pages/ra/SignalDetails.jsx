@@ -52,7 +52,7 @@ const SignalDetails = () => {
             </div>
             <div className="flex-1">
               <div className="flex justify-between items-center bg-gray-100 px-3 py-2 rounded-full">
-                <span className="text-gray-500 text-sm">Stop Loss</span>
+                <span className="text-gray-500 text-md">Stop Loss</span>
                 <span className="font-semibold text-gray-700">{signal.stop_loss}</span>
               </div>
             </div>
@@ -64,7 +64,7 @@ const SignalDetails = () => {
             </div>
             <div className="flex-1">
               <div className="flex justify-between items-center bg-green-500 px-3 py-2 rounded-full text-white">
-                <span className="text-sm">Entry</span>
+                <span className="text-md">Entry</span>
                 <span className="font-semibold">{signal.entry_price}</span>
               </div>
             </div>
@@ -77,7 +77,7 @@ const SignalDetails = () => {
             </div>
             <div className="flex-1">
               <div className="flex justify-between items-center bg-gray-100 px-3 py-2 rounded-full">
-                <span className="text-gray-500 text-sm">Target 1</span>
+                <span className="text-gray-500 text-md">Target 1</span>
                 <span className="font-semibold text-gray-700">{signal.target_first}</span>
               </div>
             </div>
@@ -90,7 +90,7 @@ const SignalDetails = () => {
             </div>
             <div className="flex-1">
               <div className="flex justify-between items-center bg-gray-100 px-3 py-2 rounded-full">
-                <span className="text-gray-500 text-sm">Target 2</span>
+                <span className="text-gray-500 text-md">Target 2</span>
                 <span className="font-semibold text-gray-700">{signal.target_second}</span>
               </div>
             </div>
@@ -102,7 +102,7 @@ const SignalDetails = () => {
       <div className="bg-white shadow-md rounded-lg p-6 flex-1">
         <div className="flex justify-between items-center mb-6 border-b pb-2 border-gray-300">
           <h2 className="text-gray-700 font-semibold text-lg">Plan Details</h2>
-                              <span className={`text-sm px-2 py-1 rounded-full ${
+                              <span className={`text-md px-2 py-1 rounded-full ${
                       signal.status === "active"
                         ? "text-green-700 bg-green-50"
                         : "text-red-700 bg-red-50"
@@ -113,27 +113,27 @@ const SignalDetails = () => {
 
         <div className="grid grid-cols-2 gap-6 mb-6">
           <div>
-            <div className="text-gray-600 text-sm mb-1">Date</div>
+            <div className="text-gray-600 text-md mb-1">Date</div>
             <div className="font-semibold">{formatISTDate(signal.created_at)}</div>
           </div>
           <div>
-            <div className="text-gray-600 text-sm mb-1">Time</div>
+            <div className="text-gray-600 text-md mb-1">Time</div>
             <div className="font-semibold">{formatISTTime(signal.created_at)}</div>
           </div>
           <div>
-            <div className="text-gray-600 text-sm mb-1">Entry</div>
+            <div className="text-gray-600 text-md mb-1">Entry</div>
             <div className="font-semibold text-lg">{signal.entry_price}</div>
           </div>
           <div>
-            <div className="text-gray-600 text-sm mb-1">Stop Loss</div>
+            <div className="text-gray-600 text-md mb-1">Stop Loss</div>
             <div className="font-semibold text-lg">{signal.stop_loss}</div>
           </div>
           <div>
-            <div className="text-gray-600 text-sm mb-1">Target 1</div>
+            <div className="text-gray-600 text-md mb-1">Target 1</div>
             <div className="font-semibold text-lg">{signal.target_first}</div>
           </div>
           <div>
-            <div className="text-gray-600 text-sm mb-1">Target 2</div>
+            <div className="text-gray-600 text-md mb-1">Target 2</div>
             <div className="font-semibold text-lg">{signal.target_second}</div>
           </div>
           <div>

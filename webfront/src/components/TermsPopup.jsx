@@ -123,7 +123,7 @@ export default function TermsPopup({
                         {/* Signature Upload Section */}
                         <div className="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
                             <h4 className="font-semibold text-blue-800 mb-2">Step 1: Upload Your Signature</h4>
-                            <p className="text-sm text-blue-600 mb-3">Please upload your signature first to proceed</p>
+                            <p className="text-md text-blue-600 mb-3">Please upload your signature first to proceed</p>
                             
                             {!signatureUploaded ? (
                                 <button
@@ -155,7 +155,7 @@ export default function TermsPopup({
                                     disabled={!signatureUploaded}
                                     className="w-5 h-5 mt-0.5 rounded border-gray-300 text-green-600 focus:ring-green-500"
                                 />
-                                <span className={`text-sm ${signatureUploaded ? 'text-gray-700' : 'text-gray-400'}`}>
+                                <span className={`text-md ${signatureUploaded ? 'text-gray-700' : 'text-gray-400'}`}>
                                     I have read and agree to the terms and conditions above
                                 </span>
                             </label>

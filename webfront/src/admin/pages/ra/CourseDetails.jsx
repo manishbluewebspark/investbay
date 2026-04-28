@@ -92,7 +92,7 @@
 //               <h2 className="text-lg">
 //                 {course.course_title}
 //               </h2>
-//               <p className="text-sm text-gray-600 bg-white">
+//               <p className="text-md text-gray-600 bg-white">
 //                 {course.trading_category}
 //               </p>
 //             </div>
@@ -106,7 +106,7 @@
 //               <h3 className="text-2xl  ">Course Details</h3>
 //               <button
 //                 onClick={() => setOpen(true)}
-//                 className="flex items-center gap-2 bg-black text-white px-6 py-3 rounded-xl text-sm font-medium hover:bg-gray-900 transition-colors"
+//                 className="flex items-center gap-2 bg-black text-white px-6 py-3 rounded-xl text-md font-medium hover:bg-gray-900 transition-colors"
 //               >
 //                 <FiPlus /> Add Video
 //               </button>
@@ -115,7 +115,7 @@
 //             {/* Course Info Grid */}
 //             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
 //               <div>
-//                 <p className="text-gray-500 text-sm font-medium mb-1">
+//                 <p className="text-gray-500 text-md font-medium mb-1">
 //                   Course Level
 //                 </p>
 //                 <p className="text-lg  ">
@@ -123,7 +123,7 @@
 //                 </p>
 //               </div>
 //               <div>
-//                 <p className="text-gray-500 text-sm font-medium mb-1">
+//                 <p className="text-gray-500 text-md font-medium mb-1">
 //                   Language
 //                 </p>
 //                 <p className="text-lg ">
@@ -131,7 +131,7 @@
 //                 </p>
 //               </div>
 //               <div>
-//                 <p className="text-gray-500 text-sm font-medium mb-1">
+//                 <p className="text-gray-500 text-md font-medium mb-1">
 //                   Access Validity
 //                 </p>
 //                 <p className="text-lg  ">
@@ -139,13 +139,13 @@
 //                 </p>
 //               </div>
 //               <div>
-//                 <p className="text-gray-500 text-sm font-medium mb-1">
+//                 <p className="text-gray-500 text-md font-medium mb-1">
 //                   Learners
 //                 </p>
 //                 <p className="text-lg  ">1,626</p>
 //               </div>
 //               <div>
-//                 <p className="text-gray-500 text-sm font-medium mb-1">
+//                 <p className="text-gray-500 text-md font-medium mb-1">
 //                   Course Price
 //                 </p>
 //                 <p className="text-lg  ">
@@ -153,7 +153,7 @@
 //                 </p>
 //               </div>
 //               <div>
-//                 <p className="text-gray-500 text-sm font-medium mb-1">
+//                 <p className="text-gray-500 text-md font-medium mb-1">
 //                   Discount
 //                 </p>
 //                 <p className="text-lg  ">
@@ -164,10 +164,10 @@
 
 //             {/* Description */}
 //             <div className="mt-auto">
-//               <p className="text-gray-500 text-sm font-medium mb-3">
+//               <p className="text-gray-500 text-md font-medium mb-3">
 //                 Description
 //               </p>
-//               <p className=" leading-relaxed text-base">
+//               <p className=" leading-relaxed text-md">
 //                 {course.description}
 //               </p>
 //             </div>
@@ -302,7 +302,7 @@ export default function CourseDetails() {
               <h2 className="text-lg">
                 {course.course_title}
               </h2>
-              <p className="text-sm text-gray-600 bg-white">
+              <p className="text-md text-gray-600 bg-white">
                 {course.trading_category}
               </p>
             </div>
@@ -322,7 +322,7 @@ export default function CourseDetails() {
                 </button>
                 <button
                   onClick={() => setOpenAddVideo(true)}
-                  className="flex items-center gap-2 bg-black text-white px-6 py-3 rounded-xl text-sm font-medium hover:bg-gray-900 transition-colors cursor-pointer"
+                  className="flex items-center gap-2 bg-black text-white px-6 py-3 rounded-xl text-md font-medium hover:bg-gray-900 transition-colors cursor-pointer"
                 >
                   <FiPlus /> Add Video
                 </button>
@@ -332,7 +332,7 @@ export default function CourseDetails() {
             {/* Course Info Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
               <div>
-                <p className="text-gray-500 text-sm font-medium mb-1">
+                <p className="text-gray-500 text-md font-medium mb-1">
                   Course Level
                 </p>
                 <p className="text-lg  ">
@@ -340,7 +340,7 @@ export default function CourseDetails() {
                 </p>
               </div>
               <div>
-                <p className="text-gray-500 text-sm font-medium mb-1">
+                <p className="text-gray-500 text-md font-medium mb-1">
                   Language
                 </p>
                 <p className="text-lg ">
@@ -348,7 +348,7 @@ export default function CourseDetails() {
                 </p>
               </div>
               <div>
-                <p className="text-gray-500 text-sm font-medium mb-1">
+                <p className="text-gray-500 text-md font-medium mb-1">
                   Access Validity
                 </p>
                 <p className="text-lg  ">
@@ -356,13 +356,13 @@ export default function CourseDetails() {
                 </p>
               </div>
               <div>
-                <p className="text-gray-500 text-sm font-medium mb-1">
+                <p className="text-gray-500 text-md font-medium mb-1">
                   Learners
                 </p>
                 <p className="text-lg  ">1,626</p>
               </div>
               <div>
-                <p className="text-gray-500 text-sm font-medium mb-1">
+                <p className="text-gray-500 text-md font-medium mb-1">
                   Course Price
                 </p>
                 <p className="text-lg  ">
@@ -370,7 +370,7 @@ export default function CourseDetails() {
                 </p>
               </div>
               <div>
-                <p className="text-gray-500 text-sm font-medium mb-1">
+                <p className="text-gray-500 text-md font-medium mb-1">
                   Discount
                 </p>
                 <p className="text-lg  ">
@@ -381,10 +381,10 @@ export default function CourseDetails() {
 
             {/* Description */}
             <div className="mt-auto">
-              <p className="text-gray-500 text-sm font-medium mb-3">
+              <p className="text-gray-500 text-md font-medium mb-3">
                 Description
               </p>
-              <p className=" leading-relaxed text-base">
+              <p className=" leading-relaxed text-md">
                 {course.description}
               </p>
             </div>

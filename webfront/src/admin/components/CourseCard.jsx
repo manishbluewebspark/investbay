@@ -40,7 +40,7 @@
 //       </div>
 
 //       <div className="absolute bottom-3 left-3 right-3 p-3 rounded-md backdrop-blur-xl bg-black/60 z-10">
-//         <h3 className="text-white font-semibold text-sm line-clamp-2">
+//         <h3 className="text-white font-semibold text-md line-clamp-2">
 //           {course?.course_title || "Untitled Course"}
 //         </h3>
 
@@ -55,7 +55,7 @@
 //             )}
 //           </p>
 
-//           <p className="text-white text-sm font-semibold">
+//           <p className="text-white text-md font-semibold">
 //             ₹{price.toFixed(2)}
 //           </p>
 //         </div>
@@ -97,7 +97,7 @@ const CourseCard = ({ course }) => {
             </div>
 
             <div className="absolute bottom-3 left-3 right-3 p-3 rounded-md backdrop-blur-xl bg-black/70 z-10">
-                <h3 className="text-white font-semibold text-sm line-clamp-2 leading-tight">
+                <h3 className="text-white font-semibold text-md line-clamp-2 leading-tight">
                     {course?.course_title || "Untitled Course"}
                 </h3>
 
@@ -109,7 +109,7 @@ const CourseCard = ({ course }) => {
                             </span>
                         )}
                     </div>
-                    <p className="text-white text-sm font-bold">
+                    <p className="text-white text-md font-bold">
                         ₹{price.toFixed(0)}
                     </p>
                 </div>

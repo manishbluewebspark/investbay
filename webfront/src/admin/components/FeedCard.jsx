@@ -78,7 +78,7 @@
 //               className="w-10 h-10 rounded-full object-cover"
 //             />
 //             <div>
-//               <h4 className="text-sm font-semibold text-gray-900">{feed.ra_name}</h4>
+//               <h4 className="text-md font-semibold text-gray-900">{feed.ra_name}</h4>
 //               <p className="text-xs text-gray-500">{new Date(feed.created_at).toLocaleString()}</p>
 //             </div>
 //           </div>
@@ -93,21 +93,21 @@
 //               <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-300 z-10 py-1">
 //                 <button
 //                   onClick={handleView}
-//                   className="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+//                   className="flex items-center gap-3 w-full px-4 py-2 text-md text-gray-700 hover:bg-gray-50"
 //                 >
 //                   <FiEye className="text-gray-500" size={16} />
 //                   <span>View</span>
 //                 </button>
 //                 <button
 //                   onClick={handleEdit}
-//                   className="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+//                   className="flex items-center gap-3 w-full px-4 py-2 text-md text-gray-700 hover:bg-gray-50"
 //                 >
 //                   <FiEdit className="text-gray-500" size={16} />
 //                   <span>Edit</span>
 //                 </button>
 //                 <button
 //                   onClick={handleDelete}
-//                   className="flex items-center gap-3 w-full px-4 py-2 text-sm text-red-600 hover:bg-gray-50"
+//                   className="flex items-center gap-3 w-full px-4 py-2 text-md text-red-600 hover:bg-gray-50"
 //                 >
 //                   <FiTrash2 className="text-red-500" size={16} />
 //                   <span>Delete</span>
@@ -117,7 +117,7 @@
 //           </div>
 //         </div>
 
-//         <div className="px-4 text-sm text-gray-700 leading-relaxed">
+//         <div className="px-4 text-md text-gray-700 leading-relaxed">
 //           {feed.feed_text}
 //         </div>
 
@@ -158,7 +158,7 @@
 //           ))}
 //         </div>
 
-//         <div className="flex justify-between border-t border-gray-300 mt-4 px-4 py-3 text-sm text-gray-600">
+//         <div className="flex justify-between border-t border-gray-300 mt-4 px-4 py-3 text-md text-gray-600">
 //           <button className="flex items-center gap-2 hover:text-black">
 //             <FiThumbsUp /> {feed.feed_like_count || 0} Like
 //           </button>
@@ -426,7 +426,7 @@
             
 //             </>}
 //             <div>
-//               <h4 className="text-sm font-semibold text-gray-900">
+//               <h4 className="text-md font-semibold text-gray-900">
 //                 {feed.ra_name || "Unknown User"}
 //               </h4>
 //               <p className="text-xs text-gray-500">
@@ -445,21 +445,21 @@
 //               <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-300 z-10 py-1">
 //                 <button
 //                   onClick={handleView}
-//                   className="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+//                   className="flex items-center gap-3 w-full px-4 py-2 text-md text-gray-700 hover:bg-gray-50"
 //                 >
 //                   <FiEye className="text-gray-500" size={16} />
 //                   <span>View</span>
 //                 </button>
 //                 <button
 //                   onClick={handleEdit}
-//                   className="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+//                   className="flex items-center gap-3 w-full px-4 py-2 text-md text-gray-700 hover:bg-gray-50"
 //                 >
 //                   <FiEdit className="text-gray-500" size={16} />
 //                   <span>Edit</span>
 //                 </button>
 //                 <button
 //                   onClick={handleDelete}
-//                   className="flex items-center gap-3 w-full px-4 py-2 text-sm text-red-600 hover:bg-gray-50"
+//                   className="flex items-center gap-3 w-full px-4 py-2 text-md text-red-600 hover:bg-gray-50"
 //                 >
 //                   <FiTrash2 className="text-red-500" size={16} />
 //                   <span>Delete</span>
@@ -470,7 +470,7 @@
 //         </div>
 
 //         {feed.feed_text && (
-//           <div className="px-4 text-sm text-gray-700 leading-relaxed whitespace-pre-line">
+//           <div className="px-4 text-md text-gray-700 leading-relaxed whitespace-pre-line">
 //             {feed.feed_text}
 //           </div>
 //         )}
@@ -506,7 +506,7 @@
 //                 </video>
 //               ) : (
 //                 <div key={index} className="p-4 border rounded-md bg-gray-50">
-//                   <p className="text-sm text-gray-600 truncate">
+//                   <p className="text-md text-gray-600 truncate">
 //                     📄 {doc.filename || `Document ${index + 1}`}
 //                   </p>
 //                   <a 
@@ -533,7 +533,7 @@
 //           </div>
 //         )}
 
-//         <div className="flex justify-between border-t border-gray-300 mt-4 px-4 py-3 text-sm text-gray-600">
+//         <div className="flex justify-between border-t border-gray-300 mt-4 px-4 py-3 text-md text-gray-600">
 //           <button className="flex items-center gap-2 hover:text-black">
 //             <FiThumbsUp /> {feed.feed_like_count || 0} Like
 //           </button>
@@ -783,7 +783,7 @@
 //               <FaUserTie className="w-10 h-10 rounded-2xl" />
 //             )}
 //             <div>
-//               <h4 className="text-sm font-semibold text-gray-900">
+//               <h4 className="text-md font-semibold text-gray-900">
 //                 {feed.ra_name || "Unknown User"}
 //               </h4>
 //               <p className="text-xs text-gray-500">
@@ -802,21 +802,21 @@
 //               <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-300 z-10 py-1">
 //                 <button
 //                   onClick={handleView}
-//                   className="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+//                   className="flex items-center gap-3 w-full px-4 py-2 text-md text-gray-700 hover:bg-gray-50"
 //                 >
 //                   <FiEye className="text-gray-500" size={16} />
 //                   <span>View</span>
 //                 </button>
 //                 <button
 //                   onClick={handleEdit}
-//                   className="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+//                   className="flex items-center gap-3 w-full px-4 py-2 text-md text-gray-700 hover:bg-gray-50"
 //                 >
 //                   <FiEdit className="text-gray-500" size={16} />
 //                   <span>Edit</span>
 //                 </button>
 //                 <button
 //                   onClick={handleDelete}
-//                   className="flex items-center gap-3 w-full px-4 py-2 text-sm text-red-600 hover:bg-gray-50"
+//                   className="flex items-center gap-3 w-full px-4 py-2 text-md text-red-600 hover:bg-gray-50"
 //                 >
 //                   <FiTrash2 className="text-red-500" size={16} />
 //                   <span>Delete</span>
@@ -830,7 +830,7 @@
 //           <div className="px-4">
 //             <div
 //               ref={textRef}
-//               className={`text-sm text-gray-700 leading-relaxed whitespace-pre-line ${
+//               className={`text-md text-gray-700 leading-relaxed whitespace-pre-line ${
 //                 !isExpanded ? 'line-clamp-3' : ''
 //               }`}
 //               style={!isExpanded ? { display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' } : {}}
@@ -890,7 +890,7 @@
 //                 </video>
 //               ) : (
 //                 <div key={index} className="p-4 border rounded-md bg-gray-50">
-//                   <p className="text-sm text-gray-600 truncate">
+//                   <p className="text-md text-gray-600 truncate">
 //                     📄 {doc.filename || `Document ${index + 1}`}
 //                   </p>
 //                   <a 
@@ -917,7 +917,7 @@
 //           </div>
 //         )}
 
-//         <div className="flex justify-between border-t border-gray-300 mt-4 px-4 py-3 text-sm text-gray-600">
+//         <div className="flex justify-between border-t border-gray-300 mt-4 px-4 py-3 text-md text-gray-600">
 //           <button className="flex items-center gap-2 hover:text-black">
 //             <FiThumbsUp /> {feed.feed_like_count || 0} Like
 //           </button>
@@ -1303,11 +1303,11 @@ const FeedCard = ({ feed, onDeleteSuccess }) => {
                 }}
               />
             ) : null}
-            <div className={`${feed.ra_avatar ? 'hidden' : 'flex'} fallback-avatar w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 items-center justify-center text-white font-semibold text-sm`}>
+            <div className={`${feed.ra_avatar ? 'hidden' : 'flex'} fallback-avatar w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 items-center justify-center text-white font-semibold text-md`}>
               {getUserInitials()}
             </div>
             <div>
-              <h4 className="text-sm font-semibold text-gray-900 hover:underline cursor-pointer">
+              <h4 className="text-md font-semibold text-gray-900 hover:underline cursor-pointer">
                 {feed.ra_name || "Unknown User"}
               </h4>
               <p className="text-xs text-gray-500">
@@ -1329,14 +1329,14 @@ const FeedCard = ({ feed, onDeleteSuccess }) => {
               <div className="absolute right-0 mt-1 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-20 py-1">
                 <button
                   onClick={handleView}
-                  className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                  className="flex items-center gap-3 w-full px-4 py-2.5 text-md text-gray-700 hover:bg-gray-50 transition-colors"
                 >
                   <FiEye className="text-gray-500" size={16} />
                   <span>View post</span>
                 </button>
                 <button
                   onClick={handleEdit}
-                  className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                  className="flex items-center gap-3 w-full px-4 py-2.5 text-md text-gray-700 hover:bg-gray-50 transition-colors"
                 >
                   <FiEdit className="text-gray-500" size={16} />
                   <span>Edit post</span>
@@ -1344,7 +1344,7 @@ const FeedCard = ({ feed, onDeleteSuccess }) => {
                 <div className="border-t border-gray-100 my-1"></div>
                 <button
                   onClick={handleDelete}
-                  className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                  className="flex items-center gap-3 w-full px-4 py-2.5 text-md text-red-600 hover:bg-red-50 transition-colors"
                 >
                   <FiTrash2 className="text-red-500" size={16} />
                   <span>Delete post</span>
@@ -1359,7 +1359,7 @@ const FeedCard = ({ feed, onDeleteSuccess }) => {
           <div className="px-4 pb-2">
             <div
               ref={textRef}
-              className={`text-sm text-gray-800 leading-relaxed whitespace-pre-line break-words ${
+              className={`text-md text-gray-800 leading-relaxed whitespace-pre-line break-words ${
                 !isExpanded ? 'line-clamp-3' : ''
               }`}
               style={!isExpanded ? { 
@@ -1439,7 +1439,7 @@ const FeedCard = ({ feed, onDeleteSuccess }) => {
                           <FiEye className="text-gray-600" size={20} />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-gray-900 truncate">
+                          <p className="text-md font-medium text-gray-900 truncate">
                             {doc.originalName || doc.filename || `Document ${index + 1}`}
                           </p>
                           <p className="text-xs text-gray-500">
@@ -1500,7 +1500,7 @@ const FeedCard = ({ feed, onDeleteSuccess }) => {
           <button 
             onClick={handleLike}
             disabled={isLiking}
-            className={`flex items-center justify-center gap-2 py-3 text-sm font-medium transition-colors hover:bg-gray-50 ${
+            className={`flex items-center justify-center gap-2 py-3 text-md font-medium transition-colors hover:bg-gray-50 ${
               isLiked ? 'text-blue-600' : 'text-gray-600 hover:text-blue-600'
             }`}
           >
@@ -1515,7 +1515,7 @@ const FeedCard = ({ feed, onDeleteSuccess }) => {
           {/* Comment Button */}
           <button 
             onClick={() => setShowComments(!showComments)}
-            className={`flex items-center justify-center gap-2 py-3 text-sm font-medium transition-colors hover:bg-gray-50 ${
+            className={`flex items-center justify-center gap-2 py-3 text-md font-medium transition-colors hover:bg-gray-50 ${
               showComments ? 'text-blue-600' : 'text-gray-600 hover:text-blue-600'
             }`}
           >
@@ -1527,7 +1527,7 @@ const FeedCard = ({ feed, onDeleteSuccess }) => {
           <button 
             onClick={handleShare}
             disabled={isSharing}
-            className="flex items-center justify-center gap-2 py-3 text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors hover:bg-gray-50"
+            className="flex items-center justify-center gap-2 py-3 text-md font-medium text-gray-600 hover:text-blue-600 transition-colors hover:bg-gray-50"
           >
             <FiShare2 size={16} />
             <span>Share</span>
@@ -1559,7 +1559,7 @@ const FeedCard = ({ feed, onDeleteSuccess }) => {
                   value={newComment}
                   onChange={(e) => setNewComment(e.target.value)}
                   placeholder="Write a comment..."
-                  className="w-full px-4 py-2 pr-20 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                  className="w-full px-4 py-2 pr-20 text-md border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
                   disabled={isSubmittingComment}
                 />
                 <button
@@ -1601,7 +1601,7 @@ const FeedCard = ({ feed, onDeleteSuccess }) => {
                             {formatDate(comment.created_at)}
                           </span>
                         </div>
-                        <p className="text-sm text-gray-800 whitespace-pre-line break-words">
+                        <p className="text-md text-gray-800 whitespace-pre-line break-words">
                           {comment.comment_text}
                         </p>
                       </div>
@@ -1613,7 +1613,7 @@ const FeedCard = ({ feed, onDeleteSuccess }) => {
                   <div className="inline-flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full mb-3">
                     <FaRegComment className="text-gray-400" size={20} />
                   </div>
-                  <p className="text-gray-500 text-sm">
+                  <p className="text-gray-500 text-md">
                     No comments yet. Be the first to comment!
                   </p>
                 </div>

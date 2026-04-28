@@ -133,14 +133,14 @@ export default function ResearchAnalyst() {
         <div className="flex gap-1 justify-end">
           <button
             onClick={() => handleView(params.data)}
-            className="p-1.5 text-blue-600 hover:bg-blue-100 rounded-lg transition-all text-sm"
+            className="p-1.5 text-blue-600 hover:bg-blue-100 rounded-lg transition-all text-md"
             title="View"
           >
             👁️
           </button>
           <button
             onClick={() => handleDelete(params.data)}
-            className="p-1.5 text-red-600 hover:bg-red-100 rounded-lg transition-all text-sm"
+            className="p-1.5 text-red-600 hover:bg-red-100 rounded-lg transition-all text-md"
             title="Delete"
           >
             🗑️
@@ -224,7 +224,7 @@ export default function ResearchAnalyst() {
       <div className="flex justify-between items-center mb-6">
         <div>
           <h2 className="text-3xl font-bold text-gray-900">Research Analysts</h2>
-          <p className="text-sm text-gray-500 mt-1">Manage RA profiles</p>
+          <p className="text-md text-gray-500 mt-1">Manage RA profiles</p>
         </div>
         <button
           onClick={() => setStep(1)}

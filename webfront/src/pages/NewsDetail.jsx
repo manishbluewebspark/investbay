@@ -34,9 +34,9 @@
 //                         <Tag>{category}</Tag>
 //                         <TimeStamp time={timeAgo} />
 //                     </div>
-//                     <h3 className="font-bold text-gray-900 leading-snug line-clamp-2 group-hover:text-indigo-600 transition-colors text-base">{title}</h3>
-//                     <p className="mt-2 text-sm text-gray-600 line-clamp-2">{excerpt}</p>
-//                     <span className="mt-2 inline-flex items-center gap-1 text-sm font-semibold text-indigo-600 group-hover:text-indigo-800 group-hover:underline transition-colors">
+//                     <h3 className="font-bold text-gray-900 leading-snug line-clamp-2 group-hover:text-indigo-600 transition-colors text-md">{title}</h3>
+//                     <p className="mt-2 text-md text-gray-600 line-clamp-2">{excerpt}</p>
+//                     <span className="mt-2 inline-flex items-center gap-1 text-md font-semibold text-indigo-600 group-hover:text-indigo-800 group-hover:underline transition-colors">
 //                         Read More <ArrowUpRight className="w-3.5 h-3.5" />
 //                     </span>
 //                 </div>
@@ -280,7 +280,7 @@
 //                                     </div>
 //                                     <div>
 //                                         <p className="font-medium text-gray-900">{newsItem.author}</p>
-//                                         <p className="text-sm text-gray-500">Author</p>
+//                                         <p className="text-md text-gray-500">Author</p>
 //                                     </div>
 //                                 </div>
 //                             )}
@@ -304,7 +304,7 @@
 //                         <div className="mt-12">
 //                             <h2 className="text-2xl font-bold text-gray-900 mb-6">
 //                                 More News You Might Like
-//                                 <span className="text-sm font-normal text-gray-500 ml-2">
+//                                 <span className="text-md font-normal text-gray-500 ml-2">
 //                                     ({otherNews.length} articles)
 //                                 </span>
 //                             </h2>
@@ -562,9 +562,9 @@ const NewsCard = ({ media, category, title, excerpt, timeAgo, id, currentId }) =
                         <Tag>{category}</Tag>
                         <TimeStamp time={timeAgo} />
                     </div>
-                    <h3 className="font-bold text-gray-900 leading-snug line-clamp-2 group-hover:text-indigo-600 transition-colors text-base">{title}</h3>
-                    <p className="mt-2 text-sm text-gray-600 line-clamp-2">{excerpt}</p>
-                    <span className="mt-2 inline-flex items-center gap-1 text-sm font-semibold text-indigo-600 group-hover:text-indigo-800 group-hover:underline transition-colors">
+                    <h3 className="font-bold text-gray-900 leading-snug line-clamp-2 group-hover:text-indigo-600 transition-colors text-md">{title}</h3>
+                    <p className="mt-2 text-md text-gray-600 line-clamp-2">{excerpt}</p>
+                    <span className="mt-2 inline-flex items-center gap-1 text-md font-semibold text-indigo-600 group-hover:text-indigo-800 group-hover:underline transition-colors">
                         Read More <ArrowUpRight className="w-3.5 h-3.5" />
                     </span>
                 </div>
@@ -865,7 +865,7 @@ export default function NewsDetail() {
                                     </div>
                                     <div>
                                         <p className="font-medium text-gray-900">{newsItem.author}</p>
-                                        <p className="text-sm text-gray-500">Author</p>
+                                        <p className="text-md text-gray-500">Author</p>
                                     </div>
                                 </div>
                             )}
@@ -889,7 +889,7 @@ export default function NewsDetail() {
                         <div className="mt-12">
                             <h2 className="text-2xl font-bold text-gray-900 mb-6">
                                 More News You Might Like
-                                <span className="text-sm font-normal text-gray-500 ml-2">
+                                <span className="text-md font-normal text-gray-500 ml-2">
                                     ({otherNews.length} articles)
                                 </span>
                             </h2>

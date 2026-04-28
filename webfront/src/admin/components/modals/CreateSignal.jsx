@@ -264,7 +264,7 @@
 
 //     return (
 //       <div className="relative" ref={dropdownRef}>
-//         <label className="block text-sm font-medium text-gray-700 mb-2">
+//         <label className="block text-md font-medium text-gray-700 mb-2">
 //           Script/Symbol *
 //           {formData.scriptToken && (
 //             <span className="ml-2 text-xs text-green-600">
@@ -325,7 +325,7 @@
 //             {loadingScrips && (
 //               <div className="p-6 text-center">
 //                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div>
-//                 <p className="text-gray-500 text-sm mt-2">Loading instruments...</p>
+//                 <p className="text-gray-500 text-md mt-2">Loading instruments...</p>
 //               </div>
 //             )}
 
@@ -350,7 +350,7 @@
 //                               {scrip.symbol}
 //                             </div>
 //                             {formData.script === scrip.symbol && (
-//                               <FiCheck className="text-green-500 text-sm" />
+//                               <FiCheck className="text-green-500 text-md" />
 //                             )}
 //                           </div>
 //                           <div className="text-xs text-gray-500 mt-1">
@@ -414,7 +414,7 @@
 
 //     return (
 //       <div className="relative" ref={localRef}>
-//         <label className="block text-sm font-medium text-gray-700 mb-2">
+//         <label className="block text-md font-medium text-gray-700 mb-2">
 //           {label}
 //         </label>
 //         <div
@@ -434,7 +434,7 @@
 //         {isOpen && !loading && (
 //           <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-64 overflow-y-auto">
 //             {(!options || options.length === 0) ? (
-//               <div className="p-3 text-gray-500 text-sm text-center">
+//               <div className="p-3 text-gray-500 text-md text-center">
 //                 No options available
 //               </div>
 //             ) : (
@@ -609,7 +609,7 @@
 
 //               <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
 //                 <div>
-//                   <label className="text-sm font-medium text-gray-700 mb-2">Expiry</label>
+//                   <label className="text-md font-medium text-gray-700 mb-2">Expiry</label>
 //                   <input
 //                     type="text"
 //                     name="expiry"
@@ -621,7 +621,7 @@
 //                   />
 //                 </div>
 //                 <div>
-//                   <label className="text-sm font-medium text-gray-700 mb-2">Strike Price</label>
+//                   <label className="text-md font-medium text-gray-700 mb-2">Strike Price</label>
 //                   <input
 //                     type="text"
 //                     name="strike_price"
@@ -663,7 +663,7 @@
 //                   onSelect={handleSelect}
 //                 />
 //                 <div>
-//                   <label className="block text-sm font-medium text-gray-700 mb-2">Risk Reward Ratio</label>
+//                   <label className="block text-md font-medium text-gray-700 mb-2">Risk Reward Ratio</label>
 //                   <input
 //                     type="text"
 //                     name="riskRewardRatio"
@@ -1084,7 +1084,7 @@
 
 //     return (
 //       <div className="relative" ref={dropdownRef}>
-//         <label className="block text-sm font-medium text-gray-700 mb-2">
+//         <label className="block text-md font-medium text-gray-700 mb-2">
 //           Script/Symbol *
 //           {formData.scriptToken && (
 //             <span className="ml-2 text-xs text-green-600">
@@ -1145,7 +1145,7 @@
 //             {loadingScrips && (
 //               <div className="p-6 text-center">
 //                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div>
-//                 <p className="text-gray-500 text-sm mt-2">Loading instruments...</p>
+//                 <p className="text-gray-500 text-md mt-2">Loading instruments...</p>
 //               </div>
 //             )}
 
@@ -1175,7 +1175,7 @@
 //                                 {scrip.symbol}
 //                               </div>
 //                               {formData.script === scrip.symbol && (
-//                                 <FiCheck className="text-green-500 text-sm" />
+//                                 <FiCheck className="text-green-500 text-md" />
 //                               )}
 //                             </div>
 //                             <div className="text-xs text-gray-500 mt-1">
@@ -1256,7 +1256,7 @@
 
 //     return (
 //       <div className="relative" ref={localRef}>
-//         <label className="block text-sm font-medium text-gray-700 mb-2">
+//         <label className="block text-md font-medium text-gray-700 mb-2">
 //           {label}
 //           {value && (
 //             <span className="ml-2 text-xs text-green-600">✓ Auto-filled</span>
@@ -1279,7 +1279,7 @@
 //         {isOpen && !loading && !disabled && (
 //           <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-64 overflow-y-auto">
 //             {(!options || options.length === 0) ? (
-//               <div className="p-3 text-gray-500 text-sm text-center">
+//               <div className="p-3 text-gray-500 text-md text-center">
 //                 No options available
 //               </div>
 //             ) : (
@@ -1438,7 +1438,7 @@
 //                       <div className="h-6 w-6 rounded-full bg-green-100 flex items-center justify-center">
 //                         <FiCheck className="text-green-600" />
 //                       </div>
-//                       <span className="text-sm font-medium text-green-800">
+//                       <span className="text-md font-medium text-green-800">
 //                         Auto-filled from: <strong>{formData.script}</strong>
 //                       </span>
 //                     </div>
@@ -1492,7 +1492,7 @@
 
 //               <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
 //                 <div>
-//                   <label className="text-sm font-medium text-gray-700 mb-2">
+//                   <label className="text-md font-medium text-gray-700 mb-2">
 //                     Expiry
 //                     {formData.expiry && (
 //                       <span className="ml-2 text-xs text-green-600">✓ Auto-filled</span>
@@ -1509,7 +1509,7 @@
 //                   />
 //                 </div>
 //                 <div>
-//                   <label className="text-sm font-medium text-gray-700 mb-2">
+//                   <label className="text-md font-medium text-gray-700 mb-2">
 //                     Strike Price
 //                     {formData.strike_price && formData.strike_price !== '' && (
 //                       <span className="ml-2 text-xs text-green-600">✓ Auto-filled</span>
@@ -1558,7 +1558,7 @@
 //                   disabled={!!formData.exchange} // Disable if auto-filled
 //                 />
 //                 <div>
-//                   <label className="block text-sm font-medium text-gray-700 mb-2">Risk Reward Ratio</label>
+//                   <label className="block text-md font-medium text-gray-700 mb-2">Risk Reward Ratio</label>
 //                   <input
 //                     type="text"
 //                     name="riskRewardRatio"
@@ -2045,7 +2045,7 @@
 
 //     return (
 //       <div className="relative" ref={dropdownRef}>
-//         <label className="block text-sm font-medium text-gray-700 mb-2">
+//         <label className="block text-md font-medium text-gray-700 mb-2">
 //           Script/Symbol *
 //           {formData.scriptToken && (
 //             <span className="ml-2 text-xs text-green-600">
@@ -2106,7 +2106,7 @@
 //             {loadingScrips && (
 //               <div className="p-6 text-center">
 //                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div>
-//                 <p className="text-gray-500 text-sm mt-2">Loading instruments...</p>
+//                 <p className="text-gray-500 text-md mt-2">Loading instruments...</p>
 //               </div>
 //             )}
 
@@ -2137,7 +2137,7 @@
 //                                 {scrip.symbol}
 //                               </div>
 //                               {formData.script === scrip.symbol && (
-//                                 <FiCheck className="text-green-500 text-sm" />
+//                                 <FiCheck className="text-green-500 text-md" />
 //                               )}
 //                             </div>
                             
@@ -2247,7 +2247,7 @@
 
 //     return (
 //       <div className="relative" ref={localRef}>
-//         <label className="block text-sm font-medium text-gray-700 mb-2">
+//         <label className="block text-md font-medium text-gray-700 mb-2">
 //           {label}
 //           {value && (
 //             <span className="ml-2 text-xs text-green-600">✓ Selected</span>
@@ -2270,7 +2270,7 @@
 //         {isOpen && !loading && !disabled && (
 //           <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-64 overflow-y-auto">
 //             {(!options || options.length === 0) ? (
-//               <div className="p-3 text-gray-500 text-sm text-center">
+//               <div className="p-3 text-gray-500 text-md text-center">
 //                 No options available
 //               </div>
 //             ) : (
@@ -2429,7 +2429,7 @@
 //                       <div className="h-6 w-6 rounded-full bg-green-100 flex items-center justify-center">
 //                         <FiCheck className="text-green-600" />
 //                       </div>
-//                       <span className="text-sm font-medium text-green-800">
+//                       <span className="text-md font-medium text-green-800">
 //                         Auto-filled from: <strong>{formData.script}</strong>
 //                         {formData.scriptToken && (
 //                           <span className="ml-2 text-xs text-gray-600">
@@ -2488,7 +2488,7 @@
 
 //               <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
 //                 <div>
-//                   <label className="text-sm font-medium text-gray-700 mb-2">
+//                   <label className="text-md font-medium text-gray-700 mb-2">
 //                     Expiry
 //                     {formData.expiry && (
 //                       <span className="ml-2 text-xs text-green-600">✓ Auto-filled</span>
@@ -2505,7 +2505,7 @@
 //                   />
 //                 </div>
 //                 <div>
-//                   <label className="text-sm font-medium text-gray-700 mb-2">
+//                   <label className="text-md font-medium text-gray-700 mb-2">
 //                     Strike Price
 //                     {formData.strike_price && formData.strike_price !== '' && (
 //                       <span className="ml-2 text-xs text-green-600">✓ Auto-filled</span>
@@ -2554,7 +2554,7 @@
 //                   disabled={!!formData.exchange}
 //                 />
 //                 <div>
-//                   <label className="block text-sm font-medium text-gray-700 mb-2">Risk Reward Ratio</label>
+//                   <label className="block text-md font-medium text-gray-700 mb-2">Risk Reward Ratio</label>
 //                   <input
 //                     type="text"
 //                     name="riskRewardRatio"
@@ -3049,7 +3049,7 @@ const CreateSignal = ({ data, onNext, onClose, onSignalCreated }) => {
 
     return (
       <div className="relative" ref={dropdownRef}>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-md font-medium text-gray-700 mb-2">
           Script/Symbol *
           {formData.scriptToken && (
             <span className="ml-2 text-xs text-green-600">
@@ -3110,7 +3110,7 @@ const CreateSignal = ({ data, onNext, onClose, onSignalCreated }) => {
             {loadingScrips && (
               <div className="p-6 text-center">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div>
-                <p className="text-gray-500 text-sm mt-2">Loading instruments...</p>
+                <p className="text-gray-500 text-md mt-2">Loading instruments...</p>
               </div>
             )}
 
@@ -3141,7 +3141,7 @@ const CreateSignal = ({ data, onNext, onClose, onSignalCreated }) => {
                                 {scrip.symbol}
                               </div>
                               {formData.script === scrip.symbol && (
-                                <FiCheck className="text-green-500 text-sm" />
+                                <FiCheck className="text-green-500 text-md" />
                               )}
                             </div>
                             
@@ -3251,7 +3251,7 @@ const CreateSignal = ({ data, onNext, onClose, onSignalCreated }) => {
 
     return (
       <div className="relative" ref={localRef}>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-md font-medium text-gray-700 mb-2">
           {label}
           {value && (
             <span className="ml-2 text-xs text-green-600">✓ Selected</span>
@@ -3274,7 +3274,7 @@ const CreateSignal = ({ data, onNext, onClose, onSignalCreated }) => {
         {isOpen && !loading && !disabled && (
           <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-64 overflow-y-auto">
             {(!options || options.length === 0) ? (
-              <div className="p-3 text-gray-500 text-sm text-center">
+              <div className="p-3 text-gray-500 text-md text-center">
                 No options available
               </div>
             ) : (
@@ -3433,7 +3433,7 @@ const CreateSignal = ({ data, onNext, onClose, onSignalCreated }) => {
                       <div className="h-6 w-6 rounded-full bg-green-100 flex items-center justify-center">
                         <FiCheck className="text-green-600" />
                       </div>
-                      <span className="text-sm font-medium text-green-800">
+                      <span className="text-md font-medium text-green-800">
                         Auto-filled from: <strong>{formData.script}</strong>
                         {formData.scriptToken && (
                           <span className="ml-2 text-xs text-gray-600">
@@ -3492,7 +3492,7 @@ const CreateSignal = ({ data, onNext, onClose, onSignalCreated }) => {
 
               <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
                 <div>
-                  <label className="text-sm font-medium text-gray-700 mb-2">
+                  <label className="text-md font-medium text-gray-700 mb-2">
                     Expiry
                     {formData.expiry && (
                       <span className="ml-2 text-xs text-green-600">✓ Auto-filled</span>
@@ -3509,7 +3509,7 @@ const CreateSignal = ({ data, onNext, onClose, onSignalCreated }) => {
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-gray-700 mb-2">
+                  <label className="text-md font-medium text-gray-700 mb-2">
                     Strike Price
                     {formData.strike_price && formData.strike_price !== '' && (
                       <span className="ml-2 text-xs text-green-600">✓ Auto-filled</span>
@@ -3558,7 +3558,7 @@ const CreateSignal = ({ data, onNext, onClose, onSignalCreated }) => {
                   disabled={!!formData.exchange}
                 />
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Risk Reward Ratio</label>
+                  <label className="block text-md font-medium text-gray-700 mb-2">Risk Reward Ratio</label>
                   <input
                     type="text"
                     name="riskRewardRatio"
@@ -3616,7 +3616,7 @@ const CreateSignal = ({ data, onNext, onClose, onSignalCreated }) => {
 
               {/* Signal Type (Paid/Free) - NEW SECTION */}
               <div className="mt-6 p-5 bg-gray-50 rounded-lg border border-gray-200">
-                <label className="block text-sm font-medium text-gray-700 mb-3">
+                <label className="block text-md font-medium text-gray-700 mb-3">
                   Signal Type *
                 </label>
                 
@@ -3649,7 +3649,7 @@ const CreateSignal = ({ data, onNext, onClose, onSignalCreated }) => {
                             </span>
                           )}
                         </div>
-                        <p className="text-sm text-gray-600 mt-1">
+                        <p className="text-md text-gray-600 mt-1">
                           Signal is visible to all users without any subscription
                         </p>
                         <ul className="mt-2 text-xs text-gray-500 space-y-1">
@@ -3694,7 +3694,7 @@ const CreateSignal = ({ data, onNext, onClose, onSignalCreated }) => {
                             </span>
                           )}
                         </div>
-                        <p className="text-sm text-gray-600 mt-1">
+                        <p className="text-md text-gray-600 mt-1">
                           Signal requires active subscription plan to view
                         </p>
                         <ul className="mt-2 text-xs text-gray-500 space-y-1">

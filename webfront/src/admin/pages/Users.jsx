@@ -139,7 +139,7 @@
 //       <div className="flex justify-between items-start mb-4">
 //         <div>
 //           <h2 className="text-3xl font-semibold text-gray-900">Users</h2>
-//           {/* <p className="text-sm text-gray-500">
+//           {/* <p className="text-md text-gray-500">
 //             Active purchase orders that are still open
 //           </p> */}
 //         </div>
@@ -164,7 +164,7 @@
 //         <div className="overflow-x-auto">
 //           <table className="min-w-full border-separate border-spacing-y-2">
 //             <thead>
-//               <tr className="text-left text-gray-500 text-sm">
+//               <tr className="text-left text-gray-500 text-md">
 //                 <th className="px-4 py-2">Name ↓</th>
 //                 <th className="px-4 py-2">PAN No. ↓</th>
 //                 {/* <th className="px-4 py-2">Experience ↓</th> */}
@@ -211,12 +211,12 @@
 //                     {formatDate(ra.created_at)}
 //                   </td>
 //                    <td className="px-4 py-3 text-gray-700">
-//                     <div className="text-sm">
+//                     <div className="text-md">
 //                       {ra.phone}
 //                     </div>
 //                   </td>
 //                   <td className="px-4 py-3 text-gray-700">
-//                     <div className="text-sm">
+//                     <div className="text-md">
 //                       {ra.email}
 //                     </div>
 //                   </td>
@@ -224,12 +224,12 @@
 
 //                   {/* <td className="px-4 py-3">
 //                     {ra.status === "active" ? (
-//                       <span className="flex items-center gap-1 text-sm text-green-700 bg-green-50 px-2 py-1 rounded-full">
+//                       <span className="flex items-center gap-1 text-md text-green-700 bg-green-50 px-2 py-1 rounded-full">
 //                         <span className="w-2 h-2 bg-green-500 rounded-full"></span>
 //                         Active
 //                       </span>
 //                     ) : (
-//                       <span className="flex items-center gap-1 text-sm text-gray-700 bg-gray-100 px-2 py-1 rounded-full">
+//                       <span className="flex items-center gap-1 text-md text-gray-700 bg-gray-100 px-2 py-1 rounded-full">
 //                         <span className="w-2 h-2 bg-gray-400 rounded-full"></span>
 //                         Inactive
 //                       </span>
@@ -270,7 +270,7 @@
 //                   e.stopPropagation();
 //                   handleView(analysts[dropdownOpen]);
 //                 }}
-//                 className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition border-b border-gray-100"
+//                 className="block w-full text-left px-4 py-2 text-md text-gray-700 hover:bg-gray-100 transition border-b border-gray-100"
 //                 role="menuitem"
 //               >
 //                 View
@@ -280,7 +280,7 @@
 //                   e.stopPropagation();
 //                   handleDelete(analysts[dropdownOpen]);
 //                 }}
-//                 className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 transition"
+//                 className="block w-full text-left px-4 py-2 text-md text-red-600 hover:bg-gray-100 transition"
 //                 role="menuitem"
 //               >
 //                 Delete
@@ -421,7 +421,7 @@ export default function Users() {
       //       alt="Profile"
       //       className="w-10 h-10 rounded-full object-cover border-2 border-gray-200"
       //     />
-      //     <span className="font-semibold text-gray-900 text-sm">
+      //     <span className="font-semibold text-gray-900 text-md">
       //       {params.value || "N/A"}
       //     </span>
       //   </div>
@@ -456,7 +456,7 @@ export default function Users() {
       field: "phone",
       minWidth: 150,
       cellRenderer: (params) => (
-        <div className="text-sm font-medium text-gray-900">
+        <div className="text-md font-medium text-gray-900">
           {params.value || "N/A"}
         </div>
       ),
@@ -468,7 +468,7 @@ export default function Users() {
       field: "email",
       minWidth: 220,
       cellRenderer: (params) => (
-        <div className="text-sm font-medium text-gray-900 truncate max-w-[200px]">
+        <div className="text-md font-medium text-gray-900 truncate max-w-[200px]">
           {params.value || "N/A"}
         </div>
       ),
@@ -550,7 +550,7 @@ export default function Users() {
       <div className="flex justify-between items-center mb-8">
         <div>
           <h2 className="text-3xl font-bold text-gray-900">Users</h2>
-          <p className="text-sm text-gray-500 mt-1">Manage user accounts</p>
+          <p className="text-md text-gray-500 mt-1">Manage user accounts</p>
         </div>
       </div>
 

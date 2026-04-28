@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Search, SlidersHorizontal } from "lucide-react";
-import Newsletter from "../pages/Newsletter";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -40,14 +39,14 @@ export default function AllMentors() {
 
   return (
     <>
-      <section className="py-10 px-4 sm:px-8 lg:px-40 bg-[#F9FAFB] min-h-screen">
+      <section className="max-w-7xl mx-auto py-10 px-6 bg-[#F9FAFB] min-h-screen">
         {/* Header */}
         <div className=" flex flex-col sm:flex-row justify-between items-center mb-10 gap-4">
           <div className="flex items-center bg-black rounded-full px-2 py-1">
             {tabs.map((tab, index) => (
               <button
                 key={index}
-                className={`px-4 py-1.5 rounded-full text-sm transition-all duration-300 ${index === 0
+                className={`px-4 py-1.5 rounded-full text-md transition-all duration-300 ${index === 0
                     ? "bg-white text-black font-medium"
                     : "text-gray-300 hover:text-white"
                   }`}
@@ -66,11 +65,11 @@ export default function AllMentors() {
               <input
                 type="text"
                 placeholder="Search"
-                className="w-full pl-10 pr-4 py-2 rounded-full border border-gray-200 focus:ring-1 focus:ring-gray-300 outline-none text-sm bg-white"
+                className="w-full pl-10 pr-4 py-2 rounded-full border border-gray-200 focus:ring-1 focus:ring-gray-300 outline-none text-md bg-white"
               />
             </div>
 
-            <button className="flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-gray-200 text-gray-600 text-sm shadow-sm">
+            <button className="flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-gray-200 text-gray-600 text-md shadow-sm">
               <SlidersHorizontal size={16} />
               Filter
             </button>
@@ -151,8 +150,6 @@ export default function AllMentors() {
           </div>
         )}
       </section>
-
-      <Newsletter />
     </>
   );
 }

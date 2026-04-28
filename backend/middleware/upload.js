@@ -49,6 +49,7 @@ const fileFilter = (req, file, cb) => {
     "documents" ,
      'signature' ,
      "images", 
+      "videos",
     "newsImages",
     "news_images" 
   ];

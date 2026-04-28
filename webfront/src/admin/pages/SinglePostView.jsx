@@ -106,7 +106,7 @@ const SinglePostView = () => {
         />
         
         {/* Related Posts or Comments Section can go here */}
-        <div className="mt-6 text-center text-sm text-gray-500">
+        <div className="mt-6 text-center text-md text-gray-500">
           <p>End of post</p>
         </div>
       </div>

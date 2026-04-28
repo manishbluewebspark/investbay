@@ -94,7 +94,7 @@ const NewsCard = ({ news, onPreview, onEdit, onDelete }) => {
         </h3>
 
         {/* Short Description */}
-        <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+        <p className="text-md text-gray-600 mb-4 line-clamp-2">
           {truncateText(news.shortDescription, 120)}
         </p>
 

@@ -12,7 +12,7 @@
 // );
 
 // const ReadMore = ({ id }) => (
-//     <a href={`/news/${id}`} className="mt-2 inline-flex items-center gap-1 text-sm font-semibold text-indigo-600 hover:text-indigo-800 hover:underline transition-colors">
+//     <a href={`/news/${id}`} className="mt-2 inline-flex items-center gap-1 text-md font-semibold text-indigo-600 hover:text-indigo-800 hover:underline transition-colors">
 //         Read More <ArrowUpRight className="w-3.5 h-3.5" />
 //     </a>
 // );
@@ -101,7 +101,7 @@
 //                 <TimeStamp time={timeAgo} />
 //             </div>
 //             <h2 className="mt-3 text-2xl font-bold text-gray-900 leading-tight group-hover:text-indigo-600 transition-colors">{title}</h2>
-//             <p className="mt-2 text-sm text-gray-600 leading-relaxed">{excerpt}</p>
+//             <p className="mt-2 text-md text-gray-600 leading-relaxed">{excerpt}</p>
 //             <ReadMore id={id} />
 //         </div>
 //     </article>
@@ -119,7 +119,7 @@
 //         />
 //         <div className="flex flex-col justify-center min-w-0">
 //             <span className="inline-block self-start text-[10px] font-semibold px-2 py-0.5 rounded bg-indigo-100 text-indigo-700 mb-1">{category}</span>
-//             <h4 className="text-sm font-bold text-gray-900 leading-tight line-clamp-2 group-hover:text-indigo-600 transition-colors">{title}</h4>
+//             <h4 className="text-md font-bold text-gray-900 leading-tight line-clamp-2 group-hover:text-indigo-600 transition-colors">{title}</h4>
 //             <ReadMore id={id} />
 //         </div>
 //     </article>
@@ -142,8 +142,8 @@
 //                 <Tag>{category}</Tag>
 //                 <TimeStamp time={timeAgo} />
 //             </div>
-//             <h3 className="font-bold text-gray-900 leading-snug line-clamp-2 group-hover:text-indigo-600 transition-colors text-base">{title}</h3>
-//             <p className="mt-2 text-sm text-gray-600 line-clamp-2">{excerpt}</p>
+//             <h3 className="font-bold text-gray-900 leading-snug line-clamp-2 group-hover:text-indigo-600 transition-colors text-md">{title}</h3>
+//             <p className="mt-2 text-md text-gray-600 line-clamp-2">{excerpt}</p>
 //             <ReadMore id={id} />
 //         </div>
 //     </article>
@@ -499,7 +499,7 @@
 // );
 
 // const ReadMore = ({ id }) => (
-//     <a href={`/news/${id}`} className="mt-2 inline-flex items-center gap-1 text-sm font-semibold text-indigo-600 hover:text-indigo-800 hover:underline transition-colors">
+//     <a href={`/news/${id}`} className="mt-2 inline-flex items-center gap-1 text-md font-semibold text-indigo-600 hover:text-indigo-800 hover:underline transition-colors">
 //         Read More <ArrowUpRight className="w-3.5 h-3.5" />
 //     </a>
 // );
@@ -585,7 +585,7 @@
 //                 <TimeStamp time={timeAgo} />
 //             </div>
 //             <h2 className="mt-3 text-2xl font-bold text-gray-900 leading-tight group-hover:text-indigo-600 transition-colors">{title}</h2>
-//             <p className="mt-2 text-sm text-gray-600 leading-relaxed">{excerpt}</p>
+//             <p className="mt-2 text-md text-gray-600 leading-relaxed">{excerpt}</p>
 //             <ReadMore id={id} />
 //         </div>
 //     </article>
@@ -602,7 +602,7 @@
 //         </div>
 //         <div className="flex flex-col justify-center min-w-0">
 //             <span className="inline-block self-start text-[10px] font-semibold px-2 py-0.5 rounded bg-indigo-100 text-indigo-700 mb-1">{category}</span>
-//             <h4 className="text-sm font-bold text-gray-900 leading-tight line-clamp-2 group-hover:text-indigo-600 transition-colors">{title}</h4>
+//             <h4 className="text-md font-bold text-gray-900 leading-tight line-clamp-2 group-hover:text-indigo-600 transition-colors">{title}</h4>
 //             <ReadMore id={id} />
 //         </div>
 //     </article>
@@ -622,8 +622,8 @@
 //                 <Tag>{category}</Tag>
 //                 <TimeStamp time={timeAgo} />
 //             </div>
-//             <h3 className="font-bold text-gray-900 leading-snug line-clamp-2 group-hover:text-indigo-600 transition-colors text-base">{title}</h3>
-//             <p className="mt-2 text-sm text-gray-600 line-clamp-2">{excerpt}</p>
+//             <h3 className="font-bold text-gray-900 leading-snug line-clamp-2 group-hover:text-indigo-600 transition-colors text-md">{title}</h3>
+//             <p className="mt-2 text-md text-gray-600 line-clamp-2">{excerpt}</p>
 //             <ReadMore id={id} />
 //         </div>
 //     </article>
@@ -1041,7 +1041,7 @@ const Tag = ({ children }) => (
 );
 
 const ReadMore = ({ id }) => (
-    <a href={`/news/${id}`} className="mt-2 inline-flex items-center gap-1 text-sm font-semibold text-indigo-600 hover:text-indigo-800 hover:underline transition-colors">
+    <a href={`/news/${id}`} className="mt-2 inline-flex items-center gap-1 text-md font-semibold text-indigo-600 hover:text-indigo-800 hover:underline transition-colors">
         Read More <ArrowUpRight className="w-3.5 h-3.5" />
     </a>
 );
@@ -1127,7 +1127,7 @@ const HeroArticle = ({ media, category, title, excerpt, timeAgo, id }) => (
                 <TimeStamp time={timeAgo} />
             </div>
             <h2 className="mt-3 text-2xl font-bold text-gray-900 leading-tight group-hover:text-indigo-600 transition-colors">{title}</h2>
-            <p className="mt-2 text-sm text-gray-600 leading-relaxed">{excerpt}</p>
+            <p className="mt-2 text-md text-gray-600 leading-relaxed">{excerpt}</p>
             <ReadMore id={id} />
         </div>
     </article>
@@ -1144,7 +1144,7 @@ const SidebarNewsItem = ({ media, category, title, id }) => (
         </div>
         <div className="flex flex-col justify-center min-w-0">
             <span className="inline-block self-start text-[10px] font-semibold px-2 py-0.5 rounded bg-indigo-100 text-indigo-700 mb-1">{category}</span>
-            <h4 className="text-sm font-bold text-gray-900 leading-tight line-clamp-2 group-hover:text-indigo-600 transition-colors">{title}</h4>
+            <h4 className="text-md font-bold text-gray-900 leading-tight line-clamp-2 group-hover:text-indigo-600 transition-colors">{title}</h4>
             <ReadMore id={id} />
         </div>
     </article>
@@ -1164,8 +1164,8 @@ const NewsCard = ({ media, category, title, excerpt, timeAgo, id }) => (
                 <Tag>{category}</Tag>
                 <TimeStamp time={timeAgo} />
             </div>
-            <h3 className="font-bold text-gray-900 leading-snug line-clamp-2 group-hover:text-indigo-600 transition-colors text-base">{title}</h3>
-            <p className="mt-2 text-sm text-gray-600 line-clamp-2">{excerpt}</p>
+            <h3 className="font-bold text-gray-900 leading-snug line-clamp-2 group-hover:text-indigo-600 transition-colors text-md">{title}</h3>
+            <p className="mt-2 text-md text-gray-600 line-clamp-2">{excerpt}</p>
             <ReadMore id={id} />
         </div>
     </article>

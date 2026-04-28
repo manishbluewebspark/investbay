@@ -58,8 +58,8 @@
 //                 {/* Header */}
 //                 <div className="flex items-center justify-between mb-6">
 //                     <div className="flex items-center gap-3">
-//                         <FaCircle className="text-green-500 text-sm" />
-//                         <h2 className="text-sm font-semibold text-gray-800">
+//                         <FaCircle className="text-green-500 text-md" />
+//                         <h2 className="text-md font-semibold text-gray-800">
 //                             HINDUNILVR30DEC252400CE
 //                         </h2>
 //                     </div>
@@ -69,7 +69,7 @@
 
 //                     {/* Price Levels */}
 //                     <div className="border border-gray-300 rounded-lg p-4">
-//                         <h3 className="text-sm font-semibold text-gray-700 mb-4">
+//                         <h3 className="text-md font-semibold text-gray-700 mb-4">
 //                             Price Levels
 //                         </h3>
 
@@ -87,11 +87,11 @@
 //                             ● Active
 //                         </span>
 
-//                         <h3 className="text-sm font-semibold text-gray-700 mb-4">
+//                         <h3 className="text-md font-semibold text-gray-700 mb-4">
 //                             Plan Details
 //                         </h3>
 
-//                         <div className="grid grid-cols-2 gap-y-4 text-sm">
+//                         <div className="grid grid-cols-2 gap-y-4 text-md">
 //                             <Detail label="Segment" value="F&O" />
 //                             <Detail label="Instrument" value="OPTSTK" />
 //                             <Detail label="Script" value="HINDUNILVR" />
@@ -118,7 +118,7 @@
 //                             className="w-10 h-10 rounded-full"
 //                         />
 //                         <div>
-//                             <p className="text-sm font-semibold text-gray-800">
+//                             <p className="text-md font-semibold text-gray-800">
 //                                 Amit Dwivedi
 //                             </p>
 //                             <p className="text-xs text-gray-500">Status - NA</p>
@@ -131,7 +131,7 @@
 //                         // onClick={() => setOtp(true)}
 //                         // onClick={() => setUploadSignature(true)}
 //                         onClick={() => setSigned(true)}
-//                         className="border border-gray-300 px-4 py-1.5 rounded-full text-sm text-gray-700 hover:bg-gray-100">
+//                         className="border border-gray-300 px-4 py-1.5 rounded-full text-md text-gray-700 hover:bg-gray-100">
 //                         View Plan
 //                     </button>
 //                 </div>
@@ -159,8 +159,8 @@
 //                 : "bg-gray-50 text-gray-700"
 //             }`}
 //     >
-//         <span className="text-sm">{label}</span>
-//         <span className="text-sm font-semibold">{value}</span>
+//         <span className="text-md">{label}</span>
+//         <span className="text-md font-semibold">{value}</span>
 //     </div>
 // );
 
@@ -273,14 +273,14 @@ export default function AfterBeforeSubscription() {
     }
 
     return ( 
-        <div className="min-h-screen bg-gray-50 p-6 lg:px-40">
+        <div className="min-h-screen max-w-7xl mx-auto px-6 py-10">
             <div className="max-w-full bg-white rounded-xl shadow-sm border border-gray-300 p-6">
 
                 {/* Header */}
                 <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center gap-3">
-                        <FaCircle className={`text-sm ${signal.status === 'active' ? 'text-green-500' : 'text-gray-400'}`} />
-                        <h2 className="text-sm font-semibold text-gray-800">
+                        <FaCircle className={`text-md ${signal.status === 'active' ? 'text-green-500' : 'text-gray-400'}`} />
+                        <h2 className="text-md font-semibold text-gray-800">
                             {getDisplayTitle()}
                         </h2>
                     </div>
@@ -290,7 +290,7 @@ export default function AfterBeforeSubscription() {
 
                     {/* Price Levels */}
                     <div className="border border-gray-300 rounded-lg p-4">
-                        <h3 className="text-sm font-semibold text-gray-700 mb-4">
+                        <h3 className="text-md font-semibold text-gray-700 mb-4">
                             Price Levels
                         </h3>
 
@@ -331,11 +331,11 @@ export default function AfterBeforeSubscription() {
                             ● {signal.status ? signal.status.charAt(0).toUpperCase() + signal.status.slice(1) : 'Inactive'}
                         </span>
 
-                        <h3 className="text-sm font-semibold text-gray-700 mb-4">
+                        <h3 className="text-md font-semibold text-gray-700 mb-4">
                             Plan Details
                         </h3>
 
-                        <div className="grid grid-cols-2 gap-y-4 text-sm">
+                        <div className="grid grid-cols-2 gap-y-4 text-md">
                             <Detail label="Segment" value={signal.segment || signal.category || "N/A"} />
                             <Detail label="Instrument" value={signal.instrument || "N/A"} />
                             <Detail label="Script" value={signal.script || "N/A"} />
@@ -368,7 +368,7 @@ export default function AfterBeforeSubscription() {
                                 }}
                             />
                             <div>
-                                <p className="text-sm font-semibold text-gray-800">
+                                <p className="text-md font-semibold text-gray-800">
                                     {signal.name}
                                 </p>
                                 <p className="text-xs text-gray-500">
@@ -389,7 +389,7 @@ export default function AfterBeforeSubscription() {
                                 navigate(`/plans/${signal.id}`)
 
                             }}
-                            className="border border-gray-300 px-4 py-1.5 rounded-full text-sm text-gray-700 hover:bg-gray-100"
+                            className="border border-gray-300 px-4 py-1.5 rounded-full text-md text-gray-700 hover:bg-gray-100"
                         >
                             View Plan
                         </button>
@@ -416,8 +416,8 @@ const Level = ({ label, value, active }) => (
                 : "bg-gray-50 text-gray-700 border-gray-200"
         }`}
     >
-        <span className="text-sm">{label}</span>
-        <span className="text-sm font-semibold">{value}</span>
+        <span className="text-md">{label}</span>
+        <span className="text-md font-semibold">{value}</span>
     </div>
 );
 

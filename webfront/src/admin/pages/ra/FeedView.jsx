@@ -23,7 +23,7 @@
 //     <div className="max-w-3xl mx-auto p-6">
 //       <button
 //         onClick={() => navigate(-1)}
-//         className="flex items-center gap-2 text-sm mb-4"
+//         className="flex items-center gap-2 text-md mb-4"
 //       >
 //         <FiArrowLeft /> Back
 //       </button>
@@ -73,7 +73,7 @@
 //         })}
 
 //         {/* Tags */}
-//         <div className="mt-3 flex gap-2 text-blue-600 text-sm">
+//         <div className="mt-3 flex gap-2 text-blue-600 text-md">
 //           {feed.feed_tags?.map((tag, i) => (
 //             <span key={i}>#{tag.replace("#", "")}</span>
 //           ))}
@@ -179,7 +179,7 @@ const FeedView = () => {
            
             <div>
               <h1 className="text-2xl font-bold text-gray-900">{feed.ra_name}</h1>
-              <p className="text-sm text-gray-500 mt-1">RA ID: {feed.ra_id}</p>
+              <p className="text-md text-gray-500 mt-1">RA ID: {feed.ra_id}</p>
             </div>
           </div>
 
@@ -204,7 +204,7 @@ const FeedView = () => {
             {feed.feed_tags?.length > 0 && (
               <div className="flex flex-wrap gap-2">
                 {feed.feed_tags.map((tag, i) => (
-                  <span key={i} className="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-sm">
+                  <span key={i} className="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-md">
                     {tag.replace(/^#/, '')}
                   </span>
                 ))}
@@ -213,12 +213,12 @@ const FeedView = () => {
 
             {/* Stats */}
             <div className="flex justify-between items-center pt-6 border-t">
-              <div className="flex gap-6 text-sm">
+              <div className="flex gap-6 text-md">
                 <span><FiHeart size={18} className="inline mr-1" /> {feed.feed_like_count}</span>
                 <span><FiMessageCircle size={18} className="inline mr-1" /> {feed.feed_comment_count}</span>
                 <span><FiShare2 size={18} className="inline mr-1" /> {feed.feed_share_count}</span>
               </div>
-              <p className="text-sm text-gray-500">{formatDate(feed.created_at)}</p>
+              <p className="text-md text-gray-500">{formatDate(feed.created_at)}</p>
             </div>
           </div>
         </div>

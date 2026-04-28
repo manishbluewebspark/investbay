@@ -482,13 +482,13 @@ export default function AddNewsModal({ open, onClose, onSuccess, editData = null
           {/* Error Message */}
           {error && (
             <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
-              <p className="text-sm text-red-600">{error}</p>
+              <p className="text-md text-red-600">{error}</p>
             </div>
           )}
 
           {/* News Title */}
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">
+            <label className="mb-1 block text-md font-medium text-gray-700">
               News Title *
             </label>
             <input
@@ -496,7 +496,7 @@ export default function AddNewsModal({ open, onClose, onSuccess, editData = null
               value={formData.title}
               onChange={(e) => setFormData({...formData, title: e.target.value})}
               placeholder="Enter news title"
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               disabled={loading}
             />
           </div>
@@ -505,13 +505,13 @@ export default function AddNewsModal({ open, onClose, onSuccess, editData = null
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Category */}
             <div>
-              <label className="mb-1 block text-sm font-medium text-gray-700">
+              <label className="mb-1 block text-md font-medium text-gray-700">
                 Category *
               </label>
               <select
                 value={formData.category}
                 onChange={(e) => setFormData({...formData, category: e.target.value})}
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 disabled={loading}
               >
                 <option value="">Select Category</option>
@@ -523,13 +523,13 @@ export default function AddNewsModal({ open, onClose, onSuccess, editData = null
 
             {/* Status */}
             <div>
-              <label className="mb-1 block text-sm font-medium text-gray-700">
+              <label className="mb-1 block text-md font-medium text-gray-700">
                 Status *
               </label>
               <select
                 value={formData.status}
                 onChange={(e) => setFormData({...formData, status: e.target.value})}
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 disabled={loading}
               >
                 {statuses.map((status) => (
@@ -544,7 +544,7 @@ export default function AddNewsModal({ open, onClose, onSuccess, editData = null
           {/* Scheduled Date - Show only when status is scheduled */}
           {formData.status === 'scheduled' && (
             <div>
-              <label className="mb-1 block text-sm font-medium text-gray-700">
+              <label className="mb-1 block text-md font-medium text-gray-700">
                 Schedule Publish Date *
               </label>
               <div className="relative">
@@ -557,7 +557,7 @@ export default function AddNewsModal({ open, onClose, onSuccess, editData = null
                   dateFormat="MMMM d, yyyy h:mm aa"
                   placeholderText="Select date and time"
                   minDate={new Date()}
-                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   disabled={loading}
                 />
                 <Calendar className="absolute right-3 top-2.5 text-gray-400" size={18} />
@@ -567,7 +567,7 @@ export default function AddNewsModal({ open, onClose, onSuccess, editData = null
 
           {/* Short Description */}
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">
+            <label className="mb-1 block text-md font-medium text-gray-700">
               Short Description *
             </label>
             <textarea
@@ -575,7 +575,7 @@ export default function AddNewsModal({ open, onClose, onSuccess, editData = null
               value={formData.shortDescription}
               onChange={(e) => setFormData({...formData, shortDescription: e.target.value})}
               placeholder="Brief summary of the news (will appear in preview)"
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               disabled={loading}
             />
             <p className="mt-1 text-xs text-gray-500">
@@ -585,7 +585,7 @@ export default function AddNewsModal({ open, onClose, onSuccess, editData = null
 
           {/* Full Article */}
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">
+            <label className="mb-1 block text-md font-medium text-gray-700">
               Full Article *
             </label>
             <textarea
@@ -593,14 +593,14 @@ export default function AddNewsModal({ open, onClose, onSuccess, editData = null
               value={formData.fullArticle}
               onChange={(e) => setFormData({...formData, fullArticle: e.target.value})}
               placeholder="Write the complete news article here..."
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               disabled={loading}
             />
           </div>
 
           {/* Tags */}
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">
+            <label className="mb-1 block text-md font-medium text-gray-700">
               Tags
             </label>
             
@@ -608,7 +608,7 @@ export default function AddNewsModal({ open, onClose, onSuccess, editData = null
               {tags.map((tag, index) => (
                 <span
                   key={index}
-                  className="inline-flex items-center gap-1 px-2 py-1 bg-blue-50 text-blue-700 text-sm rounded-md"
+                  className="inline-flex items-center gap-1 px-2 py-1 bg-blue-50 text-blue-700 text-md rounded-md"
                 >
                   <span>{tag}</span>
                   <button
@@ -628,7 +628,7 @@ export default function AddNewsModal({ open, onClose, onSuccess, editData = null
                 onChange={(e) => setTagInput(e.target.value)}
                 onKeyDown={handleTagKeyDown}
                 placeholder={tags.length === 0 ? "Add tags (press Enter)" : "Add more tags..."}
-                className="flex-1 min-w-[120px] outline-none text-sm bg-transparent"
+                className="flex-1 min-w-[120px] outline-none text-md bg-transparent"
                 disabled={loading}
               />
             </div>
@@ -641,7 +641,7 @@ export default function AddNewsModal({ open, onClose, onSuccess, editData = null
           {/* Upload Progress */}
           {uploadProgress > 0 && uploadProgress < 100 && (
             <div className="space-y-2">
-              <div className="flex justify-between text-sm">
+              <div className="flex justify-between text-md">
                 <span className="text-gray-600">Uploading...</span>
                 <span className="font-medium">{uploadProgress}%</span>
               </div>
@@ -658,7 +658,7 @@ export default function AddNewsModal({ open, onClose, onSuccess, editData = null
           {mediaPreviews.length > 0 && (
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <h3 className="text-sm font-medium text-gray-700">
+                <h3 className="text-md font-medium text-gray-700">
                   Media ({totalMedia}/20)
                 </h3>
                 {!loading && (
@@ -749,7 +749,7 @@ export default function AddNewsModal({ open, onClose, onSuccess, editData = null
                   <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-blue-50">
                     <ImageIcon className="text-blue-600" size={18} />
                   </div>
-                  <p className="text-sm font-medium text-blue-600">
+                  <p className="text-md font-medium text-blue-600">
                     Click or drag to upload images
                   </p>
                   <p className="mt-1 text-xs text-gray-500">
@@ -778,7 +778,7 @@ export default function AddNewsModal({ open, onClose, onSuccess, editData = null
                   <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-purple-50">
                     <Film className="text-purple-600" size={18} />
                   </div>
-                  <p className="text-sm font-medium text-purple-600">
+                  <p className="text-md font-medium text-purple-600">
                     Click or drag to upload videos
                   </p>
                   <p className="mt-1 text-xs text-gray-500">
@@ -808,14 +808,14 @@ export default function AddNewsModal({ open, onClose, onSuccess, editData = null
           <button
             onClick={onClose}
             disabled={loading}
-            className="rounded-lg border border-gray-300 px-6 py-2 text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="rounded-lg border border-gray-300 px-6 py-2 text-md text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             Cancel
           </button>
           <button
             onClick={handleSubmit}
             disabled={loading || !formData.title || !formData.category || !formData.shortDescription || !formData.fullArticle}
-            className="rounded-lg bg-black px-8 py-2 text-sm font-medium text-white hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center space-x-2"
+            className="rounded-lg bg-black px-8 py-2 text-md font-medium text-white hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center space-x-2"
           >
             {loading ? (
               <>

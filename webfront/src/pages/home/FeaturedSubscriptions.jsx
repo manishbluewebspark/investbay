@@ -65,11 +65,11 @@
 //                             </span>
 //                         </h2>
 
-//                         <p className="text-gray-500 mt-2 text-sm">
+//                         <p className="text-gray-500 mt-2 text-md">
 //                             Get exclusive market insights and expert recommendations from SEBI-registered advisors.
 //                         </p>
 //                     </div>
-//                     <button onClick={() => navigate('/subscriptions')} className="mt-4 md:mt-0 bg-black text-white px-5 py-2 rounded-full text-sm">
+//                     <button onClick={() => navigate('/subscriptions')} className="mt-4 md:mt-0 bg-black text-white px-5 py-2 rounded-full text-md">
 //                         View All Subscriptions
 //                     </button>
 //                 </div>
@@ -97,7 +97,7 @@
 //                                         className="w-16 h-16 rounded-full border-4 border-white shadow-md"
 //                                     />
 //                                 </div>
-//                                 <p className="absolute top-20 right-4 text-white text-sm font-medium bg-black/40 px-2 py-1 rounded-md">
+//                                 <p className="absolute top-20 right-4 text-white text-md font-medium bg-black/40 px-2 py-1 rounded-md">
 //                                     {sub.segment}
 //                                 </p>
 //                             </div>
@@ -107,7 +107,7 @@
 //                                 <div className="flex items-center justify-between">
 //                                     <div>
 //                                         <h3 className="text-lg font-semibold">{sub.name}</h3>
-//                                         <p className="text-sm text-gray-500">{sub.role}</p>
+//                                         <p className="text-md text-gray-500">{sub.role}</p>
 //                                     </div>
 //                                     <img
 //                                         src={Verify}
@@ -116,7 +116,7 @@
 //                                     />
 //                                 </div>
 
-//                                 <div className="mt-4 text-sm space-y-4 grid grid-cols-2">
+//                                 <div className="mt-4 text-md space-y-4 grid grid-cols-2">
 //                                     <p>
 //                                         <h1><span className="font-medium text-gray-600">Calls: </span></h1>
 //                                         <p className="font-semibold">{sub.calls}</p>
@@ -136,13 +136,13 @@
 //                                 </div>
 
 //                                 <div className="mt-5 flex justify-between items-center">
-//                                     <div className="text-sm">
-//                                         <span className="text-[#00BFA6] font-semibold text-base">
+//                                     <div className="text-md">
+//                                         <span className="text-[#00BFA6] font-semibold text-md">
 //                                             Starting {sub.price}
 //                                         </span>{" "}
 //                                         <span className="line-through text-gray-400">{sub.oldPrice}</span>
 //                                     </div>
-//                                     <button className="bg-black text-white text-sm px-12 py-2 rounded-lg hover:bg-gray-800">
+//                                     <button className="bg-black text-white text-md px-12 py-2 rounded-lg hover:bg-gray-800">
 //                                         Buy Now
 //                                     </button>
 //                                 </div>
@@ -215,7 +215,7 @@ export default function FeaturedSubscriptions() {
       <section className="py-12 px-4 bg-gray-50 min-h-[300px] flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-600 mx-auto mb-3"></div>
-          <p className="text-base text-gray-700 font-medium">Loading subscriptions...</p>
+          <p className="text-md text-gray-700 font-medium">Loading subscriptions...</p>
         </div>
       </section>
     );
@@ -246,7 +246,7 @@ export default function FeaturedSubscriptions() {
           <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-3">
             Featured <span className="text-emerald-600">Subscriptions</span>
           </h2>
-          <p className="text-gray-600 text-base max-w-xl mx-auto">
+          <p className="text-gray-600 text-md max-w-xl mx-auto">
             Choose from premium trading plans by SEBI-registered advisors
           </p>
         </div>
@@ -271,7 +271,7 @@ export default function FeaturedSubscriptions() {
                   />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-semibold text-base line-clamp-1">
+                  <h3 className="font-semibold text-md line-clamp-1">
                     {sub.plan_name}
                   </h3>
                   <div className="flex items-center gap-2 mt-1">
@@ -290,7 +290,7 @@ export default function FeaturedSubscriptions() {
               </div>
 
               {/* Stats */}
-              <div className="grid grid-cols-2 gap-2 mb-4 text-sm flex-1">
+              <div className="grid grid-cols-2 gap-2 mb-4 text-md flex-1">
                 <div className="p-2 bg-gray-50 rounded-lg flex justify-between">
                   <span className="text-gray-500 text-xs">Calls/Day</span>
                   <span className="font-semibold text-gray-900">{sub.avg_trades}</span>
@@ -329,7 +329,7 @@ export default function FeaturedSubscriptions() {
                 </div>
 
                 <button 
-                  className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 px-3 rounded-lg text-sm font-medium transition-colors"
+                  className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 px-3 rounded-lg text-md font-medium transition-colors"
                   onClick={() => {
                     
                     if(user===null)
@@ -388,7 +388,7 @@ export default function FeaturedSubscriptions() {
               
                     }
               }
-              className="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-2.5 rounded-lg font-medium text-sm transition-colors"
+              className="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-2.5 rounded-lg font-medium text-md transition-colors"
             >
               View All {subscriptions.length} Plans →
             </button>

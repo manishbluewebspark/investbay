@@ -109,7 +109,7 @@ const PlanFilter = ({ open, onClose, onApply, onReset }) => {
                         {/* Date Filter */}
                         <div className="space-y-4">
                             <div>
-                                <label className=" text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                                <label className=" text-md font-medium text-gray-700 mb-2 flex items-center gap-2">
                                     <Calendar size={16} />
                                     Date Range
                                 </label>
@@ -139,7 +139,7 @@ const PlanFilter = ({ open, onClose, onApply, onReset }) => {
                             {filters.customDateRange && (
                                 <div className="space-y-4 p-4 border border-gray-200 rounded-lg bg-gray-50">
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        <label className="block text-md font-medium text-gray-700 mb-2">
                                             Start Date
                                         </label>
                                         <div className="relative">
@@ -160,7 +160,7 @@ const PlanFilter = ({ open, onClose, onApply, onReset }) => {
                                         </div>
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        <label className="block text-md font-medium text-gray-700 mb-2">
                                             End Date
                                         </label>
                                         <div className="relative">
@@ -184,7 +184,7 @@ const PlanFilter = ({ open, onClose, onApply, onReset }) => {
 
                                     {/* Show selected range summary */}
                                     {filters.startDate && filters.endDate && (
-                                        <div className="text-sm text-gray-600 bg-white p-2 rounded border">
+                                        <div className="text-md text-gray-600 bg-white p-2 rounded border">
                                             Selected: {filters.startDate.toLocaleDateString()} - {filters.endDate.toLocaleDateString()}
                                         </div>
                                     )}
@@ -194,7 +194,7 @@ const PlanFilter = ({ open, onClose, onApply, onReset }) => {
 
                         {/* Plan Filter */}
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                            <label className="block text-md font-medium text-gray-700 mb-2">
                                 Plan
                             </label>
                             <div className="relative">

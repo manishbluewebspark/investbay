@@ -115,7 +115,7 @@
 //       <div className="flex justify-between items-start mb-4">
 //         <div>
 //           <h2 className="text-3xl font-semibold text-gray-900">Plans</h2>
-//           <p className="text-sm text-gray-500">All Plan List</p>
+//           <p className="text-md text-gray-500">All Plan List</p>
 //         </div>
 
 //         <button
@@ -137,7 +137,7 @@
 //         <div className="overflow-x-auto">
 //           <table className="min-w-full border-separate border-spacing-y-2 border-gray-200">
 //             <thead>
-//               <tr className="text-left text-gray-500 text-sm border-t border-gray-200">
+//               <tr className="text-left text-gray-500 text-md border-t border-gray-200">
 //                 <th className="px-4 py-2">Plan Name ↓</th>
 //                 <th className="px-4 py-2">Segment ↓</th>
 //                 <th className="px-4 py-2">Category ↓</th>
@@ -167,7 +167,7 @@
 //                   <td className="px-4 py-3">{plan.planPrice}</td>
 
 //                   <td className="px-4 py-3">
-//                     <span className={`text-sm px-2 py-1 rounded-full ${
+//                     <span className={`text-md px-2 py-1 rounded-full ${
 //                       plan.status === "active"
 //                         ? "text-green-700 bg-green-50"
 //                         : "text-red-700 bg-red-50"
@@ -200,7 +200,7 @@
 //             >
 //               <button
 //                 onClick={() => handleView(plans[dropdownOpen])}
-//                 className="flex items-center w-full px-4 py-3 text-sm text-gray-700  hover:text-blue-700 transition-all duration-150 ease-out group"
+//                 className="flex items-center w-full px-4 py-3 text-md text-gray-700  hover:text-blue-700 transition-all duration-150 ease-out group"
 //               >
 //                 <img src={viewIcon} alt="view" className="inline-block w-5 h-5 mr-3 text-gray-400 group-hover:text-blue-500" />
 //                 <span className="font-medium">View </span>
@@ -208,7 +208,7 @@
 
 //               <button
 //                 onClick={() => handleEdit(plans[dropdownOpen])}
-//                 className="flex items-center w-full px-4 py-3 text-sm text-gray-700  hover:text-blue-700 transition-all duration-150 ease-out group"
+//                 className="flex items-center w-full px-4 py-3 text-md text-gray-700  hover:text-blue-700 transition-all duration-150 ease-out group"
 //               >
 //                 <img src={editIcon} alt="edit" className="inline-block w-5 h-5 mr-3 text-gray-400 group-hover:text-blue-500" />
 //                 <span className="font-medium">Edit</span>
@@ -222,7 +222,7 @@
 //                   setDeleteModalOpen(true);
 //                   setDropdownOpen(null);
 //                 }}
-//                 className="flex items-center w-full px-4 py-3 text-sm text-gray-700   hover:text-red-800 transition-all duration-150 ease-out group"
+//                 className="flex items-center w-full px-4 py-3 text-md text-gray-700   hover:text-red-800 transition-all duration-150 ease-out group"
 //               >
 //                 <img src={deleteIcon} alt="delete" className="inline-block w-5 h-5 mr-3 text-red-400 group-hover:text-red-600" />
 //                 <span className="font-medium">Delete</span>
@@ -404,7 +404,7 @@
 //       <div className="flex justify-between items-start mb-4">
 //         <div>
 //           <h2 className="text-3xl font-semibold text-gray-900">Plans</h2>
-//           <p className="text-sm text-gray-500">All Plan List</p>
+//           <p className="text-md text-gray-500">All Plan List</p>
 //         </div>
 
 //         <div className="flex items-center gap-3">
@@ -438,7 +438,7 @@
 //         <div className="overflow-x-auto">
 //           <table className="min-w-full border-separate border-spacing-y-2 border-gray-200">
 //             <thead>
-//               <tr className="text-left text-gray-500 text-sm border-t border-gray-200">
+//               <tr className="text-left text-gray-500 text-md border-t border-gray-200">
 //                 <th className="px-4 py-2">Plan Name ↓</th>
 //                 <th className="px-4 py-2">Segment ↓</th>
 //                 <th className="px-4 py-2">Category ↓</th>
@@ -469,7 +469,7 @@
 //                   <td className="px-4 py-3">{plan.plan_price}</td>
 
 //                   <td className="px-4 py-3">
-//                     <span className={`text-sm px-2 py-1 rounded-full ${
+//                     <span className={`text-md px-2 py-1 rounded-full ${
 //                       plan.status === "active"
 //                         ? "text-green-700 bg-green-50"
 //                         : "text-red-700 bg-red-50"
@@ -503,7 +503,7 @@
 //             >
 //               <button
 //                 onClick={() => handleView(plans[dropdownOpen])}
-//                 className="flex items-center w-full px-4 py-3 text-sm text-gray-700 hover:text-blue-700 transition-all duration-150 ease-out group"
+//                 className="flex items-center w-full px-4 py-3 text-md text-gray-700 hover:text-blue-700 transition-all duration-150 ease-out group"
 //               >
 //                 <img src={viewIcon} alt="view" className="inline-block w-5 h-5 mr-3 text-gray-400 group-hover:text-blue-500" />
 //                 <span className="font-medium">View</span>
@@ -511,7 +511,7 @@
 
 //               <button
 //                 onClick={() => handleEdit(plans[dropdownOpen])}
-//                 className="flex items-center w-full px-4 py-3 text-sm text-gray-700 hover:text-blue-700 transition-all duration-150 ease-out group"
+//                 className="flex items-center w-full px-4 py-3 text-md text-gray-700 hover:text-blue-700 transition-all duration-150 ease-out group"
 //               >
 //                 <img src={editIcon} alt="edit" className="inline-block w-5 h-5 mr-3 text-gray-400 group-hover:text-blue-500" />
 //                 <span className="font-medium">Edit</span>
@@ -525,7 +525,7 @@
 //                   setDeleteModalOpen(true);
 //                   setDropdownOpen(null);
 //                 }}
-//                 className="flex items-center w-full px-4 py-3 text-sm text-gray-700 hover:text-red-800 transition-all duration-150 ease-out group"
+//                 className="flex items-center w-full px-4 py-3 text-md text-gray-700 hover:text-red-800 transition-all duration-150 ease-out group"
 //               >
 //                 <img src={deleteIcon} alt="delete" className="inline-block w-5 h-5 mr-3 text-red-400 group-hover:text-red-600" />
 //                 <span className="font-medium">Delete</span>
@@ -618,7 +618,7 @@ export default function Plan() {
       //       className="w-10 h-10 rounded-full object-cover border-2 border-gray-200"
       //       alt={params.value}
       //     />
-      //     <span className="font-semibold text-gray-900 text-sm">
+      //     <span className="font-semibold text-gray-900 text-md">
       //       {params.value || "N/A"}
       //     </span>
       //   </div>
@@ -688,21 +688,21 @@ export default function Plan() {
         <div className="flex gap-1 justify-end">
           <button
             onClick={() => handleView(params.data)}
-            className="p-1.5 text-blue-600 hover:bg-blue-100 rounded-lg transition-all text-sm"
+            className="p-1.5 text-blue-600 hover:bg-blue-100 rounded-lg transition-all text-md"
             title="View"
           >
             <img src={viewIcon} alt="View" className="w-4 h-4" />
           </button>
           <button
             onClick={() => handleEdit(params.data)}
-            className="p-1.5 text-green-600 hover:bg-green-100 rounded-lg transition-all text-sm"
+            className="p-1.5 text-green-600 hover:bg-green-100 rounded-lg transition-all text-md"
             title="Edit"
           >
             <img src={editIcon} alt="Edit" className="w-4 h-4" />
           </button>
           <button
             onClick={() => handleDelete(params.data)}
-            className="p-1.5 text-red-600 hover:bg-red-100 rounded-lg transition-all text-sm"
+            className="p-1.5 text-red-600 hover:bg-red-100 rounded-lg transition-all text-md"
             title="Delete"
           >
             <img src={deleteIcon} alt="Delete" className="w-4 h-4" />
@@ -825,7 +825,7 @@ export default function Plan() {
       <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8 gap-4">
         <div>
           <h2 className="text-3xl font-bold text-gray-900">Plans</h2>
-          <p className="text-sm text-gray-500">All Plan List</p>
+          <p className="text-md text-gray-500">All Plan List</p>
         </div>
 
         <div className="flex items-center gap-3">

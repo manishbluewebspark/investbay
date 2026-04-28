@@ -82,7 +82,7 @@ export default function Topbar() {
             <input
               type="text"
               placeholder="Search for anything..."
-              className="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none"
+              className="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-md focus:outline-none"
             />
           </div>
         </div>
@@ -122,7 +122,7 @@ export default function Topbar() {
                   <p className="font-semibold text-gray-900 truncate">
                     {user?.name || "Welcome Back"}
                   </p>
-                  <p className="text-sm text-gray-500 truncate">
+                  <p className="text-md text-gray-500 truncate">
                     {user?.email || "user@example.com"}
                   </p>
                 </div>

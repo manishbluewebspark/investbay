@@ -31,20 +31,20 @@ const DeleteDynamicModal = ({
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m7-10V4a1 1 0 00-1-1h-4M9 3V2a1 1 0 00-1-1H5a1 1 0 00-1 1v1M21 7h-7" />
                         </svg>
                     </div>
-                    <p className="text-center text-gray-700 text-sm leading-relaxed">{description}</p>
+                    <p className="text-center text-gray-700 text-md leading-relaxed">{description}</p>
                 </div>
 
                 {/* Buttons */}
                 <div className="flex gap-3 justify-end">
                     <button
                         onClick={onClose}
-                        className="px-6 py-2.5 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-all text-sm font-medium"
+                        className="px-6 py-2.5 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-all text-md font-medium"
                     >
                         Cancel
                     </button>
                     <button
                         onClick={onConfirm}
-                        className="px-6 py-2.5 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-all text-sm font-medium shadow-sm"
+                        className="px-6 py-2.5 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-all text-md font-medium shadow-sm"
                     >
                         Delete Course
                     </button>

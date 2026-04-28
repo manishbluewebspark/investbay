@@ -1,165 +1,62 @@
-// import React, { useRef, useEffect, useState } from "react";
-// import MarketCard from "./signals/MarketCard";
-// import FiiDiiCard from "./signals/FiiDiiCard";
-// import PostCard from "./signals/PostCard";
-// import { signalData } from "../data/signalData";
-// import Newsletter from "./Newsletter";
-// import axios from "axios";
+import React, { useRef, useEffect, useState, useCallback, useMemo } from "react";
+import axios from "axios";
 
-// export default function Signals() {
-//   const leftRef = useRef(null);
-//   const centerRef = useRef(null);
-//   const rightRef = useRef(null);
-//   const isSyncingRef = useRef(false);
-//   const [feeds, setFeeds] = useState([]);
-
-//    const user = localStorage.getItem("user");
-//   const userId = user ? JSON.parse(user).id : null;
-//   const apiUrl = import.meta.env.VITE_API_URL;
-
-
-
-
-//     const fetchFeeds = async () => {
-//       // console.log('hiiii')
-//       try {
-      
-//         const res = await axios.get(`${apiUrl}/feeds/all-feed`);
-//         // console.log(res,'feeds...')
-//         setFeeds(res.data?.data || []);
-//       } catch (error) {
-//         console.error("Error fetching feeds:", error);
-//         setFeeds([]);
-//       } 
-//     };
-
-
-//     useEffect(()=>{
-
-// fetchFeeds()
-
-//     },[])
-
-
-
-
-//   useEffect(() => {
-//     const left = leftRef.current;
-//     const center = centerRef.current;
-//     const right = rightRef.current;
-
-//     if (!left || !center || !right) return;
-
-//     const syncScroll = (source) => {
-//       if (isSyncingRef.current) return;
-//       isSyncingRef.current = true;
-
-//       const scrollTop = source.scrollTop;
-
-//       [left, center, right].forEach((el) => {
-//         if (el !== source) {
-//           const maxScroll = el.scrollHeight - el.clientHeight;
-//           el.scrollTop = Math.min(scrollTop, maxScroll);
-//         }
-//       });
-
-//       requestAnimationFrame(() => {
-//         isSyncingRef.current = false;
-//       });
-//     };
-
-//     const onScrollLeft = () => syncScroll(left);
-//     const onScrollCenter = () => syncScroll(center);
-//     const onScrollRight = () => syncScroll(right);
-
-//     left.addEventListener("scroll", onScrollLeft);
-//     center.addEventListener("scroll", onScrollCenter);
-//     right.addEventListener("scroll", onScrollRight);
-
-//     return () => {
-//       left.removeEventListener("scroll", onScrollLeft);
-//       center.removeEventListener("scroll", onScrollCenter);
-//       right.removeEventListener("scroll", onScrollRight);
-//     };
-//   }, []);
-
-//   return (
-// <section>
-//         <div className="w-full max-w-full flex gap-4 h-[90vh] px-30 py-10">
-//       {/* Left Column */}
-//       <div
-//         ref={leftRef}
-//         className="w-1/4 h-full flex flex-col gap-4 overflow-y-auto pr-1 scroll-smooth hide-scrollbar"
-//       >
-//         <MarketCard data={signalData.marketIndices} />
-//         <FiiDiiCard data={signalData.fiiDii} />
-//       </div>
-
-//       {/* Center Column */}
-//       <div
-//         ref={centerRef}
-//         className="w-1/2 h-full overflow-y-auto px-2 scroll-smooth hide-scrollbar"
-//       >
-//         {feeds.map((post) => (
-//           <PostCard key={post.id} post={post} />
-//         ))}
-//       </div>
-
-//       {/* Right Column */}
-//       <div
-//         ref={rightRef}
-//         className="w-1/4 h-full flex flex-col gap-4 overflow-y-auto pl-1 scroll-smooth hide-scrollbar"
-//       >
-//         <MarketCard data={signalData.marketIndices} />
-//         <FiiDiiCard data={signalData.fiiDii} />
-//       </div>
-//     </div>
-//     <Newsletter />
-// </section>
-//   );
-// }
-
-// components/Signals.jsx
-import React, { useRef, useEffect, useState } from "react";
 import MarketCard from "./signals/MarketCard";
 import FiiDiiCard from "./signals/FiiDiiCard";
 import PostCard from "./signals/PostCard";
 import { signalData } from "../data/signalData";
-import Newsletter from "./Newsletter";
-import axios from "axios";
 
 export default function Signals() {
   const leftRef = useRef(null);
   const centerRef = useRef(null);
   const rightRef = useRef(null);
   const isSyncingRef = useRef(false);
+
   const [feeds, setFeeds] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const user = localStorage.getItem("user");
-  const userId = user ? JSON.parse(user).id : null;
   const apiUrl = import.meta.env.VITE_API_URL;
 
-  const fetchFeeds = async () => {
+  const user = useMemo(() => {
+    try {
+      const rawUser = localStorage.getItem("user");
+      return rawUser ? JSON.parse(rawUser) : null;
+    } catch (error) {
+      console.error("Invalid user data in localStorage:", error);
+      return null;
+    }
+  }, []);
+
+  const userId = user?.id ?? null;
+
+  const fetchFeeds = useCallback(async () => {
+    if (!apiUrl) {
+      console.error("VITE_API_URL is missing");
+      setFeeds([]);
+      setLoading(false);
+      return;
+    }
+
     try {
       setLoading(true);
+
       const res = await axios.get(`${apiUrl}/feeds/all-feed`, {
-        withCredentials: true
+        withCredentials: true,
       });
-      setFeeds(res.data?.data || []);
+
+      setFeeds(Array.isArray(res.data?.data) ? res.data.data : []);
     } catch (error) {
       console.error("Error fetching feeds:", error);
       setFeeds([]);
     } finally {
       setLoading(false);
     }
-  };
+  }, [apiUrl]);
 
   useEffect(() => {
     fetchFeeds();
-  }, []);
+  }, [fetchFeeds]);
 
-  // Sync scroll effect (your existing code)
   useEffect(() => {
     const left = leftRef.current;
     const center = centerRef.current;
@@ -175,8 +72,8 @@ export default function Signals() {
 
       [left, center, right].forEach((el) => {
         if (el !== source) {
-          const maxScroll = el.scrollHeight - el.clientHeight;
-          el.scrollTop = Math.min(scrollTop, maxScroll);
+          const maxScrollTop = el.scrollHeight - el.clientHeight;
+          el.scrollTop = Math.min(scrollTop, maxScrollTop);
         }
       });
 
@@ -189,9 +86,9 @@ export default function Signals() {
     const onScrollCenter = () => syncScroll(center);
     const onScrollRight = () => syncScroll(right);
 
-    left.addEventListener("scroll", onScrollLeft);
-    center.addEventListener("scroll", onScrollCenter);
-    right.addEventListener("scroll", onScrollRight);
+    left.addEventListener("scroll", onScrollLeft, { passive: true });
+    center.addEventListener("scroll", onScrollCenter, { passive: true });
+    right.addEventListener("scroll", onScrollRight, { passive: true });
 
     return () => {
       left.removeEventListener("scroll", onScrollLeft);
@@ -200,52 +97,67 @@ export default function Signals() {
     };
   }, []);
 
-  return (
-    <section>
-      <div className="w-full max-w-full flex gap-4 h-[90vh] px-30 py-10">
-        {/* Left Column */}
-        <div
-          ref={leftRef}
-          className="w-1/4 h-full flex flex-col gap-4 overflow-y-auto pr-1 scroll-smooth hide-scrollbar"
-        >
-          <MarketCard data={signalData.marketIndices} />
-          <FiiDiiCard data={signalData.fiiDii} />
-        </div>
+ return (
+  <section className="w-full">
+    <div className="max-w-7xl mx-auto  px-6 py-8">
+      
+      {/* ✅ Single Outer Box */}
+      <div className="h-[calc(100vh-100px)] min-h-0 rounded-2xl ">
+        
+        <div className="grid h-full grid-cols-1 gap-4 lg:grid-cols-[300px_minmax(0,1fr)_300px] xl:gap-6">
 
-        {/* Center Column */}
-        <div
-          ref={centerRef}
-          className="w-1/2 h-full overflow-y-auto px-2 scroll-smooth hide-scrollbar"
-        >
-          {loading ? (
-            <div className="flex justify-center items-center h-full">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+          {/* Left Column */}
+          <aside
+            ref={leftRef}
+            className="min-h-0 overflow-y-auto hide-scrollbar"
+          >
+            <div className="flex flex-col gap-4">
+              <MarketCard data={signalData.marketIndices} />
+              <FiiDiiCard data={signalData.fiiDii} />
             </div>
-          ) : feeds.length > 0 ? (
-            feeds.map((post) => (
-              <PostCard 
-                key={post.id} 
-                post={post} 
-                onUpdate={fetchFeeds}
-              />
-            ))
-          ) : (
-            <div className="text-center text-gray-500 py-10">
-              No posts available
-            </div>
-          )}
-        </div>
+          </aside>
 
-        {/* Right Column */}
-        <div
-          ref={rightRef}
-          className="w-1/4 h-full flex flex-col gap-4 overflow-y-auto pl-1 scroll-smooth hide-scrollbar"
-        >
-          <MarketCard data={signalData.marketIndices} />
-          <FiiDiiCard data={signalData.fiiDii} />
+          {/* Center Column */}
+          <main
+            ref={centerRef}
+            className="min-h-0 overflow-y-auto hide-scrollbar"
+          >
+            <div className="flex min-h-full flex-col gap-4">
+              {loading ? (
+                <div className="flex flex-1 items-center justify-center py-10">
+                  <div className="h-12 w-12 animate-spin rounded-full border-4 border-gray-200 border-t-blue-500" />
+                </div>
+              ) : feeds.length > 0 ? (
+                feeds.map((post) => (
+                  <PostCard
+                    key={post.id}
+                    post={post}
+                    userId={userId}
+                    onUpdate={fetchFeeds}
+                  />
+                ))
+              ) : (
+                <div className="flex flex-1 items-center justify-center py-16 text-md text-gray-500">
+                  No posts available
+                </div>
+              )}
+            </div>
+          </main>
+
+          {/* Right Column */}
+          <aside
+            ref={rightRef}
+            className="min-h-0 overflow-y-auto hide-scrollbar"
+          >
+            <div className="flex flex-col gap-4">
+              <MarketCard data={signalData.marketIndices} />
+              <FiiDiiCard data={signalData.fiiDii} />
+            </div>
+          </aside>
+
         </div>
       </div>
-      <Newsletter />
-    </section>
-  );
+    </div>
+  </section>
+);
 }

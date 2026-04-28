@@ -7,7 +7,7 @@ export default function SidebarItem({ item, collapsed }) {
     <NavLink
       to={item.path}
       className={({ isActive }) =>
-        `flex items-center px-2 py-1.5 rounded-full text-sm font-medium transition-all
+        `flex items-center px-2 py-1.5 rounded-full text-md font-medium transition-all
         ${collapsed ? "justify-center" : ""}
         ${
           isActive

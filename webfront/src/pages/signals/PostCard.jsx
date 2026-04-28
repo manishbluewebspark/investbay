@@ -1,135 +1,9 @@
-
-
-// import React from "react";
-// import { FaRegThumbsUp, FaRegCommentDots, FaShareAlt } from "react-icons/fa";
-
-// export default function PostCard({ post }) {
-//   console.log(post, 'post ....');
-
-//   // Extract initials from ra_name
-//   const getInitials = (name) => {
-//     if (!name) return "U";
-//     const nameParts = name.split(" ");
-//     if (nameParts.length > 1) {
-//       return (nameParts[0].charAt(0) + nameParts[1].charAt(0)).toUpperCase();
-//     }
-//     return name.charAt(0).toUpperCase();
-//   };
-
-//   // Format date
-//   const formatDate = (dateString) => {
-//     const date = new Date(dateString);
-//     return date.toLocaleDateString('en-US', {
-//       month: 'short',
-//       day: 'numeric',
-//       year: 'numeric'
-//     });
-//   };
-
-//   // Extract tags from feed_tags
-//   const getTags = (tags) => {
-//     if (!tags || !Array.isArray(tags)) return [];
-//     return tags.map(tag => tag.replace(/#/g, ''));
-//   };
-
-//   return (
-//     <section>
-//       <div
-//         className="rounded-2xl shadow-sm border border-gray-100 p-5 mb-6 transition-all duration-300 hover:shadow-md"
-//         style={{
-//           background: "linear-gradient(157.99deg, #EDEFFF 0%, #FFFFFF 100%)",
-//         }}
-//       >
-//         {/* Header Section */}
-//         <div className="flex items-center mb-4">
-//           <div className="w-10 h-10 rounded-full bg-green-300 flex items-center justify-center font-bold text-gray-700">
-//             {getInitials(post.ra_name)}
-//           </div>
-//           <div className="ml-3">
-//             <h3 className="text-sm font-semibold text-gray-800">{post.ra_name || "Unknown User"}</h3>
-//             <p className="text-xs text-gray-500">
-//               {formatDate(post.created_at)}
-//             </p>
-//           </div>
-//         </div>
-
-//         <div className="w-full mx-auto mt-3 h-[1.5px] bg-gradient-to-r from-gray-400 via-gray-200 to-gray-50 rounded-full mb-5"></div>
-
-//         {/* Post Content */}
-//         <p className="text-sm text-gray-700 mb-3 leading-relaxed">{post.feed_text}</p>
-
-//         {/* Optional: Support/Resistance/Sentiment section - You can remove if not needed */}
-//         {/* 
-//         <div className="text-xs text-gray-600 mb-4 bg-white/50 p-2 rounded-lg border border-gray-100">
-//           <p>
-//             <span className="font-semibold text-gray-700">Support:</span> {post.support}{" "}
-//             <span className="ml-3 font-semibold text-gray-700">Resistance:</span> {post.resistance}{" "}
-//             <span className="ml-3 font-semibold text-gray-700">Sentiment:</span> {post.sentiment}
-//           </p>
-//         </div>
-//         */}
-
-//         {/* Post Image - Only show if feed_documents exists and has items */}
-//         {post.feed_documents && post.feed_documents.length > 0 && (
-//           <img
-//             src={post.feed_documents[0].url}
-//             alt="Post"
-//             className="rounded-xl w-full mb-4 border border-gray-100 max-h-96 object-contain bg-gray-50"
-//             onError={(e) => {
-//               e.target.style.display = 'none';
-//             }}
-//           />
-//         )}
-
-//         {/* Tags */}
-//         <div className="flex flex-wrap gap-2 text-xs mb-4">
-//           {getTags(post.feed_tags).map((tag, i) => (
-//             <span
-//               key={i}
-//               className="bg-blue-50 text-blue-600 px-2 py-1 rounded-full border border-blue-100"
-//             >
-//               #{tag}
-//             </span>
-//           ))}
-//         </div>
-
-//         <div className="w-full mx-auto mt-3 h-[1.5px] bg-gradient-to-r from-gray-400 via-gray-200 to-gray-50 rounded-full mb-5"></div>
-        
-//         {/* Interaction Stats and Buttons */}
-//         <div className="flex items-center justify-between mb-3 text-xs text-gray-500">
-//           <div className="flex items-center gap-4">
-//             <span>{post.feed_like_count || 0} likes</span>
-//             <span>{post.feed_comment_count || 0} comments</span>
-//             <span>{post.feed_share_count || 0} shares</span>
-//           </div>
-//         </div>
-
-//         <div className="flex justify-between text-gray-600 text-sm">
-//           <button className="flex items-center gap-2 hover:text-blue-500 transition-colors duration-200 border p-1 px-14 rounded-md">
-//             <FaRegThumbsUp className="text-base" /> Like
-//           </button>
-//           <button className="flex items-center gap-2 hover:text-blue-500 transition-colors duration-200 border p-1 px-14 rounded-md">
-//             <FaRegCommentDots className="text-base" /> Comment
-//           </button>
-//           <button className="flex items-center gap-2 hover:text-blue-500 transition-colors duration-200 border p-1 px-14 rounded-md">
-//             <FaShareAlt className="text-base" /> Share
-//           </button>
-//         </div>
-//       </div>
-//     </section>
-//   );
-// }
-
-
-
-
-// components/signals/PostCard.jsx
 import React, { useState, useEffect } from "react";
-import { 
-  FaRegThumbsUp, 
-  FaThumbsUp, 
-  FaRegCommentDots, 
-  FaShareAlt, 
+import {
+  FaRegThumbsUp,
+  FaThumbsUp,
+  FaRegCommentDots,
+  FaShareAlt,
   FaEllipsisV,
   FaEdit,
   FaTrash,
@@ -137,7 +11,7 @@ import {
   FaLinkedin,
   FaFacebook,
   FaLink,
-  FaCheck
+  FaCheck,
 } from "react-icons/fa";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -148,26 +22,22 @@ export default function PostCard({ post: initialPost, onUpdate }) {
   const [likesCount, setLikesCount] = useState(initialPost.feed_like_count || 0);
   const [commentsCount, setCommentsCount] = useState(initialPost.feed_comment_count || 0);
   const [sharesCount, setSharesCount] = useState(initialPost.feed_share_count || 0);
-  
-  // Comment states
+
   const [showComments, setShowComments] = useState(false);
   const [comments, setComments] = useState(initialPost.comments || []);
   const [newComment, setNewComment] = useState("");
   const [editingCommentId, setEditingCommentId] = useState(null);
   const [editingText, setEditingText] = useState("");
-  
-  // Share states
+
   const [showShareOptions, setShowShareOptions] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
-  
-  // Menu states
   const [showMenu, setShowMenu] = useState(false);
-  
+  const [isExpanded, setIsExpanded] = useState(false);
+
   const user = JSON.parse(localStorage.getItem("user") || "{}");
   const userId = user?.id;
   const apiUrl = import.meta.env.VITE_API_URL;
 
-  // Toast configuration
   const toastConfig = {
     position: "top-right",
     autoClose: 3000,
@@ -176,325 +46,329 @@ export default function PostCard({ post: initialPost, onUpdate }) {
     pauseOnHover: true,
     draggable: true,
     progress: undefined,
-    theme: "colored"
+    theme: "colored",
   };
 
-  // Check if user is authenticated
   const isAuthenticated = () => {
     const user = localStorage.getItem("user");
     return user && JSON.parse(user).id;
   };
 
-  // Show login toast for unauthenticated users
   const requireAuth = (action) => {
     if (!isAuthenticated()) {
       toast.warning(`🔐 Please login to ${action}`, {
         ...toastConfig,
         autoClose: 4000,
         theme: "light",
-        icon: "🔒"
+        icon: "🔒",
       });
       return false;
     }
     return true;
   };
 
-  // Load comments when component mounts or initialPost changes
   useEffect(() => {
     setComments(initialPost.comments || []);
     setIsLiked(initialPost.is_liked_by_user || false);
     setLikesCount(initialPost.feed_like_count || 0);
     setCommentsCount(initialPost.feed_comment_count || 0);
     setSharesCount(initialPost.feed_share_count || 0);
+    setPost(initialPost);
+    setIsExpanded(false);
+    setShowComments(false);
+    setShowMenu(false);
+    setShowShareOptions(false);
   }, [initialPost]);
 
-  // 📌 LIKE TOGGLE HANDLER - FIXED URL
   const handleLike = async () => {
-    if (!requireAuth('like this post')) return;
+    if (!requireAuth("like this post")) return;
 
-    // Optimistic update
     const wasLiked = isLiked;
+    const previousLikes = likesCount;
+
     setIsLiked(!wasLiked);
-    setLikesCount(prev => wasLiked ? prev - 1 : prev + 1);
+    setLikesCount((prev) => (wasLiked ? prev - 1 : prev + 1));
 
     try {
       const res = await axios.post(
-        `${apiUrl}/feeds/feeds/${post.id}/like`,  // REMOVED extra /feeds/
+        `${apiUrl}/feeds/feeds/${post.id}/like`,
         { user_id: userId },
         { withCredentials: true }
       );
-      
+
       if (res.data.success) {
         setIsLiked(res.data.data.liked);
         setLikesCount(res.data.data.likes_count);
-        
-        toast.success(res.data.data.liked ? 'Post liked!' : 'Post unliked!', {
+
+        toast.success(res.data.data.liked ? "Post liked!" : "Post unliked!", {
           ...toastConfig,
-          icon: res.data.data.liked ? '👍' : '👎',
-          theme: 'dark',
-          autoClose: 2000
+          icon: res.data.data.liked ? "👍" : "👎",
+          theme: "dark",
+          autoClose: 2000,
         });
-        
-        // Refresh parent component
+
         if (onUpdate) onUpdate();
       }
     } catch (error) {
-      // Revert optimistic update on error
       setIsLiked(wasLiked);
-      setLikesCount(prev => wasLiked ? prev + 1 : prev - 1);
-      
+      setLikesCount(previousLikes);
       console.error("Error toggling like:", error);
-      toast.error('Failed to like post. Please try again.', toastConfig);
+      toast.error("Failed to like post. Please try again.", toastConfig);
     }
   };
 
-  // 📌 ADD COMMENT HANDLER - FIXED URL
   const handleAddComment = async (e) => {
     e.preventDefault();
+
     if (!newComment.trim()) {
-      toast.error('Please enter a comment', toastConfig);
+      toast.error("Please enter a comment", toastConfig);
       return;
     }
-    
-    if (!requireAuth('comment on this post')) return;
+
+    if (!requireAuth("comment on this post")) return;
 
     const commentText = newComment.trim();
-    setNewComment(""); // Clear input immediately
-    
+    setNewComment("");
+
     try {
       const res = await axios.post(
-        `${apiUrl}/feeds/feeds/${post.id}/comments`,  // REMOVED extra /feeds/
-        { 
-          comment_text: commentText, 
-          user_id: userId 
+        `${apiUrl}/feeds/feeds/${post.id}/comments`,
+        {
+          comment_text: commentText,
+          user_id: userId,
         },
         { withCredentials: true }
       );
 
       if (res.data.success) {
-        setComments(res.data.data.comments);
-        setCommentsCount(res.data.data.comments_count);
-        
-        toast.success('💬 Comment added successfully!', {
+        setComments(res.data.data.comments || []);
+        setCommentsCount(res.data.data.comments_count || 0);
+
+        toast.success("💬 Comment added successfully!", {
           ...toastConfig,
-          icon: '✅',
-          autoClose: 2000
+          icon: "✅",
+          autoClose: 2000,
         });
-        
-        // Refresh parent component
+
         if (onUpdate) onUpdate();
       }
     } catch (error) {
-      setNewComment(commentText); // Restore comment on error
+      setNewComment(commentText);
       console.error("Error adding comment:", error);
-      toast.error('Failed to add comment. Please try again.', toastConfig);
+      toast.error("Failed to add comment. Please try again.", toastConfig);
     }
   };
 
-  // 📌 EDIT COMMENT HANDLER - FIXED URL
   const handleEditComment = async (commentId) => {
     if (!editingText.trim()) {
-      toast.error('Please enter comment text', toastConfig);
+      toast.error("Please enter comment text", toastConfig);
       return;
     }
-    
-    if (!requireAuth('edit this comment')) return;
+
+    if (!requireAuth("edit this comment")) return;
 
     try {
       const res = await axios.put(
-        `${apiUrl}/feeds/feeds/${post.id}/comments/${commentId}`,  // REMOVED extra /feeds/
-        { 
-          comment_text: editingText.trim(), 
-          user_id: userId 
+        `${apiUrl}/feeds/feeds/${post.id}/comments/${commentId}`,
+        {
+          comment_text: editingText.trim(),
+          user_id: userId,
         },
         { withCredentials: true }
       );
 
       if (res.data.success) {
-        setComments(res.data.data.comments);
+        setComments(res.data.data.comments || []);
         setEditingCommentId(null);
         setEditingText("");
-        
-        toast.success('✏️ Comment updated successfully!', {
+
+        toast.success("✏️ Comment updated successfully!", {
           ...toastConfig,
-          icon: '✅',
-          autoClose: 2000
+          icon: "✅",
+          autoClose: 2000,
         });
-        
-        // Refresh parent component
+
         if (onUpdate) onUpdate();
       }
     } catch (error) {
       console.error("Error editing comment:", error);
       if (error.response?.status === 403) {
-        toast.error('You can only edit your own comments', toastConfig);
+        toast.error("You can only edit your own comments", toastConfig);
       } else {
-        toast.error('Failed to edit comment. Please try again.', toastConfig);
+        toast.error("Failed to edit comment. Please try again.", toastConfig);
       }
     }
   };
 
-  // 📌 DELETE COMMENT HANDLER - FIXED URL & DATA FORMAT
   const handleDeleteComment = async (commentId) => {
-    if (!requireAuth('delete this comment')) return;
-    
-    // Find comment to restore if needed
-    const commentToDelete = comments.find(c => c.id === commentId);
-    
-    // Optimistic update
-    const updatedComments = comments.filter(c => c.id !== commentId);
+    if (!requireAuth("delete this comment")) return;
+
+    const commentToDelete = comments.find((c) => c.id === commentId);
+    const updatedComments = comments.filter((c) => c.id !== commentId);
+
     setComments(updatedComments);
-    setCommentsCount(prev => prev - 1);
-    
+    setCommentsCount((prev) => Math.max(0, prev - 1));
+
     try {
       const res = await axios.delete(
-        `${apiUrl}/feeds/feeds/${post.id}/comments/${commentId}`,  // REMOVED extra /feeds/
-        { 
-          data: { user_id: userId },  // ✅ FIX: DELETE mein data object mein bhejo
-          withCredentials: true 
+        `${apiUrl}/feeds/feeds/${post.id}/comments/${commentId}`,
+        {
+          data: { user_id: userId },
+          withCredentials: true,
         }
       );
 
       if (res.data.success) {
-        setComments(res.data.data.comments);
-        setCommentsCount(res.data.data.comments_count);
-        
-        toast.success('🗑️ Comment deleted successfully!', {
+        setComments(res.data.data.comments || []);
+        setCommentsCount(res.data.data.comments_count || 0);
+
+        toast.success("🗑️ Comment deleted successfully!", {
           ...toastConfig,
-          icon: '✅',
-          autoClose: 2000
+          icon: "✅",
+          autoClose: 2000,
         });
-        
-        // Refresh parent component
+
         if (onUpdate) onUpdate();
       }
     } catch (error) {
-      // Revert optimistic update on error
       if (commentToDelete) {
-        setComments(prev => [...prev, commentToDelete].sort((a, b) => 
-          new Date(b.created_at) - new Date(a.created_at)
-        ));
-        setCommentsCount(prev => prev + 1);
+        setComments((prev) =>
+          [...prev, commentToDelete].sort(
+            (a, b) => new Date(b.created_at) - new Date(a.created_at)
+          )
+        );
+        setCommentsCount((prev) => prev + 1);
       }
-      
+
       console.error("Error deleting comment:", error);
       if (error.response?.status === 403) {
-        toast.error('You can only delete your own comments', toastConfig);
+        toast.error("You can only delete your own comments", toastConfig);
       } else {
-        toast.error('Failed to delete comment. Please try again.', toastConfig);
+        toast.error("Failed to delete comment. Please try again.", toastConfig);
       }
     }
   };
 
-  // 📌 SHARE HANDLER - FIXED URL
   const handleShare = async (platform) => {
-    if (!requireAuth('share this post')) return;
+    if (!requireAuth("share this post")) return;
 
-    // Optimistic update
-    setSharesCount(prev => prev + 1);
+    setSharesCount((prev) => prev + 1);
     setShowShareOptions(false);
 
     try {
       const shareUrl = `${window.location.origin}/feed-view/${post.id}`;
-      
-      switch(platform) {
-        case 'twitter':
-          window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.feed_text)}&url=${encodeURIComponent(shareUrl)}`, '_blank');
-          toast.info('Opening Twitter...', {
+
+      switch (platform) {
+        case "twitter":
+          window.open(
+            `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+              post.feed_text || ""
+            )}&url=${encodeURIComponent(shareUrl)}`,
+            "_blank"
+          );
+          toast.info("Opening Twitter...", {
             ...toastConfig,
-            icon: '🐦',
-            autoClose: 1500
+            icon: "🐦",
+            autoClose: 1500,
           });
           break;
-        case 'linkedin':
-          window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`, '_blank');
-          toast.info('Opening LinkedIn...', {
+
+        case "linkedin":
+          window.open(
+            `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
+              shareUrl
+            )}`,
+            "_blank"
+          );
+          toast.info("Opening LinkedIn...", {
             ...toastConfig,
-            icon: '💼',
-            autoClose: 1500
+            icon: "💼",
+            autoClose: 1500,
           });
           break;
-        case 'facebook':
-          window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`, '_blank');
-          toast.info('Opening Facebook...', {
+
+        case "facebook":
+          window.open(
+            `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+              shareUrl
+            )}`,
+            "_blank"
+          );
+          toast.info("Opening Facebook...", {
             ...toastConfig,
-            icon: '📘',
-            autoClose: 1500
+            icon: "📘",
+            autoClose: 1500,
           });
           break;
-        case 'copy':
+
+        case "copy":
           await navigator.clipboard.writeText(shareUrl);
           setCopySuccess(true);
-          toast.success('🔗 Link copied to clipboard!', {
+          toast.success("🔗 Link copied to clipboard!", {
             ...toastConfig,
-            icon: '📋',
-            autoClose: 2000
+            icon: "📋",
+            autoClose: 2000,
           });
           setTimeout(() => setCopySuccess(false), 2000);
           break;
+
         default:
           break;
       }
 
-      // Log the share - FIXED URL
       await axios.post(
-        `${apiUrl}/feeds/feeds/${post.id}/share`,  // REMOVED extra /feeds/
-        { 
-          platform, 
-          user_id: userId 
+        `${apiUrl}/feeds/feeds/${post.id}/share`,
+        {
+          platform,
+          user_id: userId,
         },
         { withCredentials: true }
       );
 
-      if (platform !== 'copy') {
-        toast.success('📤 Post shared successfully!', {
+      if (platform !== "copy") {
+        toast.success("📤 Post shared successfully!", {
           ...toastConfig,
-          icon: '🎉',
-          autoClose: 2000
+          icon: "🎉",
+          autoClose: 2000,
         });
       }
-      
-      // Refresh parent component
+
       if (onUpdate) onUpdate();
-      
     } catch (error) {
-      // Revert optimistic update on error
-      setSharesCount(prev => prev - 1);
-      
+      setSharesCount((prev) => Math.max(0, prev - 1));
       console.error("Error sharing:", error);
-      toast.error('Failed to share post. Please try again.', toastConfig);
+      toast.error("Failed to share post. Please try again.", toastConfig);
     }
   };
 
-  // 📌 HANDLE EDIT POST
   const handleEditPost = () => {
-    if (!requireAuth('edit this post')) return;
-    toast.info('Edit feature coming soon!', toastConfig);
+    if (!requireAuth("edit this post")) return;
+    toast.info("Edit feature coming soon!", toastConfig);
   };
 
-  // 📌 HANDLE DELETE POST
   const handleDeletePost = () => {
-    if (!requireAuth('delete this post')) return;
-    
+    if (!requireAuth("delete this post")) return;
+
     toast(
       ({ closeToast }) => (
         <div className="flex flex-col gap-3">
-          <p className="text-sm font-medium">Delete Post?</p>
-          <p className="text-xs text-gray-600">This will permanently delete this post and all its comments.</p>
+          <p className="text-md font-semibold">Delete Post?</p>
+          <p className="text-xs text-gray-600">
+            This will permanently delete this post and all its comments.
+          </p>
           <div className="flex gap-2 justify-end mt-2">
             <button
               onClick={async () => {
                 closeToast();
                 try {
-                  // Add your delete post API call here
-                  toast.success('🗑️ Post deleted successfully!', {
+                  toast.success("🗑️ Post deleted successfully!", {
                     ...toastConfig,
-                    icon: '✅',
-                    autoClose: 2000
+                    icon: "✅",
+                    autoClose: 2000,
                   });
                   if (onUpdate) onUpdate();
                 } catch (error) {
-                  toast.error('Failed to delete post. Please try again.', toastConfig);
+                  toast.error("Failed to delete post. Please try again.", toastConfig);
                 }
               }}
               className="px-3 py-1.5 bg-red-500 text-white text-xs rounded-md hover:bg-red-600 transition-colors"
@@ -517,245 +391,266 @@ export default function PostCard({ post: initialPost, onUpdate }) {
         draggable: false,
         closeButton: true,
         style: {
-          background: 'white',
-          padding: '16px',
-          borderRadius: '8px',
-          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
-        }
+          background: "white",
+          padding: "16px",
+          borderRadius: "8px",
+          boxShadow:
+            "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+        },
       }
     );
   };
 
-  // 📌 GET USER INITIALS
   const getInitials = (name) => {
     if (!name) return "U";
-    const nameParts = name.split(" ");
+    const nameParts = name.trim().split(" ");
     if (nameParts.length > 1) {
       return (nameParts[0].charAt(0) + nameParts[1].charAt(0)).toUpperCase();
     }
     return name.charAt(0).toUpperCase();
   };
 
-  // 📌 FORMAT DATE
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const now = new Date();
-    const diffTime = Math.abs(now - date);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    
-    if (diffDays === 0) {
-      return 'Today';
-    } else if (diffDays === 1) {
-      return 'Yesterday';
-    } else if (diffDays < 7) {
-      return `${diffDays} days ago`;
-    } else {
-      return date.toLocaleDateString('en-US', {
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric'
-      });
-    }
-  };
+    const diffTime = now - date;
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
-  // 📌 GET TAGS
-  const getTags = (tags) => {
-    if (!tags || !Array.isArray(tags)) return [];
-    return tags.map(tag => {
-      if (typeof tag === 'string') return tag.replace(/#/g, '');
-      return tag.name?.replace(/#/g, '') || '';
+    if (diffDays <= 0) return "Today";
+    if (diffDays === 1) return "Yesterday";
+    if (diffDays < 7) return `${diffDays} days ago`;
+
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
     });
   };
 
-  // 📌 HANDLE COMMENT BUTTON CLICK
-  const handleCommentButtonClick = () => {
-    if (!requireAuth('view comments')) return;
-    setShowComments(!showComments);
+  const getTags = (tags) => {
+    if (!tags || !Array.isArray(tags)) return [];
+    return tags
+      .map((tag) => {
+        if (typeof tag === "string") return tag.replace(/#/g, "");
+        return tag?.name?.replace(/#/g, "") || "";
+      })
+      .filter(Boolean);
   };
 
+  const handleCommentButtonClick = () => {
+    if (!requireAuth("view comments")) return;
+    setShowComments((prev) => !prev);
+  };
+
+  const toggleReadMore = () => {
+    setIsExpanded((prev) => !prev);
+  };
+
+  const postTags = getTags(post.feed_tags || []);
+  const postImage = post.feed_documents?.[0]?.url;
+  const postText = post.feed_text || "";
+  const shouldShowReadMore = postText.length > 180;
+
   return (
-    <div
-      className="rounded-2xl shadow-sm border border-gray-100 p-5 mb-6 transition-all duration-300 hover:shadow-md"
-      style={{
-        background: "linear-gradient(157.99deg, #EDEFFF 0%, #FFFFFF 100%)",
-      }}
-    >
-      {/* ===== HEADER SECTION ===== */}
-      <div className="flex items-start justify-between mb-4">
-        <div className="flex items-center">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-r from-green-400 to-blue-400 flex items-center justify-center font-bold text-white">
-            {getInitials(post.ra_name)}
+    <div className="max-w-full mx-auto rounded-2xl border border-gray-200 bg-white shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
+      <div className="p-4 sm:p-5">
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex items-start gap-3 min-w-0">
+            <div className="w-11 h-11 rounded-full bg-gradient-to-r from-green-400 to-blue-500 flex items-center justify-center font-bold text-white text-md flex-shrink-0">
+              {getInitials(post.ra_name)}
+            </div>
+
+            <div className="min-w-0">
+              <div className="flex items-center gap-2 flex-wrap">
+                <h3 className="text-md font-semibold text-gray-900 leading-tight">
+                  {post.ra_name || "Unknown User"}
+                </h3>
+                <span className="text-[11px] text-blue-600 font-medium">
+                  • Follow
+                </span>
+              </div>
+              <p className="text-[11px] text-gray-500 mt-0.5">
+                {post.ra_role || "Research Analyst"} · {formatDate(post.created_at)}
+              </p>
+            </div>
           </div>
-          <div className="ml-3">
-            <h3 className="text-sm font-semibold text-gray-800">{post.ra_name || "Unknown User"}</h3>
-            <p className="text-xs text-gray-500">{formatDate(post.created_at)}</p>
-          </div>
-        </div>
-        
-        {/* Menu Button - Only show for post owner */}
-        {post.ra_id === userId && (
-          <div className="relative">
-            <button 
-              onClick={() => setShowMenu(!showMenu)}
-              className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-            >
-              <FaEllipsisV className="text-gray-500 text-sm" />
-            </button>
-            
-            {showMenu && (
-              <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10 border border-gray-200">
-                <div className="py-1">
-                  <button 
-                    onClick={handleEditPost}
-                    className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                  >
-                    <FaEdit className="text-blue-500" /> Edit Post
-                  </button>
-                  <button 
-                    onClick={handleDeletePost}
-                    className="flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-gray-100 w-full text-left"
-                  >
-                    <FaTrash /> Delete Post
-                  </button>
-                </div>
+
+          <div className="flex items-center gap-2 flex-shrink-0">
+            {post.ra_id === userId && (
+              <div className="relative">
+                <button
+                  onClick={() => setShowMenu((prev) => !prev)}
+                  className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                >
+                  <FaEllipsisV className="text-gray-500 text-xs" />
+                </button>
+
+                {showMenu && (
+                  <div className="absolute right-0 mt-2 w-44 bg-white rounded-xl shadow-lg z-20 border border-gray-200 overflow-hidden">
+                    <button
+                      onClick={handleEditPost}
+                      className="flex items-center gap-2 px-4 py-2.5 text-md text-gray-700 hover:bg-gray-50 w-full text-left"
+                    >
+                      <FaEdit className="text-blue-500" />
+                      Edit Post
+                    </button>
+                    <button
+                      onClick={handleDeletePost}
+                      className="flex items-center gap-2 px-4 py-2.5 text-md text-red-600 hover:bg-gray-50 w-full text-left"
+                    >
+                      <FaTrash />
+                      Delete Post
+                    </button>
+                  </div>
+                )}
               </div>
             )}
+          </div>
+        </div>
+
+        <p
+          className={`text-[13px] sm:text-md text-gray-700 mt-4 leading-6 whitespace-pre-line ${
+            !isExpanded ? "line-clamp-4" : ""
+          }`}
+        >
+          {postText}
+        </p>
+
+        {shouldShowReadMore && (
+          <button
+            type="button"
+            className="text-[13px] text-blue-600 font-medium mt-1 hover:underline"
+            onClick={toggleReadMore}
+          >
+            {isExpanded ? "Show less" : "Read more"}
+          </button>
+        )}
+
+        <div className="flex flex-wrap gap-2 mt-4">
+          <span className="px-3 py-1 rounded-full bg-green-50 text-green-700 text-xs border border-green-100">
+            Support {likesCount.toLocaleString()}
+          </span>
+          <span className="px-3 py-1 rounded-full bg-red-50 text-red-700 text-xs border border-red-100">
+            Resistance {commentsCount.toLocaleString()}
+          </span>
+          <span className="px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs border border-blue-100">
+            Target {sharesCount.toLocaleString()}
+          </span>
+        </div>
+
+        {postImage && (
+          <div className="mt-4">
+            <img
+              src={postImage}
+              alt="Post"
+              className="w-full h-[280px] sm:h-[340px] object-cover rounded-2xl bg-gray-50 border border-gray-100"
+              onError={(e) => {
+                e.target.style.display = "none";
+                toast.error("Failed to load image", {
+                  ...toastConfig,
+                  autoClose: 2000,
+                });
+              }}
+            />
+          </div>
+        )}
+
+        {postTags.length > 0 && (
+          <div className="flex flex-wrap gap-3 mt-4">
+            {postTags.map((tag, i) => (
+              <span
+                key={i}
+                className="text-xs text-blue-600 hover:underline cursor-pointer"
+              >
+                #{tag}
+              </span>
+            ))}
           </div>
         )}
       </div>
 
-      <div className="w-full mx-auto mt-3 h-[1.5px] bg-gradient-to-r from-gray-400 via-gray-200 to-gray-50 rounded-full mb-5" />
-
-      {/* ===== POST CONTENT ===== */}
-      <p className="text-sm text-gray-700 mb-3 leading-relaxed whitespace-pre-line">{post.feed_text}</p>
-
-      {/* Post Image */}
-      {post.feed_documents && post.feed_documents.length > 0 && (
-        <img
-          src={post.feed_documents[0].url}
-          alt="Post"
-          className="rounded-xl w-full mb-4 border border-gray-100 max-h-96 object-contain bg-gray-50"
-          onError={(e) => {
-            e.target.style.display = 'none';
-            toast.error('Failed to load image', {
-              ...toastConfig,
-              autoClose: 2000
-            });
-          }}
-        />
-      )}
-
-      {/* Tags */}
-      {post.feed_tags && post.feed_tags.length > 0 && (
-        <div className="flex flex-wrap gap-2 text-xs mb-4">
-          {getTags(post.feed_tags).map((tag, i) => (
-            <span
-              key={i}
-              className="bg-blue-50 text-blue-600 px-2 py-1 rounded-full border border-blue-100 hover:bg-blue-100 transition-colors cursor-pointer"
-            >
-              #{tag}
-            </span>
-          ))}
-        </div>
-      )}
-
-      <div className="w-full mx-auto mt-3 h-[1.5px] bg-gradient-to-r from-gray-400 via-gray-200 to-gray-50 rounded-full mb-5" />
-      
-      {/* ===== INTERACTION STATS ===== */}
-      <div className="flex items-center justify-between mb-3 text-xs text-gray-500">
-        <div className="flex items-center gap-4">
-          <span className="hover:text-blue-500 transition-colors cursor-pointer">
-            {likesCount} {likesCount === 1 ? 'like' : 'likes'}
-          </span>
-          <span 
-            className="hover:text-blue-500 transition-colors cursor-pointer"
-            onClick={handleCommentButtonClick}
+      <div className="border-t border-gray-100 px-4 sm:px-5 py-3">
+        <div className="flex items-center justify-between text-gray-500">
+          <button
+            onClick={handleLike}
+            className={`flex items-center gap-2 text-md transition-colors ${
+              isLiked ? "text-blue-600" : "hover:text-blue-600"
+            }`}
           >
-            {commentsCount} {commentsCount === 1 ? 'comment' : 'comments'}
-          </span>
-          <span className="hover:text-blue-500 transition-colors cursor-pointer">
-            {sharesCount} {sharesCount === 1 ? 'share' : 'shares'}
-          </span>
-        </div>
-      </div>
-
-      {/* ===== ACTION BUTTONS ===== */}
-      <div className="flex justify-between text-gray-600 text-sm">
-        <button 
-          onClick={handleLike}
-          className={`flex items-center gap-2 transition-colors duration-200 border p-1 px-14 rounded-md ${
-            isLiked 
-              ? 'text-blue-500 border-blue-200 bg-blue-50' 
-              : 'hover:text-blue-500 hover:border-blue-200'
-          }`}
-        >
-          {isLiked ? <FaThumbsUp className="text-base" /> : <FaRegThumbsUp className="text-base" />}
-          {isLiked ? 'Liked' : 'Like'}
-        </button>
-        
-        <button 
-          onClick={handleCommentButtonClick}
-          className={`flex items-center gap-2 transition-colors duration-200 border p-1 px-14 rounded-md hover:text-blue-500 hover:border-blue-200 ${
-            showComments ? 'text-blue-500 border-blue-200 bg-blue-50' : ''
-          }`}
-        >
-          <FaRegCommentDots className="text-base" /> Comment
-        </button>
-        
-        <div className="relative">
-          <button 
-            onClick={() => {
-              if (requireAuth('share this post')) {
-                setShowShareOptions(!showShareOptions);
-              }
-            }}
-            className="flex items-center gap-2 hover:text-blue-500 transition-colors duration-200 border p-1 px-14 rounded-md"
-          >
-            <FaShareAlt className="text-base" /> Share
+            {isLiked ? <FaThumbsUp /> : <FaRegThumbsUp />}
+            <span>{likesCount}</span>
           </button>
-          
-          {/* Share Options Dropdown */}
-          {showShareOptions && isAuthenticated() && (
-            <div className="absolute bottom-full mb-2 left-0 w-48 bg-white rounded-md shadow-lg z-20 border border-gray-200">
-              <div className="py-1">
-                <button 
-                  onClick={() => handleShare('twitter')}
-                  className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+
+          <button
+            onClick={handleCommentButtonClick}
+            className={`flex items-center gap-2 text-md transition-colors ${
+              showComments ? "text-blue-600" : "hover:text-blue-600"
+            }`}
+          >
+            <FaRegCommentDots />
+            <span>{commentsCount}</span>
+          </button>
+
+          <div className="relative">
+            <button
+              onClick={() => {
+                if (requireAuth("share this post")) {
+                  setShowShareOptions((prev) => !prev);
+                }
+              }}
+              className="flex items-center gap-2 text-md hover:text-blue-600 transition-colors"
+            >
+              <FaShareAlt />
+              <span>{sharesCount}</span>
+            </button>
+
+            {showShareOptions && isAuthenticated() && (
+              <div className="absolute bottom-full right-0 mb-2 w-48 bg-white rounded-xl shadow-lg z-20 border border-gray-200 overflow-hidden">
+                <button
+                  onClick={() => handleShare("twitter")}
+                  className="flex items-center gap-2 px-4 py-2.5 text-md text-gray-700 hover:bg-gray-50 w-full text-left"
                 >
-                  <FaTwitter className="text-blue-400" /> Twitter
+                  <FaTwitter className="text-blue-400" />
+                  Twitter
                 </button>
-                <button 
-                  onClick={() => handleShare('linkedin')}
-                  className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                <button
+                  onClick={() => handleShare("linkedin")}
+                  className="flex items-center gap-2 px-4 py-2.5 text-md text-gray-700 hover:bg-gray-50 w-full text-left"
                 >
-                  <FaLinkedin className="text-blue-600" /> LinkedIn
+                  <FaLinkedin className="text-blue-600" />
+                  LinkedIn
                 </button>
-                <button 
-                  onClick={() => handleShare('facebook')}
-                  className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                <button
+                  onClick={() => handleShare("facebook")}
+                  className="flex items-center gap-2 px-4 py-2.5 text-md text-gray-700 hover:bg-gray-50 w-full text-left"
                 >
-                  <FaFacebook className="text-blue-600" /> Facebook
+                  <FaFacebook className="text-blue-600" />
+                  Facebook
                 </button>
-                <button 
-                  onClick={() => handleShare('copy')}
-                  className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                <button
+                  onClick={() => handleShare("copy")}
+                  className="flex items-center gap-2 px-4 py-2.5 text-md text-gray-700 hover:bg-gray-50 w-full text-left"
                 >
                   {copySuccess ? (
-                    <><FaCheck className="text-green-500" /> Copied!</>
+                    <>
+                      <FaCheck className="text-green-500" />
+                      Copied!
+                    </>
                   ) : (
-                    <><FaLink /> Copy Link</>
+                    <>
+                      <FaLink />
+                      Copy Link
+                    </>
                   )}
                 </button>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
 
-      {/* ===== COMMENTS SECTION ===== */}
       {showComments && (
-        <div className="mt-4 pt-4 border-t border-gray-200">
-          {/* Add Comment Form - Only for authenticated users */}
+        <div className="border-t border-gray-100 px-4 sm:px-5 py-4 bg-gray-50/40">
           {isAuthenticated() ? (
             <form onSubmit={handleAddComment} className="mb-4 flex gap-2">
               <input
@@ -763,21 +658,21 @@ export default function PostCard({ post: initialPost, onUpdate }) {
                 value={newComment}
                 onChange={(e) => setNewComment(e.target.value)}
                 placeholder="Write a comment..."
-                className="flex-1 px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:border-blue-300 text-sm"
+                className="flex-1 px-3 py-2 border border-gray-200 rounded-xl focus:outline-none focus:border-blue-300 text-md bg-white"
               />
-              <button 
+              <button
                 type="submit"
                 disabled={!newComment.trim()}
-                className="px-4 py-2 bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-4 py-2 bg-blue-500 text-white text-md rounded-xl hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Post
               </button>
             </form>
           ) : (
-            <div className="mb-4 p-3 bg-gray-50 rounded-lg text-center">
-              <p className="text-sm text-gray-600 mb-2">Please login to post comments</p>
+            <div className="mb-4 p-3 bg-white rounded-xl text-center border border-gray-200">
+              <p className="text-md text-gray-600 mb-2">Please login to post comments</p>
               <button
-                onClick={() => window.location.href = '/login'}
+                onClick={() => (window.location.href = "/login")}
                 className="bg-blue-500 text-white px-4 py-1.5 text-xs rounded-md hover:bg-blue-600 transition-colors"
               >
                 Login to Continue
@@ -785,42 +680,44 @@ export default function PostCard({ post: initialPost, onUpdate }) {
             </div>
           )}
 
-          {/* Comments List */}
           <div className="space-y-3 max-h-60 overflow-y-auto">
             {comments.length > 0 ? (
               comments.map((comment) => (
-                <div key={comment.id} className="bg-gray-50 rounded-lg p-3">
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-start gap-2 flex-1">
-                      <div className="w-6 h-6 rounded-full bg-gradient-to-r from-gray-400 to-gray-500 flex items-center justify-center font-bold text-white text-xs flex-shrink-0">
-                        {getInitials(comment.user_name || 'User')}
+                <div key={comment.id} className="bg-white border border-gray-200 rounded-xl p-3">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-start gap-2 flex-1 min-w-0">
+                      <div className="w-7 h-7 rounded-full bg-gradient-to-r from-gray-400 to-gray-500 flex items-center justify-center font-bold text-white text-xs flex-shrink-0">
+                        {getInitials(comment.user_name || "User")}
                       </div>
+
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 flex-wrap">
-                          <span className="text-xs font-semibold text-gray-700">
-                            {comment.user_name || 'User'}
+                          <span className="text-xs font-semibold text-gray-800">
+                            {comment.user_name || "User"}
                           </span>
-                          <span className="text-xs text-gray-400">
+                          <span className="text-[11px] text-gray-400">
                             {formatDate(comment.created_at)}
                           </span>
                         </div>
-                        
+
                         {editingCommentId === comment.id ? (
-                          <div className="mt-1 flex gap-2">
+                          <div className="mt-2 flex gap-2">
                             <input
                               type="text"
                               value={editingText}
                               onChange={(e) => setEditingText(e.target.value)}
-                              className="flex-1 px-2 py-1 text-sm border border-gray-200 rounded-md focus:outline-none focus:border-blue-300"
+                              className="flex-1 px-2 py-1 text-md border border-gray-200 rounded-md focus:outline-none focus:border-blue-300"
                               autoFocus
                             />
                             <button
+                              type="button"
                               onClick={() => handleEditComment(comment.id)}
                               className="px-2 py-1 bg-green-500 text-white text-xs rounded hover:bg-green-600"
                             >
                               Save
                             </button>
                             <button
+                              type="button"
                               onClick={() => {
                                 setEditingCommentId(null);
                                 setEditingText("");
@@ -831,15 +728,17 @@ export default function PostCard({ post: initialPost, onUpdate }) {
                             </button>
                           </div>
                         ) : (
-                          <p className="text-sm text-gray-600 mt-1 break-words">{comment.comment_text}</p>
+                          <p className="text-md text-gray-600 mt-1 break-words">
+                            {comment.comment_text}
+                          </p>
                         )}
                       </div>
                     </div>
-                    
-                    {/* Comment Actions - Only for comment owner */}
+
                     {isAuthenticated() && comment.user_id === userId && (
-                      <div className="flex items-center gap-2 ml-2 flex-shrink-0">
+                      <div className="flex items-center gap-2 flex-shrink-0">
                         <button
+                          type="button"
                           onClick={() => {
                             setEditingCommentId(comment.id);
                             setEditingText(comment.comment_text);
@@ -850,6 +749,7 @@ export default function PostCard({ post: initialPost, onUpdate }) {
                           <FaEdit className="text-xs" />
                         </button>
                         <button
+                          type="button"
                           onClick={() => handleDeleteComment(comment.id)}
                           className="text-gray-400 hover:text-red-500 transition-colors"
                           title="Delete comment"
@@ -862,7 +762,7 @@ export default function PostCard({ post: initialPost, onUpdate }) {
                 </div>
               ))
             ) : (
-              <p className="text-center text-gray-400 text-sm py-4">
+              <p className="text-center text-gray-400 text-md py-4">
                 No comments yet. Be the first to comment!
               </p>
             )}

@@ -195,7 +195,7 @@
 //             <h2 className="text-3xl font-semibold text-gray-900">
 //               {getHeaderTitle()}
 //             </h2>
-//             <p className="text-sm text-gray-500 mt-1">
+//             <p className="text-md text-gray-500 mt-1">
 //               {isRA ? "Manage and track your published articles" : "Create and manage all news articles"}
 //             </p>
 //           </div>
@@ -217,19 +217,19 @@
 //         {isAdmin && stats && (
 //           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
 //             <div className="bg-blue-50 p-4 rounded-lg">
-//               <p className="text-sm text-blue-600 font-medium">Total News</p>
+//               <p className="text-md text-blue-600 font-medium">Total News</p>
 //               <p className="text-2xl font-bold text-blue-700">{stats.total || 0}</p>
 //             </div>
 //             <div className="bg-green-50 p-4 rounded-lg">
-//               <p className="text-sm text-green-600 font-medium">Published</p>
+//               <p className="text-md text-green-600 font-medium">Published</p>
 //               <p className="text-2xl font-bold text-green-700">{stats.byStatus?.published || 0}</p>
 //             </div>
 //             <div className="bg-yellow-50 p-4 rounded-lg">
-//               <p className="text-sm text-yellow-600 font-medium">Drafts</p>
+//               <p className="text-md text-yellow-600 font-medium">Drafts</p>
 //               <p className="text-2xl font-bold text-yellow-700">{stats.byStatus?.draft || 0}</p>
 //             </div>
 //             <div className="bg-purple-50 p-4 rounded-lg">
-//               <p className="text-sm text-purple-600 font-medium">Total Views</p>
+//               <p className="text-md text-purple-600 font-medium">Total Views</p>
 //               <p className="text-2xl font-bold text-purple-700">{stats.totalViews?.toLocaleString() || 0}</p>
 //             </div>
 //           </div>
@@ -246,7 +246,7 @@
 //               placeholder="Search news..."
 //               value={searchTerm}
 //               onChange={(e) => setSearchTerm(e.target.value)}
-//               className="w-full border border-gray-300 px-4 py-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+//               className="w-full border border-gray-300 px-4 py-2 rounded-lg text-md focus:outline-none focus:ring-2 focus:ring-blue-500"
 //             />
 //           </div>
 
@@ -254,7 +254,7 @@
 //           <select
 //             value={filter.category}
 //             onChange={(e) => setFilter({...filter, category: e.target.value, status: ""})}
-//             className="border border-gray-300 px-4 py-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 min-w-[150px]"
+//             className="border border-gray-300 px-4 py-2 rounded-lg text-md focus:outline-none focus:ring-2 focus:ring-blue-500 min-w-[150px]"
 //           >
 //             <option value="">All Categories</option>
 //             {categories.map(cat => (
@@ -266,7 +266,7 @@
 //           <select
 //             value={filter.status}
 //             onChange={(e) => setFilter({...filter, status: e.target.value, category: ""})}
-//             className="border border-gray-300 px-4 py-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 min-w-[150px]"
+//             className="border border-gray-300 px-4 py-2 rounded-lg text-md focus:outline-none focus:ring-2 focus:ring-blue-500 min-w-[150px]"
 //           >
 //             <option value="">All Status</option>
 //             {statuses.map(status => (
@@ -278,7 +278,7 @@
 //           {(filter.category || filter.status || searchTerm) && (
 //             <button
 //               onClick={clearFilters}
-//               className="text-sm text-red-600 hover:text-red-800"
+//               className="text-md text-red-600 hover:text-red-800"
 //             >
 //               Clear Filters
 //             </button>
@@ -334,7 +334,7 @@
 //                         />
 //                       )}
 //                       <div>
-//                         <div className="text-sm font-medium text-gray-900 line-clamp-1">
+//                         <div className="text-md font-medium text-gray-900 line-clamp-1">
 //                           {item.title}
 //                         </div>
 //                         <div className="text-xs text-gray-500 line-clamp-1">
@@ -353,7 +353,7 @@
 //                     </div>
 //                   </td>
 //                   <td className="px-6 py-4 whitespace-nowrap">
-//                     <span className="text-sm text-gray-900">{item.category}</span>
+//                     <span className="text-md text-gray-900">{item.category}</span>
 //                   </td>
 //                   <td className="px-6 py-4 whitespace-nowrap">
 //                     <select
@@ -374,7 +374,7 @@
 //                     </select>
 //                   </td>
 //                   <td className="px-6 py-4 whitespace-nowrap">
-//                     <div className="text-sm text-gray-900">
+//                     <div className="text-md text-gray-900">
 //                       {item.scheduled_date ? (
 //                         <div className="flex items-center gap-1">
 //                           <FiCalendar size={14} className="text-gray-400" />
@@ -386,12 +386,12 @@
 //                     </div>
 //                   </td>
 //                   <td className="px-6 py-4 whitespace-nowrap">
-//                     <div className="flex items-center gap-1 text-sm text-gray-600">
+//                     <div className="flex items-center gap-1 text-md text-gray-600">
 //                       <FiEye size={14} />
 //                       {item.views || 0}
 //                     </div>
 //                   </td>
-//                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+//                   <td className="px-6 py-4 whitespace-nowrap text-md font-medium">
 //                     <div className="flex items-center gap-2">
 //                       <button
 //                         onClick={() => handlePreview(item)}
@@ -426,7 +426,7 @@
 //           {/* Pagination (if needed) */}
 //           {news.length > 0 && (
 //             <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
-//               <div className="text-sm text-gray-700">
+//               <div className="text-md text-gray-700">
 //                 Showing <span className="font-medium">1</span> to <span className="font-medium">{news.length}</span> of{' '}
 //                 <span className="font-medium">{news.length}</span> results
 //               </div>
@@ -457,7 +457,7 @@
 //                 </div>
 //               )}
 //               <h1 className="text-2xl font-bold mb-3">{selectedNews.title}</h1>
-//               <div className="flex items-center gap-4 mb-4 text-sm text-gray-600">
+//               <div className="flex items-center gap-4 mb-4 text-md text-gray-600">
 //                 <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded">{selectedNews.category}</span>
 //                 <span>By {selectedNews.author_name || 'Unknown'}</span>
 //                 <span>{format(new Date(selectedNews.created_at), 'dd MMM yyyy')}</span>
@@ -602,7 +602,7 @@
 //           {/* Play button overlay */}
 //           <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity rounded">
 //             <div className="bg-white/90 rounded-full p-2">
-//               <FaPlay className="text-black text-sm" />
+//               <FaPlay className="text-black text-md" />
 //             </div>
 //           </div>
 
@@ -821,7 +821,7 @@
 //             <h2 className="text-3xl font-semibold text-gray-900">
 //               {getHeaderTitle()}
 //             </h2>
-//             <p className="text-sm text-gray-500 mt-1">
+//             <p className="text-md text-gray-500 mt-1">
 //               {isRA ? "Manage and track your published articles" : "Create and manage all news articles"}
 //             </p>
 //           </div>
@@ -843,19 +843,19 @@
 //         {isAdmin && stats && (
 //           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
 //             <div className="bg-blue-50 p-4 rounded-lg">
-//               <p className="text-sm text-blue-600 font-medium">Total News</p>
+//               <p className="text-md text-blue-600 font-medium">Total News</p>
 //               <p className="text-2xl font-bold text-blue-700">{stats.total || 0}</p>
 //             </div>
 //             <div className="bg-green-50 p-4 rounded-lg">
-//               <p className="text-sm text-green-600 font-medium">Published</p>
+//               <p className="text-md text-green-600 font-medium">Published</p>
 //               <p className="text-2xl font-bold text-green-700">{stats.byStatus?.published || 0}</p>
 //             </div>
 //             <div className="bg-yellow-50 p-4 rounded-lg">
-//               <p className="text-sm text-yellow-600 font-medium">Drafts</p>
+//               <p className="text-md text-yellow-600 font-medium">Drafts</p>
 //               <p className="text-2xl font-bold text-yellow-700">{stats.byStatus?.draft || 0}</p>
 //             </div>
 //             <div className="bg-purple-50 p-4 rounded-lg">
-//               <p className="text-sm text-purple-600 font-medium">Total Views</p>
+//               <p className="text-md text-purple-600 font-medium">Total Views</p>
 //               <p className="text-2xl font-bold text-purple-700">{stats.totalViews?.toLocaleString() || 0}</p>
 //             </div>
 //           </div>
@@ -872,7 +872,7 @@
 //               placeholder="Search news..."
 //               value={searchTerm}
 //               onChange={(e) => setSearchTerm(e.target.value)}
-//               className="w-full border border-gray-300 px-4 py-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+//               className="w-full border border-gray-300 px-4 py-2 rounded-lg text-md focus:outline-none focus:ring-2 focus:ring-blue-500"
 //             />
 //           </div>
 
@@ -880,7 +880,7 @@
 //           <select
 //             value={filter.category}
 //             onChange={(e) => setFilter({...filter, category: e.target.value, status: ""})}
-//             className="border border-gray-300 px-4 py-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 min-w-[150px]"
+//             className="border border-gray-300 px-4 py-2 rounded-lg text-md focus:outline-none focus:ring-2 focus:ring-blue-500 min-w-[150px]"
 //           >
 //             <option value="">All Categories</option>
 //             {categories.map(cat => (
@@ -892,7 +892,7 @@
 //           <select
 //             value={filter.status}
 //             onChange={(e) => setFilter({...filter, status: e.target.value, category: ""})}
-//             className="border border-gray-300 px-4 py-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 min-w-[150px]"
+//             className="border border-gray-300 px-4 py-2 rounded-lg text-md focus:outline-none focus:ring-2 focus:ring-blue-500 min-w-[150px]"
 //           >
 //             <option value="">All Status</option>
 //             {statuses.map(status => (
@@ -904,7 +904,7 @@
 //           {(filter.category || filter.status || searchTerm) && (
 //             <button
 //               onClick={clearFilters}
-//               className="text-sm text-red-600 hover:text-red-800"
+//               className="text-md text-red-600 hover:text-red-800"
 //             >
 //               Clear Filters
 //             </button>
@@ -965,7 +965,7 @@
 //                       )}
                       
 //                       <div>
-//                         <div className="text-sm font-medium text-gray-900 line-clamp-1">
+//                         <div className="text-md font-medium text-gray-900 line-clamp-1">
 //                           {item.title}
 //                         </div>
 //                         <div className="text-xs text-gray-500 line-clamp-1">
@@ -984,7 +984,7 @@
 //                     </div>
 //                   </td>
 //                   <td className="px-6 py-4 whitespace-nowrap">
-//                     <span className="text-sm text-gray-900">{item.category}</span>
+//                     <span className="text-md text-gray-900">{item.category}</span>
 //                   </td>
 //                   <td className="px-6 py-4 whitespace-nowrap">
 //                     <select
@@ -1005,7 +1005,7 @@
 //                     </select>
 //                   </td>
 //                   <td className="px-6 py-4 whitespace-nowrap">
-//                     <div className="text-sm text-gray-900">
+//                     <div className="text-md text-gray-900">
 //                       {item.scheduled_date ? (
 //                         <div className="flex items-center gap-1">
 //                           <FiCalendar size={14} className="text-gray-400" />
@@ -1017,12 +1017,12 @@
 //                     </div>
 //                   </td>
 //                   <td className="px-6 py-4 whitespace-nowrap">
-//                     <div className="flex items-center gap-1 text-sm text-gray-600">
+//                     <div className="flex items-center gap-1 text-md text-gray-600">
 //                       <FiEye size={14} />
 //                       {item.views || 0}
 //                     </div>
 //                   </td>
-//                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+//                   <td className="px-6 py-4 whitespace-nowrap text-md font-medium">
 //                     <div className="flex items-center gap-2">
 //                       <button
 //                         onClick={() => handlePreview(item)}
@@ -1057,7 +1057,7 @@
 //           {/* Pagination (if needed) */}
 //           {news.length > 0 && (
 //             <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
-//               <div className="text-sm text-gray-700">
+//               <div className="text-md text-gray-700">
 //                 Showing <span className="font-medium">1</span> to <span className="font-medium">{news.length}</span> of{' '}
 //                 <span className="font-medium">{news.length}</span> results
 //               </div>
@@ -1107,7 +1107,7 @@
 
 //               {/* News Content */}
 //               <h1 className="text-2xl font-bold mb-3">{selectedNews.title}</h1>
-//               <div className="flex items-center gap-4 mb-4 text-sm text-gray-600">
+//               <div className="flex items-center gap-4 mb-4 text-md text-gray-600">
 //                 <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded">{selectedNews.category}</span>
 //                 <span>By {selectedNews.author_name || 'Unknown'}</span>
 //                 <span>{format(new Date(selectedNews.created_at), 'dd MMM yyyy')}</span>
@@ -1263,7 +1263,7 @@ const renderMediaThumbnail = (media) => {
         
         <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity rounded">
           <div className="bg-white/90 rounded-full p-2">
-            <FaPlay className="text-black text-sm" />
+            <FaPlay className="text-black text-md" />
           </div>
         </div>
 
@@ -1503,7 +1503,7 @@ const renderMediaThumbnail = (media) => {
             <h2 className="text-3xl font-semibold text-gray-900">
               {getHeaderTitle()}
             </h2>
-            <p className="text-sm text-gray-500 mt-1">
+            <p className="text-md text-gray-500 mt-1">
               {isRA ? "Manage and track your published articles" : "Create and manage all news articles"}
             </p>
           </div>
@@ -1525,19 +1525,19 @@ const renderMediaThumbnail = (media) => {
         {isAdmin && stats && (
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
             <div className="bg-blue-50 p-4 rounded-lg">
-              <p className="text-sm text-blue-600 font-medium">Total News</p>
+              <p className="text-md text-blue-600 font-medium">Total News</p>
               <p className="text-2xl font-bold text-blue-700">{stats.total || 0}</p>
             </div>
             <div className="bg-green-50 p-4 rounded-lg">
-              <p className="text-sm text-green-600 font-medium">Published</p>
+              <p className="text-md text-green-600 font-medium">Published</p>
               <p className="text-2xl font-bold text-green-700">{stats.byStatus?.published || 0}</p>
             </div>
             <div className="bg-yellow-50 p-4 rounded-lg">
-              <p className="text-sm text-yellow-600 font-medium">Drafts</p>
+              <p className="text-md text-yellow-600 font-medium">Drafts</p>
               <p className="text-2xl font-bold text-yellow-700">{stats.byStatus?.draft || 0}</p>
             </div>
             <div className="bg-purple-50 p-4 rounded-lg">
-              <p className="text-sm text-purple-600 font-medium">Total Views</p>
+              <p className="text-md text-purple-600 font-medium">Total Views</p>
               <p className="text-2xl font-bold text-purple-700">{stats.totalViews?.toLocaleString() || 0}</p>
             </div>
           </div>
@@ -1554,7 +1554,7 @@ const renderMediaThumbnail = (media) => {
               placeholder="Search news..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full border border-gray-300 px-4 py-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border border-gray-300 px-4 py-2 rounded-lg text-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
@@ -1562,7 +1562,7 @@ const renderMediaThumbnail = (media) => {
           <select
             value={filter.category}
             onChange={(e) => setFilter({...filter, category: e.target.value, status: ""})}
-            className="border border-gray-300 px-4 py-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 min-w-[150px]"
+            className="border border-gray-300 px-4 py-2 rounded-lg text-md focus:outline-none focus:ring-2 focus:ring-blue-500 min-w-[150px]"
           >
             <option value="">All Categories</option>
             {categories.map(cat => (
@@ -1574,7 +1574,7 @@ const renderMediaThumbnail = (media) => {
           <select
             value={filter.status}
             onChange={(e) => setFilter({...filter, status: e.target.value, category: ""})}
-            className="border border-gray-300 px-4 py-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 min-w-[150px]"
+            className="border border-gray-300 px-4 py-2 rounded-lg text-md focus:outline-none focus:ring-2 focus:ring-blue-500 min-w-[150px]"
           >
             <option value="">All Status</option>
             {statuses.map(status => (
@@ -1586,7 +1586,7 @@ const renderMediaThumbnail = (media) => {
           {(filter.category || filter.status || searchTerm) && (
             <button
               onClick={clearFilters}
-              className="text-sm text-red-600 hover:text-red-800"
+              className="text-md text-red-600 hover:text-red-800"
             >
               Clear Filters
             </button>
@@ -1645,7 +1645,7 @@ const renderMediaThumbnail = (media) => {
                       )}
                       
                       <div>
-                        <div className="text-sm font-medium text-gray-900 line-clamp-1">
+                        <div className="text-md font-medium text-gray-900 line-clamp-1">
                           {item.title}
                         </div>
                         <div className="text-xs text-gray-500 line-clamp-1">
@@ -1664,7 +1664,7 @@ const renderMediaThumbnail = (media) => {
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="text-sm text-gray-900">{item.category}</span>
+                    <span className="text-md text-gray-900">{item.category}</span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <select
@@ -1685,7 +1685,7 @@ const renderMediaThumbnail = (media) => {
                     </select>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900">
+                    <div className="text-md text-gray-900">
                       {item.scheduled_date ? (
                         <div className="flex items-center gap-1">
                           <FiCalendar size={14} className="text-gray-400" />
@@ -1697,12 +1697,12 @@ const renderMediaThumbnail = (media) => {
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center gap-1 text-sm text-gray-600">
+                    <div className="flex items-center gap-1 text-md text-gray-600">
                       <FiEye size={14} />
                       {item.views || 0}
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                  <td className="px-6 py-4 whitespace-nowrap text-md font-medium">
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => handlePreview(item)}
@@ -1736,7 +1736,7 @@ const renderMediaThumbnail = (media) => {
 
           {news.length > 0 && (
             <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
-              <div className="text-sm text-gray-700">
+              <div className="text-md text-gray-700">
                 Showing <span className="font-medium">1</span> to <span className="font-medium">{news.length}</span> of{' '}
                 <span className="font-medium">{news.length}</span> results
               </div>
@@ -1782,7 +1782,7 @@ const renderMediaThumbnail = (media) => {
               )}
 
               <h1 className="text-2xl font-bold mb-3">{selectedNews.title}</h1>
-              <div className="flex items-center gap-4 mb-4 text-sm text-gray-600">
+              <div className="flex items-center gap-4 mb-4 text-md text-gray-600">
                 <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded">{selectedNews.category}</span>
                 <span>By {selectedNews.author_name || 'Unknown'}</span>
                 <span>{format(new Date(selectedNews.created_at), 'dd MMM yyyy')}</span>

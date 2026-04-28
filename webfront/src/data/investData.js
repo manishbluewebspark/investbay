@@ -1,5 +1,5 @@
 import expert from "../assets/help/first.svg";
-import insights from "../assets/help/second.jpg";
+import insights from "../assets/help/second.svg";
 import plans from "../assets/help/third.svg";
 import signals from "../assets/help/fourth.jpg";
 import community from "../assets/help/fifth.svg";

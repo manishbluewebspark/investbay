@@ -59,13 +59,13 @@ export default function UpdatePassword() {
       <div className="w-full md:w-3/5 flex items-center justify-center bg-gray-50">
         <form onSubmit={submit} className="w-full max-w-lg p-8">
           <h1 className="text-3xl mb-1">Password Updated Securely</h1>
-          <p className="text-sm text-gray-500 mb-6">
+          <p className="text-md text-gray-500 mb-6">
             Choose a strong password to secure your InvestBay account
           </p>
 
           {err && <p className="text-red-500 mb-3">{err}</p>}
 
-          <label className="block text-sm mb-1">Password</label>
+          <label className="block text-md mb-1">Password</label>
           <input
             className="w-full border border-gray-300 rounded-lg px-3 py-2 mb-4"
             value={password}
@@ -73,7 +73,7 @@ export default function UpdatePassword() {
             type="password"
           />
 
-          <label className="block text-sm mb-1">Confirm Password</label>
+          <label className="block text-md mb-1">Confirm Password</label>
           <input
             className="w-full border border-gray-300 rounded-lg px-3 py-2 mb-4"
             value={confirmPassword}

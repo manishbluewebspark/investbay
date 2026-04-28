@@ -177,7 +177,7 @@
 //                   ? <CheckCircle className="w-5 h-5 flex-shrink-0" />
 //                   : <AlertCircle className="w-5 h-5 flex-shrink-0" />
 //                 }
-//                 <span className="text-sm">{status.message}</span>
+//                 <span className="text-md">{status.message}</span>
 //               </div>
 //             )}
 
@@ -360,7 +360,7 @@ export default function SubscribeModal({ isOpen, onClose }) {
                   ? <CheckCircle className="w-5 h-5 flex-shrink-0" />
                   : <AlertCircle className="w-5 h-5 flex-shrink-0" />
                 }
-                <span className="text-sm">{status.message}</span>
+                <span className="text-md">{status.message}</span>
               </div>
             )}
 

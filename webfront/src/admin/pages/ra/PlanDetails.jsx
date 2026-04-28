@@ -77,7 +77,7 @@ const handleToggle = async () => {
                                     <h2 className="text-lg font-semibold text-gray-900">
                                         {plan.planName || "N/A"}
                                     </h2>
-                                    <p className="text-gray-600 text-sm mb-4">
+                                    <p className="text-gray-600 text-md mb-4">
                                         {plan.segment}
                                     </p>
                                 </div>
@@ -103,7 +103,7 @@ const handleToggle = async () => {
                             </div>
                         </div>
 
-                        <div className="space-y-3 text-sm">
+                        <div className="space-y-3 text-md">
                             <div className="flex bg-white p-2 rounded-full">
                                 <p className="text-gray-500 w-40">Total Signal</p>
                                 <p className="font-medium text-gray-800 flex-1 text-right">
@@ -168,7 +168,7 @@ const handleToggle = async () => {
 function Detail({ label, value }) {
     return (
         <div>
-            <p className="text-gray-500 text-sm">{label}</p>
+            <p className="text-gray-500 text-md">{label}</p>
             <p className="font-medium text-gray-800 text-md">
                 {value || "N/A"}
             </p>

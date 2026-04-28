@@ -69,7 +69,7 @@ export default function VerifyPassword() {
       <div className="w-full md:w-3/5 flex items-center justify-center bg-white">
         <form onSubmit={submit} className="w-full max-w-md px-4">
           <h1 className="text-3xl mb-2 text-gray-800">Verify It’s You</h1>
-          <p className="text-sm text-gray-500 mb-6">
+          <p className="text-md text-gray-500 mb-6">
             Enter the code we just sent to confirm your Email
           </p>
 
@@ -87,12 +87,12 @@ export default function VerifyPassword() {
             ))}
           </div>
 
-          {err && <p className="text-red-500 text-sm mb-4">{err}</p>}
+          {err && <p className="text-red-500 text-md mb-4">{err}</p>}
 
           <button
             type="button"
             onClick={() => alert("Resend code clicked")}
-            className="text-sm text-blue-500 mb-6 hover:underline"
+            className="text-md text-blue-500 mb-6 hover:underline"
           >
             Resend code
           </button>

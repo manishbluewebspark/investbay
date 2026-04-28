@@ -240,7 +240,7 @@ const getEducationLabel = (value) => {
     </div>
   )}
   {isInvalid("education") && (
-    <p className="text-red-500 text-sm mt-1">Please select education/certification</p>
+    <p className="text-red-500 text-md mt-1">Please select education/certification</p>
   )}
           </div>
 
@@ -334,7 +334,7 @@ const getEducationLabel = (value) => {
                           }`}>
                           {isSelected && <Check className="w-3 h-3 text-white" />}
                         </div>
-                        <span className="text-sm">{language.label}</span>
+                        <span className="text-md">{language.label}</span>
                       </div>
                     );
                   })}
@@ -362,7 +362,7 @@ const getEducationLabel = (value) => {
             )}
 
             {isLanguagesInvalid && (
-              <p className="text-red-500 text-sm mt-1">Please select at least one language</p>
+              <p className="text-red-500 text-md mt-1">Please select at least one language</p>
             )}
           </div>
 
@@ -377,20 +377,20 @@ const getEducationLabel = (value) => {
                 <p className="text-md text-gray-600">
                   <span className="font-semibold">Upload Documents</span>
                 </p>
-                <p className="text-sm text-gray-500 mt-1">Click to upload or drag and drop</p>
+                <p className="text-md text-gray-500 mt-1">Click to upload or drag and drop</p>
               </div>
               <input id="fileInput" type="file" className="hidden" onChange={handleFileSelect} />
             </label>
 
             {selectedFile && (
               <div className="mt-3 text-center">
-                <p className="text-gray-700 text-sm">
+                <p className="text-gray-700 text-md">
                   Selected file: <span className="font-medium text-green-600">{selectedFile.name}</span>
                 </p>
                 <button
                   type="button"
                   onClick={() => setSelectedFile(null)}
-                  className="text-red-500 text-sm hover:text-red-700 mt-1"
+                  className="text-red-500 text-md hover:text-red-700 mt-1"
                 >
                   Remove file
                 </button>
@@ -410,11 +410,11 @@ const getEducationLabel = (value) => {
             </button>
 
             {isFileInvalid && (
-              <p className="text-red-500 text-sm mt-2 text-center">Please upload a document</p>
+              <p className="text-red-500 text-md mt-2 text-center">Please upload a document</p>
             )}
           </div>
           <div className="space-y-2">
-            <label className="text-sm font-semibold text-gray-700 mb-1 block">
+            <label className="text-md font-semibold text-gray-700 mb-1 block">
               Description <span className="text-red-500"></span>
             </label>
             <input

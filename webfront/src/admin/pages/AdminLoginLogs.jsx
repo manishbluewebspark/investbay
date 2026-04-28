@@ -27,7 +27,7 @@
 //       valueGetter: (params) => params.data?.user_name || 'N/A',
 //       cellRenderer: (params) => (
 //         <div className="flex flex-col justify-center h-full">
-//           <div className="font-medium text-gray-900 text-sm">{params.value}</div>
+//           <div className="font-medium text-gray-900 text-md">{params.value}</div>
 //           {params.data?.user_email && (
 //             <div className="text-xs text-gray-500">{params.data.user_email}</div>
 //           )}
@@ -192,7 +192,7 @@
 //       <div className="flex justify-between items-center mb-6">
 //         <div>
 //           <h1 className="text-2xl font-bold text-gray-900">Login Activity Logs</h1>
-//           <p className="text-sm text-gray-500 mt-1">Track user login and logout activities</p>
+//           <p className="text-md text-gray-500 mt-1">Track user login and logout activities</p>
 //         </div>
 //         <div className="flex gap-3">
 //           <button 
@@ -237,7 +237,7 @@
 //             <select 
 //               value={filters.role} 
 //               onChange={(e) => handleFilterChange('role', e.target.value)}
-//               className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+//               className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent text-md"
 //             >
 //               <option value="">All Roles</option>
 //               <option value="user">User</option>
@@ -254,7 +254,7 @@
 //             <select 
 //               value={filters.action} 
 //               onChange={(e) => handleFilterChange('action', e.target.value)}
-//               className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+//               className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent text-md"
 //             >
 //               <option value="">All Actions</option>
 //               <option value="LOGIN">Login</option>
@@ -273,7 +273,7 @@
 //               value={filters.start_date}
 //               onChange={(e) => handleFilterChange('start_date', e.target.value)}
 //               max={new Date().toISOString().split('T')[0]}
-//               className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+//               className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent text-md"
 //             />
 //           </div>
 
@@ -287,7 +287,7 @@
 //               onChange={(e) => handleFilterChange('end_date', e.target.value)}
 //               min={filters.start_date}
 //               max={new Date().toISOString().split('T')[0]}
-//               className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+//               className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent text-md"
 //             />
 //           </div>
 
@@ -295,7 +295,7 @@
 //           <div className="flex-1 flex justify-end">
 //             <button 
 //               onClick={applyFilters}
-//               className="px-6 py-2 bg-emerald-600 text-white rounded-md hover:bg-emerald-700 transition-colors text-sm font-medium"
+//               className="px-6 py-2 bg-emerald-600 text-white rounded-md hover:bg-emerald-700 transition-colors text-md font-medium"
 //             >
 //               Apply Filters
 //             </button>
@@ -305,11 +305,11 @@
 
 //       {/* Stats Bar */}
 //       <div className="flex justify-between items-center mb-2 px-1">
-//         <div className="text-sm text-gray-600">
+//         <div className="text-md text-gray-600">
 //           Total Records: <span className="font-semibold text-gray-900">{logs.length}</span>
 //         </div>
 //         {Object.values(filters).some(v => v !== '') && (
-//           <div className="text-sm text-blue-600">
+//           <div className="text-md text-blue-600">
 //             Filters Active
 //           </div>
 //         )}
@@ -380,7 +380,7 @@
 //       minWidth: 200,
 //       cellRenderer: (params) => (
 //         <div className="flex flex-col">
-//           <div className="font-medium text-sm">{params.value || 'N/A'}</div>
+//           <div className="font-medium text-md">{params.value || 'N/A'}</div>
 //           <div className="text-xs text-gray-500">{params.data?.user_email || ''}</div>
 //         </div>
 //       )
@@ -428,7 +428,7 @@
 //       headerName: 'IP Address',
 //       flex: 1.2,
 //       minWidth: 140,
-//       cellClass: 'font-mono text-sm'
+//       cellClass: 'font-mono text-md'
 //     },
 //     {
 //       field: 'created_at',
@@ -540,7 +540,7 @@
 //       <div className="bg-white p-6 rounded-xl shadow-sm border mb-6">
 //         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 //           <div>
-//             <label className="block text-sm font-medium text-gray-700 mb-2">Role</label>
+//             <label className="block text-md font-medium text-gray-700 mb-2">Role</label>
 //             <select 
 //               value={filters.role}
 //               onChange={(e) => handleFilterChange('role', e.target.value)}
@@ -553,7 +553,7 @@
 //           </div>
 
 //           <div>
-//             <label className="block text-sm font-medium text-gray-700 mb-2">Action</label>
+//             <label className="block text-md font-medium text-gray-700 mb-2">Action</label>
 //             <select 
 //               value={filters.action}
 //               onChange={(e) => handleFilterChange('action', e.target.value)}
@@ -567,7 +567,7 @@
 //           </div>
 
 //           <div>
-//             <label className="block text-sm font-medium text-gray-700 mb-2">User ID</label>
+//             <label className="block text-md font-medium text-gray-700 mb-2">User ID</label>
 //             <input
 //               type="number"
 //               value={filters.user_id}
@@ -578,7 +578,7 @@
 //           </div>
 
 //           <div>
-//             <label className="block text-sm font-medium text-gray-700 mb-2">Start Date</label>
+//             <label className="block text-md font-medium text-gray-700 mb-2">Start Date</label>
 //             <input
 //               type="date"
 //               value={filters.start_date}
@@ -589,7 +589,7 @@
 //           </div>
 
 //           <div>
-//             <label className="block text-sm font-medium text-gray-700 mb-2">End Date</label>
+//             <label className="block text-md font-medium text-gray-700 mb-2">End Date</label>
 //             <input
 //               type="date"
 //               value={filters.end_date}
@@ -603,7 +603,7 @@
 
 //       {/* Stats */}
 //       <div className="bg-gray-50 p-4 rounded-lg mb-6">
-//         <div className="text-sm text-gray-600">
+//         <div className="text-md text-gray-600">
 //           Showing {logs.length} of {pagination.total || 0} logs 
 //           {pagination.totalPages && `(Page ${pagination.page} of ${pagination.totalPages})`}
 //         </div>
@@ -671,7 +671,7 @@ const AdminLoginLogs = () => {
       minWidth: 200,
       cellRenderer: (params) => (
         <div className="flex flex-col">
-          <div className="font-medium text-sm">{params.value || 'N/A'}</div>
+          <div className="font-medium text-md">{params.value || 'N/A'}</div>
           <div className="text-xs text-gray-500">{params.data?.user_email || ''}</div>
         </div>
       )
@@ -719,7 +719,7 @@ const AdminLoginLogs = () => {
       headerName: 'IP Address',
       flex: 1.2,
       minWidth: 140,
-      cellClass: 'font-mono text-sm'
+      cellClass: 'font-mono text-md'
     },
     {
       field: 'created_at',
@@ -981,11 +981,11 @@ const AdminLoginLogs = () => {
             loadingOverlayRenderer={() => (
               <div className="flex items-center justify-center p-6">
                 <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-gray-900"></div>
-                <span className="ml-2 text-sm text-gray-600">Loading logs...</span>
+                <span className="ml-2 text-md text-gray-600">Loading logs...</span>
               </div>
             )}
             noRowsOverlayRenderer={() => (
-              <div className="p-6 text-center text-sm text-gray-500">
+              <div className="p-6 text-center text-md text-gray-500">
                 <svg className="mx-auto h-10 w-10 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>

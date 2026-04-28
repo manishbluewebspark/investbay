@@ -80,7 +80,7 @@
 //             {/* INFO */}
 //             <div className="p-4">
 //               <div className="flex justify-between mb-2">
-//                 <h4 className="font-bold text-sm line-clamp-2 flex-1 pr-2">
+//                 <h4 className="font-bold text-md line-clamp-2 flex-1 pr-2">
 //                   {video.videoTitle}
 //                 </h4>
 //                 <div className="flex gap-1 flex-shrink-0">
@@ -448,7 +448,7 @@
 //               <div className="absolute bottom-3 left-3 right-3 p-3 backdrop-blur-2xl bg-opacity-50 rounded-md">
 //                 <div className="flex items-center justify-between">
 //                   <div className="flex-1 min-w-0">
-//                     <h4 className="text-sm font-medium text-white truncate">
+//                     <h4 className="text-md font-medium text-white truncate">
 //                       {video.video_title}
 //                     </h4>
 //                     <p className="text-xs text-white mt-1">
@@ -479,7 +479,7 @@
 //                 <h3 className="text-xl font-bold text-white truncate">
 //                   {activeVideo.video_title}
 //                 </h3>
-//                 <p className="text-gray-400 text-sm mt-1">
+//                 <p className="text-gray-400 text-md mt-1">
 //                   Duration: {activeVideo.video_duration || 0} minutes
 //                 </p>
 //               </div>
@@ -863,7 +863,7 @@
 //               <div className="absolute bottom-3 left-3 right-3 p-3 backdrop-blur-2xl bg-opacity-50 rounded-md">
 //                 <div className="flex items-center justify-between">
 //                   <div className="flex-1 min-w-0">
-//                     <h4 className="text-sm font-medium text-white truncate">
+//                     <h4 className="text-md font-medium text-white truncate">
 //                       {video.video_title}
 //                     </h4>
 //                     {/* ✅ ACCURATE DURATION DISPLAY */}
@@ -897,7 +897,7 @@
 //                   {activeVideo.video_title}
 //                 </h3>
 //                 {/* ✅ ACCURATE DURATION IN MODAL TOO */}
-//                 <p className="text-gray-400 text-sm mt-1 font-mono">
+//                 <p className="text-gray-400 text-md mt-1 font-mono">
 //                   Duration: {formatDuration(activeVideo.video_duration)} 
 //                 </p>
 //               </div>
@@ -1262,7 +1262,7 @@
 //               </div>
 
 //               <div className="p-3 bg-white">
-//                 <h4 className="text-sm font-medium text-gray-900 truncate">
+//                 <h4 className="text-md font-medium text-gray-900 truncate">
 //                   {video.video_title}
 //                 </h4>
 //               </div>
@@ -1287,7 +1287,7 @@
 //                 <h3 className="text-xl font-bold text-white truncate">
 //                   {activeVideo.video_title}
 //                 </h3>
-//                 <p className="text-gray-400 text-sm mt-1">
+//                 <p className="text-gray-400 text-md mt-1">
 //                   Duration: {formatDuration(activeVideo.video_duration)}
 //                 </p>
 //               </div>
@@ -1609,7 +1609,7 @@ export default function VideoList({ courseId, userId, API_URL }) {
       <div className="p-6 text-center">
         <p className="text-red-600 mb-2">{error}</p>
         {!userId && (
-          <p className="text-gray-500 text-sm">Sign in to view course videos</p>
+          <p className="text-gray-500 text-md">Sign in to view course videos</p>
         )}
       </div>
     );
@@ -1620,7 +1620,7 @@ export default function VideoList({ courseId, userId, API_URL }) {
       <div className="p-6 text-center">
         <p className="text-gray-500">No videos available for this course</p>
         {!userId && (
-          <p className="text-gray-400 text-sm mt-2">Sign in to access course videos</p>
+          <p className="text-gray-400 text-md mt-2">Sign in to access course videos</p>
         )}
       </div>
     );
@@ -1695,7 +1695,7 @@ export default function VideoList({ courseId, userId, API_URL }) {
               </div>
 
               <div className="p-3 bg-white">
-                <h4 className="text-sm font-medium text-gray-900 truncate">
+                <h4 className="text-md font-medium text-gray-900 truncate">
                   {video.video_title}
                 </h4>
               </div>
@@ -1719,7 +1719,7 @@ export default function VideoList({ courseId, userId, API_URL }) {
                 <h3 className="text-xl font-bold text-white truncate">
                   {activeVideo.video_title}
                 </h3>
-                <p className="text-gray-400 text-sm mt-1">
+                <p className="text-gray-400 text-md mt-1">
                   Duration: {formatDuration(activeVideo.video_duration)}
                 </p>
               </div>

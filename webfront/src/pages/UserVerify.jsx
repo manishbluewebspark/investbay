@@ -69,7 +69,7 @@
 //       <div className="w-full md:w-3/5 flex items-center justify-center bg-white">
 //         <form onSubmit={submit} className="w-full max-w-md px-4">
 //           <h1 className="text-3xl mb-2 text-gray-800">Verify It’s You</h1>
-//           <p className="text-sm text-gray-500 mb-6">
+//           <p className="text-md text-gray-500 mb-6">
 //             Enter the code we just sent to confirm your Number
 //           </p>
 
@@ -87,12 +87,12 @@
 //             ))}
 //           </div>
 
-//           {err && <p className="text-red-500 text-sm mb-4">{err}</p>}
+//           {err && <p className="text-red-500 text-md mb-4">{err}</p>}
 
 //           <button
 //             type="button"
 //             onClick={() => alert("Resend code clicked")}
-//             className="text-sm text-blue-500 mb-6 hover:underline"
+//             className="text-md text-blue-500 mb-6 hover:underline"
 //           >
 //             Resend code
 //           </button>
@@ -233,21 +233,21 @@ export default function VerifyPassword() {
       <div className="w-full md:w-3/5 flex items-center justify-center bg-white">
         <form onSubmit={submit} className="w-full max-w-md px-4">
           <h1 className="text-3xl mb-2 text-gray-800">Verify It's You</h1>
-          <p className="text-sm text-gray-500 mb-6">
+          <p className="text-md text-gray-500 mb-6">
             Enter the 6-digit code we just sent to your email
             {email && <span className="block mt-1"><strong>{email}</strong></span>}
           </p>
 
           {/* Success Message */}
           {success && (
-            <div className="mb-4 p-3 bg-green-50 border border-green-200 text-green-600 rounded-lg text-sm">
+            <div className="mb-4 p-3 bg-green-50 border border-green-200 text-green-600 rounded-lg text-md">
               {success}
             </div>
           )}
 
           {/* Error Message */}
           {error && (
-            <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 rounded-lg text-sm">
+            <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 rounded-lg text-md">
               {error}
             </div>
           )}
@@ -269,7 +269,7 @@ export default function VerifyPassword() {
           <button
             type="button"
             onClick={resendOTP}
-            className="text-sm text-blue-500 mb-6 hover:underline"
+            className="text-md text-blue-500 mb-6 hover:underline"
           >
             Resend code
           </button>

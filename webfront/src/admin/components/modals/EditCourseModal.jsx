@@ -29,7 +29,7 @@ const CustomDropdown = ({ label, options, value, onChange, placeholder = "Select
 
     return (
         <div className="relative" ref={dropdownRef}>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-md font-medium text-gray-700 mb-2">
                 {label}
             </label>
 
@@ -37,7 +37,7 @@ const CustomDropdown = ({ label, options, value, onChange, placeholder = "Select
             <button
                 type="button"
                 onClick={() => setIsOpen(!isOpen)}
-                className={`w-full flex items-center justify-between rounded-lg border px-4 py-3 text-sm transition-all duration-200 ${
+                className={`w-full flex items-center justify-between rounded-lg border px-4 py-3 text-md transition-all duration-200 ${
                     isOpen
                         ? "border-blue-500 ring-2 ring-blue-200 bg-white"
                         : "border-gray-300 hover:border-gray-400 bg-white"
@@ -67,7 +67,7 @@ const CustomDropdown = ({ label, options, value, onChange, placeholder = "Select
                                         setIsOpen(false);
                                         setSearch("");
                                     }}
-                                    className={`px-4 py-3 text-sm cursor-pointer transition-colors flex items-center justify-between group ${
+                                    className={`px-4 py-3 text-md cursor-pointer transition-colors flex items-center justify-between group ${
                                         option.value === value
                                             ? "bg-blue-50 text-blue-600"
                                             : "hover:bg-gray-50 text-gray-700"
@@ -80,7 +80,7 @@ const CustomDropdown = ({ label, options, value, onChange, placeholder = "Select
                                 </div>
                             ))
                         ) : (
-                            <div className="px-4 py-3 text-sm text-gray-500 text-center">
+                            <div className="px-4 py-3 text-md text-gray-500 text-center">
                                 No results found
                             </div>
                         )}
@@ -289,8 +289,8 @@ const EditCourseModal = ({ isOpen, onClose, courseId, userId, courseData, onSucc
                                 />
                             </label>
                             <div>
-                                <p className="text-sm font-medium">Course Image</p>
-                                <p className="text-sm text-gray-400">
+                                <p className="text-md font-medium">Course Image</p>
+                                <p className="text-md text-gray-400">
                                     Click to change image (optional)
                                 </p>
                             </div>
@@ -299,7 +299,7 @@ const EditCourseModal = ({ isOpen, onClose, courseId, userId, courseData, onSucc
 
                     {/* Course Title */}
                     <div className="mb-6">
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-md font-medium text-gray-700 mb-2">
                             Course Title *
                         </label>
                         <input
@@ -307,7 +307,7 @@ const EditCourseModal = ({ isOpen, onClose, courseId, userId, courseData, onSucc
                             value={form.title}
                             onChange={handleInputChange}
                             placeholder="e.g., Advanced Options Trading Masterclass"
-                            className="w-full rounded-xl border border-gray-300 px-4 py-3.5 text-sm focus:border-blue-500 focus:ring-3 focus:ring-blue-100 focus:outline-none transition-all"
+                            className="w-full rounded-xl border border-gray-300 px-4 py-3.5 text-md focus:border-blue-500 focus:ring-3 focus:ring-blue-100 focus:outline-none transition-all"
                         />
                     </div>
 
@@ -341,7 +341,7 @@ const EditCourseModal = ({ isOpen, onClose, courseId, userId, courseData, onSucc
                     {/* Price Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                            <label className="block text-md font-medium text-gray-700 mb-2">
                                 Access Validity
                             </label>
                             <div className="relative">
@@ -350,13 +350,13 @@ const EditCourseModal = ({ isOpen, onClose, courseId, userId, courseData, onSucc
                                     value={form.access_validity}
                                     onChange={handleInputChange}
                                     placeholder="e.g., 1 Year"
-                                    className="w-full rounded-xl border border-gray-300 px-4 py-3.5 text-sm focus:border-blue-500 focus:ring-3 focus:ring-blue-100 focus:outline-none transition-all"
+                                    className="w-full rounded-xl border border-gray-300 px-4 py-3.5 text-md focus:border-blue-500 focus:ring-3 focus:ring-blue-100 focus:outline-none transition-all"
                                 />
                             </div>
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                            <label className="block text-md font-medium text-gray-700 mb-2">
                                 Course Price (₹)
                             </label>
                             <div className="relative">
@@ -368,13 +368,13 @@ const EditCourseModal = ({ isOpen, onClose, courseId, userId, courseData, onSucc
                                     value={form.course_price}
                                     onChange={handleInputChange}
                                     placeholder="4999"
-                                    className="w-full rounded-xl border border-gray-300 px-11 py-3.5 text-sm focus:border-blue-500 focus:ring-3 focus:ring-blue-100 focus:outline-none transition-all"
+                                    className="w-full rounded-xl border border-gray-300 px-11 py-3.5 text-md focus:border-blue-500 focus:ring-3 focus:ring-blue-100 focus:outline-none transition-all"
                                 />
                             </div>
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                            <label className="block text-md font-medium text-gray-700 mb-2">
                                 Discount
                             </label>
                             <div className="relative">
@@ -383,7 +383,7 @@ const EditCourseModal = ({ isOpen, onClose, courseId, userId, courseData, onSucc
                                     value={form.discount}
                                     onChange={handleInputChange}
                                     placeholder="20%"
-                                    className="w-full rounded-xl border border-gray-300 px-4 py-3.5 text-sm focus:border-blue-500 focus:ring-3 focus:ring-blue-100 focus:outline-none transition-all"
+                                    className="w-full rounded-xl border border-gray-300 px-4 py-3.5 text-md focus:border-blue-500 focus:ring-3 focus:ring-blue-100 focus:outline-none transition-all"
                                 />
                             </div>
                         </div>
@@ -391,7 +391,7 @@ const EditCourseModal = ({ isOpen, onClose, courseId, userId, courseData, onSucc
 
                     {/* Description */}
                     <div className="mb-6">
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-md font-medium text-gray-700 mb-2">
                             Course Description *
                         </label>
                         <textarea
@@ -400,7 +400,7 @@ const EditCourseModal = ({ isOpen, onClose, courseId, userId, courseData, onSucc
                             rows="5"
                             onChange={handleInputChange}
                             placeholder="Provide a detailed description of what students will learn in this course..."
-                            className="w-full resize-none rounded-xl border border-gray-300 px-4 py-3.5 text-sm focus:border-blue-500 focus:ring-3 focus:ring-blue-100 focus:outline-none transition-all"
+                            className="w-full resize-none rounded-xl border border-gray-300 px-4 py-3.5 text-md focus:border-blue-500 focus:ring-3 focus:ring-blue-100 focus:outline-none transition-all"
                         />
                     </div>
 
@@ -411,7 +411,7 @@ const EditCourseModal = ({ isOpen, onClose, courseId, userId, courseData, onSucc
                                     <X size={16} className="text-red-600" />
                                 </div>
                                 <div>
-                                    <p className="text-sm font-medium text-red-600">{error}</p>
+                                    <p className="text-md font-medium text-red-600">{error}</p>
                                 </div>
                             </div>
                         </div>
@@ -420,13 +420,13 @@ const EditCourseModal = ({ isOpen, onClose, courseId, userId, courseData, onSucc
                     {/* Footer */}
                     <div className="sticky bottom-0 bg-white pt-6 border-t border-gray-300">
                         <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-                            <div className="text-sm text-gray-500">
+                            <div className="text-md text-gray-500">
                                 <span className="text-red-500">*</span> Required fields
                             </div>
                             <div className="flex gap-3 w-full sm:w-auto">
                                 <button
                                     onClick={onClose}
-                                    className="flex-1 sm:flex-none px-6 py-2 rounded-xl border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-all hover:shadow-sm"
+                                    className="flex-1 sm:flex-none px-6 py-2 rounded-xl border border-gray-300 text-md font-medium text-gray-700 hover:bg-gray-50 transition-all hover:shadow-sm"
                                 >
                                     Cancel
                                 </button>
@@ -439,7 +439,7 @@ const EditCourseModal = ({ isOpen, onClose, courseId, userId, courseData, onSucc
                                         !form.course_level ||
                                         !form.course_language
                                     }
-                                    className="flex-1 sm:flex-none px-6 py-2 rounded-xl bg-black text-sm font-medium text-white disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:shadow-lg flex items-center justify-center gap-2"
+                                    className="flex-1 sm:flex-none px-6 py-2 rounded-xl bg-black text-md font-medium text-white disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:shadow-lg flex items-center justify-center gap-2"
                                 >
                                     {loading ? (
                                         <>

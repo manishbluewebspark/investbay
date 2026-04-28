@@ -15,7 +15,7 @@ export default function CourseEarningView() {
             Purchase Details
           </h3>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-md">
             <Info label="User Name" value={state.name} />
             <Info label="Type" value="Course" />
             <Info label="Transaction ID" value={state.transactionId} />
@@ -46,7 +46,7 @@ export default function CourseEarningView() {
             </span>
           </div>
 
-          <div className="space-y-3 text-sm">
+          <div className="space-y-3 text-md">
             <Row label="Gross Amount" value={`₹${state.grossAmount}`} />
             <Row label="Platform Fee Amt" value={`₹${state.platformFee}`} />
             <Row
