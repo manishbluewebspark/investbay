@@ -124,7 +124,7 @@ export default function Login() {
           Welcome to InvestBay
         </h1>
 
-        <p className="text-[12px] text-[#8a8a8a] text-center mb-6">
+        <p className="text-sm text-gray-500 text-center mb-6">
           {showOTPInput
             ? `Enter OTP sent to ${email}`
             : "Login or signup using your email"}
@@ -145,7 +145,7 @@ export default function Login() {
         {!showOTPInput ? (
           <>
             <div className="mb-4">
-              <label className="mb-2 block text-[11px] font-medium text-[#3e3e3e]">
+              <label className="mb-2 block text-sm font-medium text-[#3e3e3e]">
                 Email Address
               </label>
 
@@ -222,6 +222,16 @@ export default function Login() {
             </button>
           </>
         )}
+
+        {/* ✅ FIXED: Always visible */}
+        <div className="mt-6 text-center">
+          <button
+            onClick={() => navigate("/")}
+            className="text-sm text-black font-medium hover:underline"
+          >
+            ← Back to Home
+          </button>
+        </div>
       </div>
     </div>
   );

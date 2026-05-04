@@ -70,7 +70,7 @@ export default function Mentors() {
                 navigate("/mentors");
               }
             }}
-            className="text-md md:text-md font-medium text-[#111827] flex items-center gap-2 hover:gap-3 transition-all duration-300"
+            className="shrink-0 text-md text-gray-700 hover:text-emerald-600 font-medium flex items-center gap-2 mt-2  backdrop-blur-sm px-4 py-2 rounded-xl transition-all"
             disabled={loading}
           >
             See all advisors <span className="text-lg">→</span>

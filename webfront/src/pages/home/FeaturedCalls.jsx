@@ -228,7 +228,7 @@ useEffect(() => {
               navigate("/pricing");
             }
           }}
-          className="shrink-0 text-md text-gray-700 hover:text-emerald-600 font-medium flex items-center gap-2 mt-2  backdrop-blur-sm px-4 py-2 rounded-xl hover:bg-white/100 transition-all"
+          className="shrink-0 text-md text-gray-700 hover:text-emerald-600 font-medium flex items-center gap-2 mt-2  backdrop-blur-sm px-4 py-2 rounded-xl transition-all"
         >
           Explore Premium Plans <ArrowRight className="w-4 h-4" />
         </button>
