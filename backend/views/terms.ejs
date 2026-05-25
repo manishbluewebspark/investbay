@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RESEARCH ANALYST SERVICE AGREEMENT - InvestBay.in</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 25px;
+            font-family: 'Times New Roman', serif;
+            line-height: 1.6;
+            color: #000;
+            background-color: #fff;
+            font-size: 12pt;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 30px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #000;
+        }
+
+        .header h1 {
+            color: #000;
+            margin: 0 0 10px 0;
+            font-size: 18pt;
+            font-weight: bold;
+        }
+
+        .header h2 {
+            color: #000;
+            margin: 0;
+            font-size: 14pt;
+            font-weight: bold;
+        }
+
+        .parties-box {
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 1px solid #000;
+        }
+
+        .section-title {
+            font-size: 14pt;
+            margin: 25px 0 15px 0;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #000;
+        }
+
+        .declaration-box {
+            padding: 15px;
+            margin-bottom: 25px;
+            border: 1px solid #000;
+        }
+
+        .signature-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12pt;
+            border-top: 2px solid #000;
+            padding-top: 30px;
+            margin-top: 40px;
+        }
+
+        .signature-col {
+            width: 50%;
+            padding: 0 20px 50px 0;
+            text-align: center;
+            border-right: 1px solid #000;
+        }
+
+        .signature-col:last-child {
+            border-right: none;
+            padding-left: 20px;
+        }
+
+        .signature-line {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .signature-line p {
+            margin: 0;
+            font-size: 14pt;
+            font-weight: bold;
+            border-bottom: 1px solid #000;
+            padding-bottom: 8px;
+            min-height: 30px;
+        }
+
+        .signature-image {
+            max-width: 200px;
+            max-height: 60px;
+            object-fit: contain;
+            margin-top: 10px;
+        }
+
+        .appendix {
+            padding: 25px;
+            margin-top: 40px;
+            border: 1px solid #000;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 25px;
+            border-top: 1px solid #ccc;
+            font-size: 10pt;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- HEADER -->
+        <div class="header">
+            <h1>This Agreement ("Agreement") is made and entered into as of <%= EffectiveDate %> (the "Signing Date")
+            </h1>
+            <h2>This SERVICE Agreement ("Agreement") is made between</h2>
+        </div>
+
+        <!-- PARTIES -->
+        <div class="parties-box">
+            <p style="font-size: 12pt; font-weight: bold; margin: 0 0 12px 0;">
+                <%= RA_FullName %>, having its registered office at <%= RA_Address %> (hereinafter referred to as
+                        "Service Provider" or "RA") and
+            </p>
+            <p style="font-size: 12pt; font-weight: bold; margin: 0 0 12px 0;">
+                <%= UserName %>, PAN: <%= UserPAN %>, officially registered on InvestBay.in (hereinafter referred to as
+                        "User").
+            </p>
+            <p style="font-size: 11pt; margin: 0; font-style: italic;">The Service Provider and the User are hereinafter
+                individually referred to as a "Party" and collectively referred to as the "Parties".</p>
+        </div>
+
+        <!-- DEFINITIONS -->
+        <h2 class="section-title">DEFINITIONS:</h2>
+        <div style="padding: 15px; margin-bottom: 25px; border: 1px solid #ccc;">
+            <p style="margin: 0 0 8px 0;"><strong>"User"</strong> refers to any individual who avails services after
+                consenting to this agreement.</p>
+            <p style="margin: 0 0 8px 0;"><strong>"Service Provider"</strong> is a SEBI-registered Research Analyst
+                (RA).</p>
+            <p style="margin: 0;"><strong>"InvestBay"</strong> refers to the platform owned by Katalx Technologies Pvt
+                Ltd, used by SEBI-registered RAs for managing and delivering research services such as recommendations
+                across asset class, educational content, and webinars.</p>
+        </div>
+
+        <!-- ELIGIBILITY & REGISTRATION -->
+        <h3 style="font-size: 12pt; margin: 25px 0 12px 0; font-weight: bold;">ELIGIBILITY & REGISTRATION:</h3>
+        <p style="margin: 0 0 12px 0;">Registration requires accurate information, completion of KYC, and agreement to
+            these terms.</p>
+        <p style="margin: 0 0 25px 0;">InvestBay.in and the Service Provider may modify their policies and fee
+            structures; such updates will be published on the platform.</p>
+
+        <!-- AGREEMENT SCOPE -->
+        <h3 style="font-size: 12pt; margin: 25px 0 12px 0; font-weight: bold;">AGREEMENT SCOPE:</h3>
+        <p style="margin: 0 0 12px 0;">RA and client shall be bound by SEBI Act and all the applicable rules and
+            regulations of SEBI, including the RA Regulations and relevant notifications of Government, as may be in
+            force, from time to time.</p>
+        <p style="margin: 0 0 12px 0;">The User desires non-exclusive, non-binding stock recommendations from the
+            Service Provider.</p>
+        <p style="margin: 0 0 12px 0;"><strong>The Service Provider holds a valid SEBI registration: <%=
+                    RA_SEBI_Registration_Number %> with registration date <%= Registration_Date %>.</strong></p>
+        <p style="margin: 0 0 25px 0; font-weight: bold;">Recommendations are for the User's personal investment
+            decisions and subject to Market risks.</p>
+
+        <!-- USER DECLARATIONS -->
+        <h3 style="font-size: 12pt; margin: 25px 0 12px 0; font-weight: bold;">USER DECLARATIONS:</h3>
+        <div class="declaration-box">
+            <p style="margin: 0 0 8px 0;">The User understands risks, makes investment decisions independently, and will
+                not hold the Service Provider or InvestBay liable for financial loss.</p>
+            <p style="margin: 0 0 8px 0;">Any investment made based on recommendations in research reports are subject
+                to market risks, and recommendations do not provide any assurance of returns.</p>
+            <p style="margin: 0 0 8px 0;"><strong>There is no recourse to claim any losses incurred on the investments
+                    made based on the recommendations in the research report.</strong></p>
+            <p style="margin: 0 0 8px 0;">Any reliance placed on the research report provided by the Service Provider
+                shall be as per the user's own judgement and assessment of the conclusions contained in the research
+                report.</p>
+            <p style="margin: 0 0 8px 0;">The User agrees to maintain updated contact details and not to share
+                confidential Research content or login credentials.</p>
+            <p style="margin: 0 0 8px 0;">In the event of RA suspension or SEBI action, prepaid fees will be refunded
+                proportionately.</p>
+            <p style="margin: 0 0 8px 0;">The User shall comply with all applicable laws and InvestBay platform terms.
+            </p>
+            <p style="margin: 0 0 8px 0;">User agrees to inform service provider information related to family members
+                who have sought or are currently seeking services from services provider in the given financial year.
+            </p>
+            <p style="margin: 0 0 8px 0; font-size: 12pt; font-weight: bold;">Never share login credentials and OTPs for
+                the User's Trading Account Demat Account and Bank Account with anyone including Service Provider. User
+                shall not permit Service Provider to execute any trade on their behalf.</p>
+            <p style="margin: 0 0 8px 0;">User understands that in case of pre-mature termination of the RA services by
+                either the User or the Service Provider, the User shall be entitled to seek refund of proportionate fees
+                only for unexpired period, after deducting all the expenses Service Provider incurred to procure the
+                user and all statutory liabilities.</p>
+            <p style="margin: 0;">User understands that the SEBI registration, Enlistment with RAASB, and NISM
+                certification do not guarantee the performance of the Service Provider or assure any returns to the
+                user.</p>
+        </div>
+
+        <!-- SERVICE PROVIDER DECLARATIONS -->
+        <h3 style="font-size: 12pt; margin: 25px 0 12px 0; font-weight: bold;">SERVICE PROVIDER DECLARATIONS:</h3>
+        <div class="declaration-box">
+            <p style="margin: 0 0 8px 0;">It is duly registered with SEBI as an Research Analyst pursuant to the SEBI
+                (Research Analysts) Regulations, 2014 and its registration details are: (Reg No: <%=
+                    RA_SEBI_Registration_Number %>, Reg Date: <%= Registration_Date %>); and is valid and subsisting.
+            </p>
+            <p style="margin: 0 0 8px 0;">Recommendations are based on analysis but do not assure returns.</p>
+            <p style="margin: 0 0 8px 0;">Fee charged by Service Provider to the User will be subject to the maximum of
+                amount prescribed by SEBI/ Research Analyst Administration and Supervisory Body (RAASB).</p>
+            <p style="margin: 0 0 8px 0;">Service Provider is charging fees in advance as agreed by the User. This
+                advance does not exceed the period stipulated by SEBI; and in the event of premature termination,
+                refunds will be issued proportionately after necessary deductions.</p>
+            <p style="margin: 0 0 8px 0; font-weight: bold;"><strong>Service Provider cannot execute/carry out any trade
+                    (purchase/sell transaction) on behalf of the User.</strong></p>
+            <p style="margin: 0 0 8px 0;">The client shall duly pay to RA, the agreed fees for the services that RA
+                renders to the client and statutory charges, as applicable. Such fees and statutory charges shall be
+                payable through the specified manner and mode(s)/ mechanism(s) like cheque, online bank transfer, UPI,
+                etc. Cash payment is not allowed.</p>
+            <p style="margin: 0 0 8px 0;">Abide by the applicable regulations/ circulars/ directions specified by SEBI
+                and RAASB from time to time in relation to disclosure and mitigation of any actual or potential conflict
+                of interest. The Service Provider will endeavor to promptly inform the User of any conflict of interest
+                that may affect the services being rendered to the User.</p>
+            <p style="margin: 0 0 8px 0;"><strong>Any assured/guaranteed/fixed returns schemes or any other schemes of
+                    similar nature are prohibited by law. Hence, no scheme of this nature is being offered to the User
+                    by the Service Provider.</strong></p>
+            <p style="margin: 0 0 8px 0;">It has registration and qualifications required to render the services
+                contemplated under the RA Regulations, and the same are valid and subsisting;</p>
+            <p style="margin: 0;">Research analyst services provided by it do not conflict with or violate any provision
+                of law, rule or regulation, contract, or other instrument to which it is a party or to which any of its
+                property is or may be subject;</p>
+        </div>
+
+        <!-- SCOPE OF SERVICES -->
+        <h3 style="font-size: 12pt; margin: 25px 0 12px 0; font-weight: bold;">SCOPE OF SERVICES:</h3>
+        <p style="margin: 0 0 12px 0;">Research services and Recommendations will be provided only to register Users for
+            duration as per subscription terms through the InvestBay.in platform.</p>
+        <p style="margin: 0 0 25px 0;">Users availing services are bound by the Terms of Service provided on the
+            official website of InvestBay.in. The latest Terms of Service can be accessed at: <a
+                href="https://www.InvestBay.in/legal/terms"
+                style="color: #000; text-decoration: underline;">https://www.InvestBay.in/legal/terms</a></p>
+
+        <!-- USER OBLIGATIONS -->
+        <h3 style="font-size: 12pt; margin: 25px 0 12px 0; font-weight: bold;">USER OBLIGATIONS:</h3>
+        <p style="margin: 0 0 8px 0;">User may choose to act on recommendations at their sole discretion.</p>
+        <p style="margin: 0 0 8px 0;">The User shall furnish information as requested for compliance.</p>
+        <p style="margin: 0 0 8px 0;">User shall not distribute service content through any medium without
+            authorization.</p>
+        <p style="margin: 0 0 8px 0;">InvestBay trademarks and content are protected and must not be reused without
+            permission.</p>
+        <p style="margin: 0 0 25px 0;">By accepting delivery of the research service, the client confirms that he/she
+            has elected to subscribe the research service of the RA at his/her sole discretion.</p>
+
+        <!-- CONFLICT OF INTEREST -->
+        <h4 style="font-size: 11pt; margin: 20px 0 10px 0; font-weight: bold;">Conflict of interest:</h4>
+        <p style="margin: 0 0 25px 0;">The RA shall adhere to the applicable regulations/ circulars/ directions
+            specified by SEBI from time to time in relation to disclosure and mitigation of any actual or potential
+            conflict of interest.</p>
+
+        <!-- DISCLAIMERS -->
+        <h3 style="font-size: 12pt; margin: 25px 0 12px 0; font-weight: bold;">DISCLAIMERS:</h3>
+        <p style="margin: 0 0 12px 0; font-weight: bold;"><strong>Neither the Service Provider nor InvestBay guarantees
+                returns.</strong></p>
+        <p style="margin: 0 0 30px 0; font-weight: bold;"><strong>InvestBay is not responsible for accuracy of the
+                content provided by Service Provider or the advices given outside of InvestBay platform.</strong></p>
+
+        <!-- GRIEVANCE REDRESSAL -->
+        <h3 style="font-size: 12pt; margin: 25px 0 12px 0; font-weight: bold;">GRIEVANCE REDRESSAL:</h3>
+        <ol style="margin: 0 0 15px 25px; padding-left: 20px;">
+            <li style="margin-bottom: 6px;"><strong>Step 1:</strong> Email initial complaints to <strong>
+                    <%= ra_complaint_email %>
+                </strong>.</li>
+            <li style="margin-bottom: 6px;"><strong>Step 2:</strong> Escalate unresolved issues to <strong>
+                    <%= ra_complaint_email %>
+                </strong>.</li>
+            <li style="margin-bottom: 15px;"><strong>Step 3:</strong> If unresolved, lodge with SEBI via SCORES (<a
+                    href="http://www.scores.sebi.gov.in"
+                    style="color: #000; text-decoration: underline;">www.scores.sebi.gov.in</a>) or Smart ODR (<a
+                    href="https://smartodr.in"
+                    style="color: #000; text-decoration: underline;">https://smartodr.in</a>).</li>
+        </ol>
+        <p style="margin: 0 0 30px 0; font-weight: bold;">All grievances will be addressed within 21 (twenty-one)
+            business days or as per latest SEBI RA Regulations.</p>
+
+        <!-- KYC & FORCE MAJEURE -->
+        <h3 style="font-size: 12pt; margin: 25px 0 12px 0; font-weight: bold;">KYC & FORCE MAJEURE:</h3>
+        <p style="margin: 0 0 12px 0;">If the User's KYC (Know Your Customer) details are not available or registered
+            with a KYC Registration Agency (KRA) at the time of subscribing to a Service Provider, the User will not be
+            able to avail the services until the KYC is registered/approved by KRA agency. KYC verification with the
+            relevant KRA is mandatory before subscribing to any service on InvestBay.in. Users must ensure their KYC is
+            successfully registered with a KRA before proceeding with any subscription.</p>
+        <p style="margin: 0 0 30px 0;">Neither Service Provider nor InvestBay will be liable for service disruptions due
+            to force majeure events. The Service provider including its principals, partners, employees, affiliates,
+            agents, representatives, and subcontractors, shall not be liable for losses or damages caused by or
+            resulting from any event of force majeure beyond its control including, but not limited to, acts of civil or
+            military authority, national emergencies, fire, flood, catastrophe, act of God, explosion, war, riot, theft,
+            accident, nationalization, expropriation, currency restrictions, pandemic, lock-down imposed by governmental
+            authorities, other measures taken by any government or agency of any country, state or territory in the
+            world, actions taken by any regulatory authority regulating asset managers, amendments to Applicable Laws,
+            industrial action or labour disturbances of any nature amongst employees of Service provider or of its
+            agents or of any third parties, boycotts, work stoppages, power failures or breakdowns in communication
+            links or equipment(including, but not limited to, loss of electronic data), international conflicts, violent
+            or armed actions, acts of terrorism, insurrection, revolution, or failure or disruption of any relevant
+            stock exchange, clearinghouse, clearing or settlement systems or market. In the event of equipment
+            breakdowns beyond Service provider's and InvestBay's control, the Service provider shall take reasonable
+            steps to minimize service interruptions but shall have no liability with respect thereto. The Service
+            provider also disclaim any liability for future consequences arising under the Prevention of Money
+            Laundering Act, 2002, or any analogous legislation, regulations, or rules.</p>
+
+        <!-- SEVERABILITY & FINAL TERMS -->
+        <h3 style="font-size: 12pt; margin: 25px 0 12px 0; font-weight: bold;">SEVERABILITY & FINAL TERMS:</h3>
+        <p style="margin: 0 0 12px 0;">If any part of the Agreement is held unenforceable, the remaining provisions will
+            remain in effect.</p>
+        <p style="margin: 0 0 40px 0;">Key terms regarding tenure, jurisdiction, termination, and arbitration are
+            defined in Appendix 1.</p>
+
+        <!-- SIGNATURES -->
+        <table class="signature-table">
+            <tr>
+                <td class="signature-col">
+                    <div class="signature-line">
+                        <% if (typeof RA_Signature !=='undefined' && RA_Signature && RA_Signature.trim() !=='' ) { %>
+                            <img src="<%= RA_Signature %>" alt="RA Signature" class="signature-image" />
+                            <% } else { %>
+                                <p>______________________________</p>
+                                <% } %>
+                    </div>
+                    <p style="margin: 0 0 5px 0; font-weight: bold;">Name: <%= RA_FullName %>
+                    </p>
+                    <p style="margin: 0; font-weight: bold;">SIGNED AND DELIVERED<br>By the within named "Service
+                        provider"</p>
+                </td>
+                <td class="signature-col">
+                    <div class="signature-line">
+                        <% if (typeof signature !=='undefined' && signature && signature.trim() !=='' ) { %>
+                            <img src="<%= signature %>" alt="User Signature" class="signature-image" />
+                            <% } else { %>
+                                <p>______________________________</p>
+                                <% } %>
+                    </div>
+                    <p style="margin: 0 0 5px 0; font-weight: bold;">Name: <%= UserName %>
+                    </p>
+                    <p style="margin: 0; font-weight: bold;">SIGNED AND DELIVERED<br>By the within named "User"</p>
+                </td>
+            </tr>
+        </table>
+
+        <!-- APPENDIX 1 -->
+        <div class="appendix">
+            <h2 style="font-size: 16pt; margin: 0 0 20px 0; text-align: center; font-weight: bold;">Appendix 1</h2>
+
+            <h3 style="font-size: 12pt; margin: 20px 0 12px 0; font-weight: bold;">This Agreement shall be effective as
+                of <%= EffectiveDate %> (the "Effective Date").</h3>
+            <p style="margin: 0 0 25px 0; font-weight: bold; font-size: 12pt;">Validity of the agreement: This agreement
+                shall commence from <strong>
+                    <%= StartDate %>
+                </strong> and shall subsist till <strong>
+                    <%= EndDate %>
+                </strong>.</p>
+
+            <h4 style="font-size: 11pt; margin: 20px 0 10px 0; font-weight: bold;">Fees:</h4>
+            <p style="margin: 0 0 15px 0;">The User shall duly pay to Service Provider, the agreed fees for the services
+                that Service Provider renders to the User and statutory charges, as applicable. Such fees and statutory
+                charges shall be payable through the specified manner and modes communicated by InvestBay (including but
+                not limited to payment gateways or processors like Cashfree, Razorpay etc.)</p>
+
+            <h4 style="font-size: 11pt; margin: 20px 0 10px 0; font-weight: bold;">Arbitration:</h4>
+            <p style="margin: 0 0 10px 0;">The Parties therefore agree that they will, at all times, act in good faith,
+                and make all attempts to resolve all differences / disputes howsoever arising out of or in connection
+                with this Agreement by discussion failing which, the Parties shall resolve the same through arbitration.
+                SEBI's proposed grievance redressal will be followed. In case, it's outside the purview of regulator,
+                then the arbitration shall in all disputes be conducted in accordance with the provisions of the
+                Arbitration and Conciliation Act, 1996 and the amendments made from time to time. The place and seat of
+                arbitration shall be <strong>
+                    <%= jurisdiction_place %>
+                </strong>. The language to be used in the arbitration proceedings shall be English.</p>
+
+            <h4 style="font-size: 11pt; margin: 20px 0 10px 0; font-weight: bold;">Governing law and Jurisdiction:</h4>
+            <p style="margin: 0 0 15px 0;">This Agreement shall be governed by and construed and enforced in accordance
+                with the laws of India. The Parties agree to submit to the exclusive jurisdiction of the courts at
+                <strong>
+                    <%= jurisdiction_place %>
+                </strong>.
+            </p>
+
+            <h4 style="font-size: 11pt; margin: 20px 0 10px 0; font-weight: bold;">Service Identification:</h4>
+            <p style="margin: 0 0 15px 0;">The service identified as '<%= service_name %> as displayed on InvestBay.in'
+                    (hereinafter referred to as 'the Service') is being purchased by the user (hereinafter referred to
+                    as 'the User'). This agreement pertains specifically to the terms and conditions governing the
+                    provision of '<%= service_name %> as displayed on InvestBay.in' by <%= RA_FullName %> (hereinafter
+                            referred to as 'the Service provider'). This clause is to ensure clarity by explicitly
+                            stating that the agreement applies to the service '<%= service_name %> as displayed on
+                                InvestBay.in' among the various services offered by the Service provider, thereby
+                                preventing any potential confusion.</p>
+
+            <h4 style="font-size: 11pt; margin: 20px 0 10px 0; font-weight: bold;">Termination Process and Refund
+                Timeline:</h4>
+            <p style="margin: 0 0 10px 0;">Either Party may terminate this Agreement by providing a written notice of at
+                least 7 (seven) calendar days via email. In the event of termination:</p>
+            <ul style="margin: 0 0 15px 25px; padding-left: 20px;">
+                <li>The User shall be eligible for a proportionate refund as per the refund clause.</li>
+                <li>The Service Provider shall process any eligible refund within 15 business days from the date of
+                    termination confirmation.</li>
+                <li>Access to subscription services shall be revoked at the end of the notice period.</li>
+            </ul>
+
+            <h4 style="font-size: 11pt; margin: 20px 0 10px 0; font-weight: bold;">Subscription Description:</h4>
+            <p style="margin: 0 0 10px 0;">The subscription taken by the User is governed by the descriptions and terms
+                provided by the Relevant Authority (Service provider). These descriptions, which outline the specific
+                services, limitations, and other relevant details associated with the subscription, are hereby
+                incorporated into this agreement by reference. The detailed description provided by the Service provider
+                is essential for understanding the scope and limitations of the subscription and the description is
+                mentioned below. The Service Provider may update or revise the subscription description to reflect
+                changes in scope, structure, or compliance requirements. In such cases, the User shall be notified by
+                service provider via registered email. Continued use of services for more than 7 days post-notification
+                shall be deemed as acceptance of the updated terms. If the User disagrees, they may opt to discontinue
+                the service and seek a proportionate refund, as per the refund clause.</p>
+
+            <h4 style="font-size: 11pt; margin: 25px 0 12px 0; font-weight: bold;">Declaration by Client/User</h4>
+            <div style="padding: 15px; margin-bottom: 20px; border: 1px solid #000;">
+                <p style="margin: 0 0 8px 0;">The User acknowledges that they have reviewed and understood these
+                    description as provided by the Service provider at the time of subscription.</p>
+                <p style="margin: 0 0 8px 0;">Any changes or updates to the subscription description by the Service
+                    provider shall be communicated to the User and shall become part of this agreement.</p>
+                <p style="margin: 0 0 8px 0; font-weight: bold;">"I / We have read and understood the terms and
+                    conditions applicable to a research analyst as defined under regulation 2(1)(u) of the SEBI
+                    (Research Analyst) Regulations, 2014, including the fee structure.</p>
+                <p style="margin: 0 0 8px 0;">I/We are subscribing to the research services for our own benefits and
+                    consumption, and any reliance placed on the research report provided by research analyst shall be as
+                    per our own judgement and assessment of the conclusions contained in the research report.</p>
+                <p style="margin: 0 0 8px 0;"><strong>I/We understand that –</strong></p>
+                <ul style="margin: 0 0 8px 20px;">
+                    <li>Any investment made based on the recommendations in the research report are subject to market
+                        risk.</li>
+                    <li>Recommendations in the research report do not provide any assurance of returns.</li>
+                    <li>There is no recourse to claim any losses incurred on the investments made based on the
+                        recommendations in the research report.</li>
+                </ul>
+            </div>
+
+            <h4 style="font-size: 11pt; margin: 25px 0 12px 0; font-weight: bold;">Risk factors:</h4>
+            <div style="padding: 15px; border: 1px solid #000;">
+                <p style="margin: 0 0 8px 0;">Investments in Securities are subject to market risks and there is no
+                    assurance or guarantee in case of investment based on our recommendations. Risk factor can be
+                    affected as market risk, Market trading risk, lack of market liquidity, regulatory risk, asset Class
+                    Risk, performance risk, credit risk, model risk or such as may be prescribe from time to time.</p>
+                <p style="margin: 0 0 8px 0;">The research recommendations may be affected by changes in Government
+                    policies, general levels of interest rates and risks associated with trading volumes, liquidity and
+                    settlement systems in equity and debt markets.</p>
+                <p style="margin: 0 0 8px 0;">The names of the research reports or products do not in any manner
+                    indicate their prospects or returns.</p>
+                <p style="margin: 0 0 8px 0;">Our past performance of research recommendation are not indicative of the
+                    future performance or correctness.</p>
+                <p style="margin: 0 0 8px 0;">Investments made by the Client based on the recommendations of the RA are
+                    subject to risks arising from the investment objective, investment strategy and asset allocation.
+                </p>
+                <p style="margin: 0 0 8px 0;">The investments made by the Client based on the recommendations of RA may
+                    be adversely affected by the performance of individual companies, changes in the market dynamics,
+                    company specific and industry specific and macroeconomic and regulatory factors.</p>
+                <p style="margin: 0 0 8px 0;">Recommendations in securities or Investments in niche sectors run the risk
+                    of volatility, high valuation, obsolescence and low liquidity.</p>
+                <p style="margin: 0;">Investments on our recommendations in derivatives, futures and options are
+                    affected by risk different from those associated with stock and bonds. Such investments are highly
+                    leveraged instruments and their use requires a high degree of skill, diligence and expertise. Small
+                    price movements in the underlying security may have a large impact on the value of derivatives and
+                    futures and options. Some of the risks relate to mis-pricing on the improper valuation of
+                    derivatives and futures and options and the inability to correlate the positions with underlying
+                    assets, rates and indices.</p>
+            </div>
+
+            <!-- SUBSCRIPTION DETAILS -->
+            <div style="padding: 20px; margin: 25px 0; border: 1px solid #000;">
+                <h4 style="margin: 0 0 12px 0; font-size: 11pt; font-weight: bold;">
+                    <%= subscription_description %>
+                </h4>
+                <h5 style="margin: 0 0 12px 0; font-size: 10pt; font-weight: bold;">
+                    <%= combination_details %>
+                </h5>
+                <p style="margin: 0; font-weight: bold; font-size: 11pt;">
+                    <%= ask_mentor %>
+                </p>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer">
+            <p style="margin: 0 0 8px 0;">investbay.in | SEBI Registered Research Analyst Services </p>
+            <p style="margin: 0;">This is a legally binding document. Please review carefully before signing.</p>
+        </div>
+    </div>
+</body>
+
+</html>
