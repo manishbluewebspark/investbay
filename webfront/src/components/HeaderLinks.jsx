@@ -27,7 +27,7 @@ export default function HeaderLinks({ type = "all", onClick, onLoginClick }) {
   const handleLogout = useCallback(async () => {
     try {
       if (user?.id) await axios.post(`${import.meta.env.VITE_API_URL}/auth/logout`, { user_id: user.id, ip_address: "", user_agent: navigator.userAgent, role: user.role });
-    } catch {}
+    } catch { }
     finally { localStorage.removeItem("user"); localStorage.removeItem("token"); setShowDropdown(false); navigate("/login"); }
   }, [user?.id, navigate]);
 
@@ -127,6 +127,7 @@ export default function HeaderLinks({ type = "all", onClick, onLoginClick }) {
       <NavLink to="/signals" onClick={onClick} className={navLinkClass}>Signals</NavLink>
       <NavLink to="/mentors" onClick={onClick} className={navLinkClass}>Mentors</NavLink>
       <NavLink to="/subscriptions" onClick={onClick} className={navLinkClass}>Subscriptions</NavLink>
+      <NavLink to="/capital-lock" onClick={onClick} className={navLinkClass}>capital lock</NavLink>
       <NavLink to="/loss-protection" onClick={onClick} className={navLinkClass}>
         <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
           <FaShieldAlt size={11} style={{ color: lossStatus?.is_triggered ? "#fca5a5" : lossStatus?.is_active ? "#00e676" : "rgba(140,158,180,0.4)" }} />
@@ -134,6 +135,7 @@ export default function HeaderLinks({ type = "all", onClick, onLoginClick }) {
           {lossStatus?.is_triggered && <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#fca5a5", animation: "badge-pulse 2s infinite" }} />}
         </span>
       </NavLink>
+      <NavLink to="/coach-support" onClick={onClick} className={navLinkClass}>Coach support</NavLink>
     </>
   );
 

@@ -24,6 +24,8 @@ import { connectWhatsApp } from './whatsapp.service.js';
 import dematRoutes from './routes/demat.routes.js';
 import lossSecurityRoutes from './routes/lossSecurity.routes.js';
 import { startLossMonitor } from './utils/monitor.js';
+import capitalLockRoutes  from './routes/capitalLock.routes.js';
+import coachSupportRoutes from './routes/coachSupport.routes.js';
 
 
 dotenv.config();
@@ -72,6 +74,8 @@ app.use("/api/news", newsRoutes);
 app.use('/api/terms', termsRoutes);
 app.use('/api/demat', dematRoutes);
 app.use('/api/loss-security', lossSecurityRoutes);
+app.use('/api/capital-lock',   capitalLockRoutes);
+app.use('/api/coach-support',  coachSupportRoutes);
 
 
 

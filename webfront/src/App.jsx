@@ -52,7 +52,11 @@ import AdminNews from "./admin/pages/ra/AdminNews";
 import News from "./pages/News";
 import NewsDetail from "./pages/NewsDetail";
 import ProtectedRoute from "./components/ProtectedRoute";
-import LossProtection from "./pages/LossProtection";
+import LossProtectionSetup from "./pages/LossProtectionSetup";
+import LossProtectionInfo from "./pages/LossProtectionInfo";
+import CapitalLockInfo from "./pages/CapitalLockInfo";
+import CapitalLockSetup from "./pages/CapitalLockSetup";
+import CoachSupport from "./pages/CoachSupport";
 
 
 function PrivateRoute({ children }) {
@@ -106,7 +110,39 @@ function App() {
                     path="/loss-protection"
                     element={
                       <ProtectedRoute>
-                        <LossProtection />
+                        <LossProtectionInfo />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/loss-protection/setup"
+                    element={
+                      <ProtectedRoute>
+                        <LossProtectionSetup />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/capital-lock"
+                    element={
+                      <ProtectedRoute>
+                        < CapitalLockInfo />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/capital-lock/setup"
+                    element={
+                      <ProtectedRoute>
+                        <CapitalLockSetup />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/coach-support"
+                    element={
+                      <ProtectedRoute>
+                        <CoachSupport />
                       </ProtectedRoute>
                     }
                   />

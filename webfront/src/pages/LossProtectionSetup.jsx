@@ -12,6 +12,7 @@ import {
   FaWallet,
 } from "react-icons/fa";
 import { FiArrowRight, FiArrowLeft, FiRefreshCw, FiShield, FiX } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 
 // ─── broker config ────────────────────────────────────────────────────────────
 const BROKERS = [
@@ -98,6 +99,7 @@ const fmt = (n) =>
   Number(n || 0).toLocaleString("en-IN", { maximumFractionDigits: 0 });
 
 export default function LossProtection() {
+  const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [selectedBroker, setSelectedBroker] = useState(null);
   const [apiKey, setApiKey] = useState("");
@@ -231,7 +233,7 @@ export default function LossProtection() {
     <div className="min-h-screen bg-[#060b10] py-10 px-4">
       {/* Background Effects */}
       <div className="fixed inset-0 pointer-events-none z-0">
-        <div 
+        <div
           className="absolute inset-0 opacity-[0.015]"
           style={{
             backgroundImage: `
@@ -247,6 +249,9 @@ export default function LossProtection() {
       </div>
 
       <div className="relative z-10 max-w-2xl mx-auto">
+        <button onClick={() => navigate("/loss-protection")} className="flex items-center gap-2 text-sm text-slate-400 hover:text-slate-200 mb-6 transition-colors">
+          <FiArrowLeft size={14} /> Back to information
+        </button>
         {/* Page header */}
         <div className="mb-8 flex items-center gap-3">
           <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
@@ -270,18 +275,16 @@ export default function LossProtection() {
               return (
                 <div key={s} className="flex items-center gap-2 flex-1">
                   <div
-                    className={`flex items-center gap-2 text-sm font-medium ${
-                      active ? "text-emerald-400" : done ? "text-emerald-500" : "text-slate-600"
-                    }`}
+                    className={`flex items-center gap-2 text-sm font-medium ${active ? "text-emerald-400" : done ? "text-emerald-500" : "text-slate-600"
+                      }`}
                   >
                     <span
-                      className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold border-2 transition-all duration-300 ${
-                        done
-                          ? "bg-emerald-500 border-emerald-500 text-black"
-                          : active
-                            ? "border-emerald-400 text-emerald-400"
-                            : "border-slate-700 text-slate-600"
-                      }`}
+                      className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold border-2 transition-all duration-300 ${done
+                        ? "bg-emerald-500 border-emerald-500 text-black"
+                        : active
+                          ? "border-emerald-400 text-emerald-400"
+                          : "border-slate-700 text-slate-600"
+                        }`}
                     >
                       {done ? "✓" : s}
                     </span>
@@ -289,9 +292,8 @@ export default function LossProtection() {
                   </div>
                   {i < 2 && (
                     <div
-                      className={`flex-1 h-0.5 transition-all duration-300 ${
-                        done ? "bg-emerald-500" : "bg-slate-800"
-                      }`}
+                      className={`flex-1 h-0.5 transition-all duration-300 ${done ? "bg-emerald-500" : "bg-slate-800"
+                        }`}
                     />
                   )}
                 </div>
@@ -534,11 +536,10 @@ export default function LossProtection() {
                 <button
                   key={amt}
                   onClick={() => setLossLimit(String(amt))}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-                    lossLimit === String(amt)
-                      ? "bg-emerald-500 text-black border-emerald-500"
-                      : "bg-white/[0.03] border border-white/[0.08] text-slate-400 hover:border-emerald-500/30 hover:text-slate-300"
-                  }`}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${lossLimit === String(amt)
+                    ? "bg-emerald-500 text-black border-emerald-500"
+                    : "bg-white/[0.03] border border-white/[0.08] text-slate-400 hover:border-emerald-500/30 hover:text-slate-300"
+                    }`}
                 >
                   ₹{fmt(amt)}
                 </button>
