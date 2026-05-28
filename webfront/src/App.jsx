@@ -57,6 +57,7 @@ import LossProtectionInfo from "./pages/LossProtectionInfo";
 import CapitalLockInfo from "./pages/CapitalLockInfo";
 import CapitalLockSetup from "./pages/CapitalLockSetup";
 import CoachSupport from "./pages/CoachSupport";
+import Heatmap from "./pages/Heatmap";
 
 
 function PrivateRoute({ children }) {
@@ -159,6 +160,14 @@ function App() {
                     element={
                       <ProtectedRoute>
                         <AllMentors />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/map"
+                    element={
+                      <ProtectedRoute>
+                        <Heatmap />
                       </ProtectedRoute>
                     }
                   />

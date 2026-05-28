@@ -126,6 +126,7 @@ export default function HeaderLinks({ type = "all", onClick, onLoginClick }) {
       <NavLink to="/feed" onClick={onClick} className={navLinkClass}>Feed</NavLink>
       <NavLink to="/signals" onClick={onClick} className={navLinkClass}>Signals</NavLink>
       <NavLink to="/mentors" onClick={onClick} className={navLinkClass}>Mentors</NavLink>
+      <NavLink to="/map" onClick={onClick} className={navLinkClass}>map</NavLink>
       <NavLink to="/subscriptions" onClick={onClick} className={navLinkClass}>Subscriptions</NavLink>
       <NavLink to="/capital-lock" onClick={onClick} className={navLinkClass}>capital lock</NavLink>
       <NavLink to="/loss-protection" onClick={onClick} className={navLinkClass}>
