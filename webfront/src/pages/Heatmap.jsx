@@ -13,452 +13,349 @@ const getSectorIcon = (name) => {
     const Icon = icons[name] || BarChart3;
     return <Icon size={13} strokeWidth={1.8} />;
 };
-const formatMarketCap = (v) => {
-    if (!v) return '—';
-    if (v >= 100000) return `${(v / 100000).toFixed(1)}L Cr`;
-    if (v >= 1000) return `${(v / 1000).toFixed(1)}K Cr`;
-    return `${v.toFixed(1)} Cr`;
+const fmt = (v) => { if (!v) return '—'; if (v >= 100000) return `${(v/100000).toFixed(1)}L Cr`; if (v >= 1000) return `${(v/1000).toFixed(1)}K Cr`; return `${v.toFixed(1)} Cr`; };
+
+// ── Color scale ───────────────────────────────────────────────────────
+const getColor = (v) => {
+    if (v >= 10)  return { bg:'#0a5c1a', text:'#fff' };
+    if (v >= 7)   return { bg:'#0d7a22', text:'#fff' };
+    if (v >= 5)   return { bg:'#118a2a', text:'#fff' };
+    if (v >= 3)   return { bg:'#16a834', text:'#fff' };
+    if (v >= 2)   return { bg:'#1db954', text:'#fff' };
+    if (v >= 1)   return { bg:'#22c55e', text:'#fff' };
+    if (v >= 0.5) return { bg:'#4ade80', text:'#052e16' };
+    if (v > 0)    return { bg:'#86efac', text:'#052e16' };
+    if (v === 0)  return { bg:'#1e2d3d', text:'#64748b' };
+    if (v > -0.5) return { bg:'#fecaca', text:'#450a0a' };
+    if (v > -1)   return { bg:'#fca5a5', text:'#450a0a' };
+    if (v > -2)   return { bg:'#f87171', text:'#fff' };
+    if (v > -3)   return { bg:'#ef4444', text:'#fff' };
+    if (v > -5)   return { bg:'#dc2626', text:'#fff' };
+    if (v > -7)   return { bg:'#b91c1c', text:'#fff' };
+    if (v > -10)  return { bg:'#991b1b', text:'#fff' };
+    return          { bg:'#7f1d1d', text:'#fff' };
 };
 
-// ── Exact MC/TradingView color scale ────────────────────────────────
-const getMCColor = (v) => {
-    if (v >= 10)  return { bg: '#0a5c1a', text: '#fff', border: '#0d7a22' };
-    if (v >= 7)   return { bg: '#0d7a22', text: '#fff', border: '#109a2b' };
-    if (v >= 5)   return { bg: '#118a2a', text: '#fff', border: '#16b036' };
-    if (v >= 3)   return { bg: '#16a834', text: '#fff', border: '#1dcc3f' };
-    if (v >= 2)   return { bg: '#1db954', text: '#fff', border: '#26d460' };
-    if (v >= 1)   return { bg: '#22c55e', text: '#fff', border: '#34d474' };
-    if (v >= 0.5) return { bg: '#4ade80', text: '#052e16', border: '#6ee7b7' };
-    if (v > 0)    return { bg: '#86efac', text: '#052e16', border: '#bbf7d0' };
-    if (v === 0)  return { bg: '#2d3748', text: '#9ca3af', border: '#3d4a5c' };
-    if (v > -0.5) return { bg: '#fecaca', text: '#450a0a', border: '#fca5a5' };
-    if (v > -1)   return { bg: '#fca5a5', text: '#450a0a', border: '#f87171' };
-    if (v > -2)   return { bg: '#f87171', text: '#fff', border: '#ef4444' };
-    if (v > -3)   return { bg: '#ef4444', text: '#fff', border: '#dc2626' };
-    if (v > -5)   return { bg: '#dc2626', text: '#fff', border: '#b91c1c' };
-    if (v > -7)   return { bg: '#b91c1c', text: '#fff', border: '#991b1b' };
-    if (v > -10)  return { bg: '#991b1b', text: '#fff', border: '#7f1d1d' };
-    return          { bg: '#7f1d1d', text: '#fff', border: '#6b1515' };
-};
+// ── Pure squarify — fills rect completely, no gaps ───────────────────
+function squarify(nodes, x0, y0, x1, y1) {
+    const W = x1 - x0, H = y1 - y0;
+    if (!nodes.length || W <= 0 || H <= 0) return [];
+    const total = nodes.reduce((s, n) => s + n.value, 0);
+    if (total <= 0) return [];
 
-// ── Squarified Treemap (Fixed & Aligned) ─────────────────────────────
-function squarify(items, x, y, w, h) {
-    if (!items.length || w <= 1 || h <= 1) return [];
-    const total = items.reduce((s, d) => s + Math.max(Math.abs(d.value || 1), 0.1), 0);
-    if (total === 0) return [];
-    const results = [];
-    let remaining = [...items];
-    let rx = x, ry = y, rw = w, rh = h;
+    // scale values to area
+    const scale = (W * H) / total;
+    const scaled = nodes.map(n => ({ ...n, area: n.value * scale }));
+
+    const result = [];
+    let remaining = [...scaled];
+    let px = x0, py = y0, pw = W, ph = H;
+
+    const worst = (row, side) => {
+        const s = row.reduce((a, n) => a + n.area, 0);
+        const mn = Math.min(...row.map(n => n.area));
+        const mx = Math.max(...row.map(n => n.area));
+        return Math.max((side * side * mx) / (s * s), (s * s) / (side * side * mn));
+    };
 
     while (remaining.length > 0) {
-        const isWide = rw >= rh;
-        let row = [];
-        let rowSum = 0;
-        let bestAspect = Infinity;
-
-        for (let i = 0; i < remaining.length; i++) {
-            row.push(remaining[i]);
-            rowSum += Math.max(Math.abs(remaining[i].value || 1), 0.1);
-            const area = (rowSum / total) * (rw * rh);
-            let maxAspect = -Infinity;
-            for (let j = 0; j < row.length; j++) {
-                const itemArea = (Math.max(Math.abs(row[j].value), 0.1) / rowSum) * area;
-                let ww, hh;
-                if (isWide) {
-                    ww = area / Math.max(rh, 1);
-                    hh = itemArea / Math.max(ww, 0.1);
-                } else {
-                    hh = area / Math.max(rw, 1);
-                    ww = itemArea / Math.max(hh, 0.1);
-                }
-                const aspect = (ww > 0.01 && hh > 0.01) ? Math.max(ww / hh, hh / ww) : Infinity;
-                maxAspect = Math.max(maxAspect, aspect);
-            }
-            if (maxAspect > bestAspect && i > 0) {
-                row.pop();
-                rowSum -= Math.max(Math.abs(remaining[i].value || 1), 0.1);
-                break;
-            }
-            bestAspect = maxAspect;
-        }
-
-        if (row.length === 0) {
-            row = [remaining[0]];
-            rowSum = Math.max(Math.abs(remaining[0].value || 1), 0.1);
-        }
-
-        const rowRatio = rowSum / total;
-        let cx = rx, cy = ry;
-
-        row.forEach(item => {
-            const ratio = Math.max(Math.abs(item.value), 0.1) / rowSum;
-            let tw, th, tx, ty;
-            if (isWide) {
-                tw = rw * rowRatio;
-                th = rh * ratio;
-                tx = cx;
-                ty = cy;
-                cy += th;
-            } else {
-                tw = rw * ratio;
-                th = rh * rowRatio;
-                tx = cx;
-                ty = cy;
-                cx += tw;
-            }
-            // Ensure minimum dimensions
-            if (tw > 0.5 && th > 0.5) {
-                results.push({ ...item, x: tx, y: ty, w: Math.max(tw, 0.5), h: Math.max(th, 0.5) });
-            }
-        });
-
-        if (isWide) {
-            rx += rw * rowRatio;
-            rw -= rw * rowRatio;
-        } else {
-            ry += rh * rowRatio;
-            rh -= rh * rowRatio;
+        const side = Math.min(pw, ph);
+        let row = [remaining[0]];
+        let i = 1;
+        for (; i < remaining.length; i++) {
+            const candidate = [...row, remaining[i]];
+            if (worst(candidate, side) <= worst(row, side)) {
+                row = candidate;
+            } else break;
         }
         remaining = remaining.slice(row.length);
-        
-        // Prevent infinite loop
-        if (row.length === 0) break;
+
+        const rowArea = row.reduce((a, n) => a + n.area, 0);
+        const rowSide = rowArea / side;
+        const isH = pw >= ph;
+
+        let cur = isH ? py : px;
+        row.forEach(n => {
+            const len = (n.area / rowArea) * side;
+            const rx = isH ? px : cur;
+            const ry = isH ? cur : py;
+            const rw = isH ? rowSide : len;
+            const rh = isH ? len : rowSide;
+            result.push({ ...n, x: rx, y: ry, w: rw, h: rh });
+            cur += len;
+        });
+
+        if (isH) { px += rowSide; pw -= rowSide; }
+        else     { py += rowSide; ph -= rowSide; }
+
+        if (pw <= 0.5 || ph <= 0.5) break;
     }
-    return results;
+    return result;
 }
 
-// ── Stock Logo (colorful circle with initials) ──────────────────────
-const StockLogo = ({ name, size, textColor }) => {
-    const raw = (name || '').replace(/[^A-Za-z0-9]/g, '');
-    const initials = raw.slice(0, 2).toUpperCase() || name?.slice(0, 2).toUpperCase() || '??';
-    const s = Math.min(Math.max(size * 0.32, 20), 38);
-    const fs = Math.max(s * 0.4, 8);
+// ── Stock Logo ────────────────────────────────────────────────────────
+const Logo = ({ name, boxW, boxH }) => {
+    const s = Math.min(boxW * 0.3, boxH * 0.28, 36);
+    if (s < 14) return null;
+    const initials = (name || '').replace(/[^A-Za-z0-9]/g,'').slice(0,2).toUpperCase() || '??';
     let hash = 0;
-    for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
-    const hue = Math.abs(hash) % 360;
+    for (let i = 0; i < (name||'').length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    const hue = ((Math.abs(hash) % 30) * 12 + 10); // golden range hues
+    const palettes = [
+        `hsl(${hue},70%,38%)`,`hsl(${(hue+60)%360},65%,40%)`,`hsl(${(hue+120)%360},68%,36%)`,
+        `hsl(${(hue+180)%360},72%,42%)`,`hsl(${(hue+240)%360},60%,44%)`,
+    ];
+    const bg = palettes[Math.abs(hash) % palettes.length];
     return (
-        <div style={{
-            width: s, height: s, borderRadius: '50%',
-            background: `hsl(${hue}, 55%, 42%)`,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            flexShrink: 0, border: '1.5px solid rgba(255,255,255,0.3)',
-            boxShadow: '0 2px 6px rgba(0,0,0,0.3)',
-        }}>
-            <span style={{ fontSize: fs, fontWeight: 800, color: '#fff', lineHeight: 1 }}>{initials}</span>
+        <div style={{ width:s, height:s, borderRadius:'50%', background:bg, display:'flex', alignItems:'center', justifyContent:'center', border:'1.5px solid rgba(255,255,255,0.35)', boxShadow:'0 2px 8px rgba(0,0,0,0.4)', flexShrink:0 }}>
+            <span style={{ fontSize:Math.max(s*0.38,7), fontWeight:800, color:'#fff', lineHeight:1 }}>{initials}</span>
         </div>
     );
 };
 
-// ── TREEMAP COMPONENT (with full sector scroll) ──────────────────────
-const TreemapView = ({ sectors, allStocks, selectedPeriod }) => {
-    const containerRef = useRef(null);
-    const [dims, setDims] = useState({ w: 1100, h: 620 });
-    const [hoveredKey, setHoveredKey] = useState(null);
-    const [tooltip, setTooltip] = useState(null);
-    const [drillSector, setDrillSector] = useState(null);
+// ── TILE RENDERER ─────────────────────────────────────────────────────
+const Tile = ({ tile, tileKey, onHover, onLeave, onMove, onClick, hovered }) => {
+    const { x, y, w, h, name, change, ltp, label } = tile;
+    if (w < 2 || h < 2) return null;
+
+    const clr = getColor(change ?? 0);
     const GAP = 1.5;
-    const SEC_HDR = 26;
+    const ix = x + GAP, iy = y + GAP, iw = w - GAP*2, ih = h - GAP*2;
+
+    const showName  = iw > 24 && ih > 18;
+    const showPct   = iw > 28 && ih > 30;
+    const showLtp   = iw > 40 && ih > 48;
+    const showLogo  = iw > 52 && ih > 52;
+    const fs  = Math.max(Math.min(iw/7, ih/4.5, 13), 7);
+    const fps = Math.max(fs - 1, 6.5);
+
+    const displayName = (name||'').length > Math.floor(iw/(fs*0.6)) ? (name||'').slice(0, Math.floor(iw/(fs*0.6))-1)+'…' : name;
+
+    return (
+        <g
+            onMouseEnter={e => { onHover(tileKey); onMove(e, tile); }}
+            onMouseMove={e => onMove(e, tile)}
+            onMouseLeave={onLeave}
+            onClick={() => onClick && onClick(tile)}
+            style={{ cursor: onClick ? 'pointer' : 'default' }}
+        >
+            <rect x={x} y={y} width={w} height={h} fill={clr.bg} rx={2}
+                stroke={hovered ? 'rgba(255,255,255,0.85)' : 'rgba(0,0,0,0.35)'}
+                strokeWidth={hovered ? 1.5 : 0.6}
+            />
+            {hovered && <rect x={x} y={y} width={w} height={h} fill="rgba(255,255,255,0.06)" rx={2} pointerEvents="none"/>}
+            {showName && (
+                <foreignObject x={ix} y={iy} width={Math.max(iw,1)} height={Math.max(ih,1)}>
+                    <div xmlns="http://www.w3.org/1999/xhtml" style={{ width:'100%', height:'100%', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:2, overflow:'hidden', padding:'1px' }}>
+                        {showLogo && <Logo name={name} boxW={iw} boxH={ih}/>}
+                        <span style={{ fontSize:fs, fontWeight:700, color:clr.text, textAlign:'center', lineHeight:1.15, wordBreak:'break-word', maxWidth:'100%' }}>{displayName}</span>
+                        {showPct && <span style={{ fontSize:fps, fontWeight:800, color:clr.text, opacity:0.9 }}>{(change??0)>=0?'+':''}{(change??0).toFixed(2)}%</span>}
+                        {showLtp && ltp != null && <span style={{ fontSize:Math.max(fps-1.5,6), color:clr.text, opacity:0.65 }}>₹{ltp>=1000?ltp.toFixed(0):ltp.toFixed(2)}</span>}
+                    </div>
+                </foreignObject>
+            )}
+        </g>
+    );
+};
+
+// ── TREEMAP COMPONENT ─────────────────────────────────────────────────
+const Treemap = ({ sectors, allStocks, period }) => {
+    const ref = useRef(null);
+    const [dim, setDim]         = useState({ w:1200, h:640 });
+    const [hovered, setHovered] = useState(null);
+    const [tooltip, setTooltip] = useState(null);
+    const [drill, setDrill]     = useState(null);   // sector name string
+
+    const HDR = 22; // sector header height in px
+    const PAD = 1;  // outer padding
 
     useEffect(() => {
-        const obs = new ResizeObserver(entries => {
-            const { width } = entries[0].contentRect;
-            setDims({ w: Math.max(width, 400), h: Math.max(Math.round(width * 0.52), 480) });
+        const ro = new ResizeObserver(([e]) => {
+            const w = Math.max(e.contentRect.width, 400);
+            setDim({ w, h: Math.max(Math.round(w * 0.54), 460) });
         });
-        if (containerRef.current) obs.observe(containerRef.current);
-        return () => obs.disconnect();
+        if (ref.current) ro.observe(ref.current);
+        return () => ro.disconnect();
     }, []);
 
-    const byParent = useMemo(() => {
+    // group stocks → sector
+    const bySector = useMemo(() => {
         const m = {};
-        allStocks.forEach(s => {
-            const k = s.sectorName || 'Other';
-            if (!m[k]) m[k] = [];
-            m[k].push(s);
-        });
+        allStocks.forEach(s => { const k = s.sectorName||'Other'; if(!m[k]) m[k]=[]; m[k].push(s); });
         return m;
     }, [allStocks]);
 
+    // compute layout
     const layout = useMemo(() => {
-        const { w, h } = dims;
-        if (!sectors.length || w <= 0 || h <= 0) return null;
+        const { w, h } = dim;
+        if (!sectors.length) return null;
 
-        if (drillSector) {
-            const stocks = (byParent[drillSector] || [])
-                .map(s => ({ id: s.scId || s.name, name: s.name, value: Math.max(s.marketCap || 15, 1), change: s.changePercent, ltp: s.ltp, sector: s.sectorName }))
-                .sort((a, b) => b.value - a.value);
-            const tiles = squarify(stocks, GAP, GAP, w - GAP * 2, h - GAP * 2);
-            return { type: 'drill', tiles };
+        if (drill) {
+            const stocks = (bySector[drill]||[]).map(s=>({ id:s.scId||s.name, name:s.name, value:Math.max(parseFloat(s.marketCap)||10,1), change:s.changePercent, ltp:s.ltp, sector:s.sectorName })).sort((a,b)=>b.value-a.value);
+            return { type:'drill', tiles: squarify(stocks, PAD, PAD, w-PAD, h-PAD) };
         }
 
-        const secItems = sectors.map(sec => {
-            const stocks = byParent[sec.name] || [];
-            const capSum = stocks.reduce((a, s) => a + (s.marketCap || 10), 0);
-            return { id: sec.id, name: sec.name, value: Math.max(capSum || sec.totalStocks || 10, 10), change: sec.value, totalStocks: sec.totalStocks };
-        }).sort((a, b) => b.value - a.value);
+        // build sector nodes weighted by total marketCap
+        const secNodes = sectors.map(sec => {
+            const stocks = bySector[sec.name]||[];
+            const cap = stocks.reduce((a,s)=>a+Math.max(parseFloat(s.marketCap)||10,1),0);
+            return { id:sec.id, name:sec.name, value:Math.max(cap,10), change:sec.value, totalStocks:sec.totalStocks };
+        }).sort((a,b)=>b.value-a.value);
 
-        const secTiles = squarify(secItems, 0, 0, w, h);
+        const secTiles = squarify(secNodes, PAD, PAD, w-PAD, h-PAD);
 
-        return {
-            type: 'full',
-            sectors: secTiles.map(sec => {
-                const stocks = (byParent[sec.name] || [])
-                    .map(s => ({ id: s.scId || s.name, name: s.name, value: Math.max(s.marketCap || 15, 1), change: s.changePercent, ltp: s.ltp, sector: s.sectorName }))
-                    .sort((a, b) => b.value - a.value);
-                const innerX = sec.x + GAP;
-                const innerY = sec.y + SEC_HDR;
-                const innerW = sec.w - GAP * 2;
-                const innerH = sec.h - SEC_HDR - GAP;
-                const stockTiles = (innerW > 2 && innerH > 2) ? squarify(stocks, innerX, innerY, innerW, innerH) : [];
-                return { ...sec, stockTiles };
-            })
-        };
-    }, [dims, sectors, byParent, drillSector]);
+        const result = secTiles.map(st => {
+            const stocks = (bySector[st.name]||[]).map(s=>({ id:s.scId||s.name, name:s.name, value:Math.max(parseFloat(s.marketCap)||10,1), change:s.changePercent, ltp:s.ltp, sector:s.sectorName })).sort((a,b)=>b.value-a.value);
+            const innerY = st.y + HDR;
+            const innerH = st.h - HDR;
+            const stockTiles = (innerH > 4) ? squarify(stocks, st.x+PAD, innerY, st.x+st.w-PAD, innerY+innerH-PAD) : [];
+            return { ...st, stockTiles };
+        });
 
-    const renderTile = (tile, key, showLogo = true) => {
-        if (!tile || tile.w < 2 || tile.h < 2) return null;
-        const clr = getMCColor(tile.change ?? 0);
-        const hov = hoveredKey === key;
-        const pad = 3;
-        const iw = Math.max(tile.w - pad * 2, 1);
-        const ih = Math.max(tile.h - pad * 2, 1);
-        const showName = iw > 28 && ih > 20;
-        const showPct = iw > 35 && ih > 32;
-        const showLtp2 = iw > 55 && ih > 48;
-        const showLg = showLogo && iw > 50 && ih > 52;
-        const nameFontSize = Math.min(Math.max(Math.min(iw / 6.5, ih / 4, 12), 7), 13);
-        const pctFontSize = Math.min(Math.max(nameFontSize - 1, 6.5), 11);
-        
-        let displayName = tile.name || '';
-        const maxChars = Math.max(Math.floor(iw / (nameFontSize * 0.55)), 2);
-        if (displayName.length > maxChars) {
-            displayName = displayName.slice(0, maxChars - 1) + '…';
-        }
+        return { type:'full', sectors: result };
+    }, [dim, sectors, bySector, drill]);
 
-        return (
-            <g key={key}
-                onMouseEnter={e => { setHoveredKey(key); setTooltip({ x: e.clientX, y: e.clientY, tile }); }}
-                onMouseMove={e => setTooltip(t => t ? { ...t, x: e.clientX, y: e.clientY } : null)}
-                onMouseLeave={() => { setHoveredKey(null); setTooltip(null); }}
-                style={{ cursor: 'pointer' }}
-            >
-                <rect
-                    x={tile.x} y={tile.y}
-                    width={tile.w} height={tile.h}
-                    fill={clr.bg} rx={3}
-                    stroke={hov ? 'rgba(255,255,255,0.9)' : clr.border}
-                    strokeWidth={hov ? 1.5 : 0.6}
-                />
-                {hov && (
-                    <rect x={tile.x} y={tile.y} width={tile.w} height={tile.h}
-                        fill="rgba(255,255,255,0.05)" rx={3} pointerEvents="none" />
-                )}
-                {showName && (
-                    <foreignObject x={tile.x + pad} y={tile.y + pad} width={Math.max(iw, 1)} height={Math.max(ih, 1)}>
-                        <div xmlns="http://www.w3.org/1999/xhtml" style={{
-                            width: '100%', height: '100%', display: 'flex', flexDirection: 'column',
-                            alignItems: 'center', justifyContent: 'center', gap: 2, overflow: 'hidden',
-                        }}>
-                            {showLg && <StockLogo name={tile.name} size={iw} textColor={clr.text} />}
-                            <span style={{
-                                fontSize: nameFontSize, fontWeight: 700, color: clr.text,
-                                textAlign: 'center', lineHeight: 1.15, wordBreak: 'break-word',
-                                maxWidth: '100%', padding: '0 2px',
-                            }}>{displayName}</span>
-                            {showPct && (
-                                <span style={{
-                                    fontSize: pctFontSize, fontWeight: 700,
-                                    color: clr.text, opacity: 0.92,
-                                }}>
-                                    {(tile.change ?? 0) >= 0 ? '+' : ''}{(tile.change ?? 0).toFixed(2)}%
-                                </span>
-                            )}
-                            {showLtp2 && tile.ltp != null && (
-                                <span style={{
-                                    fontSize: Math.max(pctFontSize - 1.5, 6.5),
-                                    color: clr.text, opacity: 0.7,
-                                }}>₹{tile.ltp.toFixed(tile.ltp >= 100 ? 0 : 2)}</span>
-                            )}
-                        </div>
-                    </foreignObject>
-                )}
-            </g>
-        );
-    };
+    const handleTileHover = useCallback((key) => setHovered(key), []);
+    const handleTileLeave = useCallback(() => { setHovered(null); setTooltip(null); }, []);
+    const handleTileMove  = useCallback((e, tile) => setTooltip({ x:e.clientX, y:e.clientY, tile }), []);
 
-    const drillSectorData = drillSector ? sectors.find(s => s.name === drillSector) : null;
-    const legendColors = ['#7f1d1d', '#b91c1c', '#ef4444', '#f87171', '#fca5a5', '#2d3748', '#86efac', '#22c55e', '#16a834', '#0d7a22', '#0a5c1a'];
+    const drillData = drill ? sectors.find(s=>s.name===drill) : null;
 
     return (
-        <div style={{ background: '#0d1117', borderRadius: 18, border: '1px solid rgba(255,255,255,0.07)', overflow: 'hidden' }}>
-            {/* Toolbar */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 16px', borderBottom: '1px solid rgba(255,255,255,0.06)', flexWrap: 'wrap', gap: 8 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                    {drillSector ? (
+        <div style={{ background:'#0a0d13', borderRadius:14, border:'1px solid rgba(255,255,255,0.07)', overflow:'hidden' }}>
+
+            {/* ── toolbar ── */}
+            <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'9px 14px', borderBottom:'1px solid rgba(255,255,255,0.06)', gap:8, flexWrap:'wrap' }}>
+                <div style={{ display:'flex', alignItems:'center', gap:10 }}>
+                    {drill ? (
                         <>
-                            <button
-                                onClick={() => setDrillSector(null)}
-                                style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '5px 12px', background: 'rgba(52,211,153,0.12)', border: '1px solid rgba(52,211,153,0.3)', borderRadius: 8, color: '#34d399', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>
-                                ← All Sectors
-                            </button>
-                            <span style={{ color: '#f1f5f9', fontSize: 13, fontWeight: 700, display: 'flex', alignItems: 'center', gap: 6 }}>
-                                {getSectorIcon(drillSector)} {drillSector}
-                            </span>
-                            {drillSectorData && (
-                                <span style={{
-                                    fontSize: 12, fontWeight: 700, padding: '2px 10px', borderRadius: 16,
-                                    background: getMCColor(drillSectorData.value).bg,
-                                    color: getMCColor(drillSectorData.value).text,
-                                }}>
-                                    {drillSectorData.value > 0 ? '+' : ''}{drillSectorData.value?.toFixed(2)}%
-                                </span>
-                            )}
+                            <button onClick={()=>setDrill(null)} style={{ display:'flex',alignItems:'center',gap:5, padding:'4px 11px', background:'rgba(52,211,153,0.1)', border:'1px solid rgba(52,211,153,0.25)', borderRadius:8, color:'#34d399', fontSize:11, fontWeight:600, cursor:'pointer' }}>← All</button>
+                            <span style={{ color:'#f1f5f9',fontSize:13,fontWeight:700,display:'flex',alignItems:'center',gap:6 }}>{getSectorIcon(drill)}{drill}</span>
+                            {drillData && (() => { const c=getColor(drillData.value); return <span style={{ background:c.bg,color:c.text,padding:'2px 10px',borderRadius:20,fontSize:11,fontWeight:700 }}>{drillData.value>0?'+':''}{drillData.value?.toFixed(2)}%</span>; })()}
                         </>
                     ) : (
-                        <span style={{ color: '#f1f5f9', fontSize: 13, fontWeight: 700, display: 'flex', alignItems: 'center', gap: 6 }}>
-                            <LayoutGrid size={14} style={{ color: '#34d399' }} />
-                            Market Heatmap
-                            <span style={{ color: '#475569', fontSize: 11, fontWeight: 400 }}>· {selectedPeriod} · size = market cap</span>
+                        <span style={{ color:'#e2e8f0',fontSize:13,fontWeight:700,display:'flex',alignItems:'center',gap:6 }}>
+                            <LayoutGrid size={14} style={{color:'#34d399'}}/>Market Heatmap
+                            <span style={{color:'#475569',fontSize:10,fontWeight:400}}>· {period} · tile size = market cap · click sector to drill in</span>
                         </span>
                     )}
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 10, color: '#64748b' }}>
-                    <span>-10%</span>
-                    {legendColors.map((c, i) => <div key={i} style={{ width: 14, height: 12, background: c, borderRadius: 2 }} />)}
+                {/* legend */}
+                <div style={{ display:'flex',alignItems:'center',gap:3,fontSize:10,color:'#475569' }}>
+                    <span>−10%</span>
+                    {['#7f1d1d','#b91c1c','#ef4444','#f87171','#fecaca','#1e2d3d','#86efac','#22c55e','#16a834','#0d7a22','#0a5c1a'].map((c,i)=>(
+                        <div key={i} style={{width:13,height:10,background:c,borderRadius:2}}/>
+                    ))}
                     <span>+10%</span>
                 </div>
             </div>
 
-            {/* FULL SECTOR SCROLLABLE BAR - shows ALL sectors */}
-            {!drillSector && sectors.length > 0 && (
-                <div style={{
-                    padding: '10px 16px',
-                    borderBottom: '1px solid rgba(255,255,255,0.05)',
-                    overflowX: 'auto',
-                    overflowY: 'hidden',
-                    whiteSpace: 'nowrap',
-                    scrollbarWidth: 'thin',
-                    WebkitOverflowScrolling: 'touch',
-                }}>
-                    <div style={{ display: 'inline-flex', gap: 8 }}>
-                        {sectors.map(s => {
-                            const clr = getMCColor(s.value);
-                            return (
-                                <button
-                                    key={s.id}
-                                    onClick={() => setDrillSector(s.name)}
-                                    style={{
-                                        display: 'inline-flex', alignItems: 'center', gap: 5,
-                                        padding: '5px 12px', borderRadius: 20, whiteSpace: 'nowrap',
-                                        background: clr.bg + '22', border: `1px solid ${clr.border}55`,
-                                        color: clr.text === '#fff' ? '#e2e8f0' : '#1a2e1a',
-                                        fontSize: 11, fontWeight: 600, cursor: 'pointer',
-                                        transition: 'transform 0.1s, background 0.1s',
-                                    }}
-                                    onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.04)'}
-                                    onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
-                                >
-                                    {getSectorIcon(s.name)}
-                                    <span>{s.name}</span>
-                                    <span style={{
-                                        background: clr.bg, color: clr.text,
-                                        padding: '0 6px', borderRadius: 12, fontSize: 10,
-                                        fontWeight: 700, marginLeft: 3,
-                                    }}>
-                                        {s.value > 0 ? '+' : ''}{s.value?.toFixed(1)}%
-                                    </span>
-                                </button>
-                            );
-                        })}
-                    </div>
+            {/* ── sector pills row ── */}
+            {!drill && sectors.length > 0 && (
+                <div style={{ display:'flex', gap:7, padding:'8px 14px', borderBottom:'1px solid rgba(255,255,255,0.04)', overflowX:'auto', overflowY:'hidden', whiteSpace:'nowrap', scrollbarWidth:'thin', scrollbarColor:'#1e2d3d transparent' }}>
+                    {sectors.map(s => {
+                        const c = getColor(s.value);
+                        return (
+                            <button key={s.id} onClick={()=>setDrill(s.name)}
+                                style={{ display:'inline-flex',alignItems:'center',gap:5,padding:'4px 11px',borderRadius:20,background:c.bg+'28',border:`1px solid ${c.bg}55`,color:c.text==='#fff'?'#e2e8f0':'#1a3322',fontSize:10.5,fontWeight:600,cursor:'pointer',flexShrink:0,transition:'transform 0.1s' }}
+                                onMouseEnter={e=>e.currentTarget.style.transform='scale(1.05)'}
+                                onMouseLeave={e=>e.currentTarget.style.transform='scale(1)'}>
+                                {getSectorIcon(s.name)}{s.name}
+                                <span style={{background:c.bg,color:c.text,padding:'1px 6px',borderRadius:10,fontSize:9.5,fontWeight:700,marginLeft:2}}>
+                                    {s.value>0?'+':''}{s.value?.toFixed(1)}%
+                                </span>
+                            </button>
+                        );
+                    })}
                 </div>
             )}
 
-            {/* SVG Canvas */}
-            <div ref={containerRef} style={{ width: '100%', minHeight: dims.h, position: 'relative', overflow: 'auto' }}>
-                <svg width={dims.w} height={dims.h} style={{ display: 'block', background: '#0a0e14' }}>
-                    {/* Full market view */}
+            {/* ── SVG canvas ── */}
+            <div ref={ref} style={{ width:'100%', minHeight:dim.h, position:'relative' }}>
+                <svg width={dim.w} height={dim.h} style={{ display:'block', background:'#0a0d13' }}>
+                    <defs>
+                        <clipPath id="canvas-clip">
+                            <rect x={0} y={0} width={dim.w} height={dim.h}/>
+                        </clipPath>
+                    </defs>
+                    <g clipPath="url(#canvas-clip)">
+
+                    {/* full market */}
                     {layout?.type === 'full' && layout.sectors.map(sec => {
-                        const secClr = getMCColor(sec.change ?? 0);
-                        const hasHdr = sec.w > 55 && sec.h > SEC_HDR + 8;
+                        const sc = getColor(sec.change ?? 0);
+                        const showHdr = sec.w > 50 && sec.h > HDR + 8;
                         return (
                             <g key={sec.id}>
-                                {/* Sector background */}
-                                <rect x={sec.x} y={sec.y}
-                                    width={sec.w} height={sec.h}
-                                    fill="rgba(0,0,0,0.35)" rx={5}
-                                    stroke="rgba(255,255,255,0.06)" strokeWidth={0.8} />
+                                {/* sector background */}
+                                <rect x={sec.x} y={sec.y} width={sec.w} height={sec.h} fill="rgba(0,0,0,0)" rx={0} stroke="rgba(0,0,0,0.6)" strokeWidth={1.5}/>
 
-                                {/* Sector header */}
-                                {hasHdr && (
+                                {/* sector header bar */}
+                                {showHdr && (
                                     <>
-                                        <rect x={sec.x} y={sec.y}
-                                            width={sec.w} height={SEC_HDR}
-                                            fill={secClr.bg + 'aa'} rx={5} />
-                                        <rect x={sec.x} y={sec.y + SEC_HDR - 6}
-                                            width={sec.w} height={6} fill={secClr.bg + 'aa'} />
-                                        
-                                        {sec.w > 65 && (
-                                            <text x={sec.x + 7} y={sec.y + 17}
-                                                fill={secClr.text === '#fff' ? '#f1f5f9' : '#0a2f1a'}
-                                                fontSize={Math.min(sec.w / 14, 10.5)} fontWeight={700}
-                                                style={{ userSelect: 'none' }}>
-                                                {sec.name.length > Math.floor(sec.w / 7) ? sec.name.slice(0, Math.floor(sec.w / 7) - 2) + '…' : sec.name}
+                                        <rect x={sec.x} y={sec.y} width={sec.w} height={HDR} fill={sc.bg+'cc'} rx={0}/>
+                                        {sec.w > 60 && (
+                                            <text x={sec.x+6} y={sec.y+15} fill={sc.text==='#fff'?'#f1f5f9':'#072010'}
+                                                fontSize={Math.min(sec.w/15, 10.5)} fontWeight={700} style={{userSelect:'none'}}>
+                                                {sec.name.length > Math.floor(sec.w/7) ? sec.name.slice(0,Math.floor(sec.w/7)-1)+'…' : sec.name}
                                             </text>
                                         )}
-                                        {sec.w > 120 && (
-                                            <text x={sec.x + sec.w - 7} y={sec.y + 17}
-                                                fill={secClr.text === '#fff' ? '#f1f5f9' : '#0a2f1a'}
-                                                fontSize={9.5} fontWeight={700} textAnchor="end">
-                                                {(sec.change ?? 0) > 0 ? '+' : ''}{(sec.change ?? 0).toFixed(2)}%
+                                        {sec.w > 130 && (
+                                            <text x={sec.x+sec.w-6} y={sec.y+15} fill={sc.text==='#fff'?'#f1f5f9':'#072010'}
+                                                fontSize={10} fontWeight={800} textAnchor="end" style={{userSelect:'none'}}>
+                                                {(sec.change??0)>0?'+':''}{(sec.change??0).toFixed(2)}%
                                             </text>
                                         )}
                                     </>
                                 )}
 
-                                {/* Stock tiles */}
-                                {sec.stockTiles.map((tile, i) => renderTile(tile, `${sec.id}-${i}`, true))}
+                                {/* stock tiles */}
+                                {sec.stockTiles.map((tile, i) => (
+                                    <Tile key={`${sec.id}-${i}`} tile={tile} tileKey={`${sec.id}-${i}`}
+                                        onHover={handleTileHover} onLeave={handleTileLeave} onMove={handleTileMove}
+                                        onClick={()=>setDrill(sec.name)}
+                                        hovered={hovered===`${sec.id}-${i}`}/>
+                                ))}
+
+                                {/* sector border on top */}
+                                <rect x={sec.x} y={sec.y} width={sec.w} height={sec.h} fill="none" stroke="rgba(0,0,0,0.7)" strokeWidth={1.5} rx={0}/>
                             </g>
                         );
                     })}
 
-                    {/* Drilled view */}
-                    {layout?.type === 'drill' && layout.tiles.map((tile, i) => renderTile(tile, `d-${i}`, true))}
+                    {/* drilled sector */}
+                    {layout?.type === 'drill' && layout.tiles.map((tile, i) => (
+                        <Tile key={`d-${i}`} tile={tile} tileKey={`d-${i}`}
+                            onHover={handleTileHover} onLeave={handleTileLeave} onMove={handleTileMove}
+                            hovered={hovered===`d-${i}`}/>
+                    ))}
 
-                    {(!layout || (layout.type === 'full' && !layout.sectors?.length)) && (
-                        <text x={dims.w / 2} y={dims.h / 2} textAnchor="middle" fill="#475569" fontSize={13}>No data available</text>
-                    )}
+                    {!layout && <text x={dim.w/2} y={dim.h/2} textAnchor="middle" fill="#475569" fontSize={13}>No data</text>}
+                    </g>
                 </svg>
 
-                {/* Tooltip */}
+                {/* tooltip */}
                 {tooltip && (
-                    <div style={{
-                        position: 'fixed', left: tooltip.x + 14, top: tooltip.y - 10, zIndex: 9999,
-                        pointerEvents: 'none', background: 'rgba(8,12,18,0.98)',
-                        border: '1px solid rgba(255,255,255,0.12)', borderRadius: 12,
-                        padding: '8px 14px', minWidth: 160, backdropFilter: 'blur(16px)',
-                        boxShadow: '0 8px 24px rgba(0,0,0,0.6)',
-                    }}>
-                        <div style={{ fontWeight: 700, color: '#f1f5f9', fontSize: 12, marginBottom: 3 }}>{tooltip.tile.name}</div>
-                        {tooltip.tile.sector && <div style={{ color: '#64748b', fontSize: 9, marginBottom: 6 }}>{tooltip.tile.sector}</div>}
-                        <div style={{ display: 'flex', gap: 16 }}>
+                    <div style={{ position:'fixed', left:tooltip.x+14, top:tooltip.y-10, zIndex:9999, pointerEvents:'none',
+                        background:'rgba(6,9,14,0.97)', border:'1px solid rgba(255,255,255,0.12)', borderRadius:11,
+                        padding:'9px 14px', minWidth:155, backdropFilter:'blur(16px)', boxShadow:'0 8px 28px rgba(0,0,0,0.7)' }}>
+                        <div style={{fontWeight:700,color:'#f1f5f9',fontSize:12,marginBottom:3}}>{tooltip.tile.name}</div>
+                        {tooltip.tile.sector && <div style={{color:'#475569',fontSize:9,marginBottom:6}}>{tooltip.tile.sector}</div>}
+                        <div style={{display:'flex',gap:16,alignItems:'flex-end'}}>
                             <div>
-                                <div style={{ color: '#475569', fontSize: 8, marginBottom: 2, textTransform: 'uppercase' }}>Change</div>
-                                <div style={{ color: (tooltip.tile.change ?? 0) >= 0 ? '#34d399' : '#f87171', fontWeight: 800, fontSize: 15 }}>
-                                    {(tooltip.tile.change ?? 0) >= 0 ? '+' : ''}{(tooltip.tile.change ?? 0).toFixed(2)}%
+                                <div style={{color:'#475569',fontSize:8,textTransform:'uppercase',marginBottom:1}}>Change</div>
+                                <div style={{color:(tooltip.tile.change??0)>=0?'#34d399':'#f87171',fontWeight:800,fontSize:15}}>
+                                    {(tooltip.tile.change??0)>=0?'+':''}{(tooltip.tile.change??0).toFixed(2)}%
                                 </div>
                             </div>
-                            {tooltip.tile.ltp != null && (
-                                <div>
-                                    <div style={{ color: '#475569', fontSize: 8, marginBottom: 2, textTransform: 'uppercase' }}>LTP</div>
-                                    <div style={{ color: '#e2e8f0', fontWeight: 600, fontSize: 13 }}>₹{tooltip.tile.ltp?.toFixed(2)}</div>
-                                </div>
-                            )}
+                            {tooltip.tile.ltp!=null && <div>
+                                <div style={{color:'#475569',fontSize:8,textTransform:'uppercase',marginBottom:1}}>LTP</div>
+                                <div style={{color:'#e2e8f0',fontWeight:600,fontSize:13}}>₹{tooltip.tile.ltp?.toFixed(2)}</div>
+                            </div>}
+                            {tooltip.tile.value > 1 && <div>
+                                <div style={{color:'#475569',fontSize:8,textTransform:'uppercase',marginBottom:1}}>Mkt Cap</div>
+                                <div style={{color:'#94a3b8',fontWeight:500,fontSize:11}}>{fmt(tooltip.tile.value)}</div>
+                            </div>}
                         </div>
-                        {tooltip.tile.value && (
-                            <div style={{ marginTop: 5, fontSize: 9, color: '#475569' }}>
-                                Cap: {formatMarketCap(tooltip.tile.value)}
-                            </div>
-                        )}
                     </div>
                 )}
             </div>
@@ -467,152 +364,142 @@ const TreemapView = ({ sectors, allStocks, selectedPeriod }) => {
 };
 
 // ── API ───────────────────────────────────────────────────────────────
-const API_URLS = {
-    '1D': 'https://api.moneycontrol.com/mcapi/v1/indices/ad-ratio/full-view?period=1D&sector=&type=MM&sectorSelected=false',
-    '5D': 'https://api.moneycontrol.com/mcapi/v1/indices/ad-ratio/full-view?period=5D&sector=&type=MM&sectorSelected=false',
-    '1M': 'https://api.moneycontrol.com/mcapi/v1/indices/ad-ratio/full-view?period=1M&sector=&type=MM&sectorSelected=false',
-    '3M': 'https://api.moneycontrol.com/mcapi/v1/indices/ad-ratio/full-view?period=3M&sector=&type=MM&sectorSelected=false',
-    '6M': 'https://api.moneycontrol.com/mcapi/v1/indices/ad-ratio/full-view?period=6M&sector=&type=MM&sectorSelected=false',
-    '1Y': 'https://api.moneycontrol.com/mcapi/v1/indices/ad-ratio/full-view?period=1Y&sector=&type=MM&sectorSelected=false',
+const API = {
+    '1D':'https://api.moneycontrol.com/mcapi/v1/indices/ad-ratio/full-view?period=1D&sector=&type=MM&sectorSelected=false',
+    '5D':'https://api.moneycontrol.com/mcapi/v1/indices/ad-ratio/full-view?period=5D&sector=&type=MM&sectorSelected=false',
+    '1M':'https://api.moneycontrol.com/mcapi/v1/indices/ad-ratio/full-view?period=1M&sector=&type=MM&sectorSelected=false',
+    '3M':'https://api.moneycontrol.com/mcapi/v1/indices/ad-ratio/full-view?period=3M&sector=&type=MM&sectorSelected=false',
+    '6M':'https://api.moneycontrol.com/mcapi/v1/indices/ad-ratio/full-view?period=6M&sector=&type=MM&sectorSelected=false',
+    '1Y':'https://api.moneycontrol.com/mcapi/v1/indices/ad-ratio/full-view?period=1Y&sector=&type=MM&sectorSelected=false',
 };
-const TIME_PERIODS = [{ key: '1D', label: '1D' }, { key: '5D', label: '5D' }, { key: '1M', label: '1M' }, { key: '3M', label: '3M' }, { key: '6M', label: '6M' }, { key: '1Y', label: '1Y' }];
+const PERIODS = ['1D','5D','1M','3M','6M','1Y'];
 
-const processApiData = (raw) => {
-    if (!raw || raw.success !== 1 || !raw.data) return { sectors: [], allStocks: [], topGainers: [], topLosers: [], asOnDate: '' };
+const parse = (raw) => {
+    if (!raw?.data || raw.success!==1) return { sectors:[], allStocks:[], topGainers:[], topLosers:[], asOnDate:'' };
     const cd = raw.data.chartData || [];
-    const sectors = cd.filter(s => s.sortColumn !== undefined && s.name && !s.ltp)
-        .map(s => ({ id: s.id, name: s.name, totalStocks: s.totalStocks || 0, value: s.sortColumn }))
-        .sort((a, b) => b.value - a.value);
-    const allStocks = cd.filter(s => s.ltp && s.name)
-        .map(s => ({ ...s, changePercent: parseFloat(s.changeP) || 0, marketCap: s.mrkCap, sectorName: s.sector || s.name, ltp: parseFloat(s.ltp) || 0 }));
-    const byGain = [...allStocks].sort((a, b) => b.changePercent - a.changePercent);
-    return { sectors, allStocks, topGainers: byGain.slice(0, 8), topLosers: [...allStocks].sort((a, b) => a.changePercent - b.changePercent).slice(0, 8), asOnDate: raw.data.asOnDate || '' };
+    const sectors = cd.filter(s=>s.sortColumn!==undefined&&s.name&&!s.ltp).map(s=>({ id:s.id,name:s.name,totalStocks:s.totalStocks||0,value:s.sortColumn })).sort((a,b)=>b.value-a.value);
+    const allStocks = cd.filter(s=>s.ltp&&s.name).map(s=>({ ...s, changePercent:parseFloat(s.changeP)||0, marketCap:s.mrkCap, sectorName:s.sector||s.name, ltp:parseFloat(s.ltp)||0 }));
+    const g = [...allStocks].sort((a,b)=>b.changePercent-a.changePercent);
+    return { sectors, allStocks, topGainers:g.slice(0,8), topLosers:[...allStocks].sort((a,b)=>a.changePercent-b.changePercent).slice(0,8), asOnDate:raw.data.asOnDate||'' };
 };
 
-// ── MAIN COMPONENT ────────────────────────────────────────────────────
+// ── MAIN ──────────────────────────────────────────────────────────────
 export default function HeatMap() {
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [lastFetched, setLastFetched] = useState(null);
-    const [searchTerm, setSearchTerm] = useState('');
-    const [selectedSector, setSelectedSector] = useState(null);
-    const [activeTab, setActiveTab] = useState('treemap');
-    const [selectedPeriod, setSelectedPeriod] = useState('1D');
-    const [showAllStocks, setShowAllStocks] = useState(false);
-    const [sortConfig, setSortConfig] = useState({ key: 'changePercent', direction: 'desc' });
-    const [sectorDropdownOpen, setSectorDropdownOpen] = useState(false);
-    const [apiData, setApiData] = useState({ sectors: [], allStocks: [], topGainers: [], topLosers: [], asOnDate: '' });
+    const [loading,   setLoading]   = useState(true);
+    const [error,     setError]     = useState(null);
+    const [fetched,   setFetched]   = useState(null);
+    const [period,    setPeriod]    = useState('1D');
+    const [tab,       setTab]       = useState('treemap');
+    const [search,    setSearch]    = useState('');
+    const [sector,    setSector]    = useState(null);
+    const [showAll,   setShowAll]   = useState(false);
+    const [sort,      setSort]      = useState({ key:'changePercent', dir:'desc' });
+    const [ddOpen,    setDdOpen]    = useState(false);
+    const [data,      setData]      = useState({ sectors:[], allStocks:[], topGainers:[], topLosers:[], asOnDate:'' });
 
-    const fetchData = useCallback(async (period = selectedPeriod) => {
+    const load = useCallback(async (p=period) => {
         setLoading(true); setError(null);
-        try {
-            const res = await fetch(API_URLS[period] || API_URLS['1D']);
-            if (!res.ok) throw new Error(`HTTP ${res.status}`);
-            setApiData(processApiData(await res.json()));
-            setLastFetched(new Date());
-        } catch (e) { setError(e.message); }
-        finally { setLoading(false); }
-    }, [selectedPeriod]);
+        try { const r=await fetch(API[p]||API['1D']); if(!r.ok) throw new Error(`HTTP ${r.status}`); setData(parse(await r.json())); setFetched(new Date()); }
+        catch(e){ setError(e.message); }
+        finally{ setLoading(false); }
+    },[period]);
 
-    useEffect(() => { fetchData(selectedPeriod); }, [selectedPeriod, fetchData]);
-    useEffect(() => { const id = setInterval(() => fetchData(selectedPeriod), 60000); return () => clearInterval(id); }, [selectedPeriod, fetchData]);
-    useEffect(() => { setShowAllStocks(false); }, [selectedSector, searchTerm]);
+    useEffect(()=>{ load(period); },[period]);
+    useEffect(()=>{ const id=setInterval(()=>load(period),60000); return()=>clearInterval(id); },[period]);
+    useEffect(()=>{ setShowAll(false); },[sector,search]);
 
-    const { sectors, allStocks, topGainers, topLosers, asOnDate } = apiData;
+    const { sectors, allStocks, topGainers, topLosers, asOnDate } = data;
 
-    const filteredStocks = useMemo(() => {
+    const filtered = useMemo(()=>{
         let s = allStocks;
-        if (searchTerm) s = s.filter(x => x.name?.toLowerCase().includes(searchTerm.toLowerCase()));
-        if (selectedSector) s = s.filter(x => x.sectorName === selectedSector);
+        if(search) s=s.filter(x=>x.name?.toLowerCase().includes(search.toLowerCase()));
+        if(sector) s=s.filter(x=>x.sectorName===sector);
         return s;
-    }, [allStocks, searchTerm, selectedSector]);
+    },[allStocks,search,sector]);
 
-    const sortedStocks = useMemo(() => {
-        const arr = [...filteredStocks];
-        arr.sort((a, b) => {
-            if (sortConfig.key === 'name') return sortConfig.direction === 'asc' ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name);
-            if (sortConfig.key === 'ltp') return sortConfig.direction === 'asc' ? a.ltp - b.ltp : b.ltp - a.ltp;
-            return sortConfig.direction === 'asc' ? a.changePercent - b.changePercent : b.changePercent - a.changePercent;
-        });
-        return arr;
-    }, [filteredStocks, sortConfig]);
+    const sorted = useMemo(()=>{
+        const a=[...filtered];
+        a.sort((x,y)=>{ if(sort.key==='name') return sort.dir==='asc'?x.name.localeCompare(y.name):y.name.localeCompare(x.name); if(sort.key==='ltp') return sort.dir==='asc'?x.ltp-y.ltp:y.ltp-x.ltp; return sort.dir==='asc'?x.changePercent-y.changePercent:y.changePercent-x.changePercent; });
+        return a;
+    },[filtered,sort]);
 
-    const displayedStocks = useMemo(() => showAllStocks ? sortedStocks : sortedStocks.slice(0, 20), [sortedStocks, showAllStocks]);
-    const avgChange = allStocks.length ? (allStocks.reduce((s, x) => s + x.changePercent, 0) / allStocks.length).toFixed(2) : '0.00';
-    const gainingStocks = allStocks.filter(s => s.changePercent > 0).length;
-    const losingStocks = allStocks.filter(s => s.changePercent <= 0).length;
+    const displayed = useMemo(()=>showAll?sorted:sorted.slice(0,20),[sorted,showAll]);
+    const avg = allStocks.length?(allStocks.reduce((s,x)=>s+x.changePercent,0)/allStocks.length).toFixed(2):'0.00';
+    const gaining = allStocks.filter(s=>s.changePercent>0).length;
 
-    if (loading && !lastFetched) return (
+    if(loading&&!fetched) return (
         <div className="min-h-screen bg-[#060b10] flex items-center justify-center">
-            <div className="text-center"><div className="relative inline-flex mb-5"><div className="w-14 h-14 rounded-full border-2 border-white/[0.06]" /><div className="absolute inset-0 rounded-full border-2 border-emerald-400 border-t-transparent animate-spin" /></div><p className="text-slate-400 text-sm">Fetching market data…</p></div>
+            <div className="text-center"><div className="relative inline-flex mb-5"><div className="w-14 h-14 rounded-full border-2 border-white/[0.05]"/><div className="absolute inset-0 rounded-full border-2 border-emerald-400 border-t-transparent animate-spin"/></div><p className="text-slate-400 text-sm">Loading market data…</p></div>
         </div>
     );
-
-    if (error && !lastFetched) return (
+    if(error&&!fetched) return (
         <div className="min-h-screen bg-[#060b10] flex items-center justify-center">
-            <div className="text-center"><AlertCircle className="w-10 h-10 text-red-400 mx-auto mb-3" /><p className="text-red-400 text-sm mb-4">{error}</p><button onClick={() => fetchData(selectedPeriod)} className="px-5 py-2 bg-emerald-500 text-black font-semibold rounded-xl flex items-center gap-2 mx-auto"><RefreshCw size={14} /> Retry</button></div>
+            <div className="text-center"><AlertCircle className="w-10 h-10 text-red-400 mx-auto mb-3"/><p className="text-red-400 text-sm mb-4">{error}</p><button onClick={()=>load(period)} className="px-5 py-2 bg-emerald-500 text-black font-semibold rounded-xl flex items-center gap-2 mx-auto"><RefreshCw size={14}/> Retry</button></div>
         </div>
     );
 
     return (
         <div className="min-h-screen bg-[#060b10] text-slate-200 p-3 md:p-5">
             <div className="fixed inset-0 pointer-events-none z-0">
-                <div className="absolute inset-0 opacity-[0.012]" style={{ backgroundImage: `linear-gradient(rgba(0,200,100,0.4) 1px,transparent 1px),linear-gradient(90deg,rgba(0,200,100,0.4) 1px,transparent 1px)`, backgroundSize: '48px 48px' }} />
+                <div className="absolute inset-0 opacity-[0.01]" style={{backgroundImage:`linear-gradient(rgba(0,200,100,0.4) 1px,transparent 1px),linear-gradient(90deg,rgba(0,200,100,0.4) 1px,transparent 1px)`,backgroundSize:'48px 48px'}}/>
             </div>
+            <div className="relative z-10 max-w-[1800px] mx-auto">
 
-            <div className="relative z-10 max-w-[1700px] mx-auto">
                 {/* Header */}
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-5">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
                     <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center"><Activity className="w-4 h-4 text-emerald-400" /></div>
-                        <div><h1 className="text-xl font-extrabold text-white tracking-tight">Stock Heatmap <span className="text-emerald-400 text-sm font-semibold">360°</span></h1><p className="text-slate-500 text-xs">Indian market · {asOnDate || 'Live'}</p></div>
+                        <div className="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center"><Activity className="w-4 h-4 text-emerald-400"/></div>
+                        <div><h1 className="text-xl font-extrabold text-white tracking-tight">Stock Heatmap <span className="text-emerald-400 text-sm font-semibold">360°</span></h1><p className="text-slate-500 text-xs">All Indian companies · {asOnDate||'Live'}</p></div>
                     </div>
                     <div className="flex items-center gap-2 flex-wrap">
                         <div className="flex items-center bg-white/[0.04] border border-white/[0.07] rounded-lg p-0.5">
-                            {TIME_PERIODS.map(p => (<button key={p.key} onClick={() => { setSelectedPeriod(p.key); setShowAllStocks(false); }} className={`px-3.5 py-1.5 rounded-md text-xs font-bold transition-all ${selectedPeriod === p.key ? 'bg-white/[0.12] text-white' : 'text-slate-500 hover:text-slate-300'}`}>{p.label}</button>))}
+                            {PERIODS.map(p=>(<button key={p} onClick={()=>{setPeriod(p);setShowAll(false);}} className={`px-3.5 py-1.5 rounded-md text-xs font-bold transition-all ${period===p?'bg-white/[0.12] text-white':'text-slate-500 hover:text-slate-300'}`}>{p}</button>))}
                         </div>
-                        <button onClick={() => fetchData(selectedPeriod)} disabled={loading} className="flex items-center gap-1.5 px-3 py-1.5 bg-white/[0.04] border border-white/[0.07] rounded-lg text-slate-400 text-xs hover:text-white transition disabled:opacity-40"><RefreshCw size={12} className={loading ? 'animate-spin' : ''} /> Refresh</button>
+                        <button onClick={()=>load(period)} disabled={loading} className="flex items-center gap-1.5 px-3 py-1.5 bg-white/[0.04] border border-white/[0.07] rounded-lg text-slate-400 text-xs hover:text-white transition disabled:opacity-40"><RefreshCw size={12} className={loading?'animate-spin':''}/> Refresh</button>
                     </div>
                 </div>
 
-                {/* KPI Cards */}
-                <div className="grid grid-cols-2 md:grid-cols-5 gap-2.5 mb-5">
+                {/* KPI row */}
+                <div className="grid grid-cols-2 md:grid-cols-5 gap-2.5 mb-4">
                     {[
-                        { label: 'Sectors', val: sectors.length, color: '#a78bfa', icon: PieChart },
-                        { label: 'Stocks', val: allStocks.length, color: '#38bdf8', icon: BarChart3 },
-                        { label: 'Gaining', val: gainingStocks, color: '#34d399', icon: TrendingUp },
-                        { label: 'Losing', val: losingStocks, color: '#f87171', icon: TrendingDown },
-                        { label: `Avg ${selectedPeriod}`, val: `${parseFloat(avgChange) > 0 ? '+' : ''}${avgChange}%`, color: parseFloat(avgChange) >= 0 ? '#34d399' : '#f87171', icon: Activity },
-                    ].map((k, i) => (
+                        {label:'Sectors',val:sectors.length,color:'#a78bfa',I:PieChart},
+                        {label:'Stocks',val:allStocks.length,color:'#38bdf8',I:BarChart3},
+                        {label:'Gaining',val:gaining,color:'#34d399',I:TrendingUp},
+                        {label:'Losing',val:allStocks.length-gaining,color:'#f87171',I:TrendingDown},
+                        {label:`Avg ${period}`,val:`${parseFloat(avg)>0?'+':''}${avg}%`,color:parseFloat(avg)>=0?'#34d399':'#f87171',I:Activity},
+                    ].map((k,i)=>(
                         <div key={i} className="bg-white/[0.03] border border-white/[0.06] rounded-xl px-4 py-3 flex justify-between items-center">
-                            <div className="flex items-center gap-1.5"><k.icon size={12} style={{ color: k.color }} /><span className="text-xs text-slate-500 font-medium">{k.label}</span></div>
-                            <span className="text-lg font-extrabold" style={{ color: k.color }}>{k.val}</span>
+                            <div className="flex items-center gap-1.5"><k.I size={12} style={{color:k.color}}/><span className="text-xs text-slate-500 font-medium">{k.label}</span></div>
+                            <span className="text-lg font-extrabold" style={{color:k.color}}>{k.val}</span>
                         </div>
                     ))}
                 </div>
 
-                {/* Tabs */}
-                <div className="flex items-center bg-white/[0.03] border border-white/[0.06] rounded-xl p-1 mb-5 w-fit gap-1">
-                    {[['treemap', 'Treemap', <LayoutGrid size={13} />], ['stocks', 'Stocks', <Table2 size={13} />]].map(([v, l, icon]) => (
-                        <button key={v} onClick={() => { setActiveTab(v); if (v === 'treemap') { setSearchTerm(''); setSelectedSector(null); } }} className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold transition-all ${activeTab === v ? 'bg-emerald-500 text-black shadow-sm' : 'text-slate-400 hover:text-slate-200'}`}>{icon}{l}</button>
+                {/* Tab bar */}
+                <div className="flex items-center bg-white/[0.03] border border-white/[0.06] rounded-xl p-1 mb-4 w-fit gap-1">
+                    {[['treemap','Treemap',<LayoutGrid size={13}/>],['stocks','Stocks',<Table2 size={13}/>]].map(([v,l,icon])=>(
+                        <button key={v} onClick={()=>{setTab(v);if(v==='treemap'){setSearch('');setSector(null);}}} className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold transition-all ${tab===v?'bg-emerald-500 text-black shadow-sm':'text-slate-400 hover:text-slate-200'}`}>{icon}{l}</button>
                     ))}
                 </div>
 
-                {/* Treemap View */}
-                {activeTab === 'treemap' && (<TreemapView sectors={sectors} allStocks={allStocks} selectedPeriod={selectedPeriod} />)}
+                {/* Treemap */}
+                {tab==='treemap' && <Treemap sectors={sectors} allStocks={allStocks} period={period}/>}
 
-                {/* Stocks Table View */}
-                {activeTab === 'stocks' && (
+                {/* Stocks table */}
+                {tab==='stocks' && (
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-                        <div className="space-y-5">
-                            {[{ title: 'Top Gainers', data: topGainers, icon: <TrendingUp size={14} />, clsTitle: 'text-emerald-400' }, { title: 'Top Losers', data: topLosers, icon: <TrendingDown size={14} />, clsTitle: 'text-red-400' }].map(({ title, data, icon, clsTitle }) => (
-                                <div key={title} className="bg-white/[0.02] border border-white/[0.06] rounded-2xl p-4">
-                                    <h3 className={`font-bold flex items-center gap-2 text-sm mb-3 ${clsTitle}`}>{icon} {title} <span className="text-xs text-slate-600 ml-auto font-normal">({selectedPeriod})</span></h3>
-                                    <div className="space-y-2">
-                                        {data.slice(0, 6).map((s, i) => { const c = getMCColor(s.changePercent); return (
-                                            <div key={i} className="flex justify-between items-center p-2.5 rounded-lg" style={{ background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.04)' }}>
+                        <div className="space-y-4">
+                            {[{t:'Top Gainers',d:topGainers,pos:true},{t:'Top Losers',d:topLosers,pos:false}].map(({t,d,pos})=>(
+                                <div key={t} className="bg-white/[0.02] border border-white/[0.06] rounded-2xl p-4">
+                                    <h3 className="font-bold flex items-center gap-2 text-sm mb-3" style={{color:pos?'#34d399':'#f87171'}}>
+                                        {pos?<TrendingUp size={14}/>:<TrendingDown size={14}/>}{t}
+                                        <span className="text-xs text-slate-600 ml-auto font-normal">({period})</span>
+                                    </h3>
+                                    <div className="space-y-1.5">
+                                        {d.slice(0,6).map((s,i)=>{ const c=getColor(s.changePercent); return (
+                                            <div key={i} className="flex justify-between items-center p-2.5 rounded-lg" style={{background:'rgba(255,255,255,0.022)',border:'1px solid rgba(255,255,255,0.04)'}}>
                                                 <div><p className="font-semibold text-slate-200 text-xs">{s.name}</p><p className="text-xs text-slate-600">₹{s.ltp?.toFixed(2)}</p></div>
-                                                <span className="text-xs font-bold px-2 py-0.5 rounded" style={{ background: c.bg, color: c.text }}>{s.changePercent >= 0 ? '+' : ''}{s.changePercent.toFixed(2)}%</span>
+                                                <span className="text-xs font-bold px-2 py-0.5 rounded" style={{background:c.bg,color:c.text}}>{s.changePercent>=0?'+':''}{s.changePercent.toFixed(2)}%</span>
                                             </div>
                                         );})}
                                     </div>
@@ -623,36 +510,58 @@ export default function HeatMap() {
                         <div className="lg:col-span-2 bg-white/[0.02] border border-white/[0.06] rounded-2xl flex flex-col">
                             <div className="p-4 border-b border-white/[0.05]">
                                 <div className="flex flex-col sm:flex-row gap-3">
-                                    <div className="relative flex-1"><Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={14} /><input type="text" placeholder="Search stocks…" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="w-full pl-9 pr-4 py-2.5 bg-white/[0.04] border border-white/[0.08] rounded-xl text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:border-emerald-500/30" /></div>
-                                    <div className="relative"><button onClick={() => setSectorDropdownOpen(!sectorDropdownOpen)} className="flex items-center gap-2 px-4 py-2.5 bg-white/[0.04] border border-white/[0.08] rounded-xl text-sm text-slate-300 hover:bg-white/[0.08] transition"><Filter size={14} className="text-emerald-400" />{selectedSector || 'All Sectors'}<ChevronDown size={14} className={`transition-transform ${sectorDropdownOpen ? 'rotate-180' : ''}`} /></button>
-                                        {sectorDropdownOpen && (<div className="absolute top-full left-0 mt-1 w-64 max-h-64 overflow-y-auto bg-[#0d1117] border border-white/[0.1] rounded-xl shadow-xl z-20"><button onClick={() => { setSelectedSector(null); setSectorDropdownOpen(false); }} className={`w-full text-left px-4 py-2 text-sm hover:bg-white/[0.05] transition ${!selectedSector ? 'text-emerald-400 bg-white/[0.03]' : 'text-slate-300'}`}>All Sectors</button>{sectors.map(s => (<button key={s.id} onClick={() => { setSelectedSector(s.name); setSectorDropdownOpen(false); }} className={`w-full text-left px-4 py-2 text-sm hover:bg-white/[0.05] transition flex items-center gap-2 ${selectedSector === s.name ? 'text-emerald-400 bg-white/[0.03]' : 'text-slate-300'}`}>{getSectorIcon(s.name)}<span className="flex-1 truncate">{s.name}</span><span className={`text-xs ${s.value >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>{s.value > 0 ? '+' : ''}{s.value?.toFixed(1)}%</span></button>))}</div>)}
+                                    <div className="relative flex-1"><Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={14}/><input type="text" placeholder="Search stocks…" value={search} onChange={e=>setSearch(e.target.value)} className="w-full pl-9 pr-4 py-2.5 bg-white/[0.04] border border-white/[0.08] rounded-xl text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:border-emerald-500/30"/></div>
+                                    <div className="relative">
+                                        <button onClick={()=>setDdOpen(!ddOpen)} className="flex items-center gap-2 px-4 py-2.5 bg-white/[0.04] border border-white/[0.08] rounded-xl text-sm text-slate-300 hover:bg-white/[0.07] transition">
+                                            <Filter size={13} className="text-emerald-400"/>{sector||'All Sectors'}<ChevronDown size={13} className={`transition-transform ${ddOpen?'rotate-180':''}`}/>
+                                        </button>
+                                        {ddOpen && (
+                                            <div className="absolute top-full left-0 mt-1 w-64 max-h-60 overflow-y-auto bg-[#0d1117] border border-white/[0.1] rounded-xl shadow-2xl z-30">
+                                                <button onClick={()=>{setSector(null);setDdOpen(false);}} className={`w-full text-left px-4 py-2.5 text-sm hover:bg-white/[0.05] transition ${!sector?'text-emerald-400':'text-slate-300'}`}>All Sectors</button>
+                                                {sectors.map(s=>(<button key={s.id} onClick={()=>{setSector(s.name);setDdOpen(false);}} className={`w-full text-left px-4 py-2.5 text-sm hover:bg-white/[0.05] transition flex items-center gap-2 ${sector===s.name?'text-emerald-400 bg-white/[0.03]':'text-slate-300'}`}>{getSectorIcon(s.name)}<span className="flex-1 truncate">{s.name}</span><span className={`text-xs font-semibold ${s.value>=0?'text-emerald-400':'text-red-400'}`}>{s.value>0?'+':''}{s.value?.toFixed(1)}%</span></button>))}
+                                            </div>
+                                        )}
                                     </div>
-                                    {selectedSector && (<div className="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 px-3 py-2 rounded-xl text-xs"><span className="text-emerald-300">{selectedSector}</span><button onClick={() => setSelectedSector(null)} className="text-emerald-400 hover:text-emerald-200"><X size={11} /></button></div>)}
+                                    {sector && (<div className="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 px-3 py-2 rounded-xl text-xs"><span className="text-emerald-300">{sector}</span><button onClick={()=>setSector(null)} className="text-emerald-400"><X size={11}/></button></div>)}
                                 </div>
-                                <div className="mt-3 text-xs text-slate-500 flex justify-between"><span>Showing {displayedStocks.length} of {sortedStocks.length} stocks</span><span>{selectedPeriod} period</span></div>
+                                <div className="mt-2.5 text-xs text-slate-500 flex justify-between"><span>{displayed.length}/{sorted.length} stocks</span><span>{period}</span></div>
                             </div>
                             <div className="overflow-x-auto flex-1">
                                 <table className="w-full text-sm">
                                     <thead><tr className="border-b border-white/[0.05] text-xs text-slate-500">
-                                        {[['name', 'Stock'], ['ltp', 'LTP'], ['changePercent', `Change (${selectedPeriod})`]].map(([k, l]) => (<th key={k} className="px-4 py-3 text-left cursor-pointer hover:text-slate-300 transition select-none" onClick={() => setSortConfig(p => ({ key: k, direction: p.key === k && p.direction === 'asc' ? 'desc' : 'asc' }))}><div className="flex items-center gap-1">{l}{sortConfig.key === k && (sortConfig.direction === 'asc' ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />)}</div></th>))}
-                                        <th className="px-4 py-3 text-left hidden md:table-cell">Market Cap</th><th className="px-4 py-3 text-left hidden lg:table-cell">Sector</th>
+                                        {[['name','Stock'],['ltp','LTP'],['changePercent',`Change (${period})`]].map(([k,l])=>(
+                                            <th key={k} className="px-4 py-3 text-left cursor-pointer hover:text-slate-300 select-none" onClick={()=>setSort(p=>({key:k,dir:p.key===k&&p.dir==='asc'?'desc':'asc'}))}>
+                                                <div className="flex items-center gap-1">{l}{sort.key===k&&(sort.dir==='asc'?<ArrowUp className="w-3 h-3"/>:<ArrowDown className="w-3 h-3"/>)}</div>
+                                            </th>
+                                        ))}
+                                        <th className="px-4 py-3 text-left hidden md:table-cell text-xs text-slate-500">Mkt Cap</th>
+                                        <th className="px-4 py-3 text-left hidden lg:table-cell text-xs text-slate-500">Sector</th>
                                     </tr></thead>
-                                    <tbody>{displayedStocks.length === 0 && (<tr><td colSpan={5} className="text-center py-12 text-slate-600 text-sm">No stocks found</td></tr>)}
-                                    {displayedStocks.map(s => { const c = getMCColor(s.changePercent); return (<tr key={s.scId || s.name} className="border-b border-white/[0.03] hover:bg-white/[0.02] transition-colors"><td className="px-4 py-3"><p className="font-semibold text-slate-200 text-sm">{s.name}</p></td><td className="px-4 py-3 font-mono text-slate-300 text-sm">₹{s.ltp?.toFixed(2) || '—'}</td><td className="px-4 py-3"><span className="inline-flex items-center gap-1 px-2.5 py-1 rounded text-xs font-bold" style={{ background: c.bg, color: c.text }}>{s.changePercent >= 0 ? <ArrowUp size={10} /> : <ArrowDown size={10} />}{s.changePercent >= 0 ? '+' : ''}{s.changePercent.toFixed(2)}%</span></td><td className="px-4 py-3 hidden md:table-cell text-slate-500 text-xs">{formatMarketCap(s.marketCap)}</td><td className="px-4 py-3 hidden lg:table-cell"><span className="flex items-center gap-1 text-xs text-slate-400">{getSectorIcon(s.sectorName)}{s.sectorName?.length > 20 ? s.sectorName.slice(0, 18) + '…' : s.sectorName}</span></td></tr>);})}</tbody>
+                                    <tbody>
+                                        {displayed.length===0 && <tr><td colSpan={5} className="text-center py-10 text-slate-600 text-sm">No stocks found</td></tr>}
+                                        {displayed.map(s=>{ const c=getColor(s.changePercent); return (
+                                            <tr key={s.scId||s.name} className="border-b border-white/[0.03] hover:bg-white/[0.02] transition-colors">
+                                                <td className="px-4 py-3"><p className="font-semibold text-slate-200 text-sm">{s.name}</p></td>
+                                                <td className="px-4 py-3 font-mono text-slate-300 text-sm">₹{s.ltp?.toFixed(2)||'—'}</td>
+                                                <td className="px-4 py-3"><span className="inline-flex items-center gap-1 px-2.5 py-1 rounded text-xs font-bold" style={{background:c.bg,color:c.text}}>{s.changePercent>=0?<ArrowUp size={10}/>:<ArrowDown size={10}/>}{s.changePercent>=0?'+':''}{s.changePercent.toFixed(2)}%</span></td>
+                                                <td className="px-4 py-3 hidden md:table-cell text-slate-500 text-xs">{fmt(s.marketCap)}</td>
+                                                <td className="px-4 py-3 hidden lg:table-cell"><span className="flex items-center gap-1 text-xs text-slate-500">{getSectorIcon(s.sectorName)}{(s.sectorName||'').length>20?(s.sectorName||'').slice(0,18)+'…':s.sectorName}</span></td>
+                                            </tr>
+                                        );})}
+                                    </tbody>
                                 </table>
                             </div>
-                            {sortedStocks.length > 20 && (<div className="p-3 border-t border-white/[0.05] flex justify-center"><button onClick={() => setShowAllStocks(v => !v)} className="flex items-center gap-2 px-4 py-2 bg-white/[0.03] border border-white/[0.07] rounded-xl text-emerald-400 text-sm font-medium hover:bg-white/[0.05] transition">{showAllStocks ? 'Show Less' : <><Eye size={13} /> View All ({sortedStocks.length - 20} more) <ChevronRight size={13} /></>}</button></div>)}
+                            {sorted.length>20 && (<div className="p-3 border-t border-white/[0.05] flex justify-center"><button onClick={()=>setShowAll(v=>!v)} className="flex items-center gap-2 px-4 py-2 bg-white/[0.03] border border-white/[0.07] rounded-xl text-emerald-400 text-sm font-medium hover:bg-white/[0.05] transition">{showAll?'Show Less':<><Eye size={13}/> View All ({sorted.length-20} more) <ChevronRight size={13}/></>}</button></div>)}
                         </div>
                     </div>
                 )}
 
-                <div className="mt-6 flex justify-between items-center text-xs text-slate-700 border-t border-white/[0.04] pt-4">
-                    <span className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />Live · Auto-refresh 60s · {selectedPeriod} momentum</span>
-                    {lastFetched && <span>Updated {lastFetched.toLocaleTimeString()}</span>}
+                <div className="mt-6 flex justify-between text-xs text-slate-700 border-t border-white/[0.04] pt-4">
+                    <span className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"/>Live · Auto-refresh 60s · {period} momentum · click sector header/pill to drill down</span>
+                    {fetched && <span>Updated {fetched.toLocaleTimeString()}</span>}
                 </div>
             </div>
-
-            {loading && lastFetched && (<div className="fixed bottom-4 right-4 bg-emerald-500 text-black px-4 py-2 rounded-full shadow-lg flex items-center gap-2 text-xs font-bold z-50"><Loader2 size={12} className="animate-spin" /> Updating…</div>)}
+            {loading&&fetched && (<div className="fixed bottom-4 right-4 bg-emerald-500 text-black px-4 py-2 rounded-full shadow-lg flex items-center gap-2 text-xs font-bold z-50"><Loader2 size={12} className="animate-spin"/> Updating…</div>)}
         </div>
     );
 }
