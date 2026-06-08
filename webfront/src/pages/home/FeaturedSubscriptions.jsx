@@ -278,7 +278,7 @@ export default function PricingPlans() {
         <div className={`text-center mt-12 transition-all duration-500 delay-300 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
           <button
             onClick={() => navigate("/subscriptions")}
-            className="inline-flex items-center gap-1.5 text-[14px] font-bold text-black hover:text-gray-600 transition-colors duration-200 underline underline-offset-4"
+            className="inline-flex items-center gap-1.5 text-[14px] font-bold text-black hover:text-gray-600 transition-colors duration-200 underline underline-offset-4 cursor-pointer"
             style={{ fontFamily: "'Aileron Black', 'Arial Black', sans-serif" }}
           >
             Know More
