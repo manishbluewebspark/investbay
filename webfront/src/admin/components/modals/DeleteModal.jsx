@@ -1,47 +1,4 @@
-// import deleteIcon from "../../../assets/card/deleteModal.svg";
-
-// export default function DeleteModal({
-//   open,
-//   onClose,
-//   onConfirm,
-//   title = "Delete Plan ?",
-//   description = "This action will permanently remove the plan and it will no longer be visible to users.",
-// }) {
-//   if (!open) return null;
-
-//   return (
-//     <div className="fixed inset-0 z-[2000] flex items-center justify-center bg-black/40">
-//       <div className="bg-white rounded-xl shadow-xl w-[380px] p-6">
-//         <img src={deleteIcon} alt="Delete Icon" className="w-12 h-12 mb-4 mx-auto" />
-//         <h3 className="text-lg font-semibold text-gray-900 mb-2 items-center text-center">
-//           {title}
-//         </h3>
-//         <p className="text-md text-gray-500 mb-6 text-center">
-//           {description}
-//         </p>
-
-//         <div className="flex items-center justify-center gap-3">
-//           <button
-//             onClick={onClose}
-//             className="px-14 py-2 text-md rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 transition cursor-pointer"
-//           >
-//             No
-//           </button>
-
-//           <button
-//             onClick={onConfirm}
-//             className="px-14 py-2 text-md rounded-lg bg-black text-white hover:bg-=black-700 transition cursor-pointer"
-//           >
-//             Yes
-//           </button>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-
-import deleteIcon from "../../../assets/card/deleteModal.svg";
+import { Trash2 } from "lucide-react";
 
 export default function DeleteModal({
   open,
@@ -49,26 +6,25 @@ export default function DeleteModal({
   onConfirm,
   title,
   description,
-  confirmText = "Yes",
-  cancelText = "No",
+  confirmText = "Delete",
+  cancelText = "Cancel",
   loading = false,
 }) {
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-[2000] flex items-center justify-center bg-black/40 backdrop-blur-sm">
-      <div className="bg-white rounded-xl shadow-xl w-[380px] p-6">
-        <img
-          src={deleteIcon}
-          alt="Delete Icon"
-          className="w-12 h-12 mb-4 mx-auto"
-        />
+    <div className="fixed inset-0 z-[2000] flex items-center justify-center bg-black/50 backdrop-blur-sm">
+      <div className="bg-white rounded-2xl shadow-2xl w-[400px] p-6 text-center border border-gray-100">
+        {/* Icon */}
+        <div className="mx-auto w-16 h-16 mb-4 rounded-full bg-red-50 flex items-center justify-center">
+          <Trash2 className="w-8 h-8 text-red-600" />
+        </div>
 
-        <h3 className="text-lg font-semibold text-gray-900 mb-2 text-center">
+        <h3 className="text-xl font-['Aileron_Black'] font-bold text-gray-900 mb-2">
           {title}
         </h3>
 
-        <p className="text-md text-gray-500 mb-6 text-center">
+        <p className="text-sm text-gray-500 mb-6">
           {description}
         </p>
 
@@ -76,7 +32,7 @@ export default function DeleteModal({
           <button
             onClick={onClose}
             disabled={loading}
-            className="px-14 py-2 text-md rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 transition"
+            className="px-6 py-2.5 rounded-xl border border-gray-200 bg-white text-gray-700 font-['Aileron_Black'] font-semibold text-sm hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 disabled:opacity-50"
           >
             {cancelText}
           </button>
@@ -84,14 +40,11 @@ export default function DeleteModal({
           <button
             onClick={onConfirm}
             disabled={loading}
-            className="px-14 py-2 text-md rounded-lg bg-black text-white hover:bg-gray-800 transition flex items-center justify-center gap-2"
+            className="px-6 py-2.5 rounded-xl bg-red-600 text-white font-['Aileron_Black'] font-semibold text-sm hover:bg-red-700 transition-all duration-200 shadow-sm flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading && (
-              <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-            )}
+            {loading && <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>}
             {loading ? "Deleting..." : confirmText}
           </button>
-
         </div>
       </div>
     </div>

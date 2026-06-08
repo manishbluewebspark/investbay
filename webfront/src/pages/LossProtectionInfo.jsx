@@ -1,251 +1,450 @@
-import { FiShield, FiTrendingUp, FiAlertOctagon, FiCheck, FiArrowRight, FiLock } from "react-icons/fi";
-import { FaChartLine, FaExclamationTriangle } from "react-icons/fa";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ArrowRight, Shield, Lock, TrendingUp, AlertOctagon, Check, ChevronDown } from "lucide-react";
+
+function useInView(threshold = 0.1) {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } },
+      { threshold }
+    );
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, []);
+  return [ref, visible];
+}
+
+function FaqItem({ q, a }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="border-b border-gray-100 last:border-0">
+      <button
+        onClick={() => setOpen(o => !o)}
+        className="w-full flex items-center justify-between py-5 text-left gap-4"
+      >
+        <span style={{ fontFamily: "'Aileron','Arial Black',sans-serif", fontWeight: 700, fontSize: 15, color: "#111827" }}>
+          {q}
+        </span>
+        <ChevronDown
+          className="flex-shrink-0 text-gray-400 transition-transform duration-300"
+          style={{ transform: open ? "rotate(180deg)" : "rotate(0deg)", width: 18, height: 18 }}
+        />
+      </button>
+      {open && (
+        <p className="pb-5 text-gray-500 text-[14px] leading-relaxed"
+          style={{ fontFamily: "'Hind Siliguri',sans-serif" }}>
+          {a}
+        </p>
+      )}
+    </div>
+  );
+}
+
+// ── Step Illustrations ─────────────────────────────────────────────────────
+const ConnectIllustration = () => (
+  <svg viewBox="0 0 460 360" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+    <ellipse cx="280" cy="180" rx="210" ry="180" fill="#f0fdf4" />
+    {/* Main card */}
+    <rect x="80" y="40" width="320" height="280" rx="18" fill="white" style={{ filter:"drop-shadow(0 8px 32px rgba(0,0,0,0.08))" }} />
+    <rect x="80" y="40" width="320" height="42" rx="18" fill="#f9fafb" />
+    <rect x="80" y="64" width="320" height="18" fill="#f9fafb" />
+    <circle cx="104" cy="61" r="5.5" fill="#fca5a5" />
+    <circle cx="122" cy="61" r="5.5" fill="#fde68a" />
+    <circle cx="140" cy="61" r="5.5" fill="#86efac" />
+    <text x="180" y="65" fontSize="10" fontWeight="700" fill="#374151">Connect Broker</text>
+
+    {/* Broker tiles */}
+    {[
+      { x: 104, y: 98,  name: "Zerodha",   col: "#387ed1", bg: "#eff6ff" },
+      { x: 230, y: 98,  name: "Upstox",    col: "#6c47ff", bg: "#f5f3ff" },
+      { x: 104, y: 168, name: "Angel One", col: "#e8622a", bg: "#fff7ed" },
+      { x: 230, y: 168, name: "Fyers",     col: "#16a34a", bg: "#f0fdf4" },
+    ].map((b, i) => (
+      <g key={i}>
+        <rect x={b.x} y={b.y} width="112" height="56" rx="12" fill={b.bg} stroke="#e5e7eb" strokeWidth="1" />
+        <text x={b.x + 56} y={b.y + 33} textAnchor="middle" fontSize="11" fontWeight="800" fill={b.col}>{b.name}</text>
+      </g>
+    ))}
+
+    {/* Lock + AES badge */}
+    <rect x="104" y="246" width="272" height="52" rx="12" fill="#f0fdf4" stroke="#bbf7d0" strokeWidth="1" />
+    <div />
+    <circle cx="126" cy="272" r="14" fill="#dcfce7" />
+    {/* lock icon simplified */}
+    <rect x="119" y="268" width="14" height="10" rx="2" fill="#16a34a" />
+    <path d="M121 268v-3a5 5 0 0 1 10 0v3" stroke="#16a34a" strokeWidth="2" strokeLinecap="round" fill="none" />
+    <text x="148" y="267" fontSize="10" fontWeight="700" fill="#374151">AES-256 Encrypted</text>
+    <text x="148" y="281" fontSize="9" fill="#9ca3af">Your credentials are never stored</text>
+    <text x="375" y="275" textAnchor="end" fontSize="9" fontWeight="600" fill="#16a34a">Secure ✓</text>
+  </svg>
+);
+
+const LimitIllustration = () => (
+  <svg viewBox="0 0 460 360" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+    <ellipse cx="180" cy="180" rx="210" ry="180" fill="#fef9c3" opacity="0.5" />
+    <rect x="80" y="30" width="320" height="300" rx="18" fill="white" style={{ filter:"drop-shadow(0 8px 32px rgba(0,0,0,0.08))" }} />
+    <rect x="80" y="30" width="320" height="42" rx="18" fill="#f9fafb" />
+    <rect x="80" y="54" width="320" height="18" fill="#f9fafb" />
+    <text x="180" y="57" fontSize="10" fontWeight="700" fill="#374151">Set Daily Loss Limit</text>
+
+    {/* Preset chips */}
+    <text x="104" y="98" fontSize="9" fontWeight="600" fill="#9ca3af" letterSpacing="1">PRESETS</text>
+    {[
+      { x: 104, label: "₹2,000",  active: false },
+      { x: 176, label: "₹5,000",  active: true  },
+      { x: 248, label: "₹10,000", active: false },
+      { x: 326, label: "Custom",  active: false },
+    ].map((c, i) => (
+      <g key={i}>
+        <rect x={c.x} y="106" width={c.label.length > 6 ? 68 : 62} height="28" rx="8"
+          fill={c.active ? "#16a34a" : "#f3f4f6"}
+          stroke={c.active ? "#15803d" : "#e5e7eb"} strokeWidth="1" />
+        <text x={c.x + (c.label.length > 6 ? 34 : 31)} y="124" textAnchor="middle"
+          fontSize="10" fontWeight={c.active ? "700" : "500"}
+          fill={c.active ? "white" : "#374151"}>{c.label}</text>
+      </g>
+    ))}
+
+    {/* Selected amount display */}
+    <rect x="104" y="152" width="272" height="72" rx="12" fill="#f9fafb" stroke="#e5e7eb" strokeWidth="1" />
+    <text x="240" y="178" textAnchor="middle" fontSize="11" fill="#9ca3af">Daily Loss Limit</text>
+    <text x="240" y="210" textAnchor="middle" fontSize="28" fontWeight="800" fill="#111827">₹5,000</text>
+
+    {/* Slider bar */}
+    <rect x="104" y="242" width="272" height="6" rx="3" fill="#f3f4f6" />
+    <rect x="104" y="242" width="156" height="6" rx="3" fill="#16a34a" />
+    <circle cx="260" cy="245" r="8" fill="white" stroke="#16a34a" strokeWidth="2.5" />
+
+    {/* Warning note */}
+    <rect x="104" y="268" width="272" height="40" rx="10" fill="#fef9c3" stroke="#fde68a" strokeWidth="1" />
+    <text x="122" y="284" fontSize="9" fontWeight="600" fill="#854d0e">⚡  All new trades blocked when limit is hit</text>
+    <text x="122" y="298" fontSize="8" fill="#a16207">Resets automatically at midnight every day</text>
+  </svg>
+);
+
+const ProtectionIllustration = () => (
+  <svg viewBox="0 0 460 360" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+    <ellipse cx="280" cy="180" rx="210" ry="180" fill="#f0fdf4" />
+    <rect x="80" y="30" width="320" height="300" rx="18" fill="white" style={{ filter:"drop-shadow(0 8px 32px rgba(0,0,0,0.08))" }} />
+    <rect x="80" y="30" width="320" height="42" rx="18" fill="#f9fafb" />
+    <rect x="80" y="54" width="320" height="18" fill="#f9fafb" />
+    <text x="170" y="57" fontSize="10" fontWeight="700" fill="#374151">Live Protection</text>
+    <rect x="296" y="38" width="80" height="20" rx="6" fill="#dcfce7" />
+    <circle cx="308" cy="48" r="4" fill="#22c55e" />
+    <text x="315" y="52" fontSize="9" fontWeight="700" fill="#15803d">ACTIVE</text>
+
+    {/* P&L gauge */}
+    <text x="240" y="100" textAnchor="middle" fontSize="10" fill="#9ca3af">Today's P&L</text>
+    <text x="240" y="130" textAnchor="middle" fontSize="30" fontWeight="800" fill="#ef4444">-₹3,840</text>
+    <text x="240" y="148" textAnchor="middle" fontSize="9" fill="#9ca3af">Limit: ₹5,000 · Remaining: ₹1,160</text>
+
+    {/* Progress bar - danger zone */}
+    <rect x="104" y="160" width="272" height="10" rx="5" fill="#f3f4f6" />
+    <rect x="104" y="160" width="210" height="10" rx="5" fill="#fca5a5" />
+    <rect x="104" y="160" width="272" height="10" rx="5" fill="none" stroke="#e5e7eb" strokeWidth="1" />
+    <text x="104" y="182" fontSize="8" fill="#9ca3af">₹0</text>
+    <text x="376" y="182" textAnchor="end" fontSize="8" fill="#9ca3af">₹5,000</text>
+    <text x="240" y="182" textAnchor="middle" fontSize="8" fontWeight="600" fill="#ef4444">77% used</text>
+
+    {/* Trade rows - blocked */}
+    <text x="104" y="206" fontSize="9" fontWeight="600" fill="#9ca3af" letterSpacing="1">RECENT ACTIVITY</text>
+    {[
+      { y: 214, ticker: "RELIANCE", status: "Executed", amt: "-₹1,200", sCol: "#16a34a", sBg: "#dcfce7" },
+      { y: 246, ticker: "HDFC",     status: "Executed", amt: "-₹2,640", sCol: "#16a34a", sBg: "#dcfce7" },
+      { y: 278, ticker: "INFY",     status: "⛔ Blocked",amt: "–",       sCol: "#ef4444", sBg: "#fee2e2" },
+    ].map((r, i) => (
+      <g key={i}>
+        <text x="104" y={r.y + 14} fontSize="11" fontWeight="700" fill="#111827">{r.ticker}</text>
+        <rect x="200" y={r.y + 2} width="72" height="18" rx="5" fill={r.sBg} />
+        <text x="236" y={r.y + 14} textAnchor="middle" fontSize="8" fontWeight="700" fill={r.sCol}>{r.status}</text>
+        <text x="374" y={r.y + 14} textAnchor="end" fontSize="11" fontWeight="700" fill={r.sCol === "#ef4444" ? "#9ca3af" : "#374151"}>{r.amt}</text>
+        {i < 2 && <rect x="104" y={r.y + 22} width="272" height="1" fill="#f3f4f6" />}
+      </g>
+    ))}
+  </svg>
+);
+
+const steps = [
+  {
+    num: "01",
+    title: "Connect your broker.",
+    desc: "Securely link your trading account — Zerodha, Upstox, Angel One, or Fyers. We use AES-256 encryption. No trades can ever be placed through InvestBay.",
+    cta: "Connect Broker",
+    path: "/loss-protection/setup",
+    Illustration: ConnectIllustration,
+  },
+  {
+    num: "02",
+    title: "Set your daily loss limit.",
+    desc: "Pick from presets — ₹2K, ₹5K, ₹10K — or enter a custom amount. Change it anytime. This is the line your portfolio will never cross.",
+    cta: "Set Limit",
+    path: "/loss-protection/setup",
+    Illustration: LimitIllustration,
+  },
+  {
+    num: "03",
+    title: "Trade knowing you're protected.",
+    desc: "InvestBay monitors your live P&L. The moment losses touch your threshold, all new trades are blocked for the day. Resets at midnight — every single day.",
+    cta: "See it Live",
+    path: "/loss-protection/setup",
+    Illustration: ProtectionIllustration,
+  },
+];
+
+const faqs = [
+  { q: "Is my broker password safe?", a: "Yes. Your credentials are encrypted with AES-256. No one at InvestBay can view them. We only read live P&L data — no trades are ever placed through us." },
+  { q: "What happens when the limit is hit?", a: "All new trade orders are automatically blocked for the rest of the trading day. Existing positions are untouched — you can still exit them freely." },
+  { q: "Can I change my limit anytime?", a: "Absolutely. Increase, decrease, or remove your loss limit whenever you want from your dashboard." },
+  { q: "Does it affect my existing positions?", a: "No. Loss Protection only blocks new entries. Your open positions remain active and you can square them off at any time." },
+  { q: "Does the limit reset automatically?", a: "Yes. Your daily loss counter resets automatically every midnight, giving you a fresh start each trading day." },
+];
 
 export default function LossProtectionInfo() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+  const [heroRef, heroVisible] = useInView(0.1);
 
-    return (
-        <section className="min-h-screen bg-[#060b10] py-10 px-4 sm:px-6 lg:px-8">
-            {/* Background */}
-            <div className="fixed inset-0 pointer-events-none z-0">
-                <div className="absolute inset-0 opacity-[0.015]" style={{
-                    backgroundImage: `linear-gradient(rgba(0,230,118,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(0,230,118,0.3) 1px, transparent 1px)`,
-                    backgroundSize: '64px 64px',
-                    maskImage: 'radial-gradient(ellipse 70% 50% at 50% 50%, black 40%, transparent 70%)',
-                    WebkitMaskImage: 'radial-gradient(ellipse 70% 50% at 50% 50%, black 40%, transparent 70%)',
-                }} />
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] rounded-full bg-emerald-500/[0.02] blur-[120px]" />
-                <div className="absolute bottom-0 right-0 w-[400px] h-[400px] rounded-full bg-red-500/[0.02] blur-[100px]" />
-            </div>
+  return (
+    <div className="bg-white min-h-screen" style={{ fontFamily: "'Hind Siliguri', sans-serif" }}>
 
-            <div className="relative z-10 max-w-4xl mx-auto">
-                {/* Hero Section */}
-                <div className="text-center mb-16">
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 backdrop-blur-sm border border-emerald-500/20 mb-6">
-                        <FiShield className="w-4 h-4 text-emerald-400" />
-                        <span className="text-sm font-semibold text-emerald-300 tracking-wider uppercase">Portfolio Safety</span>
-                    </div>
+      {/* ── HERO ─────────────────────────────────────────────────────── */}
+      <section className="w-full bg-white pt-24 pb-16 px-4 sm:px-6 lg:px-8">
+        <div
+          ref={heroRef}
+          className={`max-w-3xl mx-auto text-center transition-all duration-700 ${heroVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
+        >
+          {/* eyebrow */}
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-green-50 border border-green-200 mb-6">
+            <Shield className="w-3.5 h-3.5 text-green-600" />
+            <span className="text-[12px] font-semibold text-green-700 tracking-wide uppercase">Portfolio Safety</span>
+          </div>
 
-                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#f0f4f8] mb-6 leading-[1.1]">
-                        Stop <span className="bg-gradient-to-r from-red-400 via-amber-400 to-emerald-400 bg-clip-text text-transparent animate-gradient bg-[length:200%_auto]">Losses</span>  Before They{" "}
-                        <span className="bg-gradient-to-r from-red-400 via-amber-400 to-emerald-400 bg-clip-text text-transparent animate-gradient bg-[length:200%_auto]">
-                            Stop You
-                        </span>
-                    </h1>
-                    <p className="text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
-                        Connect your demat account and set a daily loss limit. When your losses hit the threshold,
-                        all new trades are automatically blocked — protecting your capital from emotional decisions.
-                    </p>
+          <h1
+            className="text-gray-900 mb-5 leading-tight"
+            style={{ fontFamily: "'Aileron','Arial Black',sans-serif", fontSize: "clamp(30px,5vw,52px)", fontWeight: 900, letterSpacing: "-0.025em" }}
+          >
+            Stop <span style={{ color: "#ef4444" }}>Losses</span> Before They{" "}
+            <span style={{ color: "#ef4444" }}>Stop You.</span>
+          </h1>
+
+          <p className="text-gray-500 max-w-xl mx-auto mb-8 leading-relaxed" style={{ fontSize: 17 }}>
+            Connect your demat account and set a daily loss limit. When losses hit your threshold, all new trades are automatically blocked — protecting your capital from emotional decisions.
+          </p>
+
+          {/* Quick stats */}
+          <div className="flex flex-wrap justify-center gap-4 mb-10">
+            {[
+              { val: "Real-time", label: "Monitoring" },
+              { val: "Instant",   label: "Blocking"   },
+              { val: "Auto",      label: "Daily Reset" },
+              { val: "24 / 7",    label: "Protection"  },
+            ].map((s, i) => (
+              <div key={i} className="px-5 py-3 rounded-xl bg-gray-50 border border-gray-100 text-center min-w-[90px]">
+                <div style={{ fontFamily: "'Aileron','Arial Black',sans-serif", fontWeight: 800, fontSize: 16, color: "#16a34a" }}>{s.val}</div>
+                <div className="text-[11px] text-gray-400 mt-0.5">{s.label}</div>
+              </div>
+            ))}
+          </div>
+
+          <button
+            onClick={() => navigate("/loss-protection/setup")}
+            className="group inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-xl font-bold text-[15px] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_4px_20px_rgba(22,163,74,0.3)]"
+            style={{ fontFamily: "'Aileron','Arial Black',sans-serif" }}
+          >
+            Set Up Loss Protection
+            <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+          </button>
+          <p className="text-[12px] text-gray-400 mt-3">Takes under 2 minutes · Free feature · Cancel anytime</p>
+        </div>
+      </section>
+
+      {/* ── HOW IT WORKS — 3 STEPS ──────────────────────────────────── */}
+      <section className="w-full bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+          {/* Section label */}
+          <div className="mb-4 pt-4">
+            <span className="text-[11px] font-bold tracking-widest uppercase text-gray-400">How It Works</span>
+          </div>
+          <h2
+            className="text-gray-900 mb-2 leading-tight"
+            style={{ fontFamily: "'Aileron','Arial Black',sans-serif", fontSize: "clamp(24px,3.5vw,36px)", fontWeight: 900, letterSpacing: "-0.02em" }}
+          >
+            3 steps. That's it.
+          </h2>
+          <p className="text-gray-500 mb-0" style={{ fontSize: 16 }}>
+            Protecting your portfolio has never been this simple.
+          </p>
+
+          {/* Step rows — Finology Recipe style */}
+          {steps.map((step, index) => {
+            const [ref, visible] = useInView(0.1);
+            const isEven = index % 2 === 0;
+            const { Illustration } = step;
+            return (
+              <div
+                key={step.num}
+                ref={ref}
+                className={`flex flex-col ${isEven ? "lg:flex-row" : "lg:flex-row-reverse"} items-center gap-12 lg:gap-20 py-16 lg:py-24 border-b border-gray-100 last:border-0 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
+              >
+                {/* Text */}
+                <div className="flex-1 w-full max-w-[440px]">
+                  <span
+                    className="block mb-4 leading-none"
+                    style={{ fontFamily: "'Aileron','Arial Black',sans-serif", fontSize: "clamp(52px,8vw,80px)", fontWeight: 900, color: "#f3f4f6", lineHeight: 1 }}
+                  >
+                    {step.num}
+                  </span>
+                  <h3
+                    className="text-gray-900 mb-4 leading-snug"
+                    style={{ fontFamily: "'Aileron','Arial Black',sans-serif", fontSize: "clamp(20px,2.5vw,28px)", fontWeight: 900, letterSpacing: "-0.02em" }}
+                  >
+                    {step.title}
+                  </h3>
+                  <p className="text-gray-500 mb-8 leading-relaxed" style={{ fontSize: 15 }}>
+                    {step.desc}
+                  </p>
+                  <button
+                    onClick={() => navigate(step.path)}
+                    className="group inline-flex items-center gap-2 text-white px-6 py-3 rounded-xl font-bold text-[14px] transition-all duration-200 hover:-translate-y-0.5"
+                    style={{ background: "#111827", fontFamily: "'Aileron','Arial Black',sans-serif" }}
+                    onMouseEnter={e => e.currentTarget.style.background = "#16a34a"}
+                    onMouseLeave={e => e.currentTarget.style.background = "#111827"}
+                  >
+                    {step.cta}
+                    <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+                  </button>
                 </div>
 
-                {/* What is Loss Protection */}
-                <div className="bg-white/[0.02] backdrop-blur-sm border border-white/[0.06] rounded-2xl p-8 mb-8 group hover:border-emerald-500/20 transition-all duration-300">
-                    <div className="flex items-start gap-4 mb-6">
-                        <div className="w-12 h-12 rounded-2xl bg-red-500/10 border border-red-500/20 flex items-center justify-center shrink-0">
-                            <FaExclamationTriangle className="w-6 h-6 text-red-400" />
-                        </div>
-                        <div>
-                            <h2 className="text-3xl font-bold text-[#f0f4f8] mb-3">What is Loss Protection?</h2>
-                            <p className="text-slate-400 leading-relaxed">
-                                Loss Protection is an automated safety mechanism that monitors your daily trading losses.
-                                When your losses reach your preset limit, the system automatically blocks all new trade orders
-                                for the rest of the day — preventing you from chasing losses or making emotional decisions.
-                            </p>
-                        </div>
-                    </div>
-
-                    {/* Quick Stats */}
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6">
-                        {[
-                            { value: "Real-time", label: "Monitoring" },
-                            { value: "Instant", label: "Blocking" },
-                            { value: "Auto-reset", label: "at Midnight" },
-                            { value: "24/7", label: "Protection" },
-                        ].map((stat, idx) => (
-                            <div key={idx} className="text-center p-3 rounded-xl bg-white/[0.03] border border-white/[0.05]">
-                                <p className="text-lg font-bold text-emerald-400">{stat.value}</p>
-                                <p className="text-xs text-slate-500 mt-1">{stat.label}</p>
-                            </div>
-                        ))}
-                    </div>
+                {/* Illustration */}
+                <div className="flex-1 w-full max-w-[500px]">
+                  <div className="w-full aspect-[460/360]">
+                    <Illustration />
+                  </div>
                 </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
 
-                {/* How It Works */}
-                <div className="mb-8">
-                    <h2 className="text-2xl font-bold text-[#f0f4f8] mb-6 text-center">How It Works</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        {[
-                            {
-                                step: "01",
-                                icon: FiLock,
-                                title: "Connect Demat",
-                                desc: "Securely connect your trading account with your broker credentials. We use AES-256 encryption.",
-                                color: "from-blue-500/20 to-blue-600/10",
-                                iconColor: "text-blue-400"
-                            },
-                            {
-                                step: "02",
-                                icon: FiTrendingUp,
-                                title: "Set Loss Limit",
-                                desc: "Define your daily loss threshold. Choose from presets or set a custom amount that suits you.",
-                                color: "from-amber-500/20 to-amber-600/10",
-                                iconColor: "text-amber-400"
-                            },
-                            {
-                                step: "03",
-                                icon: FiAlertOctagon,
-                                title: "Auto-Protection",
-                                desc: "When losses hit your limit, all new trades are blocked automatically. Resets at midnight.",
-                                color: "from-emerald-500/20 to-emerald-600/10",
-                                iconColor: "text-emerald-400"
-                            },
-                        ].map((item, idx) => (
-                            <div key={idx} className={`relative bg-gradient-to-br ${item.color} backdrop-blur-sm border border-white/[0.08] rounded-2xl p-6 group hover:-translate-y-1 transition-all duration-300`}>
-                                <span className="text-5xl font-black text-white/5 absolute top-4 right-4">{item.step}</span>
-                                <item.icon className={`w-8 h-8 ${item.iconColor} mb-4 relative z-10`} />
-                                <h3 className="text-lg font-bold text-[#f0f4f8] mb-2 relative z-10">{item.title}</h3>
-                                <p className="text-sm text-slate-400 leading-relaxed relative z-10">{item.desc}</p>
-                            </div>
-                        ))}
-                    </div>
+      {/* ── WHY IT MATTERS ──────────────────────────────────────────── */}
+      <section className="w-full bg-gray-50 py-16 sm:py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto">
+          <span className="text-[11px] font-bold tracking-widest uppercase text-gray-400 block mb-3">Why It Matters</span>
+          <h2
+            className="text-gray-900 mb-10 leading-tight"
+            style={{ fontFamily: "'Aileron','Arial Black',sans-serif", fontSize: "clamp(22px,3vw,34px)", fontWeight: 900, letterSpacing: "-0.02em" }}
+          >
+            Real Impact. Not an Experiment.
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {[
+              { title: "Prevents Revenge Trading", desc: "Stops you from chasing losses with bigger bets — the #1 reason traders blow accounts.", icon: AlertOctagon },
+              { title: "Emotional Discipline",     desc: "Removes feelings from the equation. The system enforces your rules automatically.",   icon: Shield      },
+              { title: "Capital Preservation",     desc: "One bad day can't wipe out weeks of gains. Your long-term capital stays safe.",        icon: Lock        },
+              { title: "Better Risk Management",   desc: "Forces pre-trade risk thinking. Builds better trading habits over time.",              icon: TrendingUp  },
+            ].map((item, i) => (
+              <div key={i} className="bg-white rounded-2xl p-6 border border-gray-100 hover:border-green-200 hover:shadow-[0_4px_20px_rgba(22,163,74,0.08)] transition-all duration-300 hover:-translate-y-0.5">
+                <div className="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center mb-4">
+                  <item.icon className="w-5 h-5 text-green-600" strokeWidth={1.8} />
                 </div>
+                <h4 style={{ fontFamily: "'Aileron','Arial Black',sans-serif", fontWeight: 800, fontSize: 14, color: "#111827", marginBottom: 6 }}>{item.title}</h4>
+                <p className="text-[13px] text-gray-500 leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-                {/* Why It's Important */}
-                <div className="bg-white/[0.02] backdrop-blur-sm border border-white/[0.06] rounded-2xl p-8 mb-8">
-                    <h2 className="text-2xl font-bold text-[#f0f4f8] mb-6">Why Loss Protection Matters</h2>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        {[
-                            {
-                                icon: FaExclamationTriangle,
-                                title: "Prevents Revenge Trading",
-                                desc: "Stops you from trying to recover losses by taking bigger risks — the #1 reason traders blow their accounts."
-                            },
-                            {
-                                icon: FiShield,
-                                title: "Emotional Discipline",
-                                desc: "Removes emotional decision-making from trading. The system enforces your rules, not your feelings."
-                            },
-                            {
-                                icon: FaChartLine,
-                                title: "Capital Preservation",
-                                desc: "Ensures a single bad day doesn't wipe out weeks of profits. Protects your long-term trading capital."
-                            },
-                            {
-                                icon: FiTrendingUp,
-                                title: "Better Risk Management",
-                                desc: "Forces you to think about risk before every trade, building better trading habits over time."
-                            },
-                        ].map((item, idx) => (
-                            <div key={idx} className="flex items-start gap-3 p-4 rounded-xl bg-white/[0.02] border border-white/[0.04] hover:bg-white/[0.04] transition-colors group">
-                                <item.icon className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
-                                <div>
-                                    <h4 className="text-sm font-bold text-[#f0f4f8] mb-1">{item.title}</h4>
-                                    <p className="text-xs text-slate-400 leading-relaxed">{item.desc}</p>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
+      {/* ── SUPPORTED BROKERS ───────────────────────────────────────── */}
+      <section className="w-full bg-white py-16 sm:py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-5xl mx-auto">
+          <span className="text-[11px] font-bold tracking-widest uppercase text-gray-400 block mb-3">Supported Brokers</span>
+          <h2
+            className="text-gray-900 mb-10 leading-tight"
+            style={{ fontFamily: "'Aileron','Arial Black',sans-serif", fontSize: "clamp(22px,3vw,34px)", fontWeight: 900, letterSpacing: "-0.02em" }}
+          >
+            Works with your broker.
+          </h2>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            {[
+              { name: "Zerodha",   col: "#387ed1", bg: "#eff6ff" },
+              { name: "Upstox",    col: "#6c47ff", bg: "#f5f3ff" },
+              { name: "Angel One", col: "#e8622a", bg: "#fff7ed" },
+              { name: "Fyers",     col: "#16a34a", bg: "#f0fdf4" },
+            ].map((b, i) => (
+              <div key={i} className="flex flex-col items-center justify-center py-8 px-4 rounded-2xl border border-gray-100 hover:border-green-200 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_4px_20px_rgba(22,163,74,0.08)] cursor-default" style={{ background: b.bg }}>
+                <span style={{ fontFamily: "'Aileron','Arial Black',sans-serif", fontWeight: 800, fontSize: 16, color: b.col }}>{b.name}</span>
+                <span className="text-[11px] text-gray-400 mt-1">Supported</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── FAQ ─────────────────────────────────────────────────────── */}
+      <section className="w-full bg-gray-50 py-16 sm:py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-3xl mx-auto">
+          <span className="text-[11px] font-bold tracking-widest uppercase text-gray-400 block mb-3">FAQ</span>
+          <h2
+            className="text-gray-900 mb-2 leading-tight"
+            style={{ fontFamily: "'Aileron','Arial Black',sans-serif", fontSize: "clamp(22px,3vw,34px)", fontWeight: 900, letterSpacing: "-0.02em" }}
+          >
+            Priority Support. No bots.
+          </h2>
+          <p className="text-gray-500 mb-10" style={{ fontSize: 16 }}>Get answers to common questions below.</p>
+          <div className="bg-white rounded-2xl border border-gray-100 px-6 divide-y divide-gray-100">
+            {faqs.map((f, i) => <FaqItem key={i} q={f.q} a={f.a} />)}
+          </div>
+        </div>
+      </section>
+
+      {/* ── FINAL CTA ───────────────────────────────────────────────── */}
+      <section className="w-full bg-white py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-xl mx-auto text-center">
+          <div className="w-16 h-16 rounded-2xl bg-green-50 border border-green-100 flex items-center justify-center mx-auto mb-6">
+            <Shield className="w-8 h-8 text-green-600" strokeWidth={1.6} />
+          </div>
+          <h2
+            className="text-gray-900 mb-4 leading-tight"
+            style={{ fontFamily: "'Aileron','Arial Black',sans-serif", fontSize: "clamp(22px,3vw,32px)", fontWeight: 900, letterSpacing: "-0.02em" }}
+          >
+            Ready to Protect Your Portfolio?
+          </h2>
+          <p className="text-gray-500 mb-8 leading-relaxed" style={{ fontSize: 16 }}>
+            Connect your broker and set your loss limit in under 2 minutes. Trade with confidence knowing your downside is protected.
+          </p>
+          <button
+            onClick={() => navigate("/loss-protection/setup")}
+            className="group inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-xl font-bold text-[15px] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_4px_20px_rgba(22,163,74,0.3)]"
+            style={{ fontFamily: "'Aileron','Arial Black',sans-serif" }}
+          >
+            Set Up Loss Protection
+            <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+          </button>
+          <p className="text-[12px] text-gray-400 mt-4">Takes under 2 minutes · Free · Cancel anytime</p>
+
+          {/* SEBI accreditation */}
+          <div className="mt-12 pt-8 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-center gap-6">
+            {[
+              { label: "SEBI Registered", sub: "Reg No. INA000012218" },
+              { label: "Research Analyst", sub: "Reg No. INH000024277" },
+            ].map((a, i) => (
+              <div key={i} className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-green-50 border border-green-200 flex items-center justify-center flex-shrink-0">
+                  <Check className="w-4 h-4 text-green-600" strokeWidth={2.5} />
                 </div>
-
-                {/* Supported Brokers */}
-                <div className="mb-8">
-                    <h2 className="text-2xl font-bold text-[#f0f4f8] mb-6 text-center">Supported Brokers</h2>
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                        {[
-                            { name: "Zerodha", logo: "https://zerodha.com/static/images/logo.svg", color: "#387ed1" },
-                            { name: "Upstox", color: "#6c47ff" },
-                            { name: "Angel One", color: "#e8622a" },
-                            { name: "Fyers", color: "#1db954" },
-                        ].map((broker, idx) => (
-                            <div key={idx} className="text-center p-5 rounded-2xl bg-white/[0.02] border border-white/[0.05] hover:border-white/[0.1] transition-all duration-300">
-                                {broker.logo ? (
-                                    <img src={broker.logo} alt={broker.name} className="h-8 mx-auto mb-2 object-contain" />
-                                ) : (
-                                    <span className="text-xl font-bold block mb-2" style={{ color: broker.color }}>{broker.name}</span>
-                                )}
-                                <p className="text-xs text-slate-500">{broker.logo ? broker.name : "Supported"}</p>
-                            </div>
-                        ))}
-                    </div>
+                <div className="text-left">
+                  <div style={{ fontFamily: "'Aileron','Arial Black',sans-serif", fontWeight: 700, fontSize: 13, color: "#374151" }}>{a.label}</div>
+                  <div className="text-[11px] text-gray-400">{a.sub}</div>
                 </div>
-
-                {/* Key Benefits */}
-                <div className="mb-12">
-                    <h2 className="text-2xl font-bold text-[#f0f4f8] mb-6 text-center">Key Benefits</h2>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                        {[
-                            { label: "Auto-Protection", desc: "No manual intervention needed" },
-                            { label: "Flexible Limits", desc: "Change your limit anytime" },
-                            { label: "Daily Reset", desc: "Fresh start every midnight" },
-                            { label: "Secure Connection", desc: "AES-256 encryption" },
-                        ].map((item, idx) => (
-                            <div key={idx} className="text-center p-5 rounded-2xl bg-white/[0.02] border border-white/[0.05] hover:border-emerald-500/20 hover:bg-emerald-500/[0.02] transition-all duration-300">
-                                <div className="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center mx-auto mb-3">
-                                    <FiCheck className="w-5 h-5 text-emerald-400" />
-                                </div>
-                                <h4 className="text-sm font-bold text-[#f0f4f8] mb-1">{item.label}</h4>
-                                <p className="text-xs text-slate-400">{item.desc}</p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                {/* Common Questions */}
-                <div className="bg-white/[0.02] backdrop-blur-sm border border-white/[0.06] rounded-2xl p-8 mb-12">
-                    <h2 className="text-2xl font-bold text-[#f0f4f8] mb-6">Common Questions</h2>
-                    <div className="space-y-3">
-                        {[
-                            { q: "Is my broker password safe?", a: "Yes! Your credentials are encrypted with AES-256 encryption. No one at InvestBay can access them. We only read PnL data — no trades can be executed." },
-                            { q: "What happens when the limit is hit?", a: "All new trade orders are automatically blocked for the rest of the day. Existing positions are not affected. The limit resets at midnight." },
-                            { q: "Can I change the limit anytime?", a: "Absolutely! You can increase, decrease, or remove the loss limit whenever you want." },
-                            { q: "Does it affect my existing positions?", a: "No. Loss protection only blocks new trades. Your existing positions remain active and you can exit them anytime." },
-                        ].map((faq, idx) => (
-                            <details key={idx} className="group">
-                                <summary className="flex items-center justify-between p-4 rounded-xl bg-white/[0.02] border border-white/[0.04] cursor-pointer hover:bg-white/[0.04] transition-colors list-none">
-                                    <span className="text-sm font-semibold text-[#f0f4f8]">{faq.q}</span>
-                                    <span className="text-slate-500 group-open:rotate-45 transition-transform">+</span>
-                                </summary>
-                                <p className="px-4 pb-4 text-sm text-slate-400 leading-relaxed">{faq.a}</p>
-                            </details>
-                        ))}
-                    </div>
-                </div>
-
-                {/* CTA */}
-                <div className="text-center">
-                    <div className="inline-flex flex-col items-center gap-4 p-8 sm:p-12 rounded-2xl bg-gradient-to-br from-emerald-500/10 to-emerald-600/5 border border-emerald-500/20 w-full max-w-lg">
-                        <div className="w-16 h-16 rounded-2xl bg-emerald-500/20 flex items-center justify-center">
-                            <FiShield className="w-8 h-8 text-emerald-400" />
-                        </div>
-                        <h3 className="text-xl font-bold text-[#f0f4f8]">Ready to Protect Your Portfolio?</h3>
-                        <p className="text-sm text-slate-400 max-w-md">
-                            Connect your broker and set your loss limit in under 2 minutes. Trade with confidence knowing your downside is protected.
-                        </p>
-                        <button
-                            onClick={() => navigate("/loss-protection/setup")}
-                            className="group flex items-center gap-2 px-8 py-3.5 bg-emerald-500 text-black font-bold rounded-xl hover:bg-emerald-400 transition-all duration-300 hover:shadow-xl hover:shadow-emerald-500/25 mt-2"
-                        >
-                            Set Up Loss Protection
-                            <FiArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
-                        </button>
-                        <p className="text-xs text-slate-600 mt-2">
-                            Takes less than 2 minutes • Free feature • Cancel anytime
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <style>{`
-        @keyframes gradient {
-          0% { background-position: 0% center; }
-          50% { background-position: 100% center; }
-          100% { background-position: 0% center; }
-        }
-        .animate-gradient {
-          animation: gradient 4s ease infinite;
-        }
-      `}</style>
-        </section>
-    );
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    </div>
+  );
 }

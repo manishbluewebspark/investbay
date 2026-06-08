@@ -116,38 +116,27 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-[#060b10] flex items-center justify-center px-4 relative">
-      {/* Background Effects */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute inset-0 opacity-[0.015]" style={{
-          backgroundImage: `linear-gradient(rgba(0,230,118,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(0,230,118,0.3) 1px, transparent 1px)`,
-          backgroundSize: '64px 64px',
-          maskImage: 'radial-gradient(ellipse 70% 50% at 50% 50%, black 40%, transparent 70%)',
-          WebkitMaskImage: 'radial-gradient(ellipse 70% 50% at 50% 50%, black 40%, transparent 70%)',
-        }} />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-emerald-500/[0.03] blur-[120px]" />
-        <div className="absolute -top-20 -right-20 w-[300px] h-[300px] rounded-full bg-blue-500/[0.02] blur-[100px]" />
-      </div>
-
-      <div className="relative z-10 w-full max-w-md">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+      {/* Simple light background - no dark effects */}
+      <div className="w-full max-w-md">
         {/* Logo */}
         <div className="flex items-center justify-center gap-3 mb-10">
-          <div className="w-11 h-11 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center">
-            <FiShield className="w-6 h-6 text-emerald-400" />
+          <div className="w-11 h-11 rounded-xl bg-green-100 border border-green-200 flex items-center justify-center">
+            <FiShield className="w-6 h-6 text-green-700" />
           </div>
-          <span className="text-2xl font-extrabold text-[#f0f4f8]">
-            Invest<span className="text-emerald-400">Bay</span>
+          <span className="text-2xl font-['Aileron_Black'] font-extrabold text-gray-900">
+            Invest<span className="text-green-600">Bay</span>
           </span>
         </div>
 
-        {/* Form Card */}
-        <div className="bg-white/[0.02] backdrop-blur-sm border border-white/[0.06] rounded-2xl p-8">
+        {/* Form Card - Clean white */}
+        <div className="bg-white border border-gray-100 rounded-2xl shadow-sm p-8">
           {/* Header */}
           <div className="text-center mb-8">
-            <h1 className="text-2xl font-extrabold text-[#f0f4f8] mb-2">
+            <h1 className="text-2xl font-['Aileron_Black'] font-extrabold text-gray-900 mb-2">
               Welcome to InvestBay
             </h1>
-            <p className="text-sm text-slate-400">
+            <p className="text-sm text-gray-500">
               {showOTPInput
                 ? `Enter the OTP sent to ${email}`
                 : "Login or signup using your email"}
@@ -156,14 +145,14 @@ export default function Login() {
 
           {/* Success Message */}
           {success && (
-            <div className="mb-4 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-sm text-emerald-400 font-medium">
+            <div className="mb-4 p-4 rounded-xl bg-green-50 border border-green-200 text-sm text-green-700 font-medium">
               {success}
             </div>
           )}
 
           {/* Error Message */}
           {error && (
-            <div className="mb-4 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-sm text-red-400 font-medium">
+            <div className="mb-4 p-4 rounded-xl bg-red-50 border border-red-200 text-sm text-red-600 font-medium">
               {error}
             </div>
           )}
@@ -172,13 +161,13 @@ export default function Login() {
             <>
               {/* Email Input */}
               <div className="mb-5">
-                <label className="text-sm font-semibold text-slate-400 block mb-2">
+                <label className="text-sm font-semibold text-gray-700 block mb-2">
                   Email Address
                 </label>
                 <div className="relative">
-                  <FiMail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 w-5 h-5" />
+                  <FiMail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
                   <input
-                    className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl pl-11 pr-4 py-3 text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:border-emerald-500/30 focus:ring-1 focus:ring-emerald-500/20 transition-all"
+                    className="w-full bg-white border border-gray-200 rounded-xl pl-11 pr-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-400 focus:ring-2 focus:ring-green-100 transition-all"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     type="email"
@@ -192,7 +181,7 @@ export default function Login() {
               <button
                 onClick={checkAndSendOTP}
                 disabled={loading}
-                className="w-full bg-emerald-500 hover:bg-emerald-400 text-black rounded-xl py-3.5 font-bold text-sm disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center gap-2 group"
+                className="w-full bg-green-600 hover:bg-green-700 text-white rounded-xl py-3.5 font-bold text-sm disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center gap-2 group"
               >
                 {loading ? (
                   <>
@@ -214,13 +203,13 @@ export default function Login() {
             <>
               {/* OTP Input */}
               <div className="mb-5">
-                <label className="text-sm font-semibold text-slate-400 block mb-2">
+                <label className="text-sm font-semibold text-gray-700 block mb-2">
                   One-Time Password
                 </label>
                 <div className="relative">
-                  <FiLock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 w-5 h-5" />
+                  <FiLock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
                   <input
-                    className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl pl-11 pr-4 py-3 text-center text-xl tracking-[0.35em] text-slate-200 placeholder-slate-600 focus:outline-none focus:border-emerald-500/30 focus:ring-1 focus:ring-emerald-500/20 transition-all font-mono"
+                    className="w-full bg-white border border-gray-200 rounded-xl pl-11 pr-4 py-3 text-center text-xl tracking-[0.35em] text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-400 focus:ring-2 focus:ring-green-100 transition-all font-mono"
                     value={otp}
                     onChange={(e) => {
                       if (/^\d*$/.test(e.target.value)) setOtp(e.target.value);
@@ -239,8 +228,8 @@ export default function Login() {
                   disabled={!canResend || loading}
                   className={`flex items-center gap-1.5 text-sm transition-all ${
                     canResend && !loading
-                      ? "text-emerald-400 hover:text-emerald-300 font-medium"
-                      : "text-slate-600 cursor-not-allowed"
+                      ? "text-green-600 hover:text-green-700 font-medium"
+                      : "text-gray-400 cursor-not-allowed"
                   }`}
                 >
                   <FiRefreshCw className={`w-4 h-4 ${canResend && !loading ? "" : "opacity-50"}`} />
@@ -254,7 +243,7 @@ export default function Login() {
                     setError("");
                     setSuccess("");
                   }}
-                  className="text-sm text-slate-400 hover:text-slate-200 transition-colors font-medium"
+                  className="text-sm text-gray-500 hover:text-gray-700 transition-colors font-medium"
                   disabled={loading}
                 >
                   Change Email
@@ -265,7 +254,7 @@ export default function Login() {
               <button
                 onClick={verifyOTPAndLogin}
                 disabled={loading || otp.length !== 6}
-                className="w-full bg-emerald-500 hover:bg-emerald-400 text-black rounded-xl py-3.5 font-bold text-sm disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center gap-2 group"
+                className="w-full bg-green-600 hover:bg-green-700 text-white rounded-xl py-3.5 font-bold text-sm disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center gap-2 group"
               >
                 {loading ? (
                   <>
@@ -288,10 +277,10 @@ export default function Login() {
           {/* Divider */}
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-white/[0.06]" />
+              <div className="w-full border-t border-gray-100" />
             </div>
             <div className="relative flex justify-center text-xs">
-              <span className="px-3 bg-[#060b10] text-slate-600">or</span>
+              <span className="px-3 bg-white text-gray-400">or</span>
             </div>
           </div>
 
@@ -299,7 +288,7 @@ export default function Login() {
           <div className="text-center">
             <button
               onClick={() => navigate("/")}
-              className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-slate-200 transition-colors font-medium"
+              className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 transition-colors font-medium"
             >
               <FiArrowLeft className="w-4 h-4" />
               Back to Home
@@ -308,7 +297,7 @@ export default function Login() {
         </div>
 
         {/* Footer */}
-        <p className="text-center text-xs text-slate-600 mt-6">
+        <p className="text-center text-xs text-gray-400 mt-6">
           By continuing, you agree to our Terms of Service and Privacy Policy
         </p>
       </div>

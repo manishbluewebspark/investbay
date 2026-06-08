@@ -29,42 +29,40 @@ const SignalCard = ({ signal, index }) => {
     // Get gradient based on segment and trade direction
     const getGradient = (segment, tradeDirection) => {
         if (tradeDirection === "SELL") {
-            return "from-red-50 to-red-100";
+            return "from-red-50 to-red-100 border-red-200";
         }
         switch (segment?.toLowerCase()) {
             case "equity":
-                return "from-blue-50 to-blue-100";
+                return "from-blue-50 to-blue-100 border-blue-200";
             case "commodity":
-                return "from-yellow-50 to-yellow-100";
+                return "from-yellow-50 to-yellow-100 border-yellow-200";
             case "currency":
-                return "from-green-50 to-green-100";
+                return "from-green-50 to-green-100 border-green-200";
             case "future":
-                return "from-purple-50 to-purple-100";
+                return "from-purple-50 to-purple-100 border-purple-200";
             case "option":
-                return "from-pink-50 to-pink-100";
+                return "from-pink-50 to-pink-100 border-pink-200";
             default:
-                return "from-gray-50 to-gray-100";
+                return "from-gray-50 to-gray-100 border-gray-200";
         }
     };
 
     return (
-        <div
-            className="relative w-full max-w-[380px] sm:max-w-[350px] md:max-w-[370px] rounded-2xl transition-all duration-300 hover:shadow-lg"
-        >
+        <div className="relative w-full rounded-2xl transition-all duration-300 hover:shadow-lg">
             <div
-                className={`relative z-10 p-5 sm:p-6 text-gray-800 rounded-2xl bg-gradient-to-r ${getGradient(
+                className={`relative z-10 p-5 text-gray-800 rounded-2xl bg-gradient-to-r ${getGradient(
                     signal.segment,
                     signal.trade_direction
-                )} shadow-sm`}
+                )} border shadow-sm`}
             >
                 {/* Date and Time */}
-                <div className="flex justify-between text-gray-700 text-xs sm:text-md mb-3">
+                <div className="flex justify-between text-gray-500 text-xs mb-3">
                     <div className="flex items-center gap-1">
-                        <Calendar className="w-4 h-4" />{" "}
+                        <Calendar className="w-3.5 h-3.5" />{" "}
                         {formatDate(signal.created_at)}
                     </div>
                     <div className="flex items-center gap-1">
-                        <Clock className="w-4 h-4" />{" "}
+                        <Clock className="w-3.5 h-3.5" />{" "}
                         {formatTime(signal.created_at)}
                     </div>
                 </div>
@@ -74,19 +72,19 @@ const SignalCard = ({ signal, index }) => {
                     <img
                         src={signal.profile_image || "https://i.pravatar.cc/40"}
                         alt="profile"
-                        className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-gray-300"
+                        className="w-9 h-9 rounded-full border-2 border-white shadow-sm"
                     />
                     <div className="text-left">
-                        <h4 className="font-semibold text-gray-900 text-md sm:text-md">
+                        <h4 className="font-['Aileron_Black'] font-semibold text-gray-900 text-sm">
                             {signal.instrument} {signal.instrument_type || ""}
                         </h4>
-                        <p className="text-gray-700 text-xs sm:text-md">
+                        <p className="text-gray-600 text-xs">
                             Status -{" "}
                             <span
                                 className={`font-medium ${
                                     signal.status === "active"
                                         ? "text-green-600"
-                                        : "text-gray-600"
+                                        : "text-gray-500"
                                 }`}
                             >
                                 {signal.status || "Active"}
@@ -96,7 +94,7 @@ const SignalCard = ({ signal, index }) => {
                 </div>
 
                 {/* Signal Details Grid */}
-                <div className="grid grid-cols-2 text-left text-gray-900 text-xs sm:text-md gap-y-2 mb-5">
+                <div className="grid grid-cols-2 text-left text-gray-700 text-xs gap-y-2 mb-5">
                     <p>
                         <span className="font-semibold">Entry:</span> ₹
                         {signal.entry_price}
@@ -113,10 +111,12 @@ const SignalCard = ({ signal, index }) => {
                         <span className="font-semibold">Target 2:</span> ₹
                         {signal.target_second}
                     </p>
-                    <p>
-                        <span className="font-semibold">Target 3:</span> ₹
-                        {signal.target_third}
-                    </p>
+                    {signal.target_third && (
+                        <p>
+                            <span className="font-semibold">Target 3:</span> ₹
+                            {signal.target_third}
+                        </p>
+                    )}
                     <p>
                         <span className="font-semibold">Risk/Reward:</span>{" "}
                         {signal.risk_reward_ratio}
@@ -141,7 +141,7 @@ const SignalCard = ({ signal, index }) => {
                         onClick={() =>
                             navigate(`/signal-details/${signal.id || index}`)
                         }
-                        className="border w-full py-2 rounded-md text-md hover:bg-black hover:text-white transition-colors duration-300"
+                        className="border border-gray-300 w-full py-2 rounded-xl text-sm font-['Aileron_Black'] font-semibold text-gray-700 hover:bg-gray-900 hover:text-white hover:border-gray-900 transition-all duration-300"
                     >
                         View Details
                     </button>
@@ -149,8 +149,8 @@ const SignalCard = ({ signal, index }) => {
             </div>
 
             {/* Bottom Segment Tag */}
-            <div className="absolute bottom-0 left-0 right-0 translate-y-1/2 z-0">
-                <div className="py-3 sm:py-4 text-center text-white font-medium text-xs sm:text-md bg-black rounded-b-2xl mt-8">
+            <div className="absolute -bottom-3 left-4 right-4">
+                <div className="py-2 text-center text-white font-medium text-xs rounded-b-xl bg-gray-900">
                     {signal.segment || "Segment"}
                 </div>
             </div>

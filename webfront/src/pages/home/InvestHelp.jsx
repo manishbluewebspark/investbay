@@ -1,196 +1,231 @@
 import React, { useEffect, useRef, useState } from "react";
-import { investData } from "../../data/investData";
-import { FiTrendingUp, FiShield, FiUsers, FiHeadphones } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
+import {
+  FiBookOpen, FiSearch, FiLifeBuoy,
+  FiLock, FiShield, FiBarChart2,
+  FiArrowRight, FiUsers, FiTrendingUp, FiHeadphones,
+} from "react-icons/fi";
+
+const investData = [
+  {
+    icon: FiBookOpen,
+    title: "Learn Investing",
+    description: "Courses designed by experts to simplify stock market investing for every skill level.",
+    path: "/courses",
+  },
+  {
+    icon: FiSearch,
+    title: "Screen Stocks",
+    description: "Powerful screening tools with real-time data and technical indicators.",
+    path: "/map",
+  },
+  {
+    icon: FiLifeBuoy,
+    title: "Coach Support",
+    description: "Personalized guidance from experienced financial coaches for your journey.",
+    path: "/coach-support",
+  },
+  {
+    icon: FiLock,
+    title: "Capital Lock",
+    description: "Advanced capital protection to safeguard your investments from volatility.",
+    path: "/capital-lock",
+  },
+  {
+    icon: FiShield,
+    title: "Loss Protection",
+    description: "Comprehensive loss protection strategies and coverage for your portfolio.",
+    path: "/loss-protection",
+  },
+  {
+    icon: FiBarChart2,
+    title: "Market Analysis",
+    description: "Real-time insights and analysis from SEBI-registered research analysts.",
+    path: "/signals",
+  },
+];
+
+const stats = [
+  { icon: FiUsers,      value: "50K+", label: "Active Users"  },
+  { icon: FiShield,     value: "200+", label: "SEBI Analysts" },
+  { icon: FiTrendingUp, value: "94%",  label: "Success Rate"  },
+  { icon: FiHeadphones, value: "24/7", label: "Support"       },
+];
 
 export default function InvestHelp() {
+  const navigate   = useNavigate();
   const sectionRef = useRef(null);
-  const [visible, setVisible] = useState(false);
-  const [hoveredIndex, setHoveredIndex] = useState(null);
+  const scrollRef  = useRef(null);
+  const [visible, setVisible]   = useState(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => { if (entry.isIntersecting) { setVisible(true); observer.disconnect(); } },
-      { threshold: 0.15 }
+      { threshold: 0.1 }
     );
     if (sectionRef.current) observer.observe(sectionRef.current);
     return () => observer.disconnect();
   }, []);
 
-  const stats = [
-    { icon: FiUsers, value: "50K+", label: "Active Users" },
-    { icon: FiShield, value: "200+", label: "SEBI Analysts" },
-    { icon: FiTrendingUp, value: "94%", label: "Success Rate" },
-    { icon: FiHeadphones, value: "24/7", label: "Support" },
-  ];
+  const scroll = (dir) => {
+    if (scrollRef.current) scrollRef.current.scrollBy({ left: dir * 240, behavior: "smooth" });
+  };
 
   return (
-    <section 
-      ref={sectionRef}
-      className="relative py-24 lg:py-32 px-6 bg-[#060b10] overflow-hidden"
-    >
-      {/* Background Effects */}
-      <div className="absolute inset-0 pointer-events-none">
-        {/* Grid */}
-        <div 
-          className="absolute inset-0 opacity-[0.02]"
-          style={{
-            backgroundImage: `
-              linear-gradient(rgba(0,230,118,0.3) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(0,230,118,0.3) 1px, transparent 1px)
-            `,
-            backgroundSize: '64px 64px',
-            maskImage: 'radial-gradient(ellipse 70% 50% at 50% 50%, black 40%, transparent 70%)',
-            WebkitMaskImage: 'radial-gradient(ellipse 70% 50% at 50% 50%, black 40%, transparent 70%)',
-          }}
-        />
-        
-        {/* Glow Orbs */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] rounded-full bg-emerald-500/[0.03] blur-[130px] animate-pulse" />
-        <div className="absolute -bottom-32 -right-32 w-[600px] h-[600px] rounded-full bg-emerald-600/[0.02] blur-[100px]" />
-        <div className="absolute top-1/2 -left-32 w-[400px] h-[400px] rounded-full bg-blue-500/[0.02] blur-[100px]" />
-      </div>
+    <section ref={sectionRef} className="relative py-20 lg:py-28 bg-gray-50 overflow-hidden">
+      <div className="absolute top-0 left-0 right-0 h-px bg-gray-100" />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4">
-        {/* Header Section */}
-        <div className="text-center mb-16 space-y-4">
-          {/* Badge */}
-          <div 
-            className={`inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 backdrop-blur-sm border border-emerald-500/20 transition-all duration-700 ${
-              visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-            }`}
-          >
-            <span className="relative flex h-2.5 w-2.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400" />
-            </span>
-            <span className="text-sm font-semibold text-emerald-300 tracking-wider uppercase">
+      <div className="max-w-7xl mx-auto px-6 lg:px-12">
+
+        {/* ── Header ── */}
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-12 gap-6">
+          <div className="max-w-xl">
+            <p
+              className={`text-[11px] font-semibold tracking-[0.15em] uppercase text-gray-400 mb-3 transition-all duration-500 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
+              style={{ fontFamily: "'Aileron', sans-serif" }}
+            >
               Why InvestBay
-            </span>
+            </p>
+            <h2
+              className={`text-[clamp(28px,4vw,46px)] font-black leading-[1.1] tracking-tight text-black mb-4 transition-all duration-500 delay-100 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
+              style={{ fontFamily: "'Aileron Black', 'Arial Black', sans-serif" }}
+            >
+              How InvestBay Helps
+              <br />
+              Investors & Traders
+            </h2>
+            <p
+              className={`text-[15px] text-gray-500 leading-relaxed transition-all duration-500 delay-200 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
+              style={{ fontFamily: "'Hind Siliguri', 'Hind', sans-serif" }}
+            >
+              Discover why thousands of investors trust our platform for their financial journey.
+            </p>
           </div>
 
-          {/* Heading */}
-          <h2 
-            className={`text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.15] max-w-4xl mx-auto transition-all duration-700 delay-100 ${
-              visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-            }`}
-          >
-            <span className="text-[#f0f4f8]">How InvestBay Helps</span>
-            <br />
-            <span className="relative inline-block mt-2">
-              <span className="bg-gradient-to-r from-emerald-400 via-emerald-300 to-teal-400 bg-clip-text text-transparent animate-gradient bg-[length:200%_auto]">
-                Investors & Traders
-              </span>
-              <span className="absolute -bottom-2 left-0 right-0 h-[3px] bg-gradient-to-r from-emerald-400/40 via-emerald-300/20 to-transparent rounded-full blur-[2px]" />
-            </span>
-          </h2>
-
-          <p 
-            className={`text-lg text-slate-400/80 max-w-2xl mx-auto leading-relaxed transition-all duration-700 delay-200 ${
-              visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-            }`}
-          >
-            Discover why thousands of investors trust our platform for their financial journey
-          </p>
+          {/* scroll arrows */}
+          <div className="flex items-center gap-2 self-start lg:self-auto flex-shrink-0">
+            <button
+              onClick={() => scroll(-1)}
+              className="w-9 h-9 rounded-full border border-gray-200 flex items-center justify-center text-gray-500 hover:border-gray-900 hover:text-black transition-all duration-200"
+            >
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M9 2L4 7L9 12" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+            <button
+              onClick={() => scroll(1)}
+              className="w-9 h-9 rounded-full border border-gray-200 flex items-center justify-center text-gray-500 hover:border-gray-900 hover:text-black transition-all duration-200"
+            >
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M5 2L10 7L5 12" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+          </div>
         </div>
 
-        {/* Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+        {/* ── Horizontal Scroll Cards ── */}
+        <div
+          ref={scrollRef}
+          className={`flex gap-5 overflow-x-auto pb-3 transition-all duration-500 delay-200 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        >
           {investData.map((item, index) => (
             <div
               key={index}
-              className={`transform transition-all duration-500 ${
-                visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-              }`}
-              style={{ transitionDelay: visible ? `${300 + index * 100}ms` : "0s" }}
-              onMouseEnter={() => setHoveredIndex(index)}
-              onMouseLeave={() => setHoveredIndex(null)}
+              className="flex-shrink-0 w-[220px] sm:w-[240px]"
+              style={{ transitionDelay: visible ? `${index * 60}ms` : "0s" }}
             >
-              <div 
-                className={`group/card relative h-full bg-white/[0.02] backdrop-blur-sm border rounded-2xl p-8 transition-all duration-500 hover:-translate-y-2 ${
-                  hoveredIndex !== null && hoveredIndex !== index
-                    ? 'opacity-40 scale-[0.97] blur-[1px] border-white/[0.04]'
-                    : 'opacity-100 scale-100 blur-0 border-white/[0.06] hover:border-emerald-500/20 hover:shadow-2xl hover:shadow-emerald-500/5'
-                }`}
+              <div
+                onClick={() => navigate(item.path)}
+                className="group relative h-full bg-white border border-gray-100 rounded-2xl p-6 cursor-pointer hover:border-gray-200 hover:shadow-[0_8px_32px_rgba(0,0,0,0.07)] hover:-translate-y-1 transition-all duration-200 flex flex-col"
               >
-                {/* Top glow line */}
-                <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-emerald-400/60 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 rounded-t-2xl" />
+                {/* Checkmark badge — top right, appears on hover like Finology */}
+                <span className="absolute top-4 right-4 w-6 h-6 rounded-full border border-gray-200 flex items-center justify-center opacity-0 group-hover:opacity-100 group-hover:border-black group-hover:bg-black transition-all duration-200">
+                  <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
+                    <path d="M1 4L3.5 6.5L9 1" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </span>
 
-                {/* Corner accent */}
-                <div className="absolute top-4 right-4 w-8 h-8 rounded-lg bg-emerald-500/5 opacity-0 group-hover/card:opacity-100 transition-all duration-500 group-hover/card:rotate-45" />
-
-                {/* Icon Container */}
-                <div className="relative mb-6">
-                  <div className="w-16 h-16 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center group-hover/card:bg-emerald-500/20 group-hover/card:border-emerald-400/30 group-hover/card:shadow-[0_0_32px_rgba(0,230,118,0.15)] transition-all duration-300">
-                    <img 
-                      src={item.icon} 
-                      alt={item.title} 
-                      className="w-8 h-8 object-contain brightness-150 saturate-150 transition-all duration-300 group-hover/card:scale-110 group-hover/card:brightness-200" 
-                    />
-                  </div>
-                  {/* Decorative ring */}
-                  <div className="absolute -inset-1 rounded-2xl border border-emerald-500/10 opacity-0 group-hover/card:opacity-100 group-hover/card:scale-110 transition-all duration-500" />
+                {/* Icon */}
+                <div className="w-12 h-12 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center mb-5 group-hover:bg-gray-100 group-hover:border-gray-200 transition-all duration-200 flex-shrink-0">
+                  <item.icon className="w-5 h-5 text-gray-700" />
                 </div>
 
-                {/* Content */}
-                <div>
-                  <h3 className="text-xl font-bold text-[#f0f4f8] mb-3 group-hover/card:text-emerald-200 transition-colors duration-300">
-                    {item.title}
-                  </h3>
-                  <p className="text-sm text-slate-400 leading-relaxed group-hover/card:text-slate-300 transition-colors duration-300">
-                    {item.description}
-                  </p>
-                </div>
+                {/* Title */}
+                <h3
+                  className="text-[14px] font-black text-black mb-2 group-hover:text-gray-700 transition-colors leading-tight"
+                  style={{ fontFamily: "'Aileron Black', 'Arial Black', sans-serif" }}
+                >
+                  {item.title}
+                </h3>
 
-                {/* Bottom line indicator */}
-                <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 rounded-b-2xl" />
+                {/* Description */}
+                <p
+                  className="text-[13px] text-gray-400 leading-relaxed flex-1"
+                  style={{ fontFamily: "'Hind Siliguri', 'Hind', sans-serif" }}
+                >
+                  {item.description}
+                </p>
+
+                {/* Bottom arrow */}
+                <div className="mt-5 flex items-center gap-1 text-[11px] font-semibold text-gray-300 group-hover:text-black transition-colors duration-200">
+                  Explore
+                  <FiArrowRight className="w-3 h-3 transition-transform duration-200 group-hover:translate-x-0.5" />
+                </div>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Bottom Stats */}
-        <div className={`grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl mx-auto transition-all duration-700 delay-500 ${
-          visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-        }`}>
+        {/* ── Stats Row ── */}
+        <div
+          className={`grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto mt-14 transition-all duration-500 delay-400 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
+        >
           {stats.map((stat, idx) => (
-            <div 
+            <div
               key={idx}
-              className="group/stat relative bg-white/[0.02] backdrop-blur-sm border border-white/[0.05] rounded-2xl p-6 text-center transition-all duration-300 hover:bg-emerald-500/[0.03] hover:border-emerald-500/20 hover:-translate-y-1"
+              className="group bg-white border border-gray-100 rounded-xl p-5 text-center hover:border-gray-200 hover:-translate-y-0.5 hover:shadow-sm transition-all duration-200"
             >
-              {/* Icon */}
-              <div className="flex justify-center mb-3">
-                <stat.icon className="w-6 h-6 text-slate-500 group-hover/stat:text-emerald-400 transition-colors duration-300" />
+              <div className="flex justify-center mb-2">
+                <stat.icon className="w-5 h-5 text-gray-300 group-hover:text-gray-600 transition-colors duration-200" />
               </div>
-              
-              {/* Value */}
-              <div className="text-3xl font-extrabold text-[#f0f4f8] mb-1 group-hover/stat:text-emerald-400 transition-colors duration-300">
+              <div
+                className="text-2xl font-black text-black mb-0.5"
+                style={{ fontFamily: "'Aileron Black', 'Arial Black', sans-serif" }}
+              >
                 {stat.value}
               </div>
-              
-              {/* Label */}
-              <div className="text-xs text-slate-500 font-medium group-hover/stat:text-slate-400 transition-colors duration-300 uppercase tracking-wider">
+              <div
+                className="text-[10px] text-gray-400 font-medium uppercase tracking-wider"
+                style={{ fontFamily: "'Aileron', sans-serif" }}
+              >
                 {stat.label}
               </div>
             </div>
           ))}
         </div>
-      </div>
 
-      {/* CSS Animations */}
-      <style>{`
-        @keyframes gradient {
-          0% { background-position: 0% center; }
-          50% { background-position: 100% center; }
-          100% { background-position: 0% center; }
-        }
-        .animate-gradient {
-          animation: gradient 4s ease infinite;
-        }
-        @keyframes pulse {
-          0%, 100% { opacity: 0.03; }
-          50% { opacity: 0.05; }
-        }
-      `}</style>
+        {/* ── Bottom CTA ── */}
+        <div
+          className={`mt-12 text-center transition-all duration-500 delay-500 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
+        >
+          <button
+            onClick={() => navigate("/login")}
+            className="inline-flex items-center gap-2 px-6 py-3 bg-black hover:bg-gray-800 text-white text-[13px] font-black rounded-xl transition-all duration-200 hover:-translate-y-0.5 group"
+            style={{ fontFamily: "'Aileron Black', sans-serif" }}
+          >
+            Start Your Journey Today
+            <FiArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+          </button>
+          <p
+            className="text-[12px] text-gray-400 mt-3"
+            style={{ fontFamily: "'Hind Siliguri', 'Hind', sans-serif" }}
+          >
+            Join 50,000+ happy investors who trust InvestBay
+          </p>
+        </div>
+
+      </div>
     </section>
   );
 }

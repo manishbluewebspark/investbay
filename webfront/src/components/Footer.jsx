@@ -1,221 +1,173 @@
 import React from "react";
-import { Linkedin, Twitter, Facebook, Instagram, Youtube, ArrowUpRight, Shield, Mail, Phone } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const navigate = useNavigate();
 
-  const quickLinks = [
-    { label: "Feed", to: "/feed" },
-    { label: "Signals", to: "/signals" },
-    { label: "Mentors", to: "/mentors" },
-    { label: "Subscriptions", to: "/subscriptions" },
-    { label: "News", to: "/news" },
-  ];
-
-  const exploreLinks = [
-    { label: "Featured Analysts", to: "/mentors" },
-    { label: "Free Calls", to: "/signals" },
-    { label: "Courses", to: "/courses" },
-    { label: "Pricing Plans", to: "/pricing" },
-    { label: "How It Works", to: "/how-it-works" },
-  ];
-
-  const supportLinks = [
-    { label: "Help Center", to: "/help" },
-    { label: "Contact Us", to: "/contact" },
-    { label: "FAQs", to: "/faqs" },
-    { label: "Report Issue", to: "/report" },
-  ];
-
-  const legalLinks = [
-    { label: "Terms & Conditions", to: "/terms" },
-    { label: "Privacy Policy", to: "/privacy" },
-    { label: "Refund Policy", to: "/refund" },
-    { label: "Disclaimer", to: "/disclaimer" },
-  ];
-
-  const socialLinks = [
-    { icon: Linkedin, href: "#", label: "LinkedIn" },
-    { icon: Twitter, href: "#", label: "Twitter" },
-    { icon: Instagram, href: "#", label: "Instagram" },
-    { icon: Youtube, href: "#", label: "Youtube" },
-    { icon: Facebook, href: "#", label: "Facebook" },
-  ];
+  const footerLinks = {
+    products: [
+      { label: "Loss Protection", to: "/loss-protection" },
+      { label: "Capital Lock", to: "/capital-lock" },
+      { label: "Coach Support", to: "/coach-support" },
+      { label: "Signals", to: "/signals" },
+      { label: "User KYC", to: "/user-kyc" },
+      { label: "InvestBay30", to: "/investbay30" }
+    ],
+    tools: [
+      { label: "Free Calculators", to: "/calculators" },
+      { label: "Screener", to: "/screener" },
+      { label: "IPO", to: "/ipo" },
+      { label: "My Goals", to: "/my-goals" },
+      { label: "Sectors", to: "/sectors" },
+      { label: "Compare Top Brokers", to: "/compare-brokers" },
+      { label: "Compare Credit Cards", to: "/compare-cards" },
+      { label: "Check CIBIL Score", to: "/cibil-score" }
+    ],
+    courses: [
+      { label: "Stock Market Course", to: "/courses" },
+      { label: "Personal Finance Course", to: "/finance-course" },
+      { label: "Super Investor", to: "/mentors" }
+    ],
+    calculators: [
+      { label: "All Calculators", to: "/calculators" },
+      { label: "Financial Checkup", to: "/financial-checkup" },
+      { label: "Brokerage Calculator", to: "/brokerage-calculator" },
+      { label: "Lumpsum Calculator", to: "/lumpsum-calculator" },
+      { label: "SIP Calculator", to: "/sip-calculator" },
+      { label: "Reserve", to: "/reserve" },
+      { label: "Step-Up Calculator", to: "/step-up-calculator" }
+    ]
+  };
 
   return (
-    <footer className="relative bg-[#060b10] border-t border-white/[0.05]">
-      {/* Background Effects */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div
-          className="absolute inset-0 opacity-[0.015]"
-          style={{
-            backgroundImage: `
-              linear-gradient(rgba(0,230,118,0.3) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(0,230,118,0.3) 1px, transparent 1px)
-            `,
-            backgroundSize: '64px 64px',
-          }}
-        />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] rounded-full bg-emerald-500/[0.02] blur-[120px]" />
-      </div>
+    <footer className="bg-white border-t border-gray-200">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6">
-        {/* Main Grid */}
-        <div className="py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-10">
+        {/* Main Grid - 5 columns */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 mb-12">
 
-          {/* Brand Column */}
-          <div className="lg:col-span-2">
-            <div className="mb-6">
-              <h2 className="text-2xl font-extrabold text-[#f0f4f8] mb-2">
-                Invest<span className="text-emerald-400">Bay</span>
-              </h2>
-              <p className="text-sm text-slate-400 leading-relaxed max-w-xs">
-                Your trusted platform for SEBI-registered research analysts and expert trading insights.
+          {/* Column 1: Products */}
+          <div>
+            <h3 className="text-[16px] font-bold text-black mb-4" style={{ fontFamily: "'Aileron Black', 'Arial Black', sans-serif" }}>
+              Products
+            </h3>
+            <ul className="space-y-2">
+              {footerLinks.products.map((link, idx) => (
+                <li key={idx}>
+                  <Link
+                    to={link.to}
+                    className="text-[14px] text-gray-500 hover:text-gray-700 transition-colors duration-200"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Column 2: Tools */}
+          <div>
+            <h3 className="text-[16px] font-bold text-black mb-4" style={{ fontFamily: "'Aileron Black', 'Arial Black', sans-serif" }}>
+              Tools
+            </h3>
+            <ul className="space-y-2">
+              {footerLinks.tools.map((link, idx) => (
+                <li key={idx}>
+                  <Link
+                    to={link.to}
+                    className="text-[14px] text-gray-500 hover:text-gray-700 transition-colors duration-200"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Column 3: Courses */}
+          <div>
+            <h3 className="text-[16px] font-bold text-black mb-4" style={{ fontFamily: "'Aileron Black', 'Arial Black', sans-serif" }}>
+              Courses
+            </h3>
+            <ul className="space-y-2">
+              {footerLinks.courses.map((link, idx) => (
+                <li key={idx}>
+                  <Link
+                    to={link.to}
+                    className="text-[14px] text-gray-500 hover:text-gray-700 transition-colors duration-200"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Column 4: Calculators */}
+          <div>
+            <h3 className="text-[16px] font-bold text-black mb-4" style={{ fontFamily: "'Aileron Black', 'Arial Black', sans-serif" }}>
+              Calculators
+            </h3>
+            <ul className="space-y-2">
+              {footerLinks.calculators.map((link, idx) => (
+                <li key={idx}>
+                  <Link
+                    to={link.to}
+                    className="text-[14px] text-gray-500 hover:text-gray-700 transition-colors duration-200"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Column 5: Company Info - InvestBay */}
+          <div>
+            <h3 className="text-[20px] font-bold text-black mb-3" style={{ fontFamily: "'Aileron Black', 'Arial Black', sans-serif" }}>
+              INVESTBAY
+            </h3>
+            <div className="mb-4">
+              <div className="text-[20px] font-bold text-black mb-2" style={{ fontFamily: "'Aileron Black', 'Arial Black', sans-serif" }}>
+                30
+              </div>
+              <p className="text-[14px] text-gray-500 leading-relaxed">
+                Subscription for Investors
               </p>
+              <p className="text-[13px] text-gray-400 mt-2 leading-relaxed">
+                30 stocks for the long term, investing concepts, premium valuation tools and much more await you with InvestBay Subscription!
+              </p>
+              <button className="mt-3 px-4 py-1.5 bg-black text-white text-[13px] font-medium rounded hover:bg-gray-800 transition-colors duration-200"
+                onClick={() => navigate("/subscriptions")}>
+                View Plans →
+              </button>
             </div>
-
-            {/* Contact Info */}
-            <div className="space-y-3 mb-6">
-              <a href="mailto:support@investbay.com" className="flex items-center gap-2 text-sm text-slate-400 hover:text-emerald-400 transition-colors duration-300 group">
-                <Mail className="w-4 h-4 group-hover:scale-110 transition-transform duration-300" />
-                support@investbay.com
-              </a>
-              <a href="tel:+911234567890" className="flex items-center gap-2 text-sm text-slate-400 hover:text-emerald-400 transition-colors duration-300 group">
-                <Phone className="w-4 h-4 group-hover:scale-110 transition-transform duration-300" />
-                +91 12345 67890
-              </a>
-            </div>
-
-            {/* Social Links */}
-            <div className="flex items-center gap-3">
-              {socialLinks.map((social, idx) => (
-                <a
-                  key={idx}
-                  href={social.href}
-                  aria-label={social.label}
-                  className="w-10 h-10 rounded-xl bg-white/[0.03] border border-white/[0.06] flex items-center justify-center text-slate-500 hover:text-emerald-400 hover:bg-emerald-500/10 hover:border-emerald-500/20 transition-all duration-300 group hover:-translate-y-1"
-                >
-                  <social.icon className="w-4 h-4 group-hover:scale-110 transition-transform duration-300" />
-                </a>
-              ))}
-            </div>
-          </div>
-
-          {/* Quick Links */}
-          <div>
-            <h3 className="text-sm font-bold text-[#f0f4f8] uppercase tracking-wider mb-5">
-              Quick Links
-            </h3>
-            <ul className="space-y-3">
-              {quickLinks.map((link, idx) => (
-                <li key={idx}>
-                  <Link
-                    to={link.to}
-                    className="text-sm text-slate-400 hover:text-emerald-400 transition-colors duration-300 flex items-center gap-1 group"
-                  >
-                    <span className="w-0 group-hover:w-2 h-[1px] bg-emerald-400 transition-all duration-300" />
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Explore */}
-          <div>
-            <h3 className="text-sm font-bold text-[#f0f4f8] uppercase tracking-wider mb-5">
-              Explore
-            </h3>
-            <ul className="space-y-3">
-              {exploreLinks.map((link, idx) => (
-                <li key={idx}>
-                  <Link
-                    to={link.to}
-                    className="text-sm text-slate-400 hover:text-emerald-400 transition-colors duration-300 flex items-center gap-1 group"
-                  >
-                    <span className="w-0 group-hover:w-2 h-[1px] bg-emerald-400 transition-all duration-300" />
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Support */}
-          <div>
-            <h3 className="text-sm font-bold text-[#f0f4f8] uppercase tracking-wider mb-5">
-              Support
-            </h3>
-            <ul className="space-y-3">
-              {supportLinks.map((link, idx) => (
-                <li key={idx}>
-                  <Link
-                    to={link.to}
-                    className="text-sm text-slate-400 hover:text-emerald-400 transition-colors duration-300 flex items-center gap-1 group"
-                  >
-                    <span className="w-0 group-hover:w-2 h-[1px] bg-emerald-400 transition-all duration-300" />
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Legal */}
-          <div>
-            <h3 className="text-sm font-bold text-[#f0f4f8] uppercase tracking-wider mb-5">
-              Legal
-            </h3>
-            <ul className="space-y-3">
-              {legalLinks.map((link, idx) => (
-                <li key={idx}>
-                  <Link
-                    to={link.to}
-                    className="text-sm text-slate-400 hover:text-emerald-400 transition-colors duration-300 flex items-center gap-1 group"
-                  >
-                    <span className="w-0 group-hover:w-2 h-[1px] bg-emerald-400 transition-all duration-300" />
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
           </div>
         </div>
 
-        {/* Disclaimer Bar */}
-        <div className="py-6 border-t border-white/[0.05]">
-          <div className="flex items-start gap-4 p-4 bg-red-500/[0.03] border border-red-500/10 rounded-2xl">
-            <Shield className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
-            <p className="text-sm text-slate-500 leading-relaxed">
-              <span className="font-semibold text-slate-400">Disclaimer:</span>{" "}
-              This is a technology-driven platform for educational and informational purposes only. We do not provide any buy/sell recommendations, investment advice, or stock market tips. Please consult your financial advisor before making any investment decisions.
-            </p>
+        {/* Bottom Section */}
+        <div className="pt-8 border-t border-gray-200">
+          <div className="flex flex-wrap justify-between items-start gap-6">
+            {/* Copyright */}
+            <div className="text-[12px] text-gray-400">
+              Copyright {currentYear} All rights reserved with InvestBay Ventures Pvt Ltd | All logos and Trademarks registered with their respective owners.
+            </div>
+
+            {/* Legal Links */}
+            <div className="flex flex-wrap gap-4">
+              <Link to="/privacy-policy" className="text-[12px] text-gray-400 hover:text-gray-600 transition-colors">
+                Privacy Policy
+              </Link>
+              <Link to="/terms-of-use" className="text-[12px] text-gray-400 hover:text-gray-600 transition-colors">
+                Terms of use
+              </Link>
+              <Link to="/refunds-policy" className="text-[12px] text-gray-400 hover:text-gray-600 transition-colors">
+                Refunds Policy
+              </Link>
+            </div>
           </div>
-        </div>
-
-        {/* Bottom Bar */}
-        <div className="py-5 border-t border-white/[0.05] flex flex-col md:flex-row justify-between items-center gap-3">
-          <p className="text-sm text-slate-600">
-            © {currentYear} InvestBay. All rights reserved.
-          </p>
-
-          <div className="flex items-center gap-4">
-            <Link to="/terms" className="text-xs text-slate-600 hover:text-slate-400 transition-colors duration-300">
-              Terms
-            </Link>
-            <Link to="/privacy" className="text-xs text-slate-600 hover:text-slate-400 transition-colors duration-300">
-              Privacy
-            </Link>
-            <Link to="/cookies" className="text-xs text-slate-600 hover:text-slate-400 transition-colors duration-300">
-              Cookies
-            </Link>
-          </div>
-
-          <p className="text-sm text-slate-600 flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500/50" />
-            Only SEBI-registered analysts listed
-          </p>
         </div>
       </div>
     </footer>

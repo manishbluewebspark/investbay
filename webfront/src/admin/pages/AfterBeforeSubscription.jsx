@@ -76,13 +76,13 @@ export default function AfterBeforeSubscription() {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-[#060b10] flex items-center justify-center">
+            <div className="min-h-screen bg-gray-50 flex items-center justify-center">
                 <div className="text-center space-y-4">
                     <div className="relative inline-flex">
-                        <div className="w-12 h-12 rounded-full border-2 border-white/[0.06]" />
-                        <div className="absolute top-0 left-0 w-12 h-12 rounded-full border-2 border-emerald-400 border-t-transparent animate-spin" />
+                        <div className="w-12 h-12 rounded-full border-2 border-gray-200" />
+                        <div className="absolute top-0 left-0 w-12 h-12 rounded-full border-2 border-green-600 border-t-transparent animate-spin" />
                     </div>
-                    <p className="text-slate-400 text-sm">Loading signal details...</p>
+                    <p className="text-gray-500 text-sm">Loading signal details...</p>
                 </div>
             </div>
         );
@@ -90,15 +90,15 @@ export default function AfterBeforeSubscription() {
 
     if (error) {
         return (
-            <div className="min-h-screen bg-[#060b10] flex items-center justify-center">
+            <div className="min-h-screen bg-gray-50 flex items-center justify-center">
                 <div className="text-center">
-                    <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-red-500/10 flex items-center justify-center">
+                    <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-red-50 flex items-center justify-center">
                         <span className="text-2xl">⚠️</span>
                     </div>
-                    <p className="text-red-400 text-sm mb-4">{error}</p>
+                    <p className="text-red-600 text-sm mb-4">{error}</p>
                     <button
                         onClick={fetchSignals}
-                        className="px-6 py-2.5 bg-emerald-500 text-black font-semibold rounded-xl hover:bg-emerald-400 transition-colors"
+                        className="px-6 py-2.5 bg-gray-900 text-white font-semibold rounded-xl hover:bg-gray-800 transition-colors"
                     >
                         Try Again
                     </button>
@@ -110,44 +110,27 @@ export default function AfterBeforeSubscription() {
     const isBuy = signal.trade_direction?.toUpperCase() === "BUY";
 
     return ( 
-        <div className="min-h-screen bg-[#060b10] py-10 px-4 sm:px-6 lg:px-8">
-            {/* Background Effects */}
-            <div className="fixed inset-0 pointer-events-none z-0">
-                <div 
-                    className="absolute inset-0 opacity-[0.015]"
-                    style={{
-                        backgroundImage: `
-                            linear-gradient(rgba(0,230,118,0.3) 1px, transparent 1px),
-                            linear-gradient(90deg, rgba(0,230,118,0.3) 1px, transparent 1px)
-                        `,
-                        backgroundSize: '64px 64px',
-                        maskImage: 'radial-gradient(ellipse 70% 50% at 50% 50%, black 40%, transparent 70%)',
-                        WebkitMaskImage: 'radial-gradient(ellipse 70% 50% at 50% 50%, black 40%, transparent 70%)',
-                    }}
-                />
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] rounded-full bg-emerald-500/[0.02] blur-[120px]" />
-            </div>
-
-            <div className="relative z-10 max-w-5xl mx-auto">
+        <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-5xl mx-auto">
                 {/* Header */}
                 <div className="mb-6">
                     <div className="flex items-center gap-3 mb-2">
                         <div className={`w-3 h-3 rounded-full ${
-                            signal.status === 'active' ? 'bg-emerald-400 animate-pulse' : 'bg-slate-600'
+                            signal.status === 'active' ? 'bg-green-600 animate-pulse' : 'bg-gray-400'
                         }`} />
-                        <h1 className="text-xl font-bold text-[#f0f4f8]">
+                        <h1 className="text-xl font-['Aileron_Black'] font-bold text-gray-900">
                             {getDisplayTitle()}
                         </h1>
                     </div>
                     <div className="flex items-center gap-3">
                         <span className={`px-3 py-1 rounded-full text-xs font-bold ${
                             isBuy 
-                                ? "bg-emerald-500/10 border border-emerald-500/20 text-emerald-400" 
-                                : "bg-red-500/10 border border-red-500/20 text-red-400"
+                                ? "bg-green-50 border border-green-200 text-green-700" 
+                                : "bg-red-50 border border-red-200 text-red-700"
                         }`}>
                             {signal.trade_direction || "N/A"}
                         </span>
-                        <span className="text-xs text-slate-500">
+                        <span className="text-xs text-gray-500">
                             {formatDate(signal.created_at)} at {formatTime(signal.created_at)}
                         </span>
                     </div>
@@ -156,12 +139,10 @@ export default function AfterBeforeSubscription() {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
                     {/* Price Levels Card */}
-                    <div className="group/card relative bg-white/[0.02] backdrop-blur-sm border border-white/[0.06] rounded-2xl p-6 transition-all duration-300 hover:border-emerald-500/20">
-                        <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-emerald-400/60 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500" />
-
+                    <div className="group/card relative bg-white border border-gray-100 rounded-2xl p-6 transition-all duration-300 hover:shadow-lg hover:border-green-200">
                         <div className="flex items-center gap-2 mb-4">
-                            <FiTarget className="w-5 h-5 text-emerald-400" />
-                            <h3 className="text-lg font-bold text-[#f0f4f8]">Price Levels</h3>
+                            <FiTarget className="w-5 h-5 text-green-600" />
+                            <h3 className="text-lg font-['Aileron_Black'] font-bold text-gray-900">Price Levels</h3>
                         </div>
 
                         <div className="space-y-3">
@@ -197,9 +178,9 @@ export default function AfterBeforeSubscription() {
 
                         {/* Risk Reward */}
                         {signal.risk_reward_ratio && (
-                            <div className="mt-4 p-3 rounded-xl bg-white/[0.02] border border-white/[0.05] flex items-center justify-between">
-                                <span className="text-xs text-slate-500">Risk/Reward</span>
-                                <span className="text-sm font-bold text-emerald-400">
+                            <div className="mt-4 p-3 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-between">
+                                <span className="text-xs text-gray-500">Risk/Reward</span>
+                                <span className="text-sm font-['Aileron_Black'] font-bold text-green-600">
                                     {signal.risk_reward_ratio}
                                 </span>
                             </div>
@@ -207,19 +188,17 @@ export default function AfterBeforeSubscription() {
                     </div>
 
                     {/* Plan Details Card */}
-                    <div className="lg:col-span-2 group/card relative bg-white/[0.02] backdrop-blur-sm border border-white/[0.06] rounded-2xl p-6 transition-all duration-300 hover:border-emerald-500/20">
-                        <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-emerald-400/60 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500" />
-
+                    <div className="lg:col-span-2 group/card relative bg-white border border-gray-100 rounded-2xl p-6 transition-all duration-300 hover:shadow-lg hover:border-green-200">
                         <div className="flex items-center justify-between mb-4">
                             <div className="flex items-center gap-2">
-                                <FiShield className="w-5 h-5 text-emerald-400" />
-                                <h3 className="text-lg font-bold text-[#f0f4f8]">Plan Details</h3>
+                                <FiShield className="w-5 h-5 text-green-600" />
+                                <h3 className="text-lg font-['Aileron_Black'] font-bold text-gray-900">Plan Details</h3>
                             </div>
 
                             <span className={`px-3 py-1 rounded-full text-xs font-medium ${
                                 signal.status === 'active' 
-                                    ? 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-400' 
-                                    : 'bg-white/[0.03] border border-white/[0.06] text-slate-500'
+                                    ? 'bg-green-50 border border-green-200 text-green-700' 
+                                    : 'bg-gray-100 border border-gray-200 text-gray-500'
                             }`}>
                                 ● {signal.status ? signal.status.charAt(0).toUpperCase() + signal.status.slice(1) : 'Inactive'}
                             </span>
@@ -234,7 +213,7 @@ export default function AfterBeforeSubscription() {
                             <Detail label="Instrument Type" value={signal.instrument_type} />
                             <Detail label="Duration" value={signal.duration} />
                             <Detail label="Trade Direction" value={signal.trade_direction} 
-                                valueClass={isBuy ? "text-emerald-400" : "text-red-400"} 
+                                valueClass={isBuy ? "text-green-700" : "text-red-700"} 
                             />
                             <Detail label="Date" value={formatDate(signal.created_at)} />
                             <Detail label="Time" value={formatTime(signal.created_at)} />
@@ -249,36 +228,34 @@ export default function AfterBeforeSubscription() {
 
                 {/* Mentor/RA Details Card */}
                 {signal.name && (
-                    <div className="mt-6 group/card relative bg-white/[0.02] backdrop-blur-sm border border-white/[0.06] rounded-2xl p-6 transition-all duration-300 hover:border-emerald-500/20">
-                        <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-emerald-400/60 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500" />
-
+                    <div className="mt-6 group/card relative bg-white border border-gray-100 rounded-2xl p-6 transition-all duration-300 hover:shadow-lg hover:border-green-200">
                         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                             <div className="flex items-center gap-4">
                                 <div className="relative">
                                     <img
                                         src={signal.profile_image || "https://i.pravatar.cc/60"}
                                         alt={signal.name}
-                                        className="w-14 h-14 rounded-full object-cover border-2 border-emerald-500/20"
+                                        className="w-14 h-14 rounded-full object-cover border-2 border-green-200"
                                         onError={(e) => {
                                             e.target.src = "https://i.pravatar.cc/60";
                                         }}
                                     />
-                                    <span className="absolute -bottom-0.5 -right-0.5 w-4 h-4 rounded-full bg-emerald-500 border-2 border-[#060b10]" />
+                                    <span className="absolute -bottom-0.5 -right-0.5 w-4 h-4 rounded-full bg-green-600 border-2 border-white" />
                                 </div>
                                 
                                 <div>
                                     <div className="flex items-center gap-2">
-                                        <h3 className="text-lg font-bold text-[#f0f4f8]">
+                                        <h3 className="text-lg font-['Aileron_Black'] font-bold text-gray-900">
                                             {signal.name}
                                         </h3>
-                                        <FiAward className="w-4 h-4 text-emerald-400" />
+                                        <FiAward className="w-4 h-4 text-green-600" />
                                     </div>
-                                    <p className="text-sm text-slate-400">
+                                    <p className="text-sm text-gray-500">
                                         {signal.role || "Research Analyst"}
                                         {signal.specialization && ` • ${signal.specialization}`}
                                     </p>
                                     {signal.sebi_number && (
-                                        <p className="text-xs text-slate-500 mt-0.5">
+                                        <p className="text-xs text-gray-400 mt-0.5">
                                             SEBI Reg: {signal.sebi_number}
                                         </p>
                                     )}
@@ -287,7 +264,7 @@ export default function AfterBeforeSubscription() {
 
                             <button
                                 onClick={() => navigate(`/plans/${signal.id}`)}
-                                className="group/btn flex items-center gap-2 px-6 py-2.5 bg-emerald-500 text-black text-sm font-semibold rounded-xl hover:bg-emerald-400 transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/25"
+                                className="group/btn flex items-center gap-2 px-6 py-2.5 bg-gray-900 text-white text-sm font-['Aileron_Black'] font-semibold rounded-xl hover:bg-gray-800 transition-all duration-300 cursor-pointer"
                             >
                                 View Plan
                                 <FiArrowRight className="w-4 h-4 transition-transform duration-300 group-hover/btn:translate-x-1" />
@@ -298,9 +275,9 @@ export default function AfterBeforeSubscription() {
 
                 {/* Additional Info */}
                 {!signal.name && (
-                    <div className="mt-6 text-center py-8 bg-white/[0.01] border border-white/[0.04] rounded-2xl">
-                        <FiUser className="w-8 h-8 text-slate-600 mx-auto mb-2" />
-                        <p className="text-slate-500 text-sm">No analyst information available</p>
+                    <div className="mt-6 text-center py-8 bg-white border border-gray-100 rounded-2xl">
+                        <FiUser className="w-8 h-8 text-gray-400 mx-auto mb-2" />
+                        <p className="text-gray-500 text-sm">No analyst information available</p>
                     </div>
                 )}
             </div>
@@ -319,30 +296,30 @@ export default function AfterBeforeSubscription() {
 const Level = ({ label, value, active, type }) => {
     const getStyles = () => {
         if (active) {
-            return "bg-emerald-500/20 border-emerald-500/30 text-emerald-300";
+            return "bg-green-50 border-green-200 text-green-700";
         }
         switch (type) {
             case "sl":
-                return "bg-red-500/5 border-red-500/10 text-red-300";
+                return "bg-red-50 border-red-200 text-red-700";
             case "target":
-                return "bg-white/[0.02] border-white/[0.05] text-slate-300";
+                return "bg-gray-50 border-gray-100 text-gray-700";
             default:
-                return "bg-white/[0.02] border-white/[0.05] text-slate-300";
+                return "bg-gray-50 border-gray-100 text-gray-700";
         }
     };
 
     return (
-        <div className={`flex items-center justify-between px-4 py-3 rounded-xl border transition-all duration-300 hover:bg-white/[0.04] ${getStyles()}`}>
+        <div className={`flex items-center justify-between px-4 py-3 rounded-xl border transition-all duration-300 hover:bg-gray-100 ${getStyles()}`}>
             <span className="text-sm font-medium">{label}</span>
-            <span className="text-sm font-bold">{value}</span>
+            <span className="text-sm font-['Aileron_Black'] font-bold">{value}</span>
         </div>
     );
 };
 
 const Detail = ({ label, value, valueClass }) => (
-    <div className="p-3 rounded-xl bg-white/[0.02] border border-white/[0.04]">
-        <p className="text-[10px] uppercase tracking-wider text-slate-600 mb-1">{label}</p>
-        <p className={`text-sm font-semibold ${valueClass || "text-slate-300"}`}>
+    <div className="p-3 rounded-xl bg-gray-50 border border-gray-100">
+        <p className="text-[10px] uppercase tracking-wider text-gray-500 mb-1">{label}</p>
+        <p className={`text-sm font-['Aileron_Black'] font-semibold ${valueClass || "text-gray-900"}`}>
             {value || "N/A"}
         </p>
     </div>

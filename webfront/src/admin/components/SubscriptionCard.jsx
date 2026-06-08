@@ -5,7 +5,7 @@ const SubscriptionCard = ({ subscription }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="w-full max-w-sm bg-white rounded-xl border border-gray-300  p-4">
+    <div className="w-full bg-white border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-lg transition-all duration-300 hover:border-green-200">
       
       {/* Top Section */}
       <div className="flex items-start justify-between">
@@ -23,7 +23,7 @@ const SubscriptionCard = ({ subscription }) => {
 
           <div>
             <div className="flex items-center gap-1">
-              <h3 className="text-md font-semibold">
+              <h3 className="text-md font-['Aileron_Black'] font-semibold text-gray-900">
                 {subscription.plan_name}
               </h3>
               <img src={Verify} alt="verified" className="w-4 h-4" />
@@ -36,7 +36,7 @@ const SubscriptionCard = ({ subscription }) => {
 
         {/* Right: Price */}
         <div className="text-right">
-          <p className="text-green-600 font-semibold text-md">
+          <p className="text-green-600 font-['Aileron_Black'] font-bold text-md">
             ₹{subscription.plan_price}
           </p>
           {subscription.discount && subscription.discount !== "0" && (
@@ -57,10 +57,10 @@ const SubscriptionCard = ({ subscription }) => {
       </h2>
 
       {/* Divider */}
-      <div className="border-t border-gray-300 my-3"></div>
+      <div className="border-t border-gray-100 my-3"></div>
 
       {/* Features */}
-      <div className="space-y-2 text-md text-gray-600">
+      <div className="space-y-2 text-sm text-gray-600">
         <p>✓ {subscription.avg_trades}</p>
         <p>✓ ₹{subscription.ideal_capital} Recommended Capital</p>
         <p>✓ {subscription.stop_loss}% Stoploss Range</p>
@@ -69,7 +69,7 @@ const SubscriptionCard = ({ subscription }) => {
       {/* Button */}
       <button
         onClick={() => navigate(`/subscription/${subscription.id}`)}
-        className="mt-4 w-full border border-green-500 text-green-600 py-2 rounded-lg text-md font-medium hover:bg-green-50"
+        className="mt-4 w-full bg-gray-900 text-white py-2.5 rounded-xl text-sm font-['Aileron_Black'] font-semibold hover:bg-gray-800 transition-all duration-300 cursor-pointer flex items-center justify-center gap-2"
       >
         Buy Now
       </button>

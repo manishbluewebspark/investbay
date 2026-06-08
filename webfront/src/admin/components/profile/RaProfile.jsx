@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Pencil, Save, X, Phone, CreditCard, CheckCircle } from "lucide-react";
@@ -48,6 +47,7 @@ export default function RaProfile() {
             const formattedData = {
                 id: userData.id,
                 name: userData.name || "",
+                sebi: userData.sebi || "", // Fixed: Added SEBI here so it maps properly to the state
                 email: userData.email || "",
                 phone: userData.phone || "",
                 gender: userData.gender
@@ -195,7 +195,7 @@ export default function RaProfile() {
 
             const token = localStorage.getItem("token");
             const response = await axios.post(
-                `${apiUrl}/verification/pan/send-otp`,  // New endpoint needed
+                `${apiUrl}/verification/pan/send-otp`,
                 { pan: formData.pan.toUpperCase() },
                 {
                     headers: { Authorization: `Bearer ${token}` }
@@ -229,7 +229,7 @@ export default function RaProfile() {
 
             const token = localStorage.getItem("token");
             const response = await axios.post(
-                `${apiUrl}/verification/pan/verify-otp`,  // New endpoint needed
+                `${apiUrl}/verification/pan/verify-otp`,
                 {
                     pan: formData.pan.toUpperCase(),
                     otp: panVerification.otp
@@ -266,14 +266,86 @@ export default function RaProfile() {
         }
     };
 
+    // ================= SAVE PROFILE SYSTEM =================
     const handleSave = async () => {
-        console.log("Save profile:", formData);
-        // Add your save logic here
+        // Simple front-end validation check
+        const newErrors = {};
+        if (!formData.name) newErrors.name = "Full name is required";
+        if (!formData.sebi) newErrors.sebi = "SEBI number is required";
+        if (!formData.email) newErrors.email = "Email address is required";
+        if (!formData.dob) newErrors.dob = "Date of birth is required";
+        if (!formData.gender) newErrors.gender = "Gender is required";
+        if (!formData.state) newErrors.state = "State is required";
+
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            return;
+        }
+
+        try {
+            const token = localStorage.getItem("token");
+            
+            // Re-formatting gender safely if needed by backend logic
+            const payload = {
+                ...formData,
+                gender: formData.gender ? formData.gender.toLowerCase() : ""
+            };
+
+            const response = await axios.put(
+                `${apiUrl}/users/ra/${formData.id}`, 
+                payload,
+                {
+                    headers: { Authorization: `Bearer ${token}` }
+                }
+            );
+
+            if (response.data.success || response.status === 200) {
+                setSuccessMessage("Profile updated successfully!");
+                setIsEditing(false);
+                
+                // Keep the state synced with refreshed values from API or update directly
+                const updatedUser = response.data.data || payload;
+                setUser(updatedUser);
+                
+                // Sync matching local storage elements if required
+                const storedUser = JSON.parse(localStorage.getItem("user"));
+                if (storedUser) {
+                    localStorage.setItem("user", JSON.stringify({ ...storedUser, name: updatedUser.name }));
+                }
+
+                setTimeout(() => setSuccessMessage(""), 3000);
+            }
+        } catch (error) {
+            console.error("Save profile error:", error);
+            // Distribute general validation errors if sent by backend array/object format
+            if (error.response?.data?.errors) {
+                setErrors(error.response.data.errors);
+            } else {
+                setSuccessMessage("");
+                alert(error.response?.data?.message || "Failed to save profile changes.");
+            }
+        }
     };
 
     const handleCancel = () => {
         setIsEditing(false);
         setErrors({});
+        // Reset to initial user data values
+        if (user) {
+            setFormData({
+                id: user.id,
+                name: user.name || "",
+                sebi: user.sebi || "",
+                email: user.email || "",
+                phone: user.phone || "",
+                gender: user.gender ? user.gender.charAt(0).toUpperCase() + user.gender.slice(1) : "",
+                dob: user.dob ? new Date(user.dob).toISOString().split("T")[0] : "",
+                pan: user.pan || "",
+                state: user.state || "",
+                isPhoneVerified: user.isPhoneVerified || false,
+                isPANVerified: user.isPANVerified || false
+            });
+        }
         // Reset verification states
         setPhoneVerification({ isVerifying: false, otpSent: false, otp: "" });
         setPanVerification({ isVerifying: false, otpSent: false, otp: "" });
@@ -337,6 +409,7 @@ export default function RaProfile() {
                         <div className="flex space-x-2">
                             <input
                                 type="text"
+                                id={`${name}-otp-input`}
                                 maxLength="6"
                                 value={verificationState.otp}
                                 onChange={(e) => {

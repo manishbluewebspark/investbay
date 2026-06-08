@@ -103,7 +103,7 @@ export default function Feed() {
             <p className="text-sm">You've used all 5 free calls. Subscribe for unlimited access.</p>
             <button 
               onClick={() => navigate('/pricing')}
-              className="mt-2 bg-emerald-500 text-black px-4 py-2 rounded-lg text-sm font-semibold hover:bg-emerald-400"
+              className="mt-2 bg-gray-900 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-gray-800"
             >
               View Plans
             </button>
@@ -155,7 +155,7 @@ export default function Feed() {
               onClick={() => navigate('/pricing', { 
                 state: { selectedPlanId: signal.requiredPlanId, planName: signal.requiredPlanName }
               })}
-              className="mt-2 bg-emerald-500 text-black px-4 py-2 rounded-lg text-sm font-semibold hover:bg-emerald-400"
+              className="mt-2 bg-gray-900 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-gray-800"
             >
               Subscribe to {signal.requiredPlanName}
             </button>
@@ -204,43 +204,26 @@ export default function Feed() {
   };
 
   return (
-    <section className="min-h-screen bg-[#060b10] py-8 px-4 sm:px-6 lg:px-8">
-      {/* Background Effects */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div 
-          className="absolute inset-0 opacity-[0.015]"
-          style={{
-            backgroundImage: `
-              linear-gradient(rgba(0,230,118,0.3) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(0,230,118,0.3) 1px, transparent 1px)
-            `,
-            backgroundSize: '64px 64px',
-            maskImage: 'radial-gradient(ellipse 70% 50% at 50% 50%, black 40%, transparent 70%)',
-            WebkitMaskImage: 'radial-gradient(ellipse 70% 50% at 50% 50%, black 40%, transparent 70%)',
-          }}
-        />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] rounded-full bg-emerald-500/[0.02] blur-[120px]" />
-      </div>
-
-      <div className="relative z-10 max-w-7xl mx-auto">
+    <section className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
         {/* Login Prompt Modal */}
         {showLoginPrompt && selectedSignal && (
           <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-            <div className="bg-[#0a0f16] border border-white/[0.1] rounded-2xl max-w-md w-full p-6 relative">
+            <div className="bg-white border border-gray-200 rounded-2xl max-w-md w-full p-6 relative shadow-xl">
               <button 
                 onClick={() => setShowLoginPrompt(false)}
-                className="absolute top-4 right-4 text-slate-500 hover:text-slate-300"
+                className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
               >
                 ✕
               </button>
               
               <div className="text-center">
-                <div className="w-16 h-16 bg-emerald-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Lock className="w-8 h-8 text-emerald-400" />
+                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Lock className="w-8 h-8 text-green-600" />
                 </div>
                 
-                <h3 className="text-xl font-bold text-[#f0f4f8] mb-2">Login Required</h3>
-                <p className="text-slate-400 mb-6">Please login to unlock and view this trading signal.</p>
+                <h3 className="text-xl font-['Aileron_Black'] font-bold text-gray-900 mb-2">Login Required</h3>
+                <p className="text-gray-500 mb-6">Please login to unlock and view this trading signal.</p>
                 
                 <div className="space-y-3">
                   <button
@@ -248,24 +231,24 @@ export default function Feed() {
                       setShowLoginPrompt(false);
                       navigate('/login', { state: { from: '/feed' } });
                     }}
-                    className="w-full bg-emerald-500 text-black font-semibold py-3 px-4 rounded-xl hover:bg-emerald-400 transition-colors"
+                    className="w-full bg-gray-900 text-white font-['Aileron_Black'] font-semibold py-3 px-4 rounded-xl hover:bg-gray-800 transition-colors"
                   >
                     Login Now
                   </button>
                   
                   <button
                     onClick={() => setShowLoginPrompt(false)}
-                    className="w-full bg-white/[0.05] text-slate-300 font-semibold py-3 px-4 rounded-xl hover:bg-white/[0.08] transition-colors"
+                    className="w-full bg-gray-100 text-gray-700 font-semibold py-3 px-4 rounded-xl hover:bg-gray-200 transition-colors"
                   >
                     Maybe Later
                   </button>
                 </div>
                 
-                <p className="text-xs text-slate-500 mt-4">
+                <p className="text-xs text-gray-400 mt-4">
                   New to InvestBay? <button onClick={() => {
                     setShowLoginPrompt(false);
                     navigate('/signup');
-                  }} className="text-emerald-400 font-semibold">Create an account</button>
+                  }} className="text-green-600 font-semibold">Create an account</button>
                 </p>
               </div>
             </div>
@@ -274,15 +257,15 @@ export default function Feed() {
 
         {/* Header Tabs */}
         <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center bg-white/[0.03] border border-white/[0.06] rounded-full p-1">
+          <div className="flex items-center bg-white border border-gray-200 rounded-full p-1 shadow-sm">
             {tabs.map((tab, index) => (
               <button
                 key={index}
                 onClick={() => setActiveTab(tab)}
-                className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                className={`px-5 py-2 rounded-full text-sm font-['Aileron_Black'] font-semibold transition-all duration-300 ${
                   activeTab === tab
-                    ? "bg-emerald-500 text-black"
-                    : "text-slate-400 hover:text-slate-200"
+                    ? "bg-gray-900 text-white"
+                    : "text-gray-500 hover:text-gray-700"
                 }`}
               >
                 {tab}
@@ -290,14 +273,14 @@ export default function Feed() {
             ))}
           </div>
 
-          <button className="flex items-center gap-2 bg-white/[0.03] border border-white/[0.06] px-4 py-2 rounded-full text-slate-400 text-sm hover:border-white/[0.1] hover:text-slate-300 transition-all duration-300">
+          <button className="flex items-center gap-2 bg-white border border-gray-200 px-4 py-2 rounded-full text-gray-600 text-sm hover:border-gray-300 hover:text-gray-900 transition-all duration-300 shadow-sm">
             <Filter className="w-4 h-4" /> Filter
           </button>
         </div>
 
         {/* Tab Description */}
         <div className="mb-8">
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-gray-500">
             {activeTab === "Free Calls" 
               ? user 
                 ? `You have ${accessInfo.remainingViews} free views remaining`
@@ -314,23 +297,23 @@ export default function Feed() {
         {loading && (
           <div className="text-center py-20">
             <div className="relative inline-flex">
-              <div className="w-12 h-12 rounded-full border-2 border-white/[0.06]" />
-              <div className="absolute top-0 left-0 w-12 h-12 rounded-full border-2 border-emerald-400 border-t-transparent animate-spin" />
+              <div className="w-12 h-12 rounded-full border-2 border-gray-200" />
+              <div className="absolute top-0 left-0 w-12 h-12 rounded-full border-2 border-green-600 border-t-transparent animate-spin" />
             </div>
-            <p className="mt-4 text-slate-400 text-sm">Loading {activeTab}...</p>
+            <p className="mt-4 text-gray-500 text-sm">Loading {activeTab}...</p>
           </div>
         )}
 
         {/* Error State */}
         {error && !loading && (
           <div className="text-center py-20">
-            <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-red-500/10 flex items-center justify-center">
-              <AlertCircle className="w-8 h-8 text-red-400" />
+            <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-red-50 flex items-center justify-center">
+              <AlertCircle className="w-8 h-8 text-red-600" />
             </div>
-            <p className="text-red-400 text-sm mb-4">{error}</p>
+            <p className="text-red-600 text-sm mb-4">{error}</p>
             <button
               onClick={fetchSignals}
-              className="px-6 py-2.5 bg-emerald-500 text-black font-semibold rounded-xl hover:bg-emerald-400 transition-colors"
+              className="px-6 py-2.5 bg-gray-900 text-white font-semibold rounded-xl hover:bg-gray-800 transition-colors"
             >
               Retry
             </button>
@@ -351,34 +334,31 @@ export default function Feed() {
                     key={signal.id || index}
                     onMouseEnter={() => setHoveredIndex(index)}
                     onMouseLeave={() => setHoveredIndex(null)}
-                    className={`transform transition-all duration-500 hover:-translate-y-2 ${
+                    className={`transform transition-all duration-500 ${
                       hoveredIndex !== null && hoveredIndex !== index
-                        ? 'opacity-40 scale-[0.97] blur-[1px]'
-                        : 'opacity-100 scale-100 blur-0'
+                        ? 'opacity-40 scale-[0.97]'
+                        : 'opacity-100 scale-100'
                     }`}
                   >
-                    <div className="group/card relative bg-white/[0.02] backdrop-blur-sm border border-white/[0.06] rounded-2xl overflow-hidden transition-all duration-300 hover:border-emerald-500/20 hover:shadow-lg hover:shadow-emerald-500/5">
-                      {/* Top glow line */}
-                      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-emerald-400/60 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500" />
-
+                    <div className="group/card relative bg-white border border-gray-100 rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-lg hover:border-green-200">
                       {/* Locked Overlay */}
                       {signal.isLocked && (
-                        <div className="absolute inset-0 bg-[#060b10]/80 backdrop-blur-md z-20 rounded-2xl flex items-center justify-center">
+                        <div className="absolute inset-0 bg-white/90 backdrop-blur-md z-20 rounded-2xl flex items-center justify-center">
                           <div className="text-center p-6">
-                            <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-white/[0.05] border border-white/[0.08] flex items-center justify-center">
-                              <Lock className="w-6 h-6 text-slate-500" />
+                            <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-gray-100 border border-gray-200 flex items-center justify-center">
+                              <Lock className="w-6 h-6 text-gray-400" />
                             </div>
-                            <p className="text-slate-400 font-medium mb-1">
+                            <p className="text-gray-600 font-medium mb-1">
                               {activeTab === "Free Calls" ? "Premium Signal" : `Requires ${signal.requiredPlanName || 'Premium'} Plan`}
                             </p>
-                            <p className="text-slate-600 text-sm">Subscribe to unlock</p>
+                            <p className="text-gray-400 text-sm">Subscribe to unlock</p>
                           </div>
                         </div>
                       )}
 
                       <div className="p-5">
                         {/* Date & Time */}
-                        <div className="flex justify-between text-slate-500 text-xs mb-4">
+                        <div className="flex justify-between text-gray-400 text-xs mb-4">
                           <div className="flex items-center gap-1.5">
                             <Calendar className="w-3.5 h-3.5" />
                             {formatDate(signal.created_at)}
@@ -392,19 +372,19 @@ export default function Feed() {
                         {/* Badges */}
                         <div className="flex items-center gap-2 mb-4">
                           {signal.alreadyViewed && !signal.isLocked && (
-                            <span className="px-2.5 py-1 rounded-full bg-white/[0.05] border border-white/[0.08] text-xs text-slate-400 flex items-center gap-1">
+                            <span className="px-2.5 py-1 rounded-full bg-gray-100 border border-gray-200 text-xs text-gray-600 flex items-center gap-1">
                               <Eye className="w-3 h-3" /> Viewed
                             </span>
                           )}
                           {activeTab === "Subscription Based" && signal.requiredPlanName && (
-                            <span className="px-2.5 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-xs text-purple-400">
+                            <span className="px-2.5 py-1 rounded-full bg-purple-50 border border-purple-200 text-xs text-purple-700">
                               {signal.requiredPlanName}
                             </span>
                           )}
                           <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${
                             isBuy 
-                              ? "bg-emerald-500/10 border border-emerald-500/20 text-emerald-400" 
-                              : "bg-red-500/10 border border-red-500/20 text-red-400"
+                              ? "bg-green-50 border border-green-200 text-green-700" 
+                              : "bg-red-50 border border-red-200 text-red-700"
                           }`}>
                             {signal.trade_direction || "BUY"}
                           </span>
@@ -412,36 +392,36 @@ export default function Feed() {
 
                         {/* Instrument Info */}
                         <div className="mb-4">
-                          <h3 className="text-lg font-bold text-[#f0f4f8]">
+                          <h3 className="text-lg font-['Aileron_Black'] font-bold text-gray-900">
                             {signal.instrument}
                             {signal.instrument_type && (
-                              <span className="text-sm font-normal text-slate-400 ml-2">
+                              <span className="text-sm font-normal text-gray-400 ml-2">
                                 {signal.instrument_type}
                               </span>
                             )}
                           </h3>
-                          <p className="text-xs text-slate-500 mt-1">
+                          <p className="text-xs text-gray-400 mt-1">
                             {signal.segment || "Segment"}
                           </p>
                         </div>
 
                         {/* Signal Details Grid */}
-                        <div className="grid grid-cols-3 gap-0 bg-white/[0.02] border border-white/[0.05] rounded-xl p-4 mb-4">
+                        <div className="grid grid-cols-3 gap-0 bg-gray-50 border border-gray-100 rounded-xl p-4 mb-4">
                           {[
                             { label: "Entry", value: `₹${signal.entry_price?.toLocaleString() || "N/A"}` },
                             { label: "Stop Loss", value: `₹${signal.stop_loss?.toLocaleString() || "N/A"}` },
                             { label: "Target", value: `₹${signal.target_first?.toLocaleString() || "N/A"}` },
                           ].map((stat, idx) => (
-                            <div key={idx} className={`text-center ${idx < 2 ? 'border-r border-white/[0.05]' : ''}`}>
-                              <div className="text-[10px] uppercase tracking-wider text-slate-600 mb-1">{stat.label}</div>
-                              <div className="text-xs font-bold text-[#f0f4f8]">{stat.value}</div>
+                            <div key={idx} className={`text-center ${idx < 2 ? 'border-r border-gray-200' : ''}`}>
+                              <div className="text-[10px] uppercase tracking-wider text-gray-500 mb-1">{stat.label}</div>
+                              <div className="text-xs font-bold text-gray-900">{stat.value}</div>
                             </div>
                           ))}
                         </div>
 
                         {/* Risk/Reward */}
                         {signal.risk_reward_ratio && (
-                          <div className="flex items-center gap-1.5 text-xs text-slate-500 mb-4">
+                          <div className="flex items-center gap-1.5 text-xs text-gray-500 mb-4">
                             <TrendingUp className="w-3.5 h-3.5" />
                             <span>R:R {signal.risk_reward_ratio}</span>
                           </div>
@@ -451,10 +431,10 @@ export default function Feed() {
                         <button
                           onClick={() => !signal.isLocked && handleUnlockClick(signal)}
                           disabled={signal.isLocked}
-                          className={`w-full py-3 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 transition-all duration-300 ${
+                          className={`w-full py-3 rounded-xl text-sm font-['Aileron_Black'] font-semibold flex items-center justify-center gap-2 transition-all duration-300 ${
                             signal.isLocked
-                              ? 'bg-white/[0.03] text-slate-600 cursor-not-allowed border border-white/[0.05]'
-                              : 'bg-emerald-500 text-black hover:bg-emerald-400 hover:shadow-lg hover:shadow-emerald-500/25'
+                              ? 'bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200'
+                              : 'bg-gray-900 text-white hover:bg-gray-800'
                           }`}
                         >
                           {buttonInfo.text}
@@ -467,10 +447,10 @@ export default function Feed() {
               })
             ) : (
               <div className="col-span-3 text-center py-20">
-                <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-white/[0.02] border border-white/[0.05] flex items-center justify-center">
-                  <TrendingUp className="w-8 h-8 text-slate-500" />
+                <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-white border border-gray-100 flex items-center justify-center shadow-sm">
+                  <TrendingUp className="w-8 h-8 text-gray-400" />
                 </div>
-                <p className="text-slate-400 text-sm mb-2">
+                <p className="text-gray-500 text-sm mb-2">
                   {!user && activeTab === "Subscription Based"
                     ? "Please login to view premium signals"
                     : user && activeTab === "Subscription Based" && !accessInfo.hasAnySubscription
@@ -480,15 +460,15 @@ export default function Feed() {
                 {!user && activeTab === "Subscription Based" && (
                   <button
                     onClick={() => navigate('/login')}
-                    className="mt-4 px-6 py-2.5 bg-emerald-500 text-black font-semibold rounded-xl hover:bg-emerald-400 transition-colors"
+                    className="mt-4 px-6 py-2.5 bg-gray-900 text-white font-semibold rounded-xl hover:bg-gray-800 transition-colors"
                   >
                     Login
                   </button>
                 )}
                 {user && activeTab === "Subscription Based" && !accessInfo.hasAnySubscription && (
                   <button
-                    onClick={() => navigate('/pricing')}
-                    className="mt-4 px-6 py-2.5 bg-emerald-500 text-black font-semibold rounded-xl hover:bg-emerald-400 transition-colors"
+                    onClick={() => navigate('/afterbeforesubscription')}
+                    className="mt-4 px-6 py-2.5 bg-gray-900 text-white font-semibold rounded-xl hover:bg-gray-800 transition-colors cursor-pointer"
                   >
                     View Plans
                   </button>

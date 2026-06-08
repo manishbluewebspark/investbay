@@ -99,25 +99,8 @@ export default function Signals() {
   }, []);
 
   return (
-    <section className="w-full min-h-screen bg-[#060b10]">
-      {/* Background Effects */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div 
-          className="absolute inset-0 opacity-[0.015]"
-          style={{
-            backgroundImage: `
-              linear-gradient(rgba(0,230,118,0.3) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(0,230,118,0.3) 1px, transparent 1px)
-            `,
-            backgroundSize: '64px 64px',
-            maskImage: 'radial-gradient(ellipse 70% 50% at 50% 50%, black 40%, transparent 70%)',
-            WebkitMaskImage: 'radial-gradient(ellipse 70% 50% at 50% 50%, black 40%, transparent 70%)',
-          }}
-        />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] rounded-full bg-emerald-500/[0.02] blur-[120px]" />
-      </div>
-
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-6">
+    <section className="w-full min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
         <div className="h-[calc(100vh-80px)] min-h-0">
           
           <div className="grid h-full grid-cols-1 gap-4 lg:grid-cols-[300px_minmax(0,1fr)_300px] xl:gap-6">
@@ -143,10 +126,10 @@ export default function Signals() {
                   <div className="flex flex-1 items-center justify-center py-20">
                     <div className="text-center space-y-4">
                       <div className="relative inline-flex">
-                        <div className="w-12 h-12 rounded-full border-2 border-white/[0.06]" />
-                        <div className="absolute top-0 left-0 w-12 h-12 rounded-full border-2 border-emerald-400 border-t-transparent animate-spin" />
+                        <div className="w-12 h-12 rounded-full border-2 border-gray-200" />
+                        <div className="absolute top-0 left-0 w-12 h-12 rounded-full border-2 border-green-600 border-t-transparent animate-spin" />
                       </div>
-                      <p className="text-slate-400 text-sm font-medium">
+                      <p className="text-gray-500 text-sm font-medium">
                         Loading feeds...
                       </p>
                     </div>
@@ -163,13 +146,13 @@ export default function Signals() {
                 ) : (
                   <div className="flex flex-1 items-center justify-center py-20">
                     <div className="text-center space-y-4">
-                      <div className="w-16 h-16 mx-auto rounded-2xl bg-white/[0.02] border border-white/[0.05] flex items-center justify-center">
-                        <FiInbox className="w-7 h-7 text-slate-500" />
+                      <div className="w-16 h-16 mx-auto rounded-2xl bg-white border border-gray-100 flex items-center justify-center shadow-sm">
+                        <FiInbox className="w-7 h-7 text-gray-400" />
                       </div>
-                      <p className="text-slate-400 text-sm font-medium">
+                      <p className="text-gray-500 text-sm font-medium">
                         No posts available
                       </p>
-                      <p className="text-slate-600 text-xs">
+                      <p className="text-gray-400 text-xs">
                         Check back later for new content
                       </p>
                     </div>
@@ -193,7 +176,7 @@ export default function Signals() {
         </div>
       </div>
 
-      {/* Custom Scrollbar Styles */}
+      {/* Custom Scrollbar Styles - Light Theme */}
       <style>{`
         .custom-scrollbar::-webkit-scrollbar {
           width: 4px;
@@ -202,15 +185,15 @@ export default function Signals() {
           background: transparent;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: rgba(255, 255, 255, 0.06);
+          background: rgba(0, 0, 0, 0.1);
           border-radius: 100px;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: rgba(255, 255, 255, 0.1);
+          background: rgba(0, 0, 0, 0.15);
         }
         .custom-scrollbar {
           scrollbar-width: thin;
-          scrollbar-color: rgba(255, 255, 255, 0.06) transparent;
+          scrollbar-color: rgba(0, 0, 0, 0.1) transparent;
         }
       `}</style>
     </section>

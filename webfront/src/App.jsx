@@ -58,6 +58,8 @@ import CapitalLockInfo from "./pages/CapitalLockInfo";
 import CapitalLockSetup from "./pages/CapitalLockSetup";
 import CoachSupport from "./pages/CoachSupport";
 import Heatmap from "./pages/Heatmap";
+import ContactUs from "./pages/home/ContactUs";
+import Support from "./pages/home/Support";
 
 
 function PrivateRoute({ children }) {
@@ -98,6 +100,8 @@ function App() {
                   {/* <Route path="/" element={<News />} /> */}
 
                   <Route path="/feed" element={<Signals />} />
+                  <Route path="/contact" element={<ContactUs />} />
+                  <Route path="/support" element={<Support />} />
 
                   <Route
                     path="/signals"

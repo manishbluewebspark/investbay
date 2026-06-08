@@ -107,13 +107,13 @@ export default function PlanPage() {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-[#060b10] flex items-center justify-center">
+            <div className="min-h-screen bg-gray-50 flex items-center justify-center">
                 <div className="text-center space-y-4">
                     <div className="relative inline-flex">
-                        <div className="w-14 h-14 rounded-full border-2 border-white/[0.06]" />
-                        <div className="absolute top-0 left-0 w-14 h-14 rounded-full border-2 border-emerald-400 border-t-transparent animate-spin" />
+                        <div className="w-14 h-14 rounded-full border-2 border-gray-200" />
+                        <div className="absolute top-0 left-0 w-14 h-14 rounded-full border-2 border-green-600 border-t-transparent animate-spin" />
                     </div>
-                    <p className="text-slate-400 text-sm font-medium">Loading analyst profile...</p>
+                    <p className="text-gray-500 text-sm font-medium">Loading analyst profile...</p>
                 </div>
             </div>
         );
@@ -121,12 +121,12 @@ export default function PlanPage() {
 
     if (error) {
         return (
-            <div className="min-h-screen bg-[#060b10] flex items-center justify-center">
+            <div className="min-h-screen bg-gray-50 flex items-center justify-center">
                 <div className="text-center">
-                    <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-red-500/10 flex items-center justify-center">
+                    <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-red-50 flex items-center justify-center">
                         <span className="text-2xl">⚠️</span>
                     </div>
-                    <p className="text-red-400 text-sm font-medium">{error}</p>
+                    <p className="text-red-600 text-sm font-medium">{error}</p>
                 </div>
             </div>
         );
@@ -134,10 +134,10 @@ export default function PlanPage() {
 
     if (!analyst) {
         return (
-            <div className="min-h-screen bg-[#060b10] flex items-center justify-center">
+            <div className="min-h-screen bg-gray-50 flex items-center justify-center">
                 <div className="text-center">
-                    <FiUsers className="w-12 h-12 text-slate-600 mx-auto mb-4" />
-                    <p className="text-slate-400 text-sm">Analyst not found</p>
+                    <FiUsers className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                    <p className="text-gray-500 text-sm">Analyst not found</p>
                 </div>
             </div>
         );
@@ -185,31 +185,12 @@ export default function PlanPage() {
     ];
 
     return (
-        <div className="min-h-screen bg-[#060b10] py-10 px-4 sm:px-6 lg:px-8">
-            {/* Background Effects */}
-            <div className="fixed inset-0 pointer-events-none z-0">
-                <div 
-                    className="absolute inset-0 opacity-[0.015]"
-                    style={{
-                        backgroundImage: `
-                            linear-gradient(rgba(0,230,118,0.3) 1px, transparent 1px),
-                            linear-gradient(90deg, rgba(0,230,118,0.3) 1px, transparent 1px)
-                        `,
-                        backgroundSize: '64px 64px',
-                        maskImage: 'radial-gradient(ellipse 70% 50% at 50% 50%, black 40%, transparent 70%)',
-                        WebkitMaskImage: 'radial-gradient(ellipse 70% 50% at 50% 50%, black 40%, transparent 70%)',
-                    }}
-                />
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] rounded-full bg-emerald-500/[0.02] blur-[120px]" />
-            </div>
-
-            <div className="relative z-10 max-w-7xl mx-auto">
+        <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     
                     {/* LEFT PROFILE SECTION */}
-                    <div className="group/card relative bg-white/[0.02] backdrop-blur-sm border border-white/[0.06] rounded-2xl overflow-hidden flex flex-col transition-all duration-300 hover:border-emerald-500/20">
-                        <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-emerald-400/60 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 z-10" />
-
+                    <div className="group/card relative bg-white border border-gray-100 rounded-2xl overflow-hidden flex flex-col transition-all duration-300 hover:shadow-lg hover:border-green-200">
                         <div className="w-full h-[400px] flex-shrink-0 relative">
                             <img
                                 src={getImageUrl(analyst.profile_image)}
@@ -220,20 +201,20 @@ export default function PlanPage() {
                                     e.currentTarget.onerror = null;
                                 }}
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-[#060b10] via-[#060b10]/40 to-transparent" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-white via-white/40 to-transparent" />
                         </div>
 
                         <div className="p-6 flex-grow flex flex-col">
                             <div className="flex justify-between items-start mb-4">
                                 <div className="flex-grow">
-                                    <h2 className="text-xl font-bold text-[#f0f4f8] mb-1">
+                                    <h2 className="text-xl font-['Aileron_Black'] font-bold text-gray-900 mb-1">
                                         {analyst.name || "N/A"}
                                     </h2>
-                                    <p className="text-sm text-slate-400">
+                                    <p className="text-sm text-gray-500">
                                         {analyst.experience || "0"} years of experience
                                     </p>
                                 </div>
-                                <div className="w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center">
+                                <div className="w-8 h-8 rounded-full bg-green-100 border border-green-200 flex items-center justify-center">
                                     <img src={Verify} alt="Verified" className="w-4 h-4" />
                                 </div>
                             </div>
@@ -242,11 +223,11 @@ export default function PlanPage() {
                                 {stats.map((item, index) => (
                                     <div
                                         key={index}
-                                        className="flex items-center gap-3 px-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.05] hover:bg-white/[0.05] transition-colors duration-300"
+                                        className="flex items-center gap-3 px-4 py-3 rounded-xl bg-gray-50 border border-gray-100 hover:bg-gray-100 transition-colors duration-300"
                                     >
-                                        <item.icon className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-                                        <p className="text-sm text-slate-400">{item.label}</p>
-                                        <p className="text-sm font-semibold text-[#f0f4f8] ml-auto">
+                                        <item.icon className="w-4 h-4 text-green-600 flex-shrink-0" />
+                                        <p className="text-sm text-gray-500">{item.label}</p>
+                                        <p className="text-sm font-['Aileron_Black'] font-semibold text-gray-900 ml-auto">
                                             {item.value}
                                         </p>
                                     </div>
@@ -259,21 +240,19 @@ export default function PlanPage() {
                     <div className="md:col-span-2 flex flex-col gap-6">
                         
                         {/* Professional Details */}
-                        <div className="group/card relative bg-white/[0.02] backdrop-blur-sm border border-white/[0.06] rounded-2xl p-6 transition-all duration-300 hover:border-emerald-500/20">
-                            <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-emerald-400/60 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500" />
-
-                            <h3 className="text-xl font-bold text-[#f0f4f8] mb-4 flex items-center gap-2">
-                                <FiAward className="w-5 h-5 text-emerald-400" />
+                        <div className="group/card relative bg-white border border-gray-100 rounded-2xl p-6 transition-all duration-300 hover:shadow-lg hover:border-green-200">
+                            <h3 className="text-xl font-['Aileron_Black'] font-bold text-gray-900 mb-4 flex items-center gap-2">
+                                <FiAward className="w-5 h-5 text-green-600" />
                                 Professional Details
                             </h3>
-                            <div className="border-t border-white/[0.05] pt-4">
+                            <div className="border-t border-gray-100 pt-4">
                                 <div className="grid sm:grid-cols-2 gap-3">
                                     {professionalDetails.map((item, index) => (
-                                        <div key={index} className="flex items-start gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/[0.04] hover:bg-white/[0.04] transition-colors duration-300">
-                                            <item.icon className="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5" />
+                                        <div key={index} className="flex items-start gap-3 p-3 rounded-xl bg-gray-50 border border-gray-100 hover:bg-gray-100 transition-colors duration-300">
+                                            <item.icon className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
                                             <div className="min-w-0">
-                                                <p className="text-[10px] uppercase tracking-wider text-slate-600 mb-0.5">{item.label}</p>
-                                                <p className="text-sm font-semibold text-slate-300 break-words">{item.value}</p>
+                                                <p className="text-[10px] uppercase tracking-wider text-gray-500 mb-0.5">{item.label}</p>
+                                                <p className="text-sm font-semibold text-gray-700 break-words">{item.value}</p>
                                             </div>
                                         </div>
                                     ))}
@@ -282,30 +261,26 @@ export default function PlanPage() {
                         </div>
 
                         {/* About Us */}
-                        <div className="group/card relative bg-white/[0.02] backdrop-blur-sm border border-white/[0.06] rounded-2xl p-6 transition-all duration-300 hover:border-emerald-500/20">
-                            <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-emerald-400/60 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500" />
-
-                            <h3 className="text-lg font-bold text-[#f0f4f8] mb-4 flex items-center gap-2">
-                                <FiBookOpen className="w-5 h-5 text-emerald-400" />
+                        <div className="group/card relative bg-white border border-gray-100 rounded-2xl p-6 transition-all duration-300 hover:shadow-lg hover:border-green-200">
+                            <h3 className="text-lg font-['Aileron_Black'] font-bold text-gray-900 mb-4 flex items-center gap-2">
+                                <FiBookOpen className="w-5 h-5 text-green-600" />
                                 About Us
                             </h3>
-                            <div className="border-t border-white/[0.05] pt-4">
-                                <p className="text-sm text-slate-400 leading-relaxed">
+                            <div className="border-t border-gray-100 pt-4">
+                                <p className="text-sm text-gray-600 leading-relaxed">
                                     {analyst?.about_us || "No about information available."}
                                 </p>
                             </div>
                         </div>
 
                         {/* Terms & Conditions */}
-                        <div className="group/card relative bg-white/[0.02] backdrop-blur-sm border border-white/[0.06] rounded-2xl p-6 transition-all duration-300 hover:border-emerald-500/20">
-                            <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-emerald-400/60 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500" />
-
-                            <h3 className="text-lg font-bold text-[#f0f4f8] mb-4 flex items-center gap-2">
-                                <FiShield className="w-5 h-5 text-emerald-400" />
+                        <div className="group/card relative bg-white border border-gray-100 rounded-2xl p-6 transition-all duration-300 hover:shadow-lg hover:border-green-200">
+                            <h3 className="text-lg font-['Aileron_Black'] font-bold text-gray-900 mb-4 flex items-center gap-2">
+                                <FiShield className="w-5 h-5 text-green-600" />
                                 Terms & Conditions
                             </h3>
-                            <div className="border-t border-white/[0.05] pt-4">
-                                <p className="text-sm text-slate-400 leading-relaxed">
+                            <div className="border-t border-gray-100 pt-4">
+                                <p className="text-sm text-gray-600 leading-relaxed">
                                     {analyst?.terms || "No description available"}
                                 </p>
                             </div>
@@ -315,8 +290,8 @@ export default function PlanPage() {
 
                 {/* SUBSCRIPTIONS SECTION */}
                 <div className="mt-12">
-                    <h2 className="text-2xl font-bold text-[#f0f4f8] mb-6 flex items-center gap-3">
-                        <FiUsers className="w-6 h-6 text-emerald-400" />
+                    <h2 className="text-2xl font-['Aileron_Black'] font-bold text-gray-900 mb-6 flex items-center gap-3">
+                        <FiUsers className="w-6 h-6 text-green-600" />
                         Subscriptions
                     </h2>
                     
@@ -324,22 +299,22 @@ export default function PlanPage() {
                         <div className="flex items-center justify-center py-16">
                             <div className="text-center space-y-3">
                                 <div className="relative inline-flex">
-                                    <div className="w-10 h-10 rounded-full border-2 border-white/[0.06]" />
-                                    <div className="absolute top-0 left-0 w-10 h-10 rounded-full border-2 border-emerald-400 border-t-transparent animate-spin" />
+                                    <div className="w-10 h-10 rounded-full border-2 border-gray-200" />
+                                    <div className="absolute top-0 left-0 w-10 h-10 rounded-full border-2 border-green-600 border-t-transparent animate-spin" />
                                 </div>
-                                <p className="text-slate-500 text-sm">Loading subscriptions...</p>
+                                <p className="text-gray-500 text-sm">Loading subscriptions...</p>
                             </div>
                         </div>
                     ) : subscriptionError ? (
                         <div className="text-center py-16">
-                            <p className="text-red-400 text-sm">{subscriptionError}</p>
+                            <p className="text-red-600 text-sm">{subscriptionError}</p>
                         </div>
                     ) : (
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                             {subscriptions.length === 0 ? (
                                 <div className="col-span-full text-center py-16">
-                                    <FiUsers className="w-12 h-12 text-slate-600 mx-auto mb-4" />
-                                    <p className="text-slate-500 text-sm">No subscriptions found</p>
+                                    <FiUsers className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                                    <p className="text-gray-500 text-sm">No subscriptions found</p>
                                 </div>
                             ) : (
                                 subscriptions.map((subscription) => (
@@ -356,8 +331,8 @@ export default function PlanPage() {
                 {/* SIGNALS SECTION */}
                 {signals.length > 0 && (
                     <div className="mt-12">
-                        <h2 className="text-2xl font-bold text-[#f0f4f8] mb-6 flex items-center gap-3">
-                            <FiActivity className="w-6 h-6 text-emerald-400" />
+                        <h2 className="text-2xl font-['Aileron_Black'] font-bold text-gray-900 mb-6 flex items-center gap-3">
+                            <FiActivity className="w-6 h-6 text-green-600" />
                             Recent Signals
                         </h2>
                         
@@ -365,18 +340,18 @@ export default function PlanPage() {
                             <div className="flex items-center justify-center py-16">
                                 <div className="text-center space-y-3">
                                     <div className="relative inline-flex">
-                                        <div className="w-10 h-10 rounded-full border-2 border-white/[0.06]" />
-                                        <div className="absolute top-0 left-0 w-10 h-10 rounded-full border-2 border-emerald-400 border-t-transparent animate-spin" />
+                                        <div className="w-10 h-10 rounded-full border-2 border-gray-200" />
+                                        <div className="absolute top-0 left-0 w-10 h-10 rounded-full border-2 border-green-600 border-t-transparent animate-spin" />
                                     </div>
-                                    <p className="text-slate-500 text-sm">Loading signals...</p>
+                                    <p className="text-gray-500 text-sm">Loading signals...</p>
                                 </div>
                             </div>
                         ) : signalError ? (
                             <div className="text-center py-16">
-                                <p className="text-red-400 text-sm">{signalError}</p>
+                                <p className="text-red-600 text-sm">{signalError}</p>
                                 <button
                                     onClick={refreshSignals}
-                                    className="mt-4 px-4 py-2 bg-emerald-500 text-black text-sm font-semibold rounded-xl hover:bg-emerald-400 transition-colors"
+                                    className="mt-4 px-4 py-2 bg-gray-900 text-white text-sm font-semibold rounded-xl hover:bg-gray-800 transition-colors"
                                 >
                                     Retry
                                 </button>

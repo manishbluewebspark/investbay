@@ -1,6 +1,3 @@
-
-
-
 import { X, Upload, Trash2, ImageIcon, VideoIcon, FileIcon, User, ChevronDown } from "lucide-react";
 import { useState, useRef, useEffect, useCallback } from "react";
 import axios from "axios";
@@ -14,7 +11,7 @@ export default function AddFeedModal({ open, onClose, onSuccess }) {
   
   const [feedText, setFeedText] = useState("");
   const [tagInput, setTagInput] = useState("");
-  const [tags, setTags] = useState([]); // Changed to array
+  const [tags, setTags] = useState([]);
   const [files, setFiles] = useState([]);
   const [filePreviews, setFilePreviews] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -26,24 +23,18 @@ export default function AddFeedModal({ open, onClose, onSuccess }) {
   const fileInputRef = useRef(null);
   const tagInputRef = useRef(null);
 
-  // RA ID logic - Dynamic based on user role
   const getRAId = () => {
-    if (isRA) {
-      return user?.id;
-    }
+    if (isRA) return user?.id;
     return selectedRA?.id || null;
   };
 
   const getRAName = () => {
-    if (isRA) {
-      return user?.name;
-    }
+    if (isRA) return user?.name;
     return selectedRA?.name || "";
   };
 
-  // Fetch all analysts for admin
   const fetchAnalysts = useCallback(async () => {
-    if (isRA) return; // RA users don't need dropdown
+    if (isRA) return;
     
     try {
       setAnalystLoading(true);
@@ -51,7 +42,6 @@ export default function AddFeedModal({ open, onClose, onSuccess }) {
       const res = await axios.get(`${apiUrl}/research-analyst/all`);
       if (res.data.success) {
         setAnalysts(res.data.data || []);
-        // Auto-select first analyst if available
         if (res.data.data.length > 0 && !selectedRA) {
           setSelectedRA(res.data.data[0]);
         }
@@ -67,45 +57,31 @@ export default function AddFeedModal({ open, onClose, onSuccess }) {
   }, [apiUrl, isRA, selectedRA]);
 
   useEffect(() => {
-    if (!isRA) {
-      fetchAnalysts();
-    }
+    if (!isRA) fetchAnalysts();
   }, [fetchAnalysts]);
 
-  // Cleanup object URLs on unmount
   useEffect(() => {
     return () => {
       filePreviews.forEach(preview => {
-        if (preview.previewUrl) {
-          URL.revokeObjectURL(preview.previewUrl);
-        }
+        if (preview.previewUrl) URL.revokeObjectURL(preview.previewUrl);
       });
     };
   }, [filePreviews]);
 
-  // Tag handling functions
   const addTag = () => {
     const trimmedTag = tagInput.trim();
-    
     if (!trimmedTag) return;
     
-    // Add # if not present
     let formattedTag = trimmedTag;
-    if (!formattedTag.startsWith('#')) {
-      formattedTag = '#' + formattedTag;
-    }
-    
-    // Remove spaces from tag
+    if (!formattedTag.startsWith('#')) formattedTag = '#' + formattedTag;
     formattedTag = formattedTag.replace(/\s+/g, '');
     
-    // Check if tag already exists
     if (tags.includes(formattedTag)) {
       setError(`Tag "${formattedTag}" already exists`);
       setTimeout(() => setError(""), 3000);
       return;
     }
     
-    // Check maximum tags (optional - limit to 10)
     if (tags.length >= 10) {
       setError("Maximum 10 tags allowed");
       setTimeout(() => setError(""), 3000);
@@ -126,14 +102,7 @@ export default function AddFeedModal({ open, onClose, onSuccess }) {
       e.preventDefault();
       addTag();
     } else if (e.key === 'Backspace' && tagInput === '' && tags.length > 0) {
-      // Remove last tag when backspace is pressed on empty input
       removeTag(tags.length - 1);
-    }
-  };
-
-  const handleTagInputBlur = () => {
-    if (tagInput.trim()) {
-      addTag();
     }
   };
 
@@ -171,16 +140,11 @@ export default function AddFeedModal({ open, onClose, onSuccess }) {
     setFilePreviews(prev => [...prev, ...newPreviews]);
     setError("");
     
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
+    if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
   const removeFile = (index) => {
-    if (filePreviews[index].previewUrl) {
-      URL.revokeObjectURL(filePreviews[index].previewUrl);
-    }
-
+    if (filePreviews[index].previewUrl) URL.revokeObjectURL(filePreviews[index].previewUrl);
     setFiles(prev => prev.filter((_, i) => i !== index));
     setFilePreviews(prev => prev.filter((_, i) => i !== index));
   };
@@ -195,17 +159,13 @@ export default function AddFeedModal({ open, onClose, onSuccess }) {
 
   const getFileIcon = (type) => {
     switch (type) {
-      case 'image':
-        return <ImageIcon size={16} className="text-blue-500" />;
-      case 'video':
-        return <VideoIcon size={16} className="text-red-500" />;
-      default:
-        return <FileIcon size={16} className="text-gray-500" />;
+      case 'image': return <ImageIcon size={16} className="text-blue-500" />;
+      case 'video': return <VideoIcon size={16} className="text-red-500" />;
+      default: return <FileIcon size={16} className="text-gray-500" />;
     }
   };
 
   const handleSubmit = async () => {
-    // Validation
     if (!feedText.trim() && files.length === 0) {
       setError("Please add feed text or upload files");
       return;
@@ -227,231 +187,134 @@ export default function AddFeedModal({ open, onClose, onSuccess }) {
       setUploadProgress(0);
 
       const formData = new FormData();
-
-      // Dynamic RA fields
       formData.append("ra_id", getRAId());
       formData.append("ra_name", getRAName());
       formData.append("feed_text", feedText.trim());
+      if (tags.length > 0) formData.append("feed_tags", JSON.stringify(tags));
+      files.forEach((file) => formData.append("documents", file));
 
-      // Tags - Send as JSON string to maintain array format
-      if (tags.length > 0) {
-        formData.append("feed_tags", JSON.stringify(tags));
-      }
-
-      // Files
-      files.forEach((file) => {
-        formData.append("documents", file);
+      const response = await axios.post(`${apiUrl}/feeds/create`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+        onUploadProgress: (progressEvent) => {
+          if (progressEvent.total) {
+            setUploadProgress(Math.round((progressEvent.loaded * 100) / progressEvent.total));
+          }
+        },
       });
 
-      const response = await axios.post(
-        `${apiUrl}/feeds/create`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-          onUploadProgress: (progressEvent) => {
-            if (progressEvent.total) {
-              const percentCompleted = Math.round(
-                (progressEvent.loaded * 100) / progressEvent.total
-              );
-              setUploadProgress(percentCompleted);
-            }
-          },
-        }
-      );
-
       if (response.data.success) {
-        alert("Feed created successfully!");
-        
-        // Reset form
         setFeedText("");
         setTagInput("");
         setTags([]);
         setFiles([]);
         filePreviews.forEach(preview => {
-          if (preview.previewUrl) {
-            URL.revokeObjectURL(preview.previewUrl);
-          }
+          if (preview.previewUrl) URL.revokeObjectURL(preview.previewUrl);
         });
         setFilePreviews([]);
-        
-        if (onSuccess) {
-          onSuccess(response.data.data);
-        }
+        if (onSuccess) onSuccess(response.data.data);
         onClose();
       } else {
         setError(response.data.message || "Failed to create feed");
       }
     } catch (error) {
       console.error("Feed create error:", error);
-      let errorMessage = "Failed to create feed";
-      if (error.response) {
-        errorMessage = error.response.data?.message || error.response.data?.error || errorMessage;
-      } else if (error.request) {
-        errorMessage = "Network error. Please check your connection.";
-      }
-      setError(errorMessage);
+      setError(error.response?.data?.message || "Failed to create feed");
     } finally {
       setLoading(false);
       setUploadProgress(0);
     }
   };
 
-  const handleDragOver = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-  };
-
-  const handleDrop = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const droppedFiles = Array.from(e.dataTransfer.files);
-    const event = { target: { files: droppedFiles } };
-    handleFileChange(event);
-  };
-
-  const triggerFileInput = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
-  };
-
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-      <div className="w-full max-w-2xl rounded-xl bg-white shadow-xl mx-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#c8b8a8]/50 backdrop-blur-md">
+      <div className="w-full max-w-2xl rounded-[32px] bg-white/15 backdrop-blur-xl border border-white/40 shadow-2xl mx-4 max-h-[90vh] flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-gray-300 px-6 py-4">
-          <h2 className="text-lg font-semibold text-gray-800">Add Feed</h2>
-          <button
-            onClick={onClose}
-            className="rounded-md p-1 text-gray-500 hover:bg-gray-100 transition-colors"
-            disabled={loading}
-          >
-            <X size={18} />
+        <div className="flex items-center justify-between border-b border-white/30 px-6 py-5">
+          <h2 className="text-xl font-semibold font-['Sora'] text-[#2a2118]">Create Feed</h2>
+          <button onClick={onClose} className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm border border-white/40 flex items-center justify-center hover:bg-white/30 transition-all" disabled={loading}>
+            <X size={18} className="text-[#2a2118]" />
           </button>
         </div>
 
         {/* Body */}
-        <div className="max-h-[70vh] overflow-y-auto px-6 py-5 space-y-5">
-          {/* Error Message */}
+        <div className="flex-1 overflow-y-auto px-6 py-5 space-y-5">
           {error && (
-            <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
-              <p className="text-md text-red-600">{error}</p>
+            <div className="p-3 rounded-xl bg-red-500/10 border border-red-400/30 backdrop-blur-sm">
+              <p className="text-sm text-red-400 font-['DM_Sans']">{error}</p>
             </div>
           )}
 
-          {/* RA Selection - Only for Admin */}
+          {/* RA Selection */}
           {!isRA && (
             <div>
-              <label className="mb-2 block text-md font-medium text-gray-700">
-                Select Research Analyst *
-              </label>
+              <label className="mb-2 block text-sm font-semibold font-['DM_Sans'] text-[#2a2118]">Select Research Analyst *</label>
               <div className="relative">
                 <select
                   value={selectedRA?.id || ""}
-                  onChange={(e) => {
-                    const ra = analysts.find(analyst => analyst.id === e.target.value);
-                    setSelectedRA(ra);
-                  }}
+                  onChange={(e) => setSelectedRA(analysts.find(ra => ra.id === parseInt(e.target.value)))}
                   disabled={loading || analystLoading}
-                  className="w-full appearance-none rounded-lg border border-gray-300 px-3 py-2 pr-10 text-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                  className="w-full appearance-none rounded-full bg-white/10 border border-white/30 px-4 py-2.5 pr-10 text-sm font-['DM_Sans'] text-[#2a2118] focus:outline-none focus:ring-2 focus:ring-blue-500/50"
                 >
                   <option value="">Choose Analyst</option>
                   {analysts.map((ra) => (
-                    <option key={ra.id} value={ra.id}>
-                      {ra.name}
-                    </option>
+                    <option key={ra.id} value={ra.id}>{ra.name}</option>
                   ))}
                 </select>
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-[#6b5f55]">
                   <ChevronDown size={16} />
                 </div>
               </div>
-              {analystLoading && (
-                <p className="mt-1 text-xs text-gray-500">Loading analysts...</p>
-              )}
-              {!analysts.length && !analystLoading && (
-                <p className="mt-1 text-xs text-gray-500">No analysts available</p>
-              )}
             </div>
           )}
 
-          {/* About Feed */}
+          {/* Feed Text */}
           <div>
-            <label className="mb-1 block text-md font-medium text-gray-700">
-              About Feed *
-            </label>
+            <label className="mb-2 block text-sm font-semibold font-['DM_Sans'] text-[#2a2118]">Feed Content *</label>
             <textarea
               rows={4}
               value={feedText}
               onChange={(e) => setFeedText(e.target.value)}
               placeholder="Share your thoughts, analysis, or updates..."
-              className="w-full resize-none rounded-lg border border-gray-300 px-3 py-2 text-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+              className="w-full resize-none rounded-xl bg-white/10 border border-white/30 px-4 py-3 text-sm font-['DM_Sans'] text-[#2a2118] placeholder:text-[#6b5f55]/50 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
               disabled={loading}
             />
-            <p className="mt-1 text-xs text-gray-500">
-              {files.length === 0 ? "Text or file upload is required" : "Add text to provide context"}
-            </p>
           </div>
 
-          {/* Tags - Enhanced with chips */}
+          {/* Tags */}
           <div>
-            <label className="mb-1 block text-md font-medium text-gray-700">
-              Tags
-            </label>
-            
-            {/* Tag Input with Chips */}
-            <div className="flex flex-wrap gap-2 p-2 border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-transparent">
-              {/* Existing Tags */}
+            <label className="mb-2 block text-sm font-semibold font-['DM_Sans'] text-[#2a2118]">Tags</label>
+            <div className="flex flex-wrap gap-2 p-3 bg-white/10 border border-white/30 rounded-xl focus-within:ring-2 focus-within:ring-blue-500/50">
               {tags.map((tag, index) => (
-                <span
-                  key={index}
-                  className="inline-flex items-center gap-1 px-2 py-1 bg-blue-50 text-blue-700 text-md rounded-md"
-                >
+                <span key={index} className="inline-flex items-center gap-1 px-2 py-1 bg-blue-500/20 text-blue-600 text-sm rounded-full">
                   <span>{tag}</span>
-                  <button
-                    type="button"
-                    onClick={() => removeTag(index)}
-                    className="hover:bg-blue-100 rounded p-0.5 transition-colors"
-                    disabled={loading}
-                  >
-                    <X size={14} />
+                  <button type="button" onClick={() => removeTag(index)} className="hover:bg-blue-500/30 rounded p-0.5 transition-colors" disabled={loading}>
+                    <X size={12} />
                   </button>
                 </span>
               ))}
-              
-              {/* Tag Input Field */}
               <input
                 ref={tagInputRef}
                 type="text"
                 value={tagInput}
                 onChange={(e) => setTagInput(e.target.value)}
                 onKeyDown={handleTagKeyDown}
-                onBlur={handleTagInputBlur}
+                onBlur={addTag}
                 placeholder={tags.length === 0 ? "#NiftyAnalysis #MarketOutlook" : "Add more tags..."}
-                className="flex-1 min-w-[120px] outline-none text-md bg-transparent"
+                className="flex-1 min-w-[120px] outline-none text-sm bg-transparent font-['DM_Sans'] text-[#2a2118] placeholder:text-[#6b5f55]/50"
                 disabled={loading}
               />
             </div>
-            
-            <p className="mt-1 text-xs text-gray-500">
-              Type tag name and press Enter to add. Maximum 10 tags. # will be added automatically.
-            </p>
           </div>
 
           {/* Upload Progress */}
           {uploadProgress > 0 && uploadProgress < 100 && (
             <div className="space-y-2">
-              <div className="flex justify-between text-md">
-                <span className="text-gray-600">Uploading...</span>
-                <span className="font-medium">{uploadProgress}%</span>
+              <div className="flex justify-between text-sm">
+                <span className="text-[#2a2118] font-['DM_Sans']">Uploading...</span>
+                <span className="font-medium text-[#2a2118]">{uploadProgress}%</span>
               </div>
-              <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
-                <div 
-                  className="h-full bg-blue-500 transition-all duration-300"
-                  style={{ width: `${uploadProgress}%` }}
-                />
+              <div className="h-2 bg-white/20 rounded-full overflow-hidden">
+                <div className="h-full bg-gradient-to-r from-blue-500 to-cyan-500 transition-all duration-300" style={{ width: `${uploadProgress}%` }} />
               </div>
             </div>
           )}
@@ -460,80 +323,36 @@ export default function AddFeedModal({ open, onClose, onSuccess }) {
           {filePreviews.length > 0 && (
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <h3 className="text-md font-medium text-gray-700">
-                  Selected Files ({filePreviews.length}/10)
-                </h3>
+                <h3 className="text-sm font-semibold font-['DM_Sans'] text-[#2a2118]">Selected Files ({filePreviews.length}/10)</h3>
                 {!loading && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setFiles([]);
-                      filePreviews.forEach(preview => {
-                        if (preview.previewUrl) {
-                          URL.revokeObjectURL(preview.previewUrl);
-                        }
-                      });
-                      setFilePreviews([]);
-                    }}
-                    className="text-xs text-red-600 hover:text-red-800"
-                  >
+                  <button onClick={() => {
+                    setFiles([]);
+                    filePreviews.forEach(preview => { if (preview.previewUrl) URL.revokeObjectURL(preview.previewUrl); });
+                    setFilePreviews([]);
+                  }} className="text-xs text-red-400 hover:text-red-500 font-['DM_Sans']">
                     Remove All
                   </button>
                 )}
               </div>
-              
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {filePreviews.map((preview, index) => (
-                  <div
-                    key={preview.id}
-                    className="flex items-center justify-between p-3 border border-gray-200 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors"
-                  >
-                    <div className="flex items-center space-x-3 min-w-0">
+                  <div key={preview.id} className="flex items-center justify-between p-3 bg-white/10 border border-white/30 rounded-xl">
+                    <div className="flex items-center gap-3 min-w-0">
                       <div className="flex-shrink-0">
                         {preview.type === 'image' ? (
-                          <div className="w-12 h-12 rounded overflow-hidden">
-                            <img 
-                              src={preview.previewUrl} 
-                              alt={preview.name}
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
+                          <img src={preview.previewUrl} alt={preview.name} className="w-12 h-12 rounded-lg object-cover" />
                         ) : preview.type === 'video' ? (
-                          <div className="w-12 h-12 bg-gray-800 rounded overflow-hidden flex items-center justify-center">
-                            <video 
-                              src={preview.previewUrl}
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
+                          <video src={preview.previewUrl} className="w-12 h-12 rounded-lg object-cover" />
                         ) : (
-                          <div className="w-12 h-12 bg-blue-50 rounded flex items-center justify-center">
-                            {getFileIcon(preview.type)}
-                          </div>
+                          <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center">{getFileIcon(preview.type)}</div>
                         )}
                       </div>
-                      
                       <div className="min-w-0 flex-1">
-                        <p className="text-md font-medium text-gray-800 truncate">
-                          {preview.name}
-                        </p>
-                        <div className="flex items-center space-x-2 mt-1">
-                          <span className="text-xs text-gray-500 capitalize">
-                            {preview.type}
-                          </span>
-                          <span className="text-xs text-gray-500">•</span>
-                          <span className="text-xs text-gray-500">
-                            {preview.formattedSize}
-                          </span>
-                        </div>
+                        <p className="text-sm font-medium text-[#2a2118] truncate font-['DM_Sans']">{preview.name}</p>
+                        <p className="text-xs text-[#6b5f55]">{preview.formattedSize}</p>
                       </div>
                     </div>
-                    
-                    <button
-                      type="button"
-                      onClick={() => removeFile(index)}
-                      className="flex-shrink-0 p-1 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded transition-colors"
-                      disabled={loading}
-                    >
+                    <button onClick={() => removeFile(index)} className="p-1 text-red-400 hover:text-red-500 transition-colors" disabled={loading}>
                       <Trash2 size={16} />
                     </button>
                   </div>
@@ -542,65 +361,28 @@ export default function AddFeedModal({ open, onClose, onSuccess }) {
             </div>
           )}
 
-          {/* Upload box */}
+          {/* Upload Box */}
           {files.length < 10 && (
             <div>
-              <div
-                onDragOver={handleDragOver}
-                onDrop={handleDrop}
-                onClick={triggerFileInput}
-                className="flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 py-10 text-center transition-all hover:border-blue-400 hover:bg-blue-50"
-              >
-                <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-blue-50">
-                  <Upload className="text-blue-600" size={22} />
+              <div onClick={() => fileInputRef.current?.click()} className="flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-white/40 bg-white/5 py-10 text-center transition-all hover:bg-white/10">
+                <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-blue-500/20 to-cyan-500/20">
+                  <Upload className="text-blue-500" size={22} />
                 </div>
-                <p className="text-md font-medium text-blue-600">
-                  Click or drag to upload Images or Videos
-                </p>
-                <p className="mt-2 text-xs text-gray-500">
-                  Supports JPG, PNG, GIF, MP4, AVI, MOV • Max 50MB per file
-                </p>
-                <p className="mt-1 text-xs text-gray-500">
-                  {10 - files.length} files remaining
-                </p>
+                <p className="text-sm font-medium text-blue-500 font-['DM_Sans']">Click or drag to upload Images or Videos</p>
+                <p className="mt-1 text-xs text-[#6b5f55]">Supports JPG, PNG, GIF, MP4 • Max 50MB per file</p>
               </div>
-
-              <input
-                ref={fileInputRef}
-                id="feedUpload"
-                type="file"
-                className="hidden"
-                multiple
-                accept="image/*,video/*"
-                onChange={handleFileChange}
-                disabled={loading || files.length >= 10}
-              />
+              <input ref={fileInputRef} type="file" className="hidden" multiple accept="image/*,video/*" onChange={handleFileChange} disabled={loading || files.length >= 10} />
             </div>
           )}
         </div>
 
         {/* Footer */}
-        <div className="flex justify-end gap-3 border-t border-gray-300 px-6 py-4">
-          <button
-            onClick={onClose}
-            disabled={loading}
-            className="rounded-lg border border-gray-300 px-6 py-2 text-md text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-          >
+        <div className="flex justify-end gap-3 border-t border-white/30 px-6 py-5">
+          <button onClick={onClose} disabled={loading} className="px-6 py-2 rounded-full bg-white/20 backdrop-blur-sm border border-white/40 text-[#2a2118] font-medium font-['DM_Sans'] hover:bg-white/30 transition-all">
             Cancel
           </button>
-          <button
-            onClick={handleSubmit}
-            disabled={loading || (!feedText.trim() && files.length === 0) || !getRAId()}
-            className="rounded-lg bg-black px-8 py-2 text-md font-medium text-white hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center space-x-2"
-          >
-            {loading ? (
-              <>
-                <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-white border-r-transparent"></span>
-                <span>Uploading...</span>
-              </>
-            ) : (
-              "Create Feed"
-            )}
+          <button onClick={handleSubmit} disabled={loading || (!feedText.trim() && files.length === 0) || !getRAId()} className="px-6 py-2 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-medium font-['DM_Sans'] hover:from-blue-600 hover:to-cyan-600 transition-all shadow-md disabled:opacity-50">
+            {loading ? "Creating..." : "Create Feed"}
           </button>
         </div>
       </div>

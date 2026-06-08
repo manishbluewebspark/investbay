@@ -1,365 +1,5 @@
-
-// import React, { useEffect, useState, useRef, useCallback } from "react";
-// import { MoreVertical, Plus } from "lucide-react";
-// import PersonalDetailsModal from "../components/modals/PersonalDetailsModal";
-// import ProfessionalDetailsModal from "../components/modals/ProfessionalDetailsModal";
-// import DocumentUploadModal from "../components/modals/DocumentUploadModal";
-// import DeleteConfirmationModal from "../components/modals/DeleteConfirmationModal";
-// import axios from "axios";
-// import { useNavigate } from "react-router-dom";
-
-// export default function Users() {
-//   const [step, setStep] = useState(0);
-//   const [analysts, setAnalysts] = useState([]);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState(null);
-//   const [dropdownOpen, setDropdownOpen] = useState(null);
-//   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-//   const [selectedAnalyst, setSelectedAnalyst] = useState(null);
-//   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
-
-//   const apiUrl = import.meta.env.VITE_API_URL;
-//   const navigate = useNavigate();
-
-//   const buttonRefs = useRef([]);
-//   const dropdownRef = useRef(null);
-
-//   const [formData, setFormData] = useState({
-//     personal: {},
-//     professional: {},
-//     documents: {},
-//   });
-
-//   // Format date from ISO string to readable format
-//   const formatDate = (dateString) => {
-//     if (!dateString) return "N/A";
-//     try {
-//       const date = new Date(dateString);
-//       return date.toLocaleDateString('en-IN', { 
-//         day: '2-digit', 
-//         month: 'short', 
-//         year: 'numeric' 
-//       });
-//     } catch {
-//       return "N/A";
-//     }
-//   };
-
-//   // Get contact info (email or phone - showing email since phone not in data)
-//   const getContactInfo = (analyst) => {
-//     return analyst.email || "N/A";
-//   };
-
-//   const fetchAnalysts = useCallback(async () => {
-//     try {
-//       setLoading(true);
-//       const res = await axios.get(`${apiUrl}/users/user-all`);
-//       if (res.data.success) {
-//         setAnalysts(res.data.data || []);
-//         console.log(res.data.data, 1000);
-//       } else {
-//         setError("Failed to fetch data");
-//       }
-//     } catch (err) {
-//       console.error("Error fetching analysts:", err);
-//       setError("Server error");
-//     } finally {
-//       setLoading(false);
-//     }
-//   }, [apiUrl]);
-
-//   useEffect(() => {
-//     fetchAnalysts();
-//   }, [fetchAnalysts]);
-
-//   useEffect(() => {
-//     const handleDocumentClick = (event) => {
-//       if (dropdownOpen === null) return;
-
-//       const btnEl = buttonRefs.current[dropdownOpen];
-//       const menuEl = dropdownRef.current;
-
-//       if ((btnEl && btnEl.contains(event.target)) || (menuEl && menuEl.contains(event.target))) {
-//         return;
-//       }
-//       setDropdownOpen(null);
-//     };
-
-//     document.addEventListener("click", handleDocumentClick, true);
-//     return () => {
-//       document.removeEventListener("click", handleDocumentClick, true);
-//     };
-//   }, [dropdownOpen]);
-
-//   const handleView = (analyst) => {
-//     navigate(`/admin/research-analyst/${analyst.id}`);
-//     setDropdownOpen(null);
-//   };
-
-//   const handleDelete = (analyst) => {
-//     setSelectedAnalyst(analyst);
-//     setDeleteModalOpen(true);
-//     setDropdownOpen(null);
-//   };
-
-//   const confirmDelete = async () => {
-//     try {
-//       await axios.delete(`${apiUrl}/research-analyst/${selectedAnalyst.id}`);
-//       setAnalysts((prev) => prev.filter((ra) => ra.id !== selectedAnalyst.id));
-//       setDeleteModalOpen(false);
-//       setSelectedAnalyst(null);
-//     } catch (err) {
-//       console.error("Error deleting analyst:", err);
-//       setError("Failed to delete analyst");
-//     }
-//   };
-
-//   const toggleDropdown = (index) => {
-//     if (buttonRefs.current[index]) {
-//       const rect = buttonRefs.current[index].getBoundingClientRect();
-//       setDropdownPosition({
-//         top: rect.bottom + window.scrollY,
-//         left: rect.right - 130,
-//       });
-//     }
-//     setDropdownOpen((prev) => (prev === index ? null : index));
-//   };
-
-//   const handleCloseModals = () => {
-//     setStep(0);
-//     setFormData({
-//       personal: {},
-//       professional: {},
-//       documents: {},
-//     });
-//   };
-
-//   return (
-//     <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6 relative">
-//       <div className="flex justify-between items-start mb-4">
-//         <div>
-//           <h2 className="text-3xl font-semibold text-gray-900">Users</h2>
-//           {/* <p className="text-md text-gray-500">
-//             Active purchase orders that are still open
-//           </p> */}
-//         </div>
-//         {/* <button
-//           onClick={() => setStep(1)}
-//           className="flex items-center gap-2 bg-black text-white px-3 py-2 rounded-lg hover:bg-gray-800 transition"
-//         >
-//           <Plus size={16} />
-//           Add New RA
-//         </button> */}
-//       </div>
-
-//       {loading ? (
-//         <div className="text-center text-gray-500 py-8">Loading...</div>
-//       ) : error ? (
-//         <div className="text-center text-red-500 py-8">{error}</div>
-//       ) : analysts.length === 0 ? (
-//         <div className="text-center text-gray-500 py-8">
-//           No Research Analysts found.
-//         </div>
-//       ) : (
-//         <div className="overflow-x-auto">
-//           <table className="min-w-full border-separate border-spacing-y-2">
-//             <thead>
-//               <tr className="text-left text-gray-500 text-md">
-//                 <th className="px-4 py-2">Name ↓</th>
-//                 <th className="px-4 py-2">PAN No. ↓</th>
-//                 {/* <th className="px-4 py-2">Experience ↓</th> */}
-//                 <th className="px-4 py-2">State ↓</th>
-//                 {/* <th className="px-4 py-2">Specialization ↓</th> */}
-//                 <th className="px-4 py-2">Registered Date ↓</th>
-//                 <th className="px-4 py-2">Phone ↓</th>
-//                 <th className="px-4 py-2">Email ↓</th>
-//                 {/* <th className="px-4 py-2">Status ↓</th> */}
-//                 {/* <th className="px-4 py-2 text-right"></th> */}
-//               </tr>
-//             </thead>
-//             <tbody>
-//               {analysts.map((ra, index) => (
-//                 <tr
-//                   key={ra.id || index}
-//                   className="bg-gray-50 hover:bg-gray-100 transition rounded-xl"
-//                 >
-//                   <td className="px-4 py-3 flex items-center gap-2">
-//                     <img
-//                       src={
-//                         ra.profile_image || ra.profileImage
-//                           ? ra.profile_image || ra.profileImage
-//                           : "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
-//                       }
-//                       alt="Profile"
-//                       className="w-7 h-7 rounded-full object-cover"
-//                     />
-//                     <span className="font-medium text-gray-800">{ra.name}</span>
-//                   </td>
-//                   <td className="px-4 py-3 text-gray-700">
-//                     {ra.pan || ra.pan || "N/A"}
-//                   </td>
-//                   {/* <td className="px-4 py-3 text-gray-700">
-//                     {ra.experience || "N/A"}
-//                   </td> */}
-//                   <td className="px-4 py-3 text-gray-700">
-//                     {ra.state || "N/A"}
-//                   </td>
-//                   {/* <td className="px-4 py-3 text-gray-700">
-//                     {ra.specialization || "N/A"}
-//                   </td> */}
-//                   <td className="px-4 py-3 text-gray-700">
-//                     {formatDate(ra.created_at)}
-//                   </td>
-//                    <td className="px-4 py-3 text-gray-700">
-//                     <div className="text-md">
-//                       {ra.phone}
-//                     </div>
-//                   </td>
-//                   <td className="px-4 py-3 text-gray-700">
-//                     <div className="text-md">
-//                       {ra.email}
-//                     </div>
-//                   </td>
-                  
-
-//                   {/* <td className="px-4 py-3">
-//                     {ra.status === "active" ? (
-//                       <span className="flex items-center gap-1 text-md text-green-700 bg-green-50 px-2 py-1 rounded-full">
-//                         <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-//                         Active
-//                       </span>
-//                     ) : (
-//                       <span className="flex items-center gap-1 text-md text-gray-700 bg-gray-100 px-2 py-1 rounded-full">
-//                         <span className="w-2 h-2 bg-gray-400 rounded-full"></span>
-//                         Inactive
-//                       </span>
-//                     )}
-//                   </td> */}
-//                   {/* <td className="px-4 py-3 text-right">
-//                     <div className="dropdown-container inline-block">
-//                       <button
-//                         ref={(el) => (buttonRefs.current[index] = el)}
-//                         className="text-gray-500 hover:text-gray-700"
-//                         onClick={() => toggleDropdown(index)}
-//                         aria-haspopup="menu"
-//                         aria-expanded={dropdownOpen === index}
-//                       >
-//                         <MoreVertical size={18} />
-//                       </button>
-//                     </div>
-//                   </td> */}
-//                 </tr>
-//               ))}
-//             </tbody>
-//           </table>
-
-//           {/* Dropdown (fixed position) */}
-//           {dropdownOpen !== null && (
-//             <div
-//               ref={dropdownRef}
-//               className="dropdown-container fixed bg-white rounded-md shadow-lg z-[1000] border border-gray-200 w-32"
-//               style={{
-//                 top: dropdownPosition.top,
-//                 left: dropdownPosition.left,
-//               }}
-//               onMouseDown={(e) => e.stopPropagation()}
-//               role="menu"
-//             >
-//               <button
-//                 onClick={(e) => {
-//                   e.stopPropagation();
-//                   handleView(analysts[dropdownOpen]);
-//                 }}
-//                 className="block w-full text-left px-4 py-2 text-md text-gray-700 hover:bg-gray-100 transition border-b border-gray-100"
-//                 role="menuitem"
-//               >
-//                 View
-//               </button>
-//               <button
-//                 onClick={(e) => {
-//                   e.stopPropagation();
-//                   handleDelete(analysts[dropdownOpen]);
-//                 }}
-//                 className="block w-full text-left px-4 py-2 text-md text-red-600 hover:bg-gray-100 transition"
-//                 role="menuitem"
-//               >
-//                 Delete
-//               </button>
-//             </div>
-//           )}
-//         </div>
-//       )}
-
-//       {/* Step Modals */}
-//       {step === 1 && (
-//         <PersonalDetailsModal
-//           data={formData.personal}
-//           onNext={(data) => {
-//             setFormData((prev) => ({ ...prev, personal: data }));
-//             setStep(2);
-//           }}
-//           onClose={handleCloseModals}
-//         />
-//       )}
-
-//       {step === 2 && (
-//         <ProfessionalDetailsModal
-//           data={formData.professional}
-//           onNext={(data) => {
-//             setFormData((prev) => ({ ...prev, professional: data }));
-//             setStep(3);
-//           }}
-//           onBack={() => setStep(1)}
-//           onClose={handleCloseModals}
-//         />
-//       )}
-
-//       {step === 3 && (
-//         <DocumentUploadModal
-//           data={formData.documents}
-//           parentData={formData}
-//           onSubmit={(data) => {
-//             setFormData((prev) => {
-//               const next = { ...prev, documents: data };
-//               console.log("Final Submitted Data:", next);
-//               return next;
-//             });
-
-//             fetchAnalysts();
-//             handleCloseModals();
-//           }}
-//           onBack={() => setStep(2)}
-//           onClose={handleCloseModals}
-//         />
-//       )}
-
-//       {/* Delete Confirmation Modal */}
-//       {deleteModalOpen && (
-//         <DeleteConfirmationModal
-//           itemName={selectedAnalyst?.name || "Research Analyst"}
-//           onConfirm={confirmDelete}
-//           onCancel={() => {
-//             setDeleteModalOpen(false);
-//             setSelectedAnalyst(null);
-//           }}
-//         />
-//       )}
-//     </div>
-//   );
-// }
-
-
-
-
-import React, { useEffect, useState, useCallback, useMemo } from "react";
-import { Plus } from "lucide-react";
-import { AgGridReact } from "ag-grid-react";
-import {
-  ModuleRegistry,
-  AllCommunityModule
-} from "ag-grid-community";
-import "ag-grid-community/styles/ag-grid.css";
-import "ag-grid-community/styles/ag-theme-quartz.css";
+import React, { useEffect, useState, useCallback, useRef } from "react";
+import { Search, MoreVertical } from "lucide-react";
 import PersonalDetailsModal from "../components/modals/PersonalDetailsModal";
 import ProfessionalDetailsModal from "../components/modals/ProfessionalDetailsModal";
 import DocumentUploadModal from "../components/modals/DocumentUploadModal";
@@ -367,277 +7,386 @@ import DeleteConfirmationModal from "../components/modals/DeleteConfirmationModa
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-// ✅ Register AG Grid modules (CRITICAL)
-ModuleRegistry.registerModules([AllCommunityModule]);
+const glass = {
+  background: "rgba(255,255,255,0.18)",
+  backdropFilter: "blur(18px)",
+  WebkitBackdropFilter: "blur(18px)",
+  border: "1.5px solid rgba(255,255,255,0.38)",
+  borderRadius: "20px",
+};
+
+const glassRow = {
+  background: "rgba(255,255,255,0.22)",
+  backdropFilter: "blur(10px)",
+  WebkitBackdropFilter: "blur(10px)",
+  border: "1px solid rgba(255,255,255,0.35)",
+  borderRadius: "14px",
+};
 
 export default function Users() {
   const [step, setStep] = useState(0);
   const [analysts, setAnalysts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [gridApi, setGridApi] = useState(null);
-  const gridRef = React.useRef();
-  const apiUrl = import.meta.env.VITE_API_URL;
-  const navigate = useNavigate();
-
-  const [formData, setFormData] = useState({
-    personal: {},
-    professional: {},
-    documents: {},
-  });
-
+  const [search, setSearch] = useState("");
+  const [dropdownOpen, setDropdownOpen] = useState(null);
+  const [dropdownPos, setDropdownPos] = useState({ top: 0, left: 0 });
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [selectedAnalyst, setSelectedAnalyst] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 10;
 
-  // Format date function
+  const apiUrl = import.meta.env.VITE_API_URL;
+  const navigate = useNavigate();
+  const btnRefs = useRef([]);
+  const dropdownRef = useRef(null);
+
+  const [formData, setFormData] = useState({ personal: {}, professional: {}, documents: {} });
+
   const formatDate = (dateString) => {
     if (!dateString) return "N/A";
     try {
-      const date = new Date(dateString);
-      return date.toLocaleDateString('en-IN', { 
-        day: '2-digit', 
-        month: 'short', 
-        year: 'numeric' 
-      });
-    } catch {
-      return "N/A";
-    }
+      return new Date(dateString).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
+    } catch { return "N/A"; }
   };
-
-  // AG Grid Column Definitions
-  const columnDefs = useMemo(() => [
-    {
-      headerName: "Name",
-      field: "name",
-      minWidth: 200,
-      // cellRenderer: (params) => (
-      //   <div className="flex items-center gap-3 p-2">
-      //     <img
-      //       src={
-      //         params.data.profile_image || params.data.profileImage
-      //           ? params.data.profile_image || params.data.profileImage
-      //           : "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
-      //       }
-      //       alt="Profile"
-      //       className="w-10 h-10 rounded-full object-cover border-2 border-gray-200"
-      //     />
-      //     <span className="font-semibold text-gray-900 text-md">
-      //       {params.value || "N/A"}
-      //     </span>
-      //   </div>
-      // ),
-      sortable: true,
-      filter: true,
-    },
-    {
-      headerName: "PAN No.",
-      field: "pan",
-      minWidth: 140,
-      sortable: true,
-      filter: true,
-    },
-    {
-      headerName: "State",
-      field: "state",
-      minWidth: 120,
-      sortable: true,
-      filter: true,
-    },
-    {
-      headerName: "Registered",
-      field: "created_at",
-      minWidth: 130,
-      valueFormatter: (params) => formatDate(params.value),
-      sortable: true,
-      filter: true,
-    },
-    {
-      headerName: "Phone",
-      field: "phone",
-      minWidth: 150,
-      cellRenderer: (params) => (
-        <div className="text-md font-medium text-gray-900">
-          {params.value || "N/A"}
-        </div>
-      ),
-      sortable: true,
-      filter: true,
-    },
-    {
-      headerName: "Email",
-      field: "email",
-      minWidth: 220,
-      cellRenderer: (params) => (
-        <div className="text-md font-medium text-gray-900 truncate max-w-[200px]">
-          {params.value || "N/A"}
-        </div>
-      ),
-      sortable: true,
-      filter: true,
-    }
-  ], []);
-
-  const defaultColDef = useMemo(() => ({
-    sortable: true,
-    filter: true,
-    resizable: true,
-    flex: 1,
-  }), []);
 
   const fetchAnalysts = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
       const res = await axios.get(`${apiUrl}/users/user-all`);
-      if (res.data.success) {
-        setAnalysts(res.data.data || []);
-        console.log("Users loaded:", res.data.data);
-      } else {
-        setError("Failed to fetch users");
-      }
-    } catch (err) {
-      console.error("Error fetching users:", err);
-      setError("Server error");
-    } finally {
-      setLoading(false);
-    }
+      if (res.data.success) setAnalysts(res.data.data || []);
+      else setError("Failed to fetch users");
+    } catch { setError("Server error"); }
+    finally { setLoading(false); }
   }, [apiUrl]);
 
+  useEffect(() => { fetchAnalysts(); }, [fetchAnalysts]);
+
   useEffect(() => {
-    fetchAnalysts();
-  }, [fetchAnalysts]);
+    const handler = (e) => {
+      if (dropdownOpen === null) return;
+      const btn = btnRefs.current[dropdownOpen];
+      if ((btn && btn.contains(e.target)) || (dropdownRef.current && dropdownRef.current.contains(e.target))) return;
+      setDropdownOpen(null);
+    };
+    document.addEventListener("click", handler, true);
+    return () => document.removeEventListener("click", handler, true);
+  }, [dropdownOpen]);
 
-  const onGridReady = useCallback((params) => {
-    setGridApi(params.api);
-    params.api.sizeColumnsToFit();
-  }, []);
-
-  const handleView = (user) => {
-    navigate(`/admin/users/${user.id}`);
+  const toggleDropdown = (index) => {
+    if (btnRefs.current[index]) {
+      const rect = btnRefs.current[index].getBoundingClientRect();
+      setDropdownPos({ top: rect.bottom + window.scrollY + 4, left: rect.right - 140 });
+    }
+    setDropdownOpen((p) => (p === index ? null : index));
   };
 
-  const handleDelete = (user) => {
-    setSelectedAnalyst(user);
-    setDeleteModalOpen(true);
-  };
+  const filtered = analysts.filter((u) => {
+    const q = search.toLowerCase();
+    return (
+      (u.name || "").toLowerCase().includes(q) ||
+      (u.email || "").toLowerCase().includes(q) ||
+      (u.phone || "").includes(q) ||
+      (u.state || "").toLowerCase().includes(q) ||
+      (u.pan || "").toLowerCase().includes(q)
+    );
+  });
+
+  const totalPages = Math.ceil(filtered.length / pageSize);
+  const paginated = filtered.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
   const confirmDelete = async () => {
     try {
       await axios.delete(`${apiUrl}/users/${selectedAnalyst.id}`);
-      if (gridApi) {
-        gridApi.applyTransaction({ remove: [selectedAnalyst] });
-      }
+      setAnalysts((p) => p.filter((u) => u.id !== selectedAnalyst.id));
       setDeleteModalOpen(false);
       setSelectedAnalyst(null);
-    } catch (err) {
-      console.error("Delete error:", err);
-      setError("Failed to delete user");
-      fetchAnalysts();
-    }
+    } catch { setError("Failed to delete user"); fetchAnalysts(); }
   };
 
   const handleCloseModals = () => {
     setStep(0);
-    setFormData({
-      personal: {},
-      professional: {},
-      documents: {},
-    });
+    setFormData({ personal: {}, professional: {}, documents: {} });
   };
 
-  return (
-    <div className="bg-white rounded-xl shadow-sm p-6 relative">
-      <div className="flex justify-between items-center mb-8">
-        <div>
-          <h2 className="text-3xl font-bold text-gray-900">Users</h2>
-          <p className="text-md text-gray-500 mt-1">Manage user accounts</p>
-        </div>
-      </div>
+  const cols = ["Name", "PAN No.", "State", "Registered", "Phone", "Email", ""];
 
-      {loading ? (
-        <div className="flex items-center justify-center py-20">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto mb-4"></div>
-            <p className="text-lg text-gray-600">Loading users...</p>
+  return (
+    <div style={{ fontFamily: "'DM Sans', sans-serif" }}>
+      <style>{`
+        .user-row:hover { background: rgba(255,255,255,0.32) !important; }
+        .user-row { transition: background 0.18s; cursor: default; }
+        .page-btn:hover { background: rgba(255,255,255,0.35) !important; }
+        .page-btn { transition: background 0.15s; }
+        .action-btn:hover { background: rgba(255,255,255,0.4) !important; }
+        ::-webkit-scrollbar { height: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 4px; }
+      `}</style>
+
+      <div style={{ ...glass, padding: "24px 24px 0" }}>
+        {/* Header */}
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 20, flexWrap: "wrap", gap: 12 }}>
+          <div>
+            <h2 style={{ fontFamily: "'Sora', sans-serif", fontWeight: 700, fontSize: 20, color: "#2a2118", margin: 0 }}>
+              Users
+            </h2>
+            <p style={{ fontSize: 12, color: "#8a7e74", margin: "4px 0 0" }}>
+              {analysts.length} total accounts
+            </p>
+          </div>
+
+          {/* Search */}
+          <div style={{
+            display: "flex", alignItems: "center", gap: 8,
+            background: "rgba(255,255,255,0.28)",
+            border: "1.5px solid rgba(255,255,255,0.45)",
+            borderRadius: 12, padding: "7px 14px",
+            backdropFilter: "blur(10px)",
+            minWidth: 220,
+          }}>
+            <Search size={14} color="#8a7e74" />
+            <input
+              value={search}
+              onChange={(e) => { setSearch(e.target.value); setCurrentPage(1); }}
+              placeholder="Search users..."
+              style={{
+                background: "none", border: "none", outline: "none",
+                fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "#2a2118",
+                width: "100%",
+              }}
+            />
           </div>
         </div>
-      ) : error ? (
-        <div className="text-center py-16">
-          <div className="text-xl font-semibold text-red-600 mb-6">{error}</div>
+
+        {/* States */}
+        {loading ? (
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "60px 0", gap: 12 }}>
+            <div style={{
+              width: 36, height: 36, borderRadius: "50%",
+              border: "3px solid rgba(110,124,248,0.15)",
+              borderTopColor: "#6e7cf8",
+              animation: "spin 0.8s linear infinite",
+            }} />
+            <p style={{ fontSize: 13, color: "#8a7e74" }}>Loading users...</p>
+            <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+          </div>
+        ) : error ? (
+          <div style={{ textAlign: "center", padding: "60px 0" }}>
+            <p style={{ color: "#ef4444", fontSize: 14, marginBottom: 16 }}>{error}</p>
+            <button onClick={fetchAnalysts} style={{
+              padding: "8px 20px", borderRadius: 20, border: "none", cursor: "pointer",
+              background: "linear-gradient(135deg, rgba(110,124,248,0.85), rgba(79,195,247,0.8))",
+              color: "#fff", fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 600,
+            }}>Retry</button>
+          </div>
+        ) : filtered.length === 0 ? (
+          <div style={{ textAlign: "center", padding: "60px 0" }}>
+            <p style={{ fontSize: 32, marginBottom: 12, opacity: 0.25 }}>👥</p>
+            <p style={{ fontSize: 14, color: "#8a7e74" }}>{search ? "No results found" : "No users yet"}</p>
+          </div>
+        ) : (
+          <>
+            {/* Table */}
+            <div style={{ overflowX: "auto" }}>
+              <table style={{ width: "100%", borderCollapse: "separate", borderSpacing: "0 6px", minWidth: 700 }}>
+                <thead>
+                  <tr>
+                    {cols.map((col, i) => (
+                      <th key={i} style={{
+                        textAlign: i === cols.length - 1 ? "right" : "left",
+                        padding: "6px 14px",
+                        fontSize: 11, fontWeight: 600,
+                        color: "#8a7e74",
+                        fontFamily: "'DM Sans', sans-serif",
+                        whiteSpace: "nowrap",
+                      }}>
+                        {col}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {paginated.map((user, i) => (
+                    <tr key={user.id || i} className="user-row" style={{ ...glassRow }}>
+                      {/* Name */}
+                      <td style={{ padding: "10px 14px", borderRadius: "14px 0 0 14px" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                          <img
+                            src={user.profile_image || user.profileImage || "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"}
+                            alt=""
+                            style={{ width: 32, height: 32, borderRadius: "50%", objectFit: "cover", border: "1.5px solid rgba(255,255,255,0.6)", flexShrink: 0 }}
+                          />
+                          <span style={{ fontSize: 13, fontWeight: 600, color: "#2a2118", whiteSpace: "nowrap" }}>
+                            {user.name || "N/A"}
+                          </span>
+                        </div>
+                      </td>
+                      {/* PAN */}
+                      <td style={{ padding: "10px 14px" }}>
+                        <span style={{
+                          display: "inline-block", padding: "3px 10px", borderRadius: 20,
+                          background: "rgba(110,124,248,0.1)", border: "1px solid rgba(110,124,248,0.2)",
+                          fontSize: 11, fontWeight: 600, color: "#6e7cf8", letterSpacing: "0.03em",
+                        }}>
+                          {user.pan || "N/A"}
+                        </span>
+                      </td>
+                      {/* State */}
+                      <td style={{ padding: "10px 14px", fontSize: 13, color: "#5a4e44" }}>
+                        {user.state ? user.state.charAt(0).toUpperCase() + user.state.slice(1) : "N/A"}
+                      </td>
+                      {/* Date */}
+                      <td style={{ padding: "10px 14px", fontSize: 12, color: "#8a7e74", whiteSpace: "nowrap" }}>
+                        {formatDate(user.created_at)}
+                      </td>
+                      {/* Phone */}
+                      <td style={{ padding: "10px 14px", fontSize: 13, color: "#5a4e44", whiteSpace: "nowrap" }}>
+                        {user.phone || "N/A"}
+                      </td>
+                      {/* Email */}
+                      <td style={{ padding: "10px 14px", fontSize: 12, color: "#5a4e44", maxWidth: 200 }}>
+                        <span style={{ display: "block", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                          {user.email || "N/A"}
+                        </span>
+                      </td>
+                      {/* Actions */}
+                      <td style={{ padding: "10px 14px", textAlign: "right", borderRadius: "0 14px 14px 0" }}>
+                        <button
+                          ref={(el) => (btnRefs.current[i] = el)}
+                          className="action-btn"
+                          onClick={() => toggleDropdown(i)}
+                          style={{
+                            width: 28, height: 28, borderRadius: 8, border: "none", cursor: "pointer",
+                            background: "rgba(255,255,255,0.3)",
+                            display: "inline-flex", alignItems: "center", justifyContent: "center",
+                          }}
+                        >
+                          <MoreVertical size={14} color="#5a4e44" />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Pagination */}
+            <div style={{
+              display: "flex", justifyContent: "space-between", alignItems: "center",
+              padding: "16px 4px 20px", flexWrap: "wrap", gap: 8,
+            }}>
+              <p style={{ fontSize: 12, color: "#8a7e74" }}>
+                Showing {Math.min((currentPage - 1) * pageSize + 1, filtered.length)}–{Math.min(currentPage * pageSize, filtered.length)} of {filtered.length}
+              </p>
+              <div style={{ display: "flex", gap: 6 }}>
+                <button
+                  className="page-btn"
+                  disabled={currentPage === 1}
+                  onClick={() => setCurrentPage((p) => p - 1)}
+                  style={{
+                    padding: "5px 14px", borderRadius: 20, border: "1.5px solid rgba(255,255,255,0.4)",
+                    background: "rgba(255,255,255,0.2)", cursor: currentPage === 1 ? "not-allowed" : "pointer",
+                    fontSize: 12, color: currentPage === 1 ? "#c0b8b0" : "#2a2118",
+                    fontFamily: "'DM Sans', sans-serif",
+                  }}
+                >
+                  ← Prev
+                </button>
+                {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
+                  const page = i + 1;
+                  return (
+                    <button
+                      key={page}
+                      className="page-btn"
+                      onClick={() => setCurrentPage(page)}
+                      style={{
+                        width: 30, height: 30, borderRadius: 8, border: "1.5px solid rgba(255,255,255,0.4)",
+                        background: currentPage === page
+                          ? "linear-gradient(135deg, rgba(110,124,248,0.85), rgba(79,195,247,0.8))"
+                          : "rgba(255,255,255,0.2)",
+                        cursor: "pointer", fontSize: 12,
+                        color: currentPage === page ? "#fff" : "#2a2118",
+                        fontFamily: "'DM Sans', sans-serif", fontWeight: 600,
+                        boxShadow: currentPage === page ? "0 2px 8px rgba(110,124,248,0.3)" : "none",
+                      }}
+                    >
+                      {page}
+                    </button>
+                  );
+                })}
+                <button
+                  className="page-btn"
+                  disabled={currentPage === totalPages || totalPages === 0}
+                  onClick={() => setCurrentPage((p) => p + 1)}
+                  style={{
+                    padding: "5px 14px", borderRadius: 20, border: "1.5px solid rgba(255,255,255,0.4)",
+                    background: "rgba(255,255,255,0.2)", cursor: currentPage === totalPages ? "not-allowed" : "pointer",
+                    fontSize: 12, color: currentPage === totalPages ? "#c0b8b0" : "#2a2118",
+                    fontFamily: "'DM Sans', sans-serif",
+                  }}
+                >
+                  Next →
+                </button>
+              </div>
+            </div>
+          </>
+        )}
+      </div>
+
+      {/* Dropdown */}
+      {dropdownOpen !== null && (
+        <div
+          ref={dropdownRef}
+          style={{
+            position: "absolute",
+            top: dropdownPos.top,
+            left: dropdownPos.left,
+            zIndex: 1000,
+            background: "rgba(255,255,255,0.75)",
+            backdropFilter: "blur(20px)",
+            WebkitBackdropFilter: "blur(20px)",
+            border: "1.5px solid rgba(255,255,255,0.5)",
+            borderRadius: 14,
+            boxShadow: "0 8px 32px rgba(0,0,0,0.12)",
+            overflow: "hidden",
+            minWidth: 140,
+          }}
+        >
           <button
-            onClick={fetchAnalysts}
-            className="px-6 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all"
+            onClick={() => { navigate(`/admin/users/${paginated[dropdownOpen]?.id}`); setDropdownOpen(null); }}
+            style={{
+              display: "block", width: "100%", textAlign: "left",
+              padding: "10px 16px", background: "none", border: "none", cursor: "pointer",
+              fontSize: 13, color: "#2a2118", fontFamily: "'DM Sans', sans-serif", fontWeight: 500,
+              borderBottom: "1px solid rgba(255,255,255,0.4)",
+            }}
+            onMouseEnter={e => e.currentTarget.style.background = "rgba(110,124,248,0.1)"}
+            onMouseLeave={e => e.currentTarget.style.background = "none"}
           >
-            🔄 Retry
+            👁 View
           </button>
-        </div>
-      ) : analysts.length === 0 ? (
-        <div className="text-center py-20">
-          <div className="text-4xl mb-6 opacity-20">👥</div>
-          <h3 className="text-2xl font-semibold text-gray-600 mb-2">No Users Found</h3>
-          <p className="text-gray-500 mb-8">No user accounts available.</p>
-        </div>
-      ) : (
-        <div className="ag-theme-quartz border rounded-xl shadow-sm" style={{ height: 650, width: "100%" }}>
-          <AgGridReact
-            ref={gridRef}
-            rowData={analysts}
-            columnDefs={columnDefs}
-            defaultColDef={defaultColDef}
-            onGridReady={onGridReady}
-            animateRows={true}
-            pagination={true}
-            paginationPageSize={15}
-            paginationPageSizeSelector={[10, 15, 25, 50]}
-          />
+          <button
+            onClick={() => { setSelectedAnalyst(paginated[dropdownOpen]); setDeleteModalOpen(true); setDropdownOpen(null); }}
+            style={{
+              display: "block", width: "100%", textAlign: "left",
+              padding: "10px 16px", background: "none", border: "none", cursor: "pointer",
+              fontSize: 13, color: "#ef4444", fontFamily: "'DM Sans', sans-serif", fontWeight: 500,
+            }}
+            onMouseEnter={e => e.currentTarget.style.background = "rgba(239,68,68,0.08)"}
+            onMouseLeave={e => e.currentTarget.style.background = "none"}
+          >
+            🗑 Delete
+          </button>
         </div>
       )}
 
-      {/* Keep your existing modals */}
-      {step === 1 && (
-        <PersonalDetailsModal
-          data={formData.personal}
-          onNext={(data) => {
-            setFormData((prev) => ({ ...prev, personal: data }));
-            setStep(2);
-          }}
-          onClose={handleCloseModals}
-        />
-      )}
-      {step === 2 && (
-        <ProfessionalDetailsModal
-          data={formData.professional}
-          onNext={(data) => {
-            setFormData((prev) => ({ ...prev, professional: data }));
-            setStep(3);
-          }}
-          onBack={() => setStep(1)}
-          onClose={handleCloseModals}
-        />
-      )}
-      {step === 3 && (
-        <DocumentUploadModal
-          data={formData.documents}
-          parentData={formData}
-          onSubmit={(data) => {
-            fetchAnalysts();
-            handleCloseModals();
-          }}
-          onBack={() => setStep(2)}
-          onClose={handleCloseModals}
-        />
-      )}
-      {deleteModalOpen && (
-        <DeleteConfirmationModal
-          itemName={selectedAnalyst?.name || "User"}
-          onConfirm={confirmDelete}
-          onCancel={() => {
-            setDeleteModalOpen(false);
-            setSelectedAnalyst(null);
-          }}
-        />
-      )}
+      {/* Modals */}
+      {step === 1 && <PersonalDetailsModal data={formData.personal} onNext={(d) => { setFormData(p => ({ ...p, personal: d })); setStep(2); }} onClose={handleCloseModals} />}
+      {step === 2 && <ProfessionalDetailsModal data={formData.professional} onNext={(d) => { setFormData(p => ({ ...p, professional: d })); setStep(3); }} onBack={() => setStep(1)} onClose={handleCloseModals} />}
+      {step === 3 && <DocumentUploadModal data={formData.documents} parentData={formData} onSubmit={() => { fetchAnalysts(); handleCloseModals(); }} onBack={() => setStep(2)} onClose={handleCloseModals} />}
+      {deleteModalOpen && <DeleteConfirmationModal itemName={selectedAnalyst?.name || "User"} onConfirm={confirmDelete} onCancel={() => { setDeleteModalOpen(false); setSelectedAnalyst(null); }} />}
     </div>
   );
 }
-
