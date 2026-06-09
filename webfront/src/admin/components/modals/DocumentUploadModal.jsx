@@ -1,277 +1,114 @@
+
 import React, { useState, useEffect } from "react";
 import { X, FolderUp, CheckCircle2 } from "lucide-react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+const labelCls = "block text-[12px] font-bold text-gray-600 uppercase tracking-wider mb-1.5";
+const errCls   = "text-red-500 text-[11px] mt-1";
+
+const UploadZone = ({ label, file, setter, error }) => (
+  <div className={`border-2 border-dashed rounded-2xl p-5 text-center transition-all ${error?"border-red-300 bg-red-50":"border-gray-200 hover:border-green-400 bg-gray-50 hover:bg-green-50"}`}>
+    <div className={`w-10 h-10 rounded-xl mx-auto mb-3 flex items-center justify-center ${file?"bg-green-50 border border-green-200":"bg-gray-100 border border-gray-200"}`}>
+      {file ? <CheckCircle2 className="w-5 h-5 text-green-500" /> : <FolderUp className="w-5 h-5 text-gray-400" />}
+    </div>
+    <p className="text-[13px] font-semibold text-gray-700 mb-1">{label}</p>
+    {file
+      ? <p className="text-[12px] text-green-600 font-medium mb-3">{file.name}</p>
+      : <p className="text-[12px] text-gray-400 mb-3">Drag & drop or browse</p>}
+    <label className="inline-block cursor-pointer">
+      <input type="file" className="hidden" onChange={e => setter(e.target.files[0])} />
+      <span className="inline-block px-4 py-1.5 rounded-lg bg-white border border-gray-200 hover:border-green-400 text-[12px] font-semibold text-gray-600 hover:text-green-600 transition-all">
+        Browse files
+      </span>
+    </label>
+    {error && <p className={errCls + " mt-2"}>{error}</p>}
+  </div>
+);
+
 export default function DocumentUploadModal({ data, parentData, onSubmit, onBack, onClose }) {
-  const [panFile, setPanFile] = useState(null);
-  const [sebiFile, setSebiFile] = useState(null);
-  const [terms, setTerms] = useState("");
-  const [errors, setErrors] = useState({});
-  const [profileImage, setProfileImage] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [panFile,  setPan]    = useState(null);
+  const [sebiFile, setSebi]   = useState(null);
+  const [terms,    setTerms]  = useState("");
+  const [errors,   setErrors] = useState({});
+  const [loading,  setLoad]   = useState(false);
+  const [profileImage, setProfileImg] = useState(null);
 
   const apiUrl = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
-    if (parentData?.personal?.profileImage) {
-      setProfileImage(parentData.personal.profileImage);
-    }
+    if (parentData?.personal?.profileImage) setProfileImg(parentData.personal.profileImage);
   }, [parentData]);
 
-  const validateForm = () => {
-    const newErrors = {};
-    if (!panFile) newErrors.panFile = "Please upload your PAN / Aadhar file";
-    if (!sebiFile) newErrors.sebiFile = "Please upload your SEBI certificate";
-    if (!terms.trim()) newErrors.terms = "Please enter terms & declaration";
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const resetForm = () => {
-    setPanFile(null);
-    setSebiFile(null);
-    setTerms("");
-    setErrors({});
+  const validate = () => {
+    const e = {};
+    if (!panFile)       e.panFile  = "Please upload PAN / Aadhar";
+    if (!sebiFile)      e.sebiFile = "Please upload SEBI certificate";
+    if (!terms.trim())  e.terms    = "Terms & declaration required";
+    setErrors(e);
+    return Object.keys(e).length === 0;
   };
 
   const handleSubmit = async () => {
-    if (!validateForm()) return;
+    if (!validate()) return;
     const p = parentData?.personal || {};
     const prof = parentData?.professional || {};
     try {
-      setLoading(true);
-      const formDataToSend = new FormData();
-      formDataToSend.append("name", p.name || "");
-      formDataToSend.append("email", p.email || "");
-      formDataToSend.append("mobile", p.mobile || "");
-      formDataToSend.append("pan", p.pan || "");
-      formDataToSend.append("gender", p.gender || "");
-      formDataToSend.append("dob", p.dob || "");
-      formDataToSend.append("city", p.city || "");
-      formDataToSend.append("state", p.state || "");
-      formDataToSend.append("address", p.address || "");
-      formDataToSend.append("aboutUs", p.aboutUs || "");
-      if (p.signature) formDataToSend.append("signature", p.signature);
-      formDataToSend.append("sebiNumber", prof.sebiNumber || "");
-      formDataToSend.append("specialization", prof.specialization || "");
-      formDataToSend.append("education", prof.education || "");
-      formDataToSend.append("experience", prof.experience || "");
-      formDataToSend.append("companyName", prof.companyName || "");
-      formDataToSend.append("languages", prof.languages || "");
-      formDataToSend.append("segment", prof.segment || "");
-      if (prof.selectedFile) formDataToSend.append("professionalDocument", prof.selectedFile);
-      if (profileImage) formDataToSend.append("profileImage", profileImage);
-      formDataToSend.append("terms", terms);
-      formDataToSend.append("panFile", panFile);
-      formDataToSend.append("sebiFile", sebiFile);
-      const res = await axios.post(`${apiUrl}/research-analyst/create`, formDataToSend, { withCredentials: true });
-      toast.success("Form submitted successfully");
-      resetForm();
+      setLoad(true);
+      const fd = new FormData();
+      Object.entries({ name:p.name,email:p.email,mobile:p.mobile,pan:p.pan,gender:p.gender,dob:p.dob,city:p.city,state:p.state,address:p.address,aboutUs:p.aboutUs,sebiNumber:prof.sebiNumber,specialization:prof.specialization,education:prof.education,experience:prof.experience,companyName:prof.companyName,languages:prof.languages,segment:prof.segment,terms }).forEach(([k,v]) => fd.append(k,v||""));
+      if (p.signature)       fd.append("signature",          p.signature);
+      if (prof.selectedFile) fd.append("professionalDocument", prof.selectedFile);
+      if (profileImage)      fd.append("profileImage",         profileImage);
+      fd.append("panFile",  panFile);
+      fd.append("sebiFile", sebiFile);
+      await axios.post(`${apiUrl}/research-analyst/create`, fd, { withCredentials:true });
+      toast.success("RA added successfully!");
       onSubmit?.({ panFile, sebiFile, terms });
-    } catch (error) {
-      toast.error(error.response?.data?.message || "Failed to submit data ❌");
-    } finally {
-      setLoading(false);
-    }
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Failed to submit ❌");
+    } finally { setLoad(false); }
   };
-
-  const glassCard = {
-    background: "rgba(255,255,255,0.18)",
-    backdropFilter: "blur(18px)",
-    WebkitBackdropFilter: "blur(18px)",
-    border: "1.5px solid rgba(255,255,255,0.38)",
-    borderRadius: "20px",
-  };
-
-  const UploadZone = ({ label, file, setter, error }) => (
-    <div
-      style={{
-        ...glassCard,
-        border: error
-          ? "1.5px dashed rgba(239,68,68,0.6)"
-          : "1.5px dashed rgba(255,255,255,0.45)",
-        borderRadius: "14px",
-        padding: "16px",
-        textAlign: "center",
-      }}
-    >
-      <div style={{
-        width: 38, height: 38, borderRadius: "10px", margin: "0 auto 8px",
-        background: file ? "rgba(74,197,130,0.18)" : "rgba(110,124,248,0.18)",
-        display: "flex", alignItems: "center", justifyContent: "center",
-      }}>
-        {file
-          ? <CheckCircle2 size={18} style={{ color: "#4ac582" }} />
-          : <FolderUp size={18} style={{ color: "#6e7cf8" }} />
-        }
-      </div>
-      <p style={{ fontFamily: "'Sora', sans-serif", fontWeight: 600, fontSize: 13, color: "#2a2118", marginBottom: 2 }}>
-        {label}
-      </p>
-      {file
-        ? <p style={{ fontSize: 11, color: "#4ac582", fontFamily: "'DM Sans', sans-serif", marginBottom: 8 }}>{file.name}</p>
-        : <p style={{ fontSize: 11, color: "#8a7e74", fontFamily: "'DM Sans', sans-serif", marginBottom: 8 }}>Drag & drop or browse</p>
-      }
-      <label style={{ display: "inline-block", cursor: "pointer" }}>
-        <input type="file" style={{ display: "none" }} onChange={(e) => setter(e.target.files[0])} />
-        <span style={{
-          display: "inline-block",
-          padding: "4px 16px",
-          borderRadius: "20px",
-          background: "rgba(255,255,255,0.28)",
-          border: "1px solid rgba(255,255,255,0.5)",
-          fontSize: 11,
-          fontFamily: "'DM Sans', sans-serif",
-          color: "#2a2118",
-          fontWeight: 500,
-          backdropFilter: "blur(8px)",
-        }}>
-          Browse files
-        </span>
-      </label>
-      {error && <p style={{ color: "#ef4444", fontSize: 11, marginTop: 5, fontFamily: "'DM Sans', sans-serif" }}>{error}</p>}
-    </div>
-  );
 
   return (
-    <div
-      style={{
-        position: "fixed", inset: 0, zIndex: 2000,
-        background: "rgba(0,0,0,0.35)",
-        backdropFilter: "blur(6px)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "16px",
-        // KEY FIX: allow scroll on overlay itself on very small screens
-        overflowY: "auto",
-      }}
-      onClick={onClose}
-    >
-      <div
-        style={{
-          ...glassCard,
-          width: "100%",
-          maxWidth: 520,
-          // KEY FIX: use flex column with max-height + internal scroll
-          display: "flex",
-          flexDirection: "column",
-          maxHeight: "calc(100dvh - 32px)",
-          boxShadow: "0 24px 64px rgba(0,0,0,0.18), 0 1.5px 0 rgba(255,255,255,0.5) inset",
-          // prevent margin collapse on small screens
-          margin: "auto",
-        }}
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* Header — fixed, never scrolls */}
-        <div style={{
-          flexShrink: 0,
-          display: "flex", alignItems: "center", justifyContent: "space-between",
-          padding: "16px 20px 14px",
-          borderBottom: "1px solid rgba(255,255,255,0.25)",
-        }}>
+    <div className="fixed inset-0 flex items-center justify-center z-50 px-4 bg-black/25" style={{ backdropFilter:"blur(4px)", fontFamily:"'Hind Siliguri',sans-serif" }}>
+      <div className="w-full max-w-lg bg-white rounded-2xl border border-gray-100 shadow-[0_24px_64px_rgba(0,0,0,0.1)] flex flex-col max-h-[92vh]">
+
+        <div className="flex-shrink-0 flex items-center justify-between px-6 py-4 border-b border-gray-100">
           <div>
-            <h2 style={{ fontFamily: "'Sora', sans-serif", fontWeight: 700, fontSize: 15, color: "#2a2118", margin: 0 }}>
-              Document Upload
-            </h2>
-            <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 11, color: "#8a7e74", margin: "2px 0 0" }}>
-              Upload required verification documents
-            </p>
+            <h3 style={{ fontFamily:"'Aileron','Arial Black',sans-serif", fontWeight:900, fontSize:16, color:"#111827" }}>Document Upload</h3>
+            <p className="text-[12px] text-gray-400 mt-0.5">Step 3 of 3 — Upload verification documents</p>
           </div>
-          <button
-            onClick={onClose}
-            style={{
-              width: 30, height: 30, borderRadius: "9px", border: "none", cursor: "pointer",
-              background: "rgba(255,255,255,0.25)",
-              backdropFilter: "blur(8px)",
-              display: "flex", alignItems: "center", justifyContent: "center",
-              flexShrink: 0,
-            }}
-          >
-            <X size={14} color="#5a4e44" />
+          <button onClick={onClose} className="w-8 h-8 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center text-gray-400 hover:bg-gray-100 transition-all">
+            <X className="h-4 w-4" />
           </button>
         </div>
 
-        {/* Body — this part scrolls */}
-        <div style={{
-          flex: 1,
-          overflowY: "auto",
-          padding: "16px 20px",
-          display: "flex",
-          flexDirection: "column",
-          gap: 12,
-          // Custom scrollbar subtle styling
-          scrollbarWidth: "thin",
-          scrollbarColor: "rgba(255,255,255,0.3) transparent",
-        }}>
-          <UploadZone label="PAN / Aadhar Upload" file={panFile} setter={setPanFile} error={errors.panFile} />
-          <UploadZone label="SEBI Certificate Upload" file={sebiFile} setter={setSebiFile} error={errors.sebiFile} />
+        <div className="flex-1 overflow-y-auto p-6 space-y-4" style={{ scrollbarWidth:"thin" }}>
+          <UploadZone label="PAN / Aadhar Upload"    file={panFile}  setter={setPan}  error={errors.panFile}  />
+          <UploadZone label="SEBI Certificate Upload" file={sebiFile} setter={setSebi} error={errors.sebiFile} />
 
           <div>
-            <label style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, fontWeight: 600, color: "#5a4e44", display: "block", marginBottom: 5 }}>
-              Terms & Declaration
-            </label>
-            <input
-              type="text"
-              value={terms}
-              onChange={(e) => setTerms(e.target.value)}
-              placeholder="Enter Terms & Declaration"
-              style={{
-                width: "100%",
-                padding: "9px 13px",
-                borderRadius: "12px",
-                border: errors.terms ? "1.5px solid rgba(239,68,68,0.6)" : "1.5px solid rgba(255,255,255,0.4)",
-                background: "rgba(255,255,255,0.22)",
-                backdropFilter: "blur(10px)",
-                fontFamily: "'DM Sans', sans-serif",
-                fontSize: 13,
-                color: "#2a2118",
-                outline: "none",
-                boxSizing: "border-box",
-              }}
-            />
-            {errors.terms && <p style={{ color: "#ef4444", fontSize: 11, marginTop: 4, fontFamily: "'DM Sans', sans-serif" }}>{errors.terms}</p>}
+            <label className={labelCls}>Terms & Declaration <span className="text-red-500 normal-case">*</span></label>
+            <input type="text" value={terms} onChange={e=>setTerms(e.target.value)} placeholder="Enter terms & declaration"
+              className={`w-full bg-white border ${errors.terms?"border-red-400 ring-2 ring-red-100":"border-gray-200"} rounded-xl px-4 py-2.5 text-[13px] text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-400 focus:ring-2 focus:ring-green-100 transition-all`} />
+            {errors.terms && <p className={errCls}>{errors.terms}</p>}
           </div>
         </div>
 
-        {/* Footer — fixed, never scrolls */}
-        <div style={{
-          flexShrink: 0,
-          display: "flex", justifyContent: "flex-end", gap: 10,
-          padding: "12px 20px 16px",
-          borderTop: "1px solid rgba(255,255,255,0.25)",
-        }}>
-          <button
-            onClick={onBack}
-            style={{
-              padding: "7px 20px", borderRadius: "20px", cursor: "pointer",
-              background: "rgba(255,255,255,0.22)",
-              border: "1.5px solid rgba(255,255,255,0.45)",
-              fontFamily: "'DM Sans', sans-serif", fontWeight: 500, fontSize: 13, color: "#5a4e44",
-              backdropFilter: "blur(8px)",
-            }}
-          >
-            Cancel
-          </button>
-          <button
-            onClick={handleSubmit}
-            disabled={loading}
-            style={{
-              padding: "7px 24px", borderRadius: "20px", cursor: loading ? "not-allowed" : "pointer",
-              background: loading
-                ? "rgba(110,124,248,0.4)"
-                : "linear-gradient(135deg, rgba(110,124,248,0.9) 0%, rgba(79,195,247,0.85) 100%)",
-              border: "1.5px solid rgba(255,255,255,0.4)",
-              fontFamily: "'Sora', sans-serif", fontWeight: 600, fontSize: 13, color: "#fff",
-              backdropFilter: "blur(8px)",
-              boxShadow: "0 4px 16px rgba(110,124,248,0.3)",
-              opacity: loading ? 0.7 : 1,
-            }}
-          >
-            {loading ? "Submitting..." : "Submit"}
-          </button>
+        <div className="flex-shrink-0 border-t border-gray-100 px-6 py-4 flex justify-between gap-3">
+          <button onClick={onBack} className="px-5 py-2.5 rounded-xl bg-gray-50 border border-gray-200 text-[13px] font-semibold text-gray-600 hover:bg-gray-100 transition-all"
+            style={{ fontFamily:"'Aileron','Arial Black',sans-serif" }}>← Back</button>
+          <div className="flex gap-3">
+            <button onClick={onClose} className="px-5 py-2.5 rounded-xl bg-gray-50 border border-gray-200 text-[13px] font-semibold text-gray-600 hover:bg-gray-100 transition-all"
+              style={{ fontFamily:"'Aileron','Arial Black',sans-serif" }}>Cancel</button>
+            <button onClick={handleSubmit} disabled={loading}
+              className="px-6 py-2.5 rounded-xl bg-green-600 hover:bg-green-700 text-white text-[13px] font-bold disabled:opacity-40 disabled:cursor-not-allowed transition-all hover:-translate-y-0.5 hover:shadow-[0_4px_16px_rgba(22,163,74,0.3)]"
+              style={{ fontFamily:"'Aileron','Arial Black',sans-serif" }}>
+              {loading ? "Submitting…" : "Submit ✓"}
+            </button>
+          </div>
         </div>
       </div>
     </div>

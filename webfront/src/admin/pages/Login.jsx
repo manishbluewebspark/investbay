@@ -1,338 +1,284 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { FiEye, FiEyeOff, FiMail, FiLock, FiArrowRight, FiShield, FiUser, FiHeadphones, FiTrendingUp } from "react-icons/fi";
+import { Eye, EyeOff, Mail, Lock, ArrowRight, Shield, TrendingUp, Users, Headphones } from "lucide-react";
 
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail]               = useState("");
+  const [password, setPassword]         = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [err, setErr] = useState("");
+  const [loading, setLoading]           = useState(false);
+  const [err, setErr]                   = useState("");
+  const [isSuccess, setIsSuccess]       = useState(false);
 
   const navigate = useNavigate();
-  const apiUrl = import.meta.env.VITE_API_URL;
+  const apiUrl   = import.meta.env.VITE_API_URL;
 
   const submit = async (e) => {
     e.preventDefault();
-    setErr("");
-    setLoading(true);
-
+    setErr(""); setIsSuccess(false); setLoading(true);
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     localStorage.removeItem("isAdmin");
 
+    const redirect = (user) => {
+      const paths = { admin: "/admin/dashboard", ra: "/admin/dashboard", user: "/user/dashboard", moderator: "/moderator/dashboard" };
+      return paths[user.role?.toLowerCase()] || "/dashboard";
+    };
+
     try {
-      const response = await axios.post(`${apiUrl}/auth/admin/login`, {
-        email: email.trim().toLowerCase(),
-        password,
+      const { data } = await axios.post(`${apiUrl}/auth/admin/login`, {
+        email: email.trim().toLowerCase(), password,
       });
-
-      const { token, user, success, message } = response.data;
-
-      if (success && token && user) {
-        localStorage.setItem("token", token);
-        localStorage.setItem("user", JSON.stringify(user));
-        
-        if (user.role === 'admin' || user.isAdmin) {
-          localStorage.setItem("isAdmin", "true");
-        }
-
-        let redirectPath = "/dashboard";
-        switch (user.role?.toLowerCase()) {
-          case 'admin': redirectPath = "/admin/dashboard"; break;
-          case 'ra': redirectPath = "/admin/dashboard"; break;
-          case 'user': redirectPath = "/user/dashboard"; break;
-          case 'moderator': redirectPath = "/moderator/dashboard"; break;
-        }
-
-        setErr("Login successful! Redirecting...");
-        setTimeout(() => { navigate(redirectPath, { replace: true }); }, 500);
+      if (data.success && data.token) {
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        if (data.user.role === "admin" || data.user.isAdmin) localStorage.setItem("isAdmin", "true");
+        setIsSuccess(true); setErr("Login successful! Redirecting…");
+        setTimeout(() => navigate(redirect(data.user), { replace: true }), 500);
         return;
-      } else {
-        setErr(message || "Invalid admin credentials");
       }
-    } catch (error) {
-      const isAdminError = error.response?.status === 401 || 
-                           error.response?.status === 403 || 
-                           error.response?.status === 404;
-      
-      if (isAdminError) {
+      setErr(data.message || "Invalid credentials");
+    } catch (adminErr) {
+      const s = adminErr.response?.status;
+      if (s === 401 || s === 403 || s === 404) {
         try {
-          const regularResponse = await axios.post(`${apiUrl}/auth/login`, {
-            email: email.trim().toLowerCase(),
-            password,
+          const { data } = await axios.post(`${apiUrl}/auth/login`, {
+            email: email.trim().toLowerCase(), password,
           });
-          
-          const { token, user, success, message } = regularResponse.data;
-          
-          if (success && token && user) {
-            localStorage.setItem("token", token);
-            localStorage.setItem("user", JSON.stringify(user));
-            if (user.role === 'admin') localStorage.setItem("isAdmin", "true");
-
-            let redirectPath = "/dashboard";
-            switch (user.role?.toLowerCase()) {
-              case 'admin': redirectPath = "/admin/dashboard"; break;
-              case 'ra': redirectPath = "/admin/dashboard"; break;
-              case 'user': redirectPath = "/user/dashboard"; break;
-            }
-
-            setErr(`Welcome, ${user.name || user.email}!`);
-            setTimeout(() => { navigate(redirectPath, { replace: true }); }, 500);
+          if (data.success && data.token) {
+            localStorage.setItem("token", data.token);
+            localStorage.setItem("user", JSON.stringify(data.user));
+            if (data.user.role === "admin") localStorage.setItem("isAdmin", "true");
+            setIsSuccess(true); setErr(`Welcome, ${data.user.name || data.user.email}!`);
+            setTimeout(() => navigate(redirect(data.user), { replace: true }), 500);
             return;
-          } else {
-            setErr(message || "Login failed. Please check your credentials.");
           }
-        } catch (regularError) {
-          const errorMessage = regularError.response?.data?.message || regularError.message || "Login failed.";
-          if (regularError.response?.status === 401) setErr("Invalid email or password");
-          else if (regularError.response?.status === 403) setErr("Account is disabled. Please contact support.");
-          else if (regularError.response?.status === 404) setErr("Account not found. Please check your email.");
-          else if (regularError.response?.status === 429) setErr("Too many login attempts. Please try again later.");
-          else setErr(errorMessage);
+          setErr(data.message || "Login failed.");
+        } catch (e2) {
+          const s2 = e2.response?.status;
+          if (s2 === 401) setErr("Invalid email or password");
+          else if (s2 === 403) setErr("Account disabled. Contact support.");
+          else if (s2 === 404) setErr("Account not found. Check your email.");
+          else if (s2 === 429) setErr("Too many attempts. Try again later.");
+          else setErr(e2.response?.data?.message || "Login failed.");
         }
+      } else if (adminErr.code === "ERR_NETWORK") {
+        setErr("Network error. Check your connection.");
       } else {
-        if (error.code === 'ERR_NETWORK') setErr("Network error. Please check your connection.");
-        else if (error.response?.status === 500) setErr("Server error. Please try again later.");
-        else setErr(error.response?.data?.message || "Login failed. Please try again.");
+        setErr(adminErr.response?.data?.message || "Login failed. Try again.");
       }
     } finally {
       setLoading(false);
     }
   };
 
-  const handleUserLoginRedirect = () => {
-    navigate("/user-login");
-  };
-
   return (
-    <div className="min-h-screen bg-[#060b10] flex">
-      {/* Background Effects */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute inset-0 opacity-[0.015]" style={{
-          backgroundImage: `linear-gradient(rgba(0,230,118,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(0,230,118,0.3) 1px, transparent 1px)`,
-          backgroundSize: '64px 64px',
-          maskImage: 'radial-gradient(ellipse 70% 50% at 50% 50%, black 40%, transparent 70%)',
-          WebkitMaskImage: 'radial-gradient(ellipse 70% 50% at 50% 50%, black 40%, transparent 70%)',
+    <div className="min-h-screen bg-gray-50 flex" style={{ fontFamily: "'Hind Siliguri', sans-serif" }}>
+
+      {/* ── Left panel — branding ───────────────────────────────────── */}
+      <div className="hidden lg:flex lg:w-1/2 bg-gray-900 relative overflow-hidden m-4 rounded-3xl flex-col justify-between p-10">
+        {/* Subtle dot pattern */}
+        <div className="absolute inset-0 opacity-[0.04]" style={{
+          backgroundImage: "radial-gradient(circle, #22c55e 1px, transparent 1px)",
+          backgroundSize: "28px 28px",
         }} />
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full bg-emerald-500/[0.03] blur-[120px]" />
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full bg-blue-500/[0.02] blur-[100px]" />
-      </div>
+        {/* Green glow */}
+        <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-green-500/10 blur-[100px]" />
+        <div className="absolute bottom-0 left-0 w-60 h-60 rounded-full bg-green-500/5 blur-[80px]" />
 
-      {/* Left Panel - Branding */}
-      <div className="hidden lg:flex lg:w-1/2 relative m-4">
-        <div
-          className="absolute inset-0 bg-cover bg-center rounded-3xl"
-          style={{ backgroundImage: "url('/login.png')" }}
-        />
-        {/* Dark overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#060b10]/95 via-[#060b10]/80 to-emerald-900/50 rounded-3xl" />
-        
-        <div className="relative z-10 flex flex-col justify-between p-10 w-full">
-          {/* Logo */}
-          <div>
-            <div className="flex items-center gap-3">
-              <div className="w-11 h-11 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center backdrop-blur-sm">
-                <FiShield className="w-6 h-6 text-emerald-400" />
+        {/* Logo */}
+        <div className="relative z-10 flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-green-500/20 border border-green-500/30 flex items-center justify-center">
+            <Shield className="w-5 h-5 text-green-400" strokeWidth={1.8} />
+          </div>
+          <span style={{ fontFamily: "'Aileron','Arial Black',sans-serif", fontWeight: 900, fontSize: 22, color: "white", letterSpacing: "-0.02em" }}>
+            Invest<span style={{ color: "#22c55e" }}>Bay</span>
+          </span>
+        </div>
+
+        {/* Middle content */}
+        <div className="relative z-10 space-y-8">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-500/10 border border-green-500/20 mb-2">
+            <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+            <span className="text-[11px] font-semibold text-green-400 tracking-widest uppercase">Admin Portal</span>
+          </div>
+          <h2 style={{ fontFamily: "'Aileron','Arial Black',sans-serif", fontWeight: 900, fontSize: "clamp(28px,3.5vw,42px)", color: "white", letterSpacing: "-0.025em", lineHeight: 1.15 }}>
+            Welcome to the<br />
+            <span style={{ color: "#22c55e" }}>Command Center.</span>
+          </h2>
+          <p style={{ color: "#94a3b8", fontSize: 15, lineHeight: 1.7, maxWidth: 360 }}>
+            Manage your entire trading platform — users, analysts, signals, and more — from one powerful dashboard.
+          </p>
+
+          {/* Stats */}
+          <div className="grid grid-cols-3 gap-3">
+            {[
+              { val: "50K+",  label: "Active Users",  Icon: Users       },
+              { val: "200+",  label: "SEBI Analysts", Icon: TrendingUp  },
+              { val: "24/7",  label: "Monitoring",    Icon: Headphones  },
+            ].map((s, i) => (
+              <div key={i} className="text-center p-4 rounded-xl" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)" }}>
+                <s.Icon className="w-4 h-4 text-green-400 mx-auto mb-2" strokeWidth={1.8} />
+                <p style={{ fontFamily: "'Aileron','Arial Black',sans-serif", fontWeight: 800, fontSize: 16, color: "white" }}>{s.val}</p>
+                <p style={{ fontSize: 10, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.08em", marginTop: 2 }}>{s.label}</p>
               </div>
-              <span className="text-2xl font-extrabold text-[#f0f4f8]">
-                Invest<span className="text-emerald-400">Bay</span>
-              </span>
-            </div>
+            ))}
           </div>
+        </div>
 
-          {/* Hero Content */}
-          <div className="space-y-8 mt-auto mb-auto">
-            <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 backdrop-blur-sm mb-4">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                <span className="text-xs font-semibold text-emerald-300 tracking-wider uppercase">Admin Portal</span>
-              </div>
-              <h2 className="text-5xl font-extrabold text-white leading-tight mb-4">
-                Welcome to the{" "}
-                <span className="bg-gradient-to-r from-emerald-400 via-emerald-300 to-teal-400 bg-clip-text text-transparent animate-gradient bg-[length:200%_auto]">
-                  Command Center
-                </span>
-              </h2>
-              <p className="text-lg text-slate-300/80 leading-relaxed max-w-md">
-                Manage your entire trading platform from one powerful dashboard.
-              </p>
-            </div>
-
-            {/* Stats */}
-            <div className="grid grid-cols-3 gap-3">
-              {[
-                { value: "50K+", label: "Active Users", icon: FiUser },
-                { value: "200+", label: "SEBI Analysts", icon: FiTrendingUp },
-                { value: "24/7", label: "Monitoring", icon: FiHeadphones },
-              ].map((stat, idx) => (
-                <div key={idx} className="text-center p-3 rounded-xl bg-white/[0.03] border border-white/[0.06] backdrop-blur-sm">
-                  <stat.icon className="w-5 h-5 text-emerald-400 mx-auto mb-1.5" />
-                  <p className="text-lg font-bold text-white">{stat.value}</p>
-                  <p className="text-[10px] text-slate-400 uppercase tracking-wider">{stat.label}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Footer */}
-          <div className="text-xs text-slate-500">
-            © {new Date().getFullYear()} InvestBay. All rights reserved.
-          </div>
+        {/* Footer */}
+        <div className="relative z-10">
+          <p style={{ fontSize: 12, color: "#475569" }}>© {new Date().getFullYear()} InvestBay. All rights reserved.</p>
         </div>
       </div>
 
-      {/* Right Panel - Login Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-6">
-        <div className="w-full max-w-md">
-          {/* Mobile Logo */}
-          <div className="lg:hidden flex flex-col items-center gap-3 mb-10">
-            <div className="w-12 h-12 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center">
-              <FiShield className="w-7 h-7 text-emerald-400" />
+      {/* ── Right panel — form ──────────────────────────────────────── */}
+      <div className="w-full lg:w-1/2 flex items-center justify-center px-6 py-12">
+        <div className="w-full max-w-[400px]">
+
+          {/* Mobile logo */}
+          <div className="lg:hidden flex items-center gap-3 mb-10">
+            <div className="w-9 h-9 rounded-xl bg-green-50 border border-green-200 flex items-center justify-center">
+              <Shield className="w-4.5 h-4.5 text-green-600" strokeWidth={1.8} />
             </div>
-            <span className="text-2xl font-extrabold text-[#f0f4f8]">
-              Invest<span className="text-emerald-400">Bay</span>
+            <span style={{ fontFamily: "'Aileron','Arial Black',sans-serif", fontWeight: 900, fontSize: 20, color: "#111827", letterSpacing: "-0.02em" }}>
+              Invest<span style={{ color: "#16a34a" }}>Bay</span>
             </span>
           </div>
 
-          {/* Form Card */}
-          <div className="bg-white/[0.02] backdrop-blur-sm border border-white/[0.06] rounded-2xl p-8 hover:border-white/[0.1] transition-all duration-300">
-            {/* Header */}
-            <div className="mb-8">
-              <h1 className="text-3xl font-extrabold text-[#f0f4f8] mb-2">Sign In</h1>
-              <p className="text-slate-400 text-sm">Secure access to InvestBay Admin Dashboard</p>
-            </div>
+          {/* Heading */}
+          <div className="mb-8">
+            <h1 style={{ fontFamily: "'Aileron','Arial Black',sans-serif", fontWeight: 900, fontSize: "clamp(26px,4vw,34px)", color: "#111827", letterSpacing: "-0.025em", lineHeight: 1.15 }} className="mb-2">
+              Sign In
+            </h1>
+            <p style={{ fontSize: 15, color: "#6b7280" }}>Secure access to InvestBay Dashboard</p>
+          </div>
 
-            <form onSubmit={submit} className="space-y-5">
-              {/* Email Field */}
-              <div>
-                <label className="text-sm font-semibold text-slate-400 block mb-2">
-                  Email / User ID
-                </label>
-                <div className="relative group">
-                  <div className="absolute inset-0 bg-emerald-500/20 rounded-xl blur-lg opacity-0 group-focus-within:opacity-100 transition-opacity duration-300" />
-                  <FiMail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 w-5 h-5 z-10" />
-                  <input
-                    className="relative w-full bg-white/[0.03] border border-white/[0.08] rounded-xl pl-11 pr-4 py-3 text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:border-emerald-500/30 focus:bg-white/[0.05] transition-all z-10"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    type="text"
-                    placeholder="admin@investbay.in"
-                    required
-                  />
-                </div>
-              </div>
+          {/* Form */}
+          <form onSubmit={submit} className="space-y-5">
 
-              {/* Password Field */}
-              <div>
-                <label className="text-sm font-semibold text-slate-400 block mb-2">
-                  Password
-                </label>
-                <div className="relative group">
-                  <div className="absolute inset-0 bg-emerald-500/20 rounded-xl blur-lg opacity-0 group-focus-within:opacity-100 transition-opacity duration-300" />
-                  <FiLock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 w-5 h-5 z-10" />
-                  <input
-                    className="relative w-full bg-white/[0.03] border border-white/[0.08] rounded-xl pl-11 pr-12 py-3 text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:border-emerald-500/30 focus:bg-white/[0.05] transition-all z-10"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    type={showPassword ? "text" : "password"}
-                    placeholder="••••••••"
-                    required
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 p-1 transition-colors z-10"
-                  >
-                    {showPassword ? <FiEyeOff className="w-5 h-5" /> : <FiEye className="w-5 h-5" />}
-                  </button>
-                </div>
-              </div>
-
-              {/* Alert Message */}
-              {err && (
-                <div className={`p-4 rounded-xl text-sm font-medium animate-fadeIn ${
-                  err.includes("successful") || err.includes("Welcome")
-                    ? "bg-emerald-500/10 border border-emerald-500/20 text-emerald-400"
-                    : "bg-red-500/10 border border-red-500/20 text-red-400"
-                }`}>
-                  {err}
-                </div>
-              )}
-
-              {/* Submit Button */}
-              <button
-                type="submit"
-                disabled={loading || !email || !password}
-                className="w-full bg-emerald-500 hover:bg-emerald-400 text-black rounded-xl py-3.5 font-bold text-sm disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center gap-2 group hover:shadow-lg hover:shadow-emerald-500/25"
-              >
-                {loading ? (
-                  <>
-                    <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                    </svg>
-                    Authenticating...
-                  </>
-                ) : (
-                  <>
-                    Sign In
-                    <FiArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-                  </>
-                )}
-              </button>
-            </form>
-
-            {/* Divider */}
-            <div className="relative my-6">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-white/[0.06]" />
-              </div>
-              <div className="relative flex justify-center text-xs">
-                <span className="px-3 bg-[#060b10] text-slate-600">quick links</span>
+            {/* Email */}
+            <div>
+              <label className="block text-[13px] font-semibold text-gray-700 mb-1.5"
+                style={{ fontFamily: "'Aileron','Arial Black',sans-serif" }}>
+                Email / User ID
+              </label>
+              <div className="relative">
+                <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <input
+                  type="text"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  placeholder="admin@investbay.in"
+                  required
+                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 bg-white text-[14px] text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-400 focus:ring-2 focus:ring-green-100 transition-all"
+                />
               </div>
             </div>
 
-            {/* Footer Links */}
-            <div className="text-center space-y-3">
-              <p className="text-xs text-slate-600">
-                Forgot password?{" "}
-                <button type="button" className="text-emerald-400 hover:text-emerald-300 font-medium transition-colors">
-                  Contact administrator
-                </button>
-              </p>
-              <div className="flex items-center justify-center gap-1">
-                <span className="text-xs text-slate-600">Regular user?</span>
+            {/* Password */}
+            <div>
+              <label className="block text-[13px] font-semibold text-gray-700 mb-1.5"
+                style={{ fontFamily: "'Aileron','Arial Black',sans-serif" }}>
+                Password
+              </label>
+              <div className="relative">
+                <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <input
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  required
+                  className="w-full pl-10 pr-12 py-3 rounded-xl border border-gray-200 bg-white text-[14px] text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-400 focus:ring-2 focus:ring-green-100 transition-all"
+                />
                 <button
                   type="button"
-                  onClick={handleUserLoginRedirect}
-                  className="text-xs text-emerald-400 hover:text-emerald-300 font-medium transition-colors"
+                  onClick={() => setShowPassword(o => !o)}
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
                 >
-                  User Login →
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
             </div>
+
+            {/* Forgot password */}
+            <div className="flex justify-end -mt-2">
+              <button type="button" className="text-[12px] font-semibold text-green-600 hover:text-green-700 transition-colors"
+                style={{ fontFamily: "'Aileron','Arial Black',sans-serif" }}>
+                Forgot password?
+              </button>
+            </div>
+
+            {/* Alert */}
+            {err && (
+              <div className={`px-4 py-3 rounded-xl text-[13px] font-medium border ${
+                isSuccess
+                  ? "bg-green-50 border-green-200 text-green-700"
+                  : "bg-red-50 border-red-200 text-red-600"
+              }`} style={{ animation: "fadeIn 0.25s ease" }}>
+                {err}
+              </div>
+            )}
+
+            {/* Submit */}
+            <button
+              type="submit"
+              disabled={loading || !email || !password}
+              className="group w-full flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white py-3.5 rounded-xl text-[14px] font-bold disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_4px_16px_rgba(22,163,74,0.3)]"
+              style={{ fontFamily: "'Aileron','Arial Black',sans-serif" }}
+            >
+              {loading ? (
+                <><svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg> Authenticating…</>
+              ) : (
+                <>Sign In <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" /></>
+              )}
+            </button>
+          </form>
+
+          {/* Divider */}
+          <div className="flex items-center gap-3 my-6">
+            <div className="flex-1 h-px bg-gray-100" />
+            <span className="text-[11px] text-gray-400 uppercase tracking-wider">or</span>
+            <div className="flex-1 h-px bg-gray-100" />
           </div>
+
+          {/* Footer links */}
+          <div className="text-center space-y-3">
+            <p style={{ fontSize: 13, color: "#9ca3af" }}>
+              Regular user?{" "}
+              <button
+                type="button"
+                onClick={() => navigate("/user-login")}
+                className="font-bold text-green-600 hover:text-green-700 transition-colors"
+                style={{ fontFamily: "'Aileron','Arial Black',sans-serif" }}
+              >
+                User Login →
+              </button>
+            </p>
+            <p style={{ fontSize: 12, color: "#9ca3af" }}>
+              Need access?{" "}
+              <button
+                type="button"
+                className="font-semibold text-gray-500 hover:text-gray-700 transition-colors"
+              >
+                Contact administrator
+              </button>
+            </p>
+          </div>
+
+          {/* Security note */}
+          <div className="mt-8 flex items-center justify-center gap-2">
+            <Shield className="w-3.5 h-3.5 text-gray-300" strokeWidth={1.8} />
+            <span style={{ fontSize: 11, color: "#d1d5db" }}>256-bit SSL encrypted · InvestBay Admin Portal</span>
+          </div>
+
         </div>
       </div>
 
       <style>{`
-        @keyframes gradient {
-          0% { background-position: 0% center; }
-          50% { background-position: 100% center; }
-          100% { background-position: 0% center; }
-        }
-        .animate-gradient {
-          animation: gradient 4s ease infinite;
-        }
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(-4px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fadeIn {
-          animation: fadeIn 0.3s ease-out;
-        }
+        @keyframes fadeIn { from { opacity:0; transform:translateY(-4px); } to { opacity:1; transform:translateY(0); } }
       `}</style>
     </div>
   );

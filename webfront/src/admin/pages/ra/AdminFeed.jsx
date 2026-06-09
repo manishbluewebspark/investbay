@@ -1,5 +1,6 @@
+// AdminFeed.jsx
 import { useEffect, useState } from "react";
-import { FiPlus, FiFilter } from "react-icons/fi";
+import { FiPlus, FiFilter, FiSearch, FiX } from "react-icons/fi";
 import AddFeedModal from "../../components/modals/AddFeedModal";
 import NotFound from "../../components/NotFound";
 import FeedCard from "../../components/FeedCard";
@@ -12,6 +13,7 @@ const AdminFeed = () => {
   const [filterOpen, setFilterOpen] = useState(false);
   const [selectedTag, setSelectedTag] = useState("");
   const [dateFilter, setDateFilter] = useState("");
+  const [showFilters, setShowFilters] = useState(false);
   
   const userString = localStorage.getItem("user");
   const user = userString ? JSON.parse(userString) : null;
@@ -125,6 +127,7 @@ const AdminFeed = () => {
     setSelectedTag("");
     setDateFilter("");
     setFilterOpen(false);
+    setShowFilters(false);
   };
 
   const getHeaderTitle = () => {
@@ -132,52 +135,46 @@ const AdminFeed = () => {
   };
 
   const showAddButton = !isRA;
+  const activeFilterCount = (selectedTag ? 1 : 0) + (dateFilter ? 1 : 0);
 
   return (
-    <div className="min-h-screen bg-[#c8b8a8]">
-      {/* Decorative 3D Orbs */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-[-10%] left-[-5%] w-[500px] h-[500px] rounded-full bg-gradient-to-br from-blue-400/20 via-cyan-400/15 to-transparent blur-[80px]" />
-        <div className="absolute bottom-[-10%] right-[-5%] w-[450px] h-[450px] rounded-full bg-gradient-to-tl from-amber-400/15 to-orange-400/10 blur-[80px]" />
-        <div className="absolute top-1/3 right-1/4 w-[300px] h-[300px] rounded-full bg-gradient-to-tr from-purple-400/10 to-pink-400/10 blur-[70px]" />
-      </div>
-
-      <div className="relative z-10">
-        {/* Header - Glassmorphism */}
-        <div className="sticky top-0 z-20 backdrop-blur-xl bg-[#c8b8a8]/70 border-b border-white/30">
-          <div className="flex justify-between items-center p-6 max-w-7xl mx-auto">
+    <div className="min-h-screen bg-gray-50">
+      <div className="space-y-5 p-4 sm:p-6">
+        {/* Header */}
+        <div className="bg-white border border-gray-200 rounded-2xl p-4 sm:p-6 shadow-sm">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
-              <h2 className="text-3xl font-bold font-['Sora'] text-[#2a2118]">
+              <h2 className="text-2xl sm:text-3xl font-bold font-['DM_Sans'] text-gray-900">
                 {getHeaderTitle()}
               </h2>
-              <p className="text-sm text-[#6b5f55] mt-1 font-['DM_Sans']">
+              <p className="text-sm font-['DM_Sans'] text-gray-500 mt-1">
                 {isRA ? "Your published feeds" : "All feeds from all analysts"}
               </p>
             </div>
 
-            <div className="flex gap-3">
-              {/* Filter Dropdown - Glass */}
-              <div className="relative">
+            <div className="flex gap-3 w-full sm:w-auto">
+              {/* Filter Button */}
+              <div className="relative flex-1 sm:flex-initial">
                 <button
                   onClick={() => setFilterOpen(!filterOpen)}
-                  className="flex items-center gap-2 bg-white/20 backdrop-blur-sm border border-white/40 px-4 py-2.5 rounded-full hover:bg-white/30 transition-all duration-200 text-[#2a2118] font-['DM_Sans']"
+                  className="flex items-center justify-center gap-2 w-full sm:w-auto border border-gray-300 bg-white px-4 py-2 rounded-lg hover:bg-gray-50 transition-all duration-200 text-gray-700 font-['DM_Sans'] text-sm"
                 >
                   <FiFilter size={16} />
-                  <span className="text-sm">Filter</span>
-                  {(selectedTag || dateFilter) && (
-                    <span className="w-2 h-2 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full" />
+                  <span>Filter</span>
+                  {activeFilterCount > 0 && (
+                    <span className="w-2 h-2 bg-blue-600 rounded-full" />
                   )}
                 </button>
 
                 {filterOpen && (
-                  <div className="absolute right-0 mt-2 w-72 bg-white/15 backdrop-blur-xl rounded-2xl border border-white/40 shadow-2xl z-30 p-4">
+                  <div className="absolute right-0 mt-2 w-80 bg-white rounded-xl border border-gray-200 shadow-lg z-30 p-4">
                     <div className="space-y-4">
                       <div>
-                        <label className="text-xs font-semibold text-[#2a2118] uppercase tracking-wider block mb-2 font-['DM_Sans']">Filter by Tag</label>
+                        <label className="text-xs font-semibold text-gray-700 uppercase tracking-wider block mb-2 font-['DM_Sans']">Filter by Tag</label>
                         <select
                           value={selectedTag}
                           onChange={(e) => setSelectedTag(e.target.value)}
-                          className="w-full bg-white/10 border border-white/30 rounded-xl px-3 py-2 text-sm text-[#2a2118] focus:outline-none focus:ring-2 focus:ring-blue-500/50 font-['DM_Sans']"
+                          className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 font-['DM_Sans']"
                         >
                           <option value="">All Tags</option>
                           {allTags.map(tag => (
@@ -186,11 +183,11 @@ const AdminFeed = () => {
                         </select>
                       </div>
                       <div>
-                        <label className="text-xs font-semibold text-[#2a2118] uppercase tracking-wider block mb-2 font-['DM_Sans']">Date Range</label>
+                        <label className="text-xs font-semibold text-gray-700 uppercase tracking-wider block mb-2 font-['DM_Sans']">Date Range</label>
                         <select
                           value={dateFilter}
                           onChange={(e) => setDateFilter(e.target.value)}
-                          className="w-full bg-white/10 border border-white/30 rounded-xl px-3 py-2 text-sm text-[#2a2118] focus:outline-none focus:ring-2 focus:ring-blue-500/50 font-['DM_Sans']"
+                          className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 font-['DM_Sans']"
                         >
                           <option value="">All Time</option>
                           <option value="today">Today</option>
@@ -214,40 +211,69 @@ const AdminFeed = () => {
               {showAddButton && (
                 <button
                   onClick={() => setShowModal(true)}
-                  className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-5 py-2.5 rounded-full hover:from-blue-600 hover:to-cyan-600 transition-all duration-200 shadow-lg shadow-blue-500/25 font-['DM_Sans'] font-medium"
+                  className="flex items-center justify-center gap-2 bg-blue-600 text-white px-4 sm:px-5 py-2 rounded-lg hover:bg-blue-700 transition-all duration-200 shadow-sm font-['DM_Sans'] text-sm whitespace-nowrap"
                 >
                   <FiPlus size={18} />
-                  <span className="text-sm">Add Feed</span>
+                  <span>Add Feed</span>
                 </button>
               )}
             </div>
           </div>
-        </div>
 
-        {/* Content */}
-        <div className="max-w-7xl mx-auto p-6">
-          {loading ? (
-            <div className="flex items-center justify-center py-20">
-              <div className="text-center">
-                <div className="relative">
-                  <div className="w-12 h-12 border-2 border-white/20 border-t-blue-500 rounded-full animate-spin mx-auto mb-4" />
-                  <div className="absolute inset-0 w-12 h-12 border-2 border-white/10 rounded-full mx-auto" />
-                </div>
-                <p className="text-[#6b5f55] text-sm font-['DM_Sans']">Loading feeds...</p>
-              </div>
-            </div>
-          ) : feeds.length === 0 ? (
-            <div className="flex items-center justify-center py-20">
-              <NotFound />
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {feeds.map((feed) => (
-                <FeedCard key={feed.id} feed={feed} onDeleteSuccess={fetchFeeds} />
-              ))}
+          {/* Active Filters Display */}
+          {activeFilterCount > 0 && (
+            <div className="flex flex-wrap gap-2 mt-4 pt-3 border-t border-gray-100">
+              <span className="text-xs text-gray-500 font-['DM_Sans']">Active filters:</span>
+              {selectedTag && (
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 text-xs font-['DM_Sans']">
+                  Tag: #{selectedTag}
+                  <button onClick={() => setSelectedTag("")} className="hover:bg-blue-200 rounded-full p-0.5">
+                    <FiX size={10} />
+                  </button>
+                </span>
+              )}
+              {dateFilter && (
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 text-xs font-['DM_Sans']">
+                  Date: {dateFilter === 'today' ? 'Today' : dateFilter === 'week' ? 'Last 7 Days' : 'Last 30 Days'}
+                  <button onClick={() => setDateFilter("")} className="hover:bg-blue-200 rounded-full p-0.5">
+                    <FiX size={10} />
+                  </button>
+                </span>
+              )}
             </div>
           )}
         </div>
+
+        {/* Content */}
+        {loading ? (
+          <div className="flex items-center justify-center py-20 bg-white border border-gray-200 rounded-2xl">
+            <div className="text-center">
+              <div className="w-8 h-8 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin mx-auto mb-3"></div>
+              <p className="text-gray-500 text-sm font-['DM_Sans']">Loading feeds...</p>
+            </div>
+          </div>
+        ) : feeds.length === 0 ? (
+          <div className="bg-white border border-gray-200 rounded-2xl p-8 text-center">
+            <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-3">
+              <FiSearch size={24} className="text-gray-400" />
+            </div>
+            <p className="text-gray-500 font-['DM_Sans']">No feeds found</p>
+            {showAddButton && (
+              <button
+                onClick={() => setShowModal(true)}
+                className="mt-4 inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-['DM_Sans'] text-sm"
+              >
+                <FiPlus size={16} /> Create your first feed
+              </button>
+            )}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {feeds.map((feed) => (
+              <FeedCard key={feed.id} feed={feed} onDeleteSuccess={fetchFeeds} />
+            ))}
+          </div>
+        )}
       </div>
 
       <AddFeedModal

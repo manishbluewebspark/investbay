@@ -1,4 +1,5 @@
-import { X, Upload, Trash2, ImageIcon, VideoIcon, FileIcon, User, ChevronDown } from "lucide-react";
+// AddFeedModal.jsx
+import { X, Upload, Trash2, ImageIcon, VideoIcon, FileIcon, User, ChevronDown, Plus } from "lucide-react";
 import { useState, useRef, useEffect, useCallback } from "react";
 import axios from "axios";
 
@@ -20,6 +21,7 @@ export default function AddFeedModal({ open, onClose, onSuccess }) {
   const [analysts, setAnalysts] = useState([]);
   const [selectedRA, setSelectedRA] = useState(null);
   const [analystLoading, setAnalystLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState("details");
   const fileInputRef = useRef(null);
   const tagInputRef = useRef(null);
 
@@ -226,163 +228,223 @@ export default function AddFeedModal({ open, onClose, onSuccess }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#c8b8a8]/50 backdrop-blur-md">
-      <div className="w-full max-w-2xl rounded-[32px] bg-white/15 backdrop-blur-xl border border-white/40 shadow-2xl mx-4 max-h-[90vh] flex flex-col">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+      <div className="w-full max-w-2xl rounded-2xl bg-white shadow-xl mx-auto max-h-[90vh] flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-white/30 px-6 py-5">
-          <h2 className="text-xl font-semibold font-['Sora'] text-[#2a2118]">Create Feed</h2>
-          <button onClick={onClose} className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm border border-white/40 flex items-center justify-center hover:bg-white/30 transition-all" disabled={loading}>
-            <X size={18} className="text-[#2a2118]" />
+        <div className="flex items-center justify-between border-b border-gray-200 px-4 sm:px-6 py-4">
+          <h2 className="text-lg sm:text-xl font-semibold font-['DM_Sans'] text-gray-900">Create Feed</h2>
+          <button 
+            onClick={onClose} 
+            className="w-8 h-8 rounded-lg hover:bg-gray-100 flex items-center justify-center transition-all" 
+            disabled={loading}
+          >
+            <X size={18} className="text-gray-600" />
+          </button>
+        </div>
+
+        {/* Mobile Tabs */}
+        <div className="flex border-b border-gray-200 lg:hidden">
+          <button
+            onClick={() => setActiveTab("details")}
+            className={`flex-1 py-3 text-sm font-['DM_Sans'] transition-colors ${
+              activeTab === "details" 
+                ? "text-blue-600 border-b-2 border-blue-600" 
+                : "text-gray-500 hover:text-gray-700"
+            }`}
+          >
+            Details
+          </button>
+          <button
+            onClick={() => setActiveTab("media")}
+            className={`flex-1 py-3 text-sm font-['DM_Sans'] transition-colors ${
+              activeTab === "media" 
+                ? "text-blue-600 border-b-2 border-blue-600" 
+                : "text-gray-500 hover:text-gray-700"
+            }`}
+          >
+            Media ({files.length}/10)
           </button>
         </div>
 
         {/* Body */}
-        <div className="flex-1 overflow-y-auto px-6 py-5 space-y-5">
-          {error && (
-            <div className="p-3 rounded-xl bg-red-500/10 border border-red-400/30 backdrop-blur-sm">
-              <p className="text-sm text-red-400 font-['DM_Sans']">{error}</p>
-            </div>
-          )}
+        <div className="flex-1 overflow-y-auto">
+          <div className={`p-4 sm:p-6 space-y-5 ${activeTab === "details" ? "block" : "hidden lg:block"}`}>
+            {/* Error Message */}
+            {error && (
+              <div className="p-3 rounded-lg bg-red-50 border border-red-200">
+                <p className="text-sm text-red-600 font-['DM_Sans']">{error}</p>
+              </div>
+            )}
 
-          {/* RA Selection */}
-          {!isRA && (
-            <div>
-              <label className="mb-2 block text-sm font-semibold font-['DM_Sans'] text-[#2a2118]">Select Research Analyst *</label>
-              <div className="relative">
-                <select
-                  value={selectedRA?.id || ""}
-                  onChange={(e) => setSelectedRA(analysts.find(ra => ra.id === parseInt(e.target.value)))}
-                  disabled={loading || analystLoading}
-                  className="w-full appearance-none rounded-full bg-white/10 border border-white/30 px-4 py-2.5 pr-10 text-sm font-['DM_Sans'] text-[#2a2118] focus:outline-none focus:ring-2 focus:ring-blue-500/50"
-                >
-                  <option value="">Choose Analyst</option>
-                  {analysts.map((ra) => (
-                    <option key={ra.id} value={ra.id}>{ra.name}</option>
-                  ))}
-                </select>
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-[#6b5f55]">
-                  <ChevronDown size={16} />
+            {/* Upload Progress */}
+            {uploadProgress > 0 && uploadProgress < 100 && (
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-700 font-['DM_Sans']">Uploading...</span>
+                  <span className="font-medium text-gray-700">{uploadProgress}%</span>
+                </div>
+                <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                  <div className="h-full bg-blue-600 transition-all duration-300" style={{ width: `${uploadProgress}%` }} />
                 </div>
               </div>
-            </div>
-          )}
+            )}
 
-          {/* Feed Text */}
-          <div>
-            <label className="mb-2 block text-sm font-semibold font-['DM_Sans'] text-[#2a2118]">Feed Content *</label>
-            <textarea
-              rows={4}
-              value={feedText}
-              onChange={(e) => setFeedText(e.target.value)}
-              placeholder="Share your thoughts, analysis, or updates..."
-              className="w-full resize-none rounded-xl bg-white/10 border border-white/30 px-4 py-3 text-sm font-['DM_Sans'] text-[#2a2118] placeholder:text-[#6b5f55]/50 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
-              disabled={loading}
-            />
-          </div>
+            {/* RA Selection */}
+            {!isRA && (
+              <div>
+                <label className="mb-1.5 block text-sm font-semibold font-['DM_Sans'] text-gray-700">Select Research Analyst *</label>
+                <div className="relative">
+                  <select
+                    value={selectedRA?.id || ""}
+                    onChange={(e) => setSelectedRA(analysts.find(ra => ra.id === parseInt(e.target.value)))}
+                    disabled={loading || analystLoading}
+                    className="w-full appearance-none rounded-lg border border-gray-300 bg-white px-4 py-2.5 pr-10 text-sm font-['DM_Sans'] text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="">Choose Analyst</option>
+                    {analysts.map((ra) => (
+                      <option key={ra.id} value={ra.id}>{ra.name}</option>
+                    ))}
+                  </select>
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-400">
+                    <ChevronDown size={16} />
+                  </div>
+                </div>
+              </div>
+            )}
 
-          {/* Tags */}
-          <div>
-            <label className="mb-2 block text-sm font-semibold font-['DM_Sans'] text-[#2a2118]">Tags</label>
-            <div className="flex flex-wrap gap-2 p-3 bg-white/10 border border-white/30 rounded-xl focus-within:ring-2 focus-within:ring-blue-500/50">
-              {tags.map((tag, index) => (
-                <span key={index} className="inline-flex items-center gap-1 px-2 py-1 bg-blue-500/20 text-blue-600 text-sm rounded-full">
-                  <span>{tag}</span>
-                  <button type="button" onClick={() => removeTag(index)} className="hover:bg-blue-500/30 rounded p-0.5 transition-colors" disabled={loading}>
-                    <X size={12} />
-                  </button>
-                </span>
-              ))}
-              <input
-                ref={tagInputRef}
-                type="text"
-                value={tagInput}
-                onChange={(e) => setTagInput(e.target.value)}
-                onKeyDown={handleTagKeyDown}
-                onBlur={addTag}
-                placeholder={tags.length === 0 ? "#NiftyAnalysis #MarketOutlook" : "Add more tags..."}
-                className="flex-1 min-w-[120px] outline-none text-sm bg-transparent font-['DM_Sans'] text-[#2a2118] placeholder:text-[#6b5f55]/50"
+            {/* Feed Text */}
+            <div>
+              <label className="mb-1.5 block text-sm font-semibold font-['DM_Sans'] text-gray-700">Feed Content *</label>
+              <textarea
+                rows={4}
+                value={feedText}
+                onChange={(e) => setFeedText(e.target.value)}
+                placeholder="Share your thoughts, analysis, or updates..."
+                className="w-full resize-none rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm font-['DM_Sans'] text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 disabled={loading}
               />
             </div>
+
+            {/* Tags */}
+            <div>
+              <label className="mb-1.5 block text-sm font-semibold font-['DM_Sans'] text-gray-700">Tags</label>
+              <div className="flex flex-wrap gap-2 p-3 border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-blue-500">
+                {tags.map((tag, index) => (
+                  <span key={index} className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-700 text-sm rounded-lg">
+                    <span>{tag}</span>
+                    <button type="button" onClick={() => removeTag(index)} className="hover:bg-blue-200 rounded p-0.5 transition-colors" disabled={loading}>
+                      <X size={12} />
+                    </button>
+                  </span>
+                ))}
+                <input
+                  ref={tagInputRef}
+                  type="text"
+                  value={tagInput}
+                  onChange={(e) => setTagInput(e.target.value)}
+                  onKeyDown={handleTagKeyDown}
+                  onBlur={addTag}
+                  placeholder={tags.length === 0 ? "#NiftyAnalysis #MarketOutlook" : "Add more tags..."}
+                  className="flex-1 min-w-[120px] outline-none text-sm bg-transparent font-['DM_Sans'] text-gray-900 placeholder:text-gray-400"
+                  disabled={loading}
+                />
+              </div>
+              <p className="mt-1 text-xs text-gray-500 font-['DM_Sans']">Press Enter to add tag. Maximum 10 tags.</p>
+            </div>
           </div>
 
-          {/* Upload Progress */}
-          {uploadProgress > 0 && uploadProgress < 100 && (
-            <div className="space-y-2">
-              <div className="flex justify-between text-sm">
-                <span className="text-[#2a2118] font-['DM_Sans']">Uploading...</span>
-                <span className="font-medium text-[#2a2118]">{uploadProgress}%</span>
-              </div>
-              <div className="h-2 bg-white/20 rounded-full overflow-hidden">
-                <div className="h-full bg-gradient-to-r from-blue-500 to-cyan-500 transition-all duration-300" style={{ width: `${uploadProgress}%` }} />
-              </div>
-            </div>
-          )}
-
-          {/* File Previews */}
-          {filePreviews.length > 0 && (
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <h3 className="text-sm font-semibold font-['DM_Sans'] text-[#2a2118]">Selected Files ({filePreviews.length}/10)</h3>
-                {!loading && (
-                  <button onClick={() => {
-                    setFiles([]);
-                    filePreviews.forEach(preview => { if (preview.previewUrl) URL.revokeObjectURL(preview.previewUrl); });
-                    setFilePreviews([]);
-                  }} className="text-xs text-red-400 hover:text-red-500 font-['DM_Sans']">
-                    Remove All
-                  </button>
-                )}
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {filePreviews.map((preview, index) => (
-                  <div key={preview.id} className="flex items-center justify-between p-3 bg-white/10 border border-white/30 rounded-xl">
-                    <div className="flex items-center gap-3 min-w-0">
-                      <div className="flex-shrink-0">
-                        {preview.type === 'image' ? (
-                          <img src={preview.previewUrl} alt={preview.name} className="w-12 h-12 rounded-lg object-cover" />
-                        ) : preview.type === 'video' ? (
-                          <video src={preview.previewUrl} className="w-12 h-12 rounded-lg object-cover" />
-                        ) : (
-                          <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center">{getFileIcon(preview.type)}</div>
-                        )}
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <p className="text-sm font-medium text-[#2a2118] truncate font-['DM_Sans']">{preview.name}</p>
-                        <p className="text-xs text-[#6b5f55]">{preview.formattedSize}</p>
-                      </div>
-                    </div>
-                    <button onClick={() => removeFile(index)} className="p-1 text-red-400 hover:text-red-500 transition-colors" disabled={loading}>
-                      <Trash2 size={16} />
+          {/* Media Tab Content */}
+          <div className={`p-4 sm:p-6 ${activeTab === "media" ? "block" : "hidden lg:block"}`}>
+            {/* File Previews */}
+            {filePreviews.length > 0 && (
+              <div className="space-y-3 mb-4">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-sm font-semibold font-['DM_Sans'] text-gray-700">Selected Files ({filePreviews.length}/10)</h3>
+                  {!loading && filePreviews.length > 0 && (
+                    <button 
+                      onClick={() => {
+                        setFiles([]);
+                        filePreviews.forEach(preview => { if (preview.previewUrl) URL.revokeObjectURL(preview.previewUrl); });
+                        setFilePreviews([]);
+                      }} 
+                      className="text-xs text-red-600 hover:text-red-700 font-['DM_Sans']"
+                    >
+                      Remove All
                     </button>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Upload Box */}
-          {files.length < 10 && (
-            <div>
-              <div onClick={() => fileInputRef.current?.click()} className="flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-white/40 bg-white/5 py-10 text-center transition-all hover:bg-white/10">
-                <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-blue-500/20 to-cyan-500/20">
-                  <Upload className="text-blue-500" size={22} />
+                  )}
                 </div>
-                <p className="text-sm font-medium text-blue-500 font-['DM_Sans']">Click or drag to upload Images or Videos</p>
-                <p className="mt-1 text-xs text-[#6b5f55]">Supports JPG, PNG, GIF, MP4 • Max 50MB per file</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {filePreviews.map((preview, index) => (
+                    <div key={preview.id} className="flex items-center justify-between p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                      <div className="flex items-center gap-3 min-w-0">
+                        <div className="flex-shrink-0">
+                          {preview.type === 'image' ? (
+                            <img src={preview.previewUrl} alt={preview.name} className="w-12 h-12 rounded-lg object-cover" />
+                          ) : preview.type === 'video' ? (
+                            <video src={preview.previewUrl} className="w-12 h-12 rounded-lg object-cover" />
+                          ) : (
+                            <div className="w-12 h-12 bg-gray-200 rounded-lg flex items-center justify-center">{getFileIcon(preview.type)}</div>
+                          )}
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <p className="text-sm font-medium text-gray-900 truncate font-['DM_Sans']">{preview.name}</p>
+                          <p className="text-xs text-gray-500">{preview.formattedSize}</p>
+                        </div>
+                      </div>
+                      <button onClick={() => removeFile(index)} className="p-1 text-red-500 hover:text-red-600 transition-colors" disabled={loading}>
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
               </div>
-              <input ref={fileInputRef} type="file" className="hidden" multiple accept="image/*,video/*" onChange={handleFileChange} disabled={loading || files.length >= 10} />
-            </div>
-          )}
+            )}
+
+            {/* Upload Box */}
+            {files.length < 10 && (
+              <div>
+                <button
+                  onClick={() => fileInputRef.current?.click()}
+                  className="w-full flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-gray-300 bg-gray-50 py-8 text-center transition-all hover:bg-gray-100"
+                >
+                  <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-blue-100">
+                    <Upload className="text-blue-600" size={18} />
+                  </div>
+                  <p className="text-sm font-medium text-blue-600 font-['DM_Sans']">Click or drag to upload Images or Videos</p>
+                  <p className="mt-1 text-xs text-gray-500">Supports JPG, PNG, GIF, MP4 • Max 50MB per file</p>
+                </button>
+                <input ref={fileInputRef} type="file" className="hidden" multiple accept="image/*,video/*" onChange={handleFileChange} disabled={loading || files.length >= 10} />
+                
+                <p className="mt-3 text-xs text-gray-500 text-center font-['DM_Sans']">
+                  {10 - files.length} files remaining (max 10 total)
+                </p>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Footer */}
-        <div className="flex justify-end gap-3 border-t border-white/30 px-6 py-5">
-          <button onClick={onClose} disabled={loading} className="px-6 py-2 rounded-full bg-white/20 backdrop-blur-sm border border-white/40 text-[#2a2118] font-medium font-['DM_Sans'] hover:bg-white/30 transition-all">
+        <div className="flex flex-col sm:flex-row justify-end gap-3 border-t border-gray-200 px-4 sm:px-6 py-4">
+          <button 
+            onClick={onClose} 
+            disabled={loading} 
+            className="px-6 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 font-medium font-['DM_Sans'] hover:bg-gray-50 transition-all order-2 sm:order-1"
+          >
             Cancel
           </button>
-          <button onClick={handleSubmit} disabled={loading || (!feedText.trim() && files.length === 0) || !getRAId()} className="px-6 py-2 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-medium font-['DM_Sans'] hover:from-blue-600 hover:to-cyan-600 transition-all shadow-md disabled:opacity-50">
-            {loading ? "Creating..." : "Create Feed"}
+          <button 
+            onClick={handleSubmit} 
+            disabled={loading || (!feedText.trim() && files.length === 0) || !getRAId()} 
+            className="px-6 py-2 rounded-lg bg-blue-600 text-white font-medium font-['DM_Sans'] hover:bg-blue-700 transition-all shadow-sm disabled:opacity-50 flex items-center justify-center gap-2 order-1 sm:order-2"
+          >
+            {loading ? (
+              <>
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                <span>Creating...</span>
+              </>
+            ) : (
+              "Create Feed"
+            )}
           </button>
         </div>
       </div>

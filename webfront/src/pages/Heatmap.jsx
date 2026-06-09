@@ -7,13 +7,36 @@ import {
     Table2, Filter, ArrowUp, ArrowDown, ChevronDown, X
 } from 'lucide-react';
 
+// ── Finology Fonts ────────────────────────────────────────────────────
+const AB = { fontFamily: "'Aileron Black', 'Arial Black', sans-serif" };
+const HS = { fontFamily: "'Hind Siliguri', 'Hind', sans-serif" };
+const AL = { fontFamily: "'Aileron', 'Arial', sans-serif" };
+
 // ── Helpers ──────────────────────────────────────────────────────────
 const getSectorIcon = (name) => {
-    const icons = { 'Automobile & Ancillaries': Car, 'Healthcare': Heart, 'Capital Goods': Cog, 'Metals & Mining': Shield, 'Finance': DollarSign, 'Chemicals': Droplet, 'Banks': Building, 'Software & IT Services': Activity, 'Power': Zap, 'Infrastructure': Factory, 'FMCG': Leaf };
+    const icons = { 
+        'Automobile & Ancillaries': Car, 
+        'Healthcare': Heart, 
+        'Capital Goods': Cog, 
+        'Metals & Mining': Shield, 
+        'Finance': DollarSign, 
+        'Chemicals': Droplet, 
+        'Banks': Building, 
+        'Software & IT Services': Activity, 
+        'Power': Zap, 
+        'Infrastructure': Factory, 
+        'FMCG': Leaf 
+    };
     const Icon = icons[name] || BarChart3;
     return <Icon size={13} strokeWidth={1.8} />;
 };
-const fmt = (v) => { if (!v) return '—'; if (v >= 100000) return `${(v/100000).toFixed(1)}L Cr`; if (v >= 1000) return `${(v/1000).toFixed(1)}K Cr`; return `${v.toFixed(1)} Cr`; };
+
+const fmt = (v) => { 
+    if (!v) return '—'; 
+    if (v >= 100000) return `${(v/100000).toFixed(1)}L Cr`; 
+    if (v >= 1000) return `${(v/1000).toFixed(1)}K Cr`; 
+    return `${v.toFixed(1)} Cr`; 
+};
 
 // ── Color scale ───────────────────────────────────────────────────────
 const getColor = (v) => {
@@ -43,7 +66,6 @@ function squarify(nodes, x0, y0, x1, y1) {
     const total = nodes.reduce((s, n) => s + n.value, 0);
     if (total <= 0) return [];
 
-    // scale values to area
     const scale = (W * H) / total;
     const scaled = nodes.map(n => ({ ...n, area: n.value * scale }));
 
@@ -100,7 +122,7 @@ const Logo = ({ name, boxW, boxH }) => {
     const initials = (name || '').replace(/[^A-Za-z0-9]/g,'').slice(0,2).toUpperCase() || '??';
     let hash = 0;
     for (let i = 0; i < (name||'').length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
-    const hue = ((Math.abs(hash) % 30) * 12 + 10); // golden range hues
+    const hue = ((Math.abs(hash) % 30) * 12 + 10);
     const palettes = [
         `hsl(${hue},70%,38%)`,`hsl(${(hue+60)%360},65%,40%)`,`hsl(${(hue+120)%360},68%,36%)`,
         `hsl(${(hue+180)%360},72%,42%)`,`hsl(${(hue+240)%360},60%,44%)`,
@@ -108,7 +130,7 @@ const Logo = ({ name, boxW, boxH }) => {
     const bg = palettes[Math.abs(hash) % palettes.length];
     return (
         <div style={{ width:s, height:s, borderRadius:'50%', background:bg, display:'flex', alignItems:'center', justifyContent:'center', border:'1.5px solid rgba(255,255,255,0.35)', boxShadow:'0 2px 8px rgba(0,0,0,0.4)', flexShrink:0 }}>
-            <span style={{ fontSize:Math.max(s*0.38,7), fontWeight:800, color:'#fff', lineHeight:1 }}>{initials}</span>
+            <span style={{ fontSize:Math.max(s*0.38,7), fontWeight:800, color:'#fff', lineHeight:1, fontFamily: "'Aileron Black', 'Arial Black', sans-serif" }}>{initials}</span>
         </div>
     );
 };
@@ -148,9 +170,9 @@ const Tile = ({ tile, tileKey, onHover, onLeave, onMove, onClick, hovered }) => 
                 <foreignObject x={ix} y={iy} width={Math.max(iw,1)} height={Math.max(ih,1)}>
                     <div xmlns="http://www.w3.org/1999/xhtml" style={{ width:'100%', height:'100%', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:2, overflow:'hidden', padding:'1px' }}>
                         {showLogo && <Logo name={name} boxW={iw} boxH={ih}/>}
-                        <span style={{ fontSize:fs, fontWeight:700, color:clr.text, textAlign:'center', lineHeight:1.15, wordBreak:'break-word', maxWidth:'100%' }}>{displayName}</span>
-                        {showPct && <span style={{ fontSize:fps, fontWeight:800, color:clr.text, opacity:0.9 }}>{(change??0)>=0?'+':''}{(change??0).toFixed(2)}%</span>}
-                        {showLtp && ltp != null && <span style={{ fontSize:Math.max(fps-1.5,6), color:clr.text, opacity:0.65 }}>₹{ltp>=1000?ltp.toFixed(0):ltp.toFixed(2)}</span>}
+                        <span style={{ fontSize:fs, fontWeight:700, color:clr.text, textAlign:'center', lineHeight:1.15, wordBreak:'break-word', maxWidth:'100%', fontFamily: "'Hind Siliguri', 'Hind', sans-serif" }}>{displayName}</span>
+                        {showPct && <span style={{ fontSize:fps, fontWeight:800, color:clr.text, opacity:0.9, fontFamily: "'Aileron Black', 'Arial Black', sans-serif" }}>{(change??0)>=0?'+':''}{(change??0).toFixed(2)}%</span>}
+                        {showLtp && ltp != null && <span style={{ fontSize:Math.max(fps-1.5,6), color:clr.text, opacity:0.65, fontFamily: "'Aileron', 'Arial', sans-serif" }}>₹{ltp>=1000?ltp.toFixed(0):ltp.toFixed(2)}</span>}
                     </div>
                 </foreignObject>
             )}
@@ -164,28 +186,34 @@ const Treemap = ({ sectors, allStocks, period }) => {
     const [dim, setDim]         = useState({ w:1200, h:640 });
     const [hovered, setHovered] = useState(null);
     const [tooltip, setTooltip] = useState(null);
-    const [drill, setDrill]     = useState(null);   // sector name string
+    const [drill, setDrill]     = useState(null);
+    const [visibleSectors, setVisibleSectors] = useState([]);
 
-    const HDR = 22; // sector header height in px
-    const PAD = 1;  // outer padding
+    const HDR = 26; // Increased sector header height for better visibility
+    const PAD = 2;
 
     useEffect(() => {
         const ro = new ResizeObserver(([e]) => {
             const w = Math.max(e.contentRect.width, 400);
-            setDim({ w, h: Math.max(Math.round(w * 0.54), 460) });
+            setDim({ w, h: Math.max(Math.round(w * 0.54), 480) });
         });
         if (ref.current) ro.observe(ref.current);
         return () => ro.disconnect();
     }, []);
 
-    // group stocks → sector
     const bySector = useMemo(() => {
         const m = {};
         allStocks.forEach(s => { const k = s.sectorName||'Other'; if(!m[k]) m[k]=[]; m[k].push(s); });
         return m;
     }, [allStocks]);
 
-    // compute layout
+    // Update visible sectors for scroll tracking
+    useEffect(() => {
+        if (!drill && sectors.length) {
+            setVisibleSectors(sectors.map(s => s.name));
+        }
+    }, [sectors, drill]);
+
     const layout = useMemo(() => {
         const { w, h } = dim;
         if (!sectors.length) return null;
@@ -195,7 +223,6 @@ const Treemap = ({ sectors, allStocks, period }) => {
             return { type:'drill', tiles: squarify(stocks, PAD, PAD, w-PAD, h-PAD) };
         }
 
-        // build sector nodes weighted by total marketCap
         const secNodes = sectors.map(sec => {
             const stocks = bySector[sec.name]||[];
             const cap = stocks.reduce((a,s)=>a+Math.max(parseFloat(s.marketCap)||10,1),0);
@@ -208,12 +235,12 @@ const Treemap = ({ sectors, allStocks, period }) => {
             const stocks = (bySector[st.name]||[]).map(s=>({ id:s.scId||s.name, name:s.name, value:Math.max(parseFloat(s.marketCap)||10,1), change:s.changePercent, ltp:s.ltp, sector:s.sectorName })).sort((a,b)=>b.value-a.value);
             const innerY = st.y + HDR;
             const innerH = st.h - HDR;
-            const stockTiles = (innerH > 4) ? squarify(stocks, st.x+PAD, innerY, st.x+st.w-PAD, innerY+innerH-PAD) : [];
+            const stockTiles = (innerH > 8) ? squarify(stocks, st.x+PAD, innerY, st.x+st.w-PAD, innerY+innerH-PAD) : [];
             return { ...st, stockTiles };
         });
 
         return { type:'full', sectors: result };
-    }, [dim, sectors, bySector, drill]);
+    }, [dim, sectors, bySector, drill, HDR]);
 
     const handleTileHover = useCallback((key) => setHovered(key), []);
     const handleTileLeave = useCallback(() => { setHovered(null); setTooltip(null); }, []);
@@ -221,47 +248,89 @@ const Treemap = ({ sectors, allStocks, period }) => {
 
     const drillData = drill ? sectors.find(s=>s.name===drill) : null;
 
-    return (
-        <div style={{ background:'#0a0d13', borderRadius:14, border:'1px solid rgba(255,255,255,0.07)', overflow:'hidden' }}>
+    // Scroll to sector function
+    const scrollToSector = (sectorName) => {
+        const element = document.getElementById(`sector-${sectorName.replace(/[^a-zA-Z0-9]/g, '-')}`);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            element.style.transition = 'box-shadow 0.3s';
+            element.style.boxShadow = '0 0 0 2px #34d399';
+            setTimeout(() => { element.style.boxShadow = ''; }, 1500);
+        }
+    };
 
-            {/* ── toolbar ── */}
-            <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'9px 14px', borderBottom:'1px solid rgba(255,255,255,0.06)', gap:8, flexWrap:'wrap' }}>
-                <div style={{ display:'flex', alignItems:'center', gap:10 }}>
+    return (
+        <div style={{ background:'#0a0d13', borderRadius:16, border:'1px solid rgba(255,255,255,0.07)', overflow:'hidden' }}>
+
+            {/* Toolbar */}
+            <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'12px 16px', borderBottom:'1px solid rgba(255,255,255,0.06)', gap:8, flexWrap:'wrap' }}>
+                <div style={{ display:'flex', alignItems:'center', gap:12 }}>
                     {drill ? (
                         <>
-                            <button onClick={()=>setDrill(null)} style={{ display:'flex',alignItems:'center',gap:5, padding:'4px 11px', background:'rgba(52,211,153,0.1)', border:'1px solid rgba(52,211,153,0.25)', borderRadius:8, color:'#34d399', fontSize:11, fontWeight:600, cursor:'pointer' }}>← All</button>
-                            <span style={{ color:'#f1f5f9',fontSize:13,fontWeight:700,display:'flex',alignItems:'center',gap:6 }}>{getSectorIcon(drill)}{drill}</span>
-                            {drillData && (() => { const c=getColor(drillData.value); return <span style={{ background:c.bg,color:c.text,padding:'2px 10px',borderRadius:20,fontSize:11,fontWeight:700 }}>{drillData.value>0?'+':''}{drillData.value?.toFixed(2)}%</span>; })()}
+                            <button onClick={()=>setDrill(null)} style={{ display:'flex',alignItems:'center',gap:6, padding:'6px 14px', background:'rgba(52,211,153,0.12)', border:'1px solid rgba(52,211,153,0.3)', borderRadius:10, color:'#34d399', fontSize:12, fontWeight:700, cursor:'pointer', fontFamily: "'Aileron Black', 'Arial Black', sans-serif" }}>← All Sectors</button>
+                            <span style={{ color:'#f1f5f9', fontSize:14, fontWeight:700, display:'flex', alignItems:'center', gap:8, fontFamily: "'Aileron Black', 'Arial Black', sans-serif" }}>{getSectorIcon(drill)}{drill}</span>
+                            {drillData && (() => { const c=getColor(drillData.value); return <span style={{ background:c.bg,color:c.text, padding:'3px 12px', borderRadius:24, fontSize:12, fontWeight:700, fontFamily: "'Aileron Black', 'Arial Black', sans-serif" }}>{drillData.value>0?'+':''}{drillData.value?.toFixed(2)}%</span>; })()}
                         </>
                     ) : (
-                        <span style={{ color:'#e2e8f0',fontSize:13,fontWeight:700,display:'flex',alignItems:'center',gap:6 }}>
+                        <span style={{ color:'#e2e8f0', fontSize:13, fontWeight:700, display:'flex', alignItems:'center', gap:8, fontFamily: "'Aileron Black', 'Arial Black', sans-serif" }}>
                             <LayoutGrid size={14} style={{color:'#34d399'}}/>Market Heatmap
-                            <span style={{color:'#475569',fontSize:10,fontWeight:400}}>· {period} · tile size = market cap · click sector to drill in</span>
+                            <span style={{ color:'#475569', fontSize:10, fontWeight:400, fontFamily: "'Hind Siliguri', 'Hind', sans-serif" }}>· {period} · tile size = market cap · click sector header/pill to drill in</span>
                         </span>
                     )}
                 </div>
-                {/* legend */}
-                <div style={{ display:'flex',alignItems:'center',gap:3,fontSize:10,color:'#475569' }}>
+                {/* Legend */}
+                <div style={{ display:'flex', alignItems:'center', gap:3, fontSize:10, color:'#475569', fontFamily: "'Hind Siliguri', 'Hind', sans-serif" }}>
                     <span>−10%</span>
                     {['#7f1d1d','#b91c1c','#ef4444','#f87171','#fecaca','#1e2d3d','#86efac','#22c55e','#16a834','#0d7a22','#0a5c1a'].map((c,i)=>(
-                        <div key={i} style={{width:13,height:10,background:c,borderRadius:2}}/>
+                        <div key={i} style={{width:14,height:10,background:c,borderRadius:2}}/>
                     ))}
                     <span>+10%</span>
                 </div>
             </div>
 
-            {/* ── sector pills row ── */}
+            {/* Sector Pills Row - Horizontal Scroll with better visibility */}
             {!drill && sectors.length > 0 && (
-                <div style={{ display:'flex', gap:7, padding:'8px 14px', borderBottom:'1px solid rgba(255,255,255,0.04)', overflowX:'auto', overflowY:'hidden', whiteSpace:'nowrap', scrollbarWidth:'thin', scrollbarColor:'#1e2d3d transparent' }}>
+                <div style={{ 
+                    display: 'flex', 
+                    gap: 8, 
+                    padding: '12px 16px', 
+                    borderBottom: '1px solid rgba(255,255,255,0.05)',
+                    overflowX: 'auto', 
+                    overflowY: 'hidden',
+                    whiteSpace: 'nowrap',
+                    scrollbarWidth: 'thin',
+                    scrollbarColor: '#34d399 #1e2d3d',
+                    background: 'linear-gradient(90deg, rgba(52,211,153,0.03) 0%, transparent 100%)'
+                }}>
+                    <button 
+                        onClick={()=>setDrill(null)}
+                        style={{ 
+                            display:'inline-flex', alignItems:'center', gap:6, padding:'6px 14px',
+                            borderRadius:24, background: !drill ? '#34d399' : 'rgba(52,211,153,0.12)',
+                            border: `1px solid ${!drill ? '#34d399' : 'rgba(52,211,153,0.25)'}`,
+                            color: !drill ? '#000' : '#34d399',
+                            fontSize:11, fontWeight:700, cursor:'pointer', flexShrink:0,
+                            transition:'all 0.2s', fontFamily: "'Aileron Black', 'Arial Black', sans-serif"
+                        }}
+                    >
+                        🔥 All
+                    </button>
                     {sectors.map(s => {
                         const c = getColor(s.value);
                         return (
                             <button key={s.id} onClick={()=>setDrill(s.name)}
-                                style={{ display:'inline-flex',alignItems:'center',gap:5,padding:'4px 11px',borderRadius:20,background:c.bg+'28',border:`1px solid ${c.bg}55`,color:c.text==='#fff'?'#e2e8f0':'#1a3322',fontSize:10.5,fontWeight:600,cursor:'pointer',flexShrink:0,transition:'transform 0.1s' }}
-                                onMouseEnter={e=>e.currentTarget.style.transform='scale(1.05)'}
-                                onMouseLeave={e=>e.currentTarget.style.transform='scale(1)'}>
-                                {getSectorIcon(s.name)}{s.name}
-                                <span style={{background:c.bg,color:c.text,padding:'1px 6px',borderRadius:10,fontSize:9.5,fontWeight:700,marginLeft:2}}>
+                                style={{ display:'inline-flex', alignItems:'center', gap:5, padding:'6px 13px', borderRadius:24,
+                                    background: c.bg + '20', border: `1px solid ${c.bg}60`,
+                                    color: c.text === '#fff' ? '#e2e8f0' : '#1a3322',
+                                    fontSize:11, fontWeight:600, cursor:'pointer', flexShrink:0,
+                                    transition:'all 0.2s', fontFamily: "'Hind Siliguri', 'Hind', sans-serif"
+                                }}
+                                onMouseEnter={e=>e.currentTarget.style.transform='scale(1.03)'}
+                                onMouseLeave={e=>e.currentTarget.style.transform='scale(1)'}
+                            >
+                                {getSectorIcon(s.name)}
+                                <span style={{ maxWidth: 100, overflow: 'hidden', textOverflow: 'ellipsis' }}>{s.name}</span>
+                                <span style={{ background:c.bg, color:c.text, padding:'2px 8px', borderRadius:16, fontSize:10, fontWeight:800, marginLeft:2 }}>
                                     {s.value>0?'+':''}{s.value?.toFixed(1)}%
                                 </span>
                             </button>
@@ -270,7 +339,7 @@ const Treemap = ({ sectors, allStocks, period }) => {
                 </div>
             )}
 
-            {/* ── SVG canvas ── */}
+            {/* SVG Canvas */}
             <div ref={ref} style={{ width:'100%', minHeight:dim.h, position:'relative' }}>
                 <svg width={dim.w} height={dim.h} style={{ display:'block', background:'#0a0d13' }}>
                     <defs>
@@ -280,35 +349,63 @@ const Treemap = ({ sectors, allStocks, period }) => {
                     </defs>
                     <g clipPath="url(#canvas-clip)">
 
-                    {/* full market */}
+                    {/* Full market view */}
                     {layout?.type === 'full' && layout.sectors.map(sec => {
                         const sc = getColor(sec.change ?? 0);
-                        const showHdr = sec.w > 50 && sec.h > HDR + 8;
+                        const showHdr = sec.w > 45 && sec.h > HDR + 8;
                         return (
-                            <g key={sec.id}>
-                                {/* sector background */}
-                                <rect x={sec.x} y={sec.y} width={sec.w} height={sec.h} fill="rgba(0,0,0,0)" rx={0} stroke="rgba(0,0,0,0.6)" strokeWidth={1.5}/>
+                            <g key={sec.id} id={`sector-${sec.name.replace(/[^a-zA-Z0-9]/g, '-')}`}>
+                                {/* Sector background */}
+                                <rect x={sec.x} y={sec.y} width={sec.w} height={sec.h} fill="rgba(0,0,0,0.2)" rx={2} stroke="rgba(255,255,255,0.08)" strokeWidth={1.5}/>
 
-                                {/* sector header bar */}
+                                {/* Sector header bar - Enhanced visibility */}
                                 {showHdr && (
                                     <>
-                                        <rect x={sec.x} y={sec.y} width={sec.w} height={HDR} fill={sc.bg+'cc'} rx={0}/>
-                                        {sec.w > 60 && (
-                                            <text x={sec.x+6} y={sec.y+15} fill={sc.text==='#fff'?'#f1f5f9':'#072010'}
-                                                fontSize={Math.min(sec.w/15, 10.5)} fontWeight={700} style={{userSelect:'none'}}>
-                                                {sec.name.length > Math.floor(sec.w/7) ? sec.name.slice(0,Math.floor(sec.w/7)-1)+'…' : sec.name}
+                                        <rect x={sec.x} y={sec.y} width={sec.w} height={HDR} fill={sc.bg + 'dd'} rx={2} onClick={() => setDrill(sec.name)} style={{ cursor: 'pointer' }}/>
+                                        <rect x={sec.x} y={sec.y + HDR - 1} width={sec.w} height={2} fill="rgba(255,255,255,0.15)" />
+                                        
+                                        {/* Sector name with icon */}
+                                        {sec.w > 55 && (
+                                            <text 
+                                                x={sec.x + 8} y={sec.y + 18} 
+                                                fill={sc.text === '#fff' ? '#ffffff' : '#072010'}
+                                                fontSize={Math.min(sec.w/14, 11)} 
+                                                fontWeight={800} 
+                                                style={{ userSelect:'none', cursor:'pointer', fontFamily: "'Aileron Black', 'Arial Black', sans-serif" }}
+                                                onClick={() => setDrill(sec.name)}
+                                            >
+                                                {getSectorIcon(sec.name)} {sec.name.length > Math.floor(sec.w/9) ? sec.name.slice(0,Math.floor(sec.w/9)-2)+'…' : sec.name}
                                             </text>
                                         )}
-                                        {sec.w > 130 && (
-                                            <text x={sec.x+sec.w-6} y={sec.y+15} fill={sc.text==='#fff'?'#f1f5f9':'#072010'}
-                                                fontSize={10} fontWeight={800} textAnchor="end" style={{userSelect:'none'}}>
+                                        
+                                        {/* Sector performance */}
+                                        {sec.w > 100 && (
+                                            <text 
+                                                x={sec.x + sec.w - 8} y={sec.y + 18} 
+                                                fill={sc.text === '#fff' ? '#ffffff' : '#072010'}
+                                                fontSize={10.5} fontWeight={800} textAnchor="end" 
+                                                style={{ userSelect:'none', cursor:'pointer', fontFamily: "'Aileron Black', 'Arial Black', sans-serif" }}
+                                                onClick={() => setDrill(sec.name)}
+                                            >
                                                 {(sec.change??0)>0?'+':''}{(sec.change??0).toFixed(2)}%
+                                            </text>
+                                        )}
+                                        
+                                        {/* Stock count badge */}
+                                        {sec.w > 80 && sec.totalStocks && (
+                                            <text 
+                                                x={sec.x + sec.w/2} y={sec.y + 18} 
+                                                fill={sc.text === '#fff' ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)'}
+                                                fontSize={9} fontWeight={500} textAnchor="middle" 
+                                                style={{ userSelect:'none' }}
+                                            >
+                                                {sec.totalStocks} stocks
                                             </text>
                                         )}
                                     </>
                                 )}
 
-                                {/* stock tiles */}
+                                {/* Stock tiles */}
                                 {sec.stockTiles.map((tile, i) => (
                                     <Tile key={`${sec.id}-${i}`} tile={tile} tileKey={`${sec.id}-${i}`}
                                         onHover={handleTileHover} onLeave={handleTileLeave} onMove={handleTileMove}
@@ -316,13 +413,13 @@ const Treemap = ({ sectors, allStocks, period }) => {
                                         hovered={hovered===`${sec.id}-${i}`}/>
                                 ))}
 
-                                {/* sector border on top */}
-                                <rect x={sec.x} y={sec.y} width={sec.w} height={sec.h} fill="none" stroke="rgba(0,0,0,0.7)" strokeWidth={1.5} rx={0}/>
+                                {/* Sector border */}
+                                <rect x={sec.x} y={sec.y} width={sec.w} height={sec.h} fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth={1.5} rx={2}/>
                             </g>
                         );
                     })}
 
-                    {/* drilled sector */}
+                    {/* Drilled sector view */}
                     {layout?.type === 'drill' && layout.tiles.map((tile, i) => (
                         <Tile key={`d-${i}`} tile={tile} tileKey={`d-${i}`}
                             onHover={handleTileHover} onLeave={handleTileLeave} onMove={handleTileMove}
@@ -333,27 +430,27 @@ const Treemap = ({ sectors, allStocks, period }) => {
                     </g>
                 </svg>
 
-                {/* tooltip */}
+                {/* Tooltip */}
                 {tooltip && (
                     <div style={{ position:'fixed', left:tooltip.x+14, top:tooltip.y-10, zIndex:9999, pointerEvents:'none',
-                        background:'rgba(6,9,14,0.97)', border:'1px solid rgba(255,255,255,0.12)', borderRadius:11,
-                        padding:'9px 14px', minWidth:155, backdropFilter:'blur(16px)', boxShadow:'0 8px 28px rgba(0,0,0,0.7)' }}>
-                        <div style={{fontWeight:700,color:'#f1f5f9',fontSize:12,marginBottom:3}}>{tooltip.tile.name}</div>
-                        {tooltip.tile.sector && <div style={{color:'#475569',fontSize:9,marginBottom:6}}>{tooltip.tile.sector}</div>}
-                        <div style={{display:'flex',gap:16,alignItems:'flex-end'}}>
+                        background:'rgba(6,9,14,0.98)', border:'1px solid rgba(52,211,153,0.3)', borderRadius:12,
+                        padding:'10px 16px', minWidth:170, backdropFilter:'blur(16px)', boxShadow:'0 8px 28px rgba(0,0,0,0.8)' }}>
+                        <div style={{ fontWeight:800, color:'#f1f5f9', fontSize:13, marginBottom:4, fontFamily: "'Aileron Black', 'Arial Black', sans-serif" }}>{tooltip.tile.name}</div>
+                        {tooltip.tile.sector && <div style={{ color:'#475569', fontSize:9, marginBottom:7, fontFamily: "'Hind Siliguri', 'Hind', sans-serif" }}>{tooltip.tile.sector}</div>}
+                        <div style={{ display:'flex', gap:18, alignItems:'flex-end' }}>
                             <div>
-                                <div style={{color:'#475569',fontSize:8,textTransform:'uppercase',marginBottom:1}}>Change</div>
-                                <div style={{color:(tooltip.tile.change??0)>=0?'#34d399':'#f87171',fontWeight:800,fontSize:15}}>
+                                <div style={{ color:'#475569', fontSize:8, textTransform:'uppercase', marginBottom:2, fontFamily: "'Aileron', 'Arial', sans-serif" }}>Change</div>
+                                <div style={{ color:(tooltip.tile.change??0)>=0?'#34d399':'#f87171', fontWeight:800, fontSize:16, fontFamily: "'Aileron Black', 'Arial Black', sans-serif" }}>
                                     {(tooltip.tile.change??0)>=0?'+':''}{(tooltip.tile.change??0).toFixed(2)}%
                                 </div>
                             </div>
-                            {tooltip.tile.ltp!=null && <div>
-                                <div style={{color:'#475569',fontSize:8,textTransform:'uppercase',marginBottom:1}}>LTP</div>
-                                <div style={{color:'#e2e8f0',fontWeight:600,fontSize:13}}>₹{tooltip.tile.ltp?.toFixed(2)}</div>
+                            {tooltip.tile.ltp != null && <div>
+                                <div style={{ color:'#475569', fontSize:8, textTransform:'uppercase', marginBottom:2, fontFamily: "'Aileron', 'Arial', sans-serif" }}>LTP</div>
+                                <div style={{ color:'#e2e8f0', fontWeight:600, fontSize:14, fontFamily: "'Aileron Black', 'Arial Black', sans-serif" }}>₹{tooltip.tile.ltp?.toFixed(2)}</div>
                             </div>}
                             {tooltip.tile.value > 1 && <div>
-                                <div style={{color:'#475569',fontSize:8,textTransform:'uppercase',marginBottom:1}}>Mkt Cap</div>
-                                <div style={{color:'#94a3b8',fontWeight:500,fontSize:11}}>{fmt(tooltip.tile.value)}</div>
+                                <div style={{ color:'#475569', fontSize:8, textTransform:'uppercase', marginBottom:2, fontFamily: "'Aileron', 'Arial', sans-serif" }}>Mkt Cap</div>
+                                <div style={{ color:'#94a3b8', fontWeight:500, fontSize:11, fontFamily: "'Hind Siliguri', 'Hind', sans-serif" }}>{fmt(tooltip.tile.value)}</div>
                             </div>}
                         </div>
                     </div>
@@ -364,7 +461,7 @@ const Treemap = ({ sectors, allStocks, period }) => {
 };
 
 // ── API ───────────────────────────────────────────────────────────────
-const API = {
+const API_URLS = {
     '1D':'https://api.moneycontrol.com/mcapi/v1/indices/ad-ratio/full-view?period=1D&sector=&type=MM&sectorSelected=false',
     '5D':'https://api.moneycontrol.com/mcapi/v1/indices/ad-ratio/full-view?period=5D&sector=&type=MM&sectorSelected=false',
     '1M':'https://api.moneycontrol.com/mcapi/v1/indices/ad-ratio/full-view?period=1M&sector=&type=MM&sectorSelected=false',
@@ -383,7 +480,7 @@ const parse = (raw) => {
     return { sectors, allStocks, topGainers:g.slice(0,8), topLosers:[...allStocks].sort((a,b)=>a.changePercent-b.changePercent).slice(0,8), asOnDate:raw.data.asOnDate||'' };
 };
 
-// ── MAIN ──────────────────────────────────────────────────────────────
+// ── MAIN HEATMAP COMPONENT ────────────────────────────────────────────
 export default function HeatMap() {
     const [loading,   setLoading]   = useState(true);
     const [error,     setError]     = useState(null);
@@ -399,7 +496,7 @@ export default function HeatMap() {
 
     const load = useCallback(async (p=period) => {
         setLoading(true); setError(null);
-        try { const r=await fetch(API[p]||API['1D']); if(!r.ok) throw new Error(`HTTP ${r.status}`); setData(parse(await r.json())); setFetched(new Date()); }
+        try { const r=await fetch(API_URLS[p]||API_URLS['1D']); if(!r.ok) throw new Error(`HTTP ${r.status}`); setData(parse(await r.json())); setFetched(new Date()); }
         catch(e){ setError(e.message); }
         finally{ setLoading(false); }
     },[period]);
@@ -429,12 +526,12 @@ export default function HeatMap() {
 
     if(loading&&!fetched) return (
         <div className="min-h-screen bg-[#060b10] flex items-center justify-center">
-            <div className="text-center"><div className="relative inline-flex mb-5"><div className="w-14 h-14 rounded-full border-2 border-white/[0.05]"/><div className="absolute inset-0 rounded-full border-2 border-emerald-400 border-t-transparent animate-spin"/></div><p className="text-slate-400 text-sm">Loading market data…</p></div>
+            <div className="text-center"><div className="relative inline-flex mb-5"><div className="w-14 h-14 rounded-full border-2 border-white/[0.05]"/><div className="absolute inset-0 rounded-full border-2 border-emerald-400 border-t-transparent animate-spin"/></div><p className="text-slate-400 text-sm" style={HS}>Loading market data…</p></div>
         </div>
     );
     if(error&&!fetched) return (
         <div className="min-h-screen bg-[#060b10] flex items-center justify-center">
-            <div className="text-center"><AlertCircle className="w-10 h-10 text-red-400 mx-auto mb-3"/><p className="text-red-400 text-sm mb-4">{error}</p><button onClick={()=>load(period)} className="px-5 py-2 bg-emerald-500 text-black font-semibold rounded-xl flex items-center gap-2 mx-auto"><RefreshCw size={14}/> Retry</button></div>
+            <div className="text-center"><AlertCircle className="w-10 h-10 text-red-400 mx-auto mb-3"/><p className="text-red-400 text-sm mb-4" style={HS}>{error}</p><button onClick={()=>load(period)} className="px-5 py-2 bg-emerald-500 text-black font-semibold rounded-xl flex items-center gap-2 mx-auto" style={AB}><RefreshCw size={14}/> Retry</button></div>
         </div>
     );
 
@@ -449,13 +546,16 @@ export default function HeatMap() {
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
                     <div className="flex items-center gap-3">
                         <div className="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center"><Activity className="w-4 h-4 text-emerald-400"/></div>
-                        <div><h1 className="text-xl font-extrabold text-white tracking-tight">Stock Heatmap <span className="text-emerald-400 text-sm font-semibold">360°</span></h1><p className="text-slate-500 text-xs">All Indian companies · {asOnDate||'Live'}</p></div>
+                        <div>
+                            <h1 className="text-xl font-extrabold text-white tracking-tight" style={AB}>Stock Heatmap <span className="text-emerald-400 text-sm font-semibold" style={AB}>360°</span></h1>
+                            <p className="text-slate-500 text-xs" style={HS}>All Indian companies · {asOnDate||'Live'}</p>
+                        </div>
                     </div>
                     <div className="flex items-center gap-2 flex-wrap">
                         <div className="flex items-center bg-white/[0.04] border border-white/[0.07] rounded-lg p-0.5">
-                            {PERIODS.map(p=>(<button key={p} onClick={()=>{setPeriod(p);setShowAll(false);}} className={`px-3.5 py-1.5 rounded-md text-xs font-bold transition-all ${period===p?'bg-white/[0.12] text-white':'text-slate-500 hover:text-slate-300'}`}>{p}</button>))}
+                            {PERIODS.map(p=>(<button key={p} onClick={()=>{setPeriod(p);setShowAll(false);}} className={`px-3.5 py-1.5 rounded-md text-xs font-bold transition-all ${period===p?'bg-white/[0.12] text-white':'text-slate-500 hover:text-slate-300'}`} style={AB}>{p}</button>))}
                         </div>
-                        <button onClick={()=>load(period)} disabled={loading} className="flex items-center gap-1.5 px-3 py-1.5 bg-white/[0.04] border border-white/[0.07] rounded-lg text-slate-400 text-xs hover:text-white transition disabled:opacity-40"><RefreshCw size={12} className={loading?'animate-spin':''}/> Refresh</button>
+                        <button onClick={()=>load(period)} disabled={loading} className="flex items-center gap-1.5 px-3 py-1.5 bg-white/[0.04] border border-white/[0.07] rounded-lg text-slate-400 text-xs hover:text-white transition disabled:opacity-40" style={HS}><RefreshCw size={12} className={loading?'animate-spin':''}/> Refresh</button>
                     </div>
                 </div>
 
@@ -469,8 +569,8 @@ export default function HeatMap() {
                         {label:`Avg ${period}`,val:`${parseFloat(avg)>0?'+':''}${avg}%`,color:parseFloat(avg)>=0?'#34d399':'#f87171',I:Activity},
                     ].map((k,i)=>(
                         <div key={i} className="bg-white/[0.03] border border-white/[0.06] rounded-xl px-4 py-3 flex justify-between items-center">
-                            <div className="flex items-center gap-1.5"><k.I size={12} style={{color:k.color}}/><span className="text-xs text-slate-500 font-medium">{k.label}</span></div>
-                            <span className="text-lg font-extrabold" style={{color:k.color}}>{k.val}</span>
+                            <div className="flex items-center gap-1.5"><k.I size={12} style={{color:k.color}}/><span className="text-xs text-slate-500 font-medium" style={HS}>{k.label}</span></div>
+                            <span className="text-lg font-extrabold" style={{color:k.color, ...AB}}>{k.val}</span>
                         </div>
                     ))}
                 </div>
@@ -478,7 +578,7 @@ export default function HeatMap() {
                 {/* Tab bar */}
                 <div className="flex items-center bg-white/[0.03] border border-white/[0.06] rounded-xl p-1 mb-4 w-fit gap-1">
                     {[['treemap','Treemap',<LayoutGrid size={13}/>],['stocks','Stocks',<Table2 size={13}/>]].map(([v,l,icon])=>(
-                        <button key={v} onClick={()=>{setTab(v);if(v==='treemap'){setSearch('');setSector(null);}}} className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold transition-all ${tab===v?'bg-emerald-500 text-black shadow-sm':'text-slate-400 hover:text-slate-200'}`}>{icon}{l}</button>
+                        <button key={v} onClick={()=>{setTab(v);if(v==='treemap'){setSearch('');setSector(null);}}} className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold transition-all ${tab===v?'bg-emerald-500 text-black shadow-sm':'text-slate-400 hover:text-slate-200'}`} style={AB}>{icon}{l}</button>
                     ))}
                 </div>
 
@@ -491,15 +591,15 @@ export default function HeatMap() {
                         <div className="space-y-4">
                             {[{t:'Top Gainers',d:topGainers,pos:true},{t:'Top Losers',d:topLosers,pos:false}].map(({t,d,pos})=>(
                                 <div key={t} className="bg-white/[0.02] border border-white/[0.06] rounded-2xl p-4">
-                                    <h3 className="font-bold flex items-center gap-2 text-sm mb-3" style={{color:pos?'#34d399':'#f87171'}}>
+                                    <h3 className="font-bold flex items-center gap-2 text-sm mb-3" style={{color:pos?'#34d399':'#f87171', ...AB}}>
                                         {pos?<TrendingUp size={14}/>:<TrendingDown size={14}/>}{t}
-                                        <span className="text-xs text-slate-600 ml-auto font-normal">({period})</span>
+                                        <span className="text-xs text-slate-600 ml-auto font-normal" style={HS}>({period})</span>
                                     </h3>
                                     <div className="space-y-1.5">
                                         {d.slice(0,6).map((s,i)=>{ const c=getColor(s.changePercent); return (
                                             <div key={i} className="flex justify-between items-center p-2.5 rounded-lg" style={{background:'rgba(255,255,255,0.022)',border:'1px solid rgba(255,255,255,0.04)'}}>
-                                                <div><p className="font-semibold text-slate-200 text-xs">{s.name}</p><p className="text-xs text-slate-600">₹{s.ltp?.toFixed(2)}</p></div>
-                                                <span className="text-xs font-bold px-2 py-0.5 rounded" style={{background:c.bg,color:c.text}}>{s.changePercent>=0?'+':''}{s.changePercent.toFixed(2)}%</span>
+                                                <div><p className="font-semibold text-slate-200 text-xs" style={AB}>{s.name}</p><p className="text-xs text-slate-600" style={HS}>₹{s.ltp?.toFixed(2)}</p></div>
+                                                <span className="text-xs font-bold px-2 py-0.5 rounded" style={{background:c.bg,color:c.text, ...AB}}>{s.changePercent>=0?'+':''}{s.changePercent.toFixed(2)}%</span>
                                             </div>
                                         );})}
                                     </div>
@@ -510,58 +610,58 @@ export default function HeatMap() {
                         <div className="lg:col-span-2 bg-white/[0.02] border border-white/[0.06] rounded-2xl flex flex-col">
                             <div className="p-4 border-b border-white/[0.05]">
                                 <div className="flex flex-col sm:flex-row gap-3">
-                                    <div className="relative flex-1"><Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={14}/><input type="text" placeholder="Search stocks…" value={search} onChange={e=>setSearch(e.target.value)} className="w-full pl-9 pr-4 py-2.5 bg-white/[0.04] border border-white/[0.08] rounded-xl text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:border-emerald-500/30"/></div>
+                                    <div className="relative flex-1"><Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={14}/><input type="text" placeholder="Search stocks…" value={search} onChange={e=>setSearch(e.target.value)} className="w-full pl-9 pr-4 py-2.5 bg-white/[0.04] border border-white/[0.08] rounded-xl text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:border-emerald-500/30" style={HS}/></div>
                                     <div className="relative">
-                                        <button onClick={()=>setDdOpen(!ddOpen)} className="flex items-center gap-2 px-4 py-2.5 bg-white/[0.04] border border-white/[0.08] rounded-xl text-sm text-slate-300 hover:bg-white/[0.07] transition">
+                                        <button onClick={()=>setDdOpen(!ddOpen)} className="flex items-center gap-2 px-4 py-2.5 bg-white/[0.04] border border-white/[0.08] rounded-xl text-sm text-slate-300 hover:bg-white/[0.07] transition" style={HS}>
                                             <Filter size={13} className="text-emerald-400"/>{sector||'All Sectors'}<ChevronDown size={13} className={`transition-transform ${ddOpen?'rotate-180':''}`}/>
                                         </button>
                                         {ddOpen && (
                                             <div className="absolute top-full left-0 mt-1 w-64 max-h-60 overflow-y-auto bg-[#0d1117] border border-white/[0.1] rounded-xl shadow-2xl z-30">
-                                                <button onClick={()=>{setSector(null);setDdOpen(false);}} className={`w-full text-left px-4 py-2.5 text-sm hover:bg-white/[0.05] transition ${!sector?'text-emerald-400':'text-slate-300'}`}>All Sectors</button>
-                                                {sectors.map(s=>(<button key={s.id} onClick={()=>{setSector(s.name);setDdOpen(false);}} className={`w-full text-left px-4 py-2.5 text-sm hover:bg-white/[0.05] transition flex items-center gap-2 ${sector===s.name?'text-emerald-400 bg-white/[0.03]':'text-slate-300'}`}>{getSectorIcon(s.name)}<span className="flex-1 truncate">{s.name}</span><span className={`text-xs font-semibold ${s.value>=0?'text-emerald-400':'text-red-400'}`}>{s.value>0?'+':''}{s.value?.toFixed(1)}%</span></button>))}
+                                                <button onClick={()=>{setSector(null);setDdOpen(false);}} className={`w-full text-left px-4 py-2.5 text-sm hover:bg-white/[0.05] transition ${!sector?'text-emerald-400':'text-slate-300'}`} style={HS}>All Sectors</button>
+                                                {sectors.map(s=>(<button key={s.id} onClick={()=>{setSector(s.name);setDdOpen(false);}} className={`w-full text-left px-4 py-2.5 text-sm hover:bg-white/[0.05] transition flex items-center gap-2 ${sector===s.name?'text-emerald-400 bg-white/[0.03]':'text-slate-300'}`} style={HS}>{getSectorIcon(s.name)}<span className="flex-1 truncate">{s.name}</span><span className={`text-xs font-semibold ${s.value>=0?'text-emerald-400':'text-red-400'}`} style={AB}>{s.value>0?'+':''}{s.value?.toFixed(1)}%</span></button>))}
                                             </div>
                                         )}
                                     </div>
-                                    {sector && (<div className="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 px-3 py-2 rounded-xl text-xs"><span className="text-emerald-300">{sector}</span><button onClick={()=>setSector(null)} className="text-emerald-400"><X size={11}/></button></div>)}
+                                    {sector && (<div className="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 px-3 py-2 rounded-xl text-xs"><span className="text-emerald-300" style={HS}>{sector}</span><button onClick={()=>setSector(null)} className="text-emerald-400"><X size={11}/></button></div>)}
                                 </div>
-                                <div className="mt-2.5 text-xs text-slate-500 flex justify-between"><span>{displayed.length}/{sorted.length} stocks</span><span>{period}</span></div>
+                                <div className="mt-2.5 text-xs text-slate-500 flex justify-between" style={HS}><span>{displayed.length}/{sorted.length} stocks</span><span>{period}</span></div>
                             </div>
                             <div className="overflow-x-auto flex-1">
                                 <table className="w-full text-sm">
                                     <thead><tr className="border-b border-white/[0.05] text-xs text-slate-500">
                                         {[['name','Stock'],['ltp','LTP'],['changePercent',`Change (${period})`]].map(([k,l])=>(
-                                            <th key={k} className="px-4 py-3 text-left cursor-pointer hover:text-slate-300 select-none" onClick={()=>setSort(p=>({key:k,dir:p.key===k&&p.dir==='asc'?'desc':'asc'}))}>
+                                            <th key={k} className="px-4 py-3 text-left cursor-pointer hover:text-slate-300 select-none" onClick={()=>setSort(p=>({key:k,dir:p.key===k&&p.dir==='asc'?'desc':'asc'}))} style={HS}>
                                                 <div className="flex items-center gap-1">{l}{sort.key===k&&(sort.dir==='asc'?<ArrowUp className="w-3 h-3"/>:<ArrowDown className="w-3 h-3"/>)}</div>
                                             </th>
                                         ))}
-                                        <th className="px-4 py-3 text-left hidden md:table-cell text-xs text-slate-500">Mkt Cap</th>
-                                        <th className="px-4 py-3 text-left hidden lg:table-cell text-xs text-slate-500">Sector</th>
+                                        <th className="px-4 py-3 text-left hidden md:table-cell text-xs text-slate-500" style={HS}>Mkt Cap</th>
+                                        <th className="px-4 py-3 text-left hidden lg:table-cell text-xs text-slate-500" style={HS}>Sector</th>
                                     </tr></thead>
                                     <tbody>
-                                        {displayed.length===0 && <tr><td colSpan={5} className="text-center py-10 text-slate-600 text-sm">No stocks found</td></tr>}
+                                        {displayed.length===0 && <tr><td colSpan={5} className="text-center py-10 text-slate-600 text-sm" style={HS}>No stocks found</td></tr>}
                                         {displayed.map(s=>{ const c=getColor(s.changePercent); return (
                                             <tr key={s.scId||s.name} className="border-b border-white/[0.03] hover:bg-white/[0.02] transition-colors">
-                                                <td className="px-4 py-3"><p className="font-semibold text-slate-200 text-sm">{s.name}</p></td>
-                                                <td className="px-4 py-3 font-mono text-slate-300 text-sm">₹{s.ltp?.toFixed(2)||'—'}</td>
-                                                <td className="px-4 py-3"><span className="inline-flex items-center gap-1 px-2.5 py-1 rounded text-xs font-bold" style={{background:c.bg,color:c.text}}>{s.changePercent>=0?<ArrowUp size={10}/>:<ArrowDown size={10}/>}{s.changePercent>=0?'+':''}{s.changePercent.toFixed(2)}%</span></td>
-                                                <td className="px-4 py-3 hidden md:table-cell text-slate-500 text-xs">{fmt(s.marketCap)}</td>
-                                                <td className="px-4 py-3 hidden lg:table-cell"><span className="flex items-center gap-1 text-xs text-slate-500">{getSectorIcon(s.sectorName)}{(s.sectorName||'').length>20?(s.sectorName||'').slice(0,18)+'…':s.sectorName}</span></td>
+                                                <td className="px-4 py-3"><p className="font-semibold text-slate-200 text-sm" style={AB}>{s.name}</p></td>
+                                                <td className="px-4 py-3 font-mono text-slate-300 text-sm" style={AL}>₹{s.ltp?.toFixed(2)||'—'}</td>
+                                                <td className="px-4 py-3"><span className="inline-flex items-center gap-1 px-2.5 py-1 rounded text-xs font-bold" style={{background:c.bg,color:c.text, ...AB}}>{s.changePercent>=0?<ArrowUp size={10}/>:<ArrowDown size={10}/>}{s.changePercent>=0?'+':''}{s.changePercent.toFixed(2)}%</span></td>
+                                                <td className="px-4 py-3 hidden md:table-cell text-slate-500 text-xs" style={HS}>{fmt(s.marketCap)}</td>
+                                                <td className="px-4 py-3 hidden lg:table-cell"><span className="flex items-center gap-1 text-xs text-slate-500" style={HS}>{getSectorIcon(s.sectorName)}{(s.sectorName||'').length>20?(s.sectorName||'').slice(0,18)+'…':s.sectorName}</span></td>
                                             </tr>
                                         );})}
                                     </tbody>
                                 </table>
                             </div>
-                            {sorted.length>20 && (<div className="p-3 border-t border-white/[0.05] flex justify-center"><button onClick={()=>setShowAll(v=>!v)} className="flex items-center gap-2 px-4 py-2 bg-white/[0.03] border border-white/[0.07] rounded-xl text-emerald-400 text-sm font-medium hover:bg-white/[0.05] transition">{showAll?'Show Less':<><Eye size={13}/> View All ({sorted.length-20} more) <ChevronRight size={13}/></>}</button></div>)}
+                            {sorted.length>20 && (<div className="p-3 border-t border-white/[0.05] flex justify-center"><button onClick={()=>setShowAll(v=>!v)} className="flex items-center gap-2 px-4 py-2 bg-white/[0.03] border border-white/[0.07] rounded-xl text-emerald-400 text-sm font-medium hover:bg-white/[0.05] transition" style={AB}>{showAll?'Show Less':<><Eye size={13}/> View All ({sorted.length-20} more) <ChevronRight size={13}/></>}</button></div>)}
                         </div>
                     </div>
                 )}
 
                 <div className="mt-6 flex justify-between text-xs text-slate-700 border-t border-white/[0.04] pt-4">
-                    <span className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"/>Live · Auto-refresh 60s · {period} momentum · click sector header/pill to drill down</span>
-                    {fetched && <span>Updated {fetched.toLocaleTimeString()}</span>}
+                    <span className="flex items-center gap-2" style={HS}><span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"/>Live · Auto-refresh 60s · {period} momentum · click sector header/pill to drill down</span>
+                    {fetched && <span style={HS}>Updated {fetched.toLocaleTimeString()}</span>}
                 </div>
             </div>
-            {loading&&fetched && (<div className="fixed bottom-4 right-4 bg-emerald-500 text-black px-4 py-2 rounded-full shadow-lg flex items-center gap-2 text-xs font-bold z-50"><Loader2 size={12} className="animate-spin"/> Updating…</div>)}
+            {loading&&fetched && (<div className="fixed bottom-4 right-4 bg-emerald-500 text-black px-4 py-2 rounded-full shadow-lg flex items-center gap-2 text-xs font-bold z-50" style={AB}><Loader2 size={12} className="animate-spin"/> Updating…</div>)}
         </div>
     );
 }

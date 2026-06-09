@@ -1,4 +1,5 @@
-import { X, Upload, Trash2, ImageIcon, Calendar, Clock, Film } from "lucide-react";
+// AddNewsModal.jsx
+import { X, Upload, Trash2, ImageIcon, Calendar, Clock, Film, Plus } from "lucide-react";
 import { useState, useRef, useEffect, useCallback } from "react";
 import axios from "axios";
 import DatePicker from "react-datepicker";
@@ -23,6 +24,7 @@ export default function AddNewsModal({ open, onClose, onSuccess, editData = null
   const [loading, setLoading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [error, setError] = useState("");
+  const [activeTab, setActiveTab] = useState("details");
 
   const fileInputRef = useRef(null);
   const videoInputRef = useRef(null);
@@ -128,44 +130,291 @@ export default function AddNewsModal({ open, onClose, onSuccess, editData = null
   const totalMedia = existingMedia.length + media.length;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#c8b8a8]/50 backdrop-blur-md">
-      <div className="w-full max-w-4xl rounded-[32px] bg-white/15 backdrop-blur-xl border border-white/40 shadow-2xl mx-4 max-h-[90vh] flex flex-col">
-        <div className="flex items-center justify-between border-b border-white/30 px-6 py-5">
-          <h2 className="text-xl font-semibold font-['Sora'] text-[#2a2118]">{editData ? 'Edit News' : 'Add News'}</h2>
-          <button onClick={onClose} className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm border border-white/40 flex items-center justify-center hover:bg-white/30 transition-all" disabled={loading}><X size={18} className="text-[#2a2118]" /></button>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+      <div className="w-full max-w-4xl rounded-2xl bg-white shadow-xl mx-auto max-h-[90vh] flex flex-col">
+        {/* Header */}
+        <div className="flex items-center justify-between border-b border-gray-200 px-4 sm:px-6 py-4">
+          <h2 className="text-lg sm:text-xl font-semibold font-['DM_Sans'] text-gray-900">
+            {editData ? 'Edit News' : 'Add News'}
+          </h2>
+          <button 
+            onClick={onClose} 
+            className="w-8 h-8 rounded-lg hover:bg-gray-100 flex items-center justify-center transition-all" 
+            disabled={loading}
+          >
+            <X size={18} className="text-gray-600" />
+          </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto px-6 py-5 space-y-5">
-          {error && <div className="p-3 rounded-xl bg-red-500/10 border border-red-400/30"><p className="text-sm text-red-400 font-['DM_Sans']">{error}</p></div>}
+        {/* Mobile Tabs */}
+        <div className="flex border-b border-gray-200 lg:hidden">
+          <button
+            onClick={() => setActiveTab("details")}
+            className={`flex-1 py-3 text-sm font-['DM_Sans'] transition-colors ${
+              activeTab === "details" 
+                ? "text-blue-600 border-b-2 border-blue-600" 
+                : "text-gray-500 hover:text-gray-700"
+            }`}
+          >
+            Details
+          </button>
+          <button
+            onClick={() => setActiveTab("media")}
+            className={`flex-1 py-3 text-sm font-['DM_Sans'] transition-colors ${
+              activeTab === "media" 
+                ? "text-blue-600 border-b-2 border-blue-600" 
+                : "text-gray-500 hover:text-gray-700"
+            }`}
+          >
+            Media ({totalMedia}/20)
+          </button>
+        </div>
 
-          <div><label className="mb-2 block text-sm font-semibold font-['DM_Sans'] text-[#2a2118]">News Title *</label><input type="text" value={formData.title} onChange={(e) => setFormData({ ...formData, title: e.target.value })} placeholder="Enter news title" className="w-full rounded-xl bg-white/10 border border-white/30 px-4 py-2.5 text-sm font-['DM_Sans'] text-[#2a2118] placeholder:text-[#6b5f55]/50 focus:outline-none focus:ring-2 focus:ring-blue-500/50" disabled={loading} /></div>
+        <div className="flex-1 overflow-y-auto">
+          {/* Error Message */}
+          {error && (
+            <div className="mx-4 sm:mx-6 mt-4 p-3 rounded-lg bg-red-50 border border-red-200">
+              <p className="text-sm text-red-600 font-['DM_Sans']">{error}</p>
+            </div>
+          )}
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div><label className="mb-2 block text-sm font-semibold font-['DM_Sans'] text-[#2a2118]">Category *</label><select value={formData.category} onChange={(e) => setFormData({ ...formData, category: e.target.value })} className="w-full rounded-xl bg-white/10 border border-white/30 px-4 py-2.5 text-sm font-['DM_Sans'] text-[#2a2118] focus:outline-none focus:ring-2 focus:ring-blue-500/50"><option value="">Select Category</option>{categories.map(cat => <option key={cat} value={cat}>{cat}</option>)}</select></div>
-            <div><label className="mb-2 block text-sm font-semibold font-['DM_Sans'] text-[#2a2118]">Status *</label><select value={formData.status} onChange={(e) => setFormData({ ...formData, status: e.target.value })} className="w-full rounded-xl bg-white/10 border border-white/30 px-4 py-2.5 text-sm font-['DM_Sans'] text-[#2a2118] focus:outline-none focus:ring-2 focus:ring-blue-500/50">{statuses.map(status => <option key={status.value} value={status.value}>{status.label}</option>)}</select></div>
+          {/* Details Tab Content */}
+          <div className={`p-4 sm:p-6 space-y-4 ${activeTab === "details" ? "block" : "hidden lg:block"}`}>
+            {/* Title */}
+            <div>
+              <label className="mb-1.5 block text-sm font-semibold font-['DM_Sans'] text-gray-700">News Title *</label>
+              <input 
+                type="text" 
+                value={formData.title} 
+                onChange={(e) => setFormData({ ...formData, title: e.target.value })} 
+                placeholder="Enter news title" 
+                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-['DM_Sans'] text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                disabled={loading} 
+              />
+            </div>
+
+            {/* Category & Status */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="mb-1.5 block text-sm font-semibold font-['DM_Sans'] text-gray-700">Category *</label>
+                <select 
+                  value={formData.category} 
+                  onChange={(e) => setFormData({ ...formData, category: e.target.value })} 
+                  className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-['DM_Sans'] text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="">Select Category</option>
+                  {categories.map(cat => <option key={cat} value={cat}>{cat}</option>)}
+                </select>
+              </div>
+              <div>
+                <label className="mb-1.5 block text-sm font-semibold font-['DM_Sans'] text-gray-700">Status *</label>
+                <select 
+                  value={formData.status} 
+                  onChange={(e) => setFormData({ ...formData, status: e.target.value })} 
+                  className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-['DM_Sans'] text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  {statuses.map(status => <option key={status.value} value={status.value}>{status.label}</option>)}
+                </select>
+              </div>
+            </div>
+
+            {/* Scheduled Date */}
+            {formData.status === 'scheduled' && (
+              <div>
+                <label className="mb-1.5 block text-sm font-semibold font-['DM_Sans'] text-gray-700">Schedule Publish Date *</label>
+                <div className="relative">
+                  <DatePicker 
+                    selected={formData.scheduledDate} 
+                    onChange={(date) => setFormData({ ...formData, scheduledDate: date })} 
+                    showTimeSelect 
+                    timeFormat="HH:mm" 
+                    timeIntervals={15} 
+                    dateFormat="MMMM d, yyyy h:mm aa" 
+                    placeholderText="Select date and time" 
+                    minDate={new Date()} 
+                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-['DM_Sans'] text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                    disabled={loading} 
+                  />
+                  <Calendar className="absolute right-3 top-2.5 text-gray-400 pointer-events-none" size={18} />
+                </div>
+              </div>
+            )}
+
+            {/* Short Description */}
+            <div>
+              <label className="mb-1.5 block text-sm font-semibold font-['DM_Sans'] text-gray-700">Short Description *</label>
+              <textarea 
+                rows={3} 
+                value={formData.shortDescription} 
+                onChange={(e) => setFormData({ ...formData, shortDescription: e.target.value })} 
+                placeholder="Brief summary of the news" 
+                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-['DM_Sans'] text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                disabled={loading} 
+              />
+            </div>
+
+            {/* Full Article */}
+            <div>
+              <label className="mb-1.5 block text-sm font-semibold font-['DM_Sans'] text-gray-700">Full Article *</label>
+              <textarea 
+                rows={8} 
+                value={formData.fullArticle} 
+                onChange={(e) => setFormData({ ...formData, fullArticle: e.target.value })} 
+                placeholder="Write the complete news article here..." 
+                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-['DM_Sans'] text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                disabled={loading} 
+              />
+            </div>
+
+            {/* Tags */}
+            <div>
+              <label className="mb-1.5 block text-sm font-semibold font-['DM_Sans'] text-gray-700">Tags</label>
+              <div className="flex flex-wrap gap-2 p-3 border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-blue-500">
+                {tags.map((tag, index) => (
+                  <span key={index} className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-700 text-sm rounded-lg">
+                    <span>{tag}</span>
+                    <button type="button" onClick={() => removeTag(index)} className="hover:bg-blue-200 rounded p-0.5 transition-colors" disabled={loading}>
+                      <X size={12} />
+                    </button>
+                  </span>
+                ))}
+                <input 
+                  type="text" 
+                  value={tagInput} 
+                  onChange={(e) => setTagInput(e.target.value)} 
+                  onKeyDown={handleTagKeyDown} 
+                  placeholder={tags.length === 0 ? "Add tags (press Enter)" : "Add more tags..."} 
+                  className="flex-1 min-w-[120px] outline-none text-sm bg-transparent font-['DM_Sans'] text-gray-900 placeholder:text-gray-400" 
+                  disabled={loading} 
+                />
+              </div>
+              <p className="mt-1 text-xs text-gray-500 font-['DM_Sans']">Press Enter to add tag. Maximum 10 tags.</p>
+            </div>
           </div>
 
-          {formData.status === 'scheduled' && (<div><label className="mb-2 block text-sm font-semibold font-['DM_Sans'] text-[#2a2118]">Schedule Publish Date *</label><div className="relative"><DatePicker selected={formData.scheduledDate} onChange={(date) => setFormData({ ...formData, scheduledDate: date })} showTimeSelect timeFormat="HH:mm" timeIntervals={15} dateFormat="MMMM d, yyyy h:mm aa" placeholderText="Select date and time" minDate={new Date()} className="w-full rounded-xl bg-white/10 border border-white/30 px-4 py-2.5 text-sm font-['DM_Sans'] text-[#2a2118] focus:outline-none focus:ring-2 focus:ring-blue-500/50" disabled={loading} /><Calendar className="absolute right-3 top-2.5 text-[#6b5f55]" size={18} /></div></div>)}
+          {/* Media Tab Content */}
+          <div className={`p-4 sm:p-6 ${activeTab === "media" ? "block" : "hidden lg:block"}`}>
+            {/* Upload Progress */}
+            {uploadProgress > 0 && uploadProgress < 100 && (
+              <div className="mb-4 space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-700">Uploading...</span>
+                  <span className="font-medium text-gray-700">{uploadProgress}%</span>
+                </div>
+                <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                  <div className="h-full bg-blue-600 transition-all duration-300" style={{ width: `${uploadProgress}%` }} />
+                </div>
+              </div>
+            )}
 
-          <div><label className="mb-2 block text-sm font-semibold font-['DM_Sans'] text-[#2a2118]">Short Description *</label><textarea rows={3} value={formData.shortDescription} onChange={(e) => setFormData({ ...formData, shortDescription: e.target.value })} placeholder="Brief summary of the news" className="w-full rounded-xl bg-white/10 border border-white/30 px-4 py-2.5 text-sm font-['DM_Sans'] text-[#2a2118] placeholder:text-[#6b5f55]/50 focus:outline-none focus:ring-2 focus:ring-blue-500/50" disabled={loading} /></div>
-          <div><label className="mb-2 block text-sm font-semibold font-['DM_Sans'] text-[#2a2118]">Full Article *</label><textarea rows={8} value={formData.fullArticle} onChange={(e) => setFormData({ ...formData, fullArticle: e.target.value })} placeholder="Write the complete news article here..." className="w-full rounded-xl bg-white/10 border border-white/30 px-4 py-2.5 text-sm font-['DM_Sans'] text-[#2a2118] placeholder:text-[#6b5f55]/50 focus:outline-none focus:ring-2 focus:ring-blue-500/50" disabled={loading} /></div>
+            {/* Media Grid */}
+            {mediaPreviews.length > 0 && (
+              <div className="space-y-3 mb-4">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-sm font-semibold font-['DM_Sans'] text-gray-700">Media ({totalMedia}/20)</h3>
+                  {!loading && totalMedia > 0 && (
+                    <button 
+                      onClick={() => { 
+                        setMedia([]); 
+                        setExistingMedia([]); 
+                        mediaPreviews.forEach(preview => { 
+                          if (preview.previewUrl && preview.type === 'new') URL.revokeObjectURL(preview.previewUrl); 
+                        }); 
+                        setMediaPreviews([]); 
+                      }} 
+                      className="text-xs text-red-600 hover:text-red-700 font-['DM_Sans']"
+                    >
+                      Remove All
+                    </button>
+                  )}
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                  {mediaPreviews.map((item, index) => (
+                    <div key={item.id} className="relative group border border-gray-200 rounded-lg overflow-hidden">
+                      <div className="aspect-square bg-gray-100">
+                        {item.mediaType === 'video' ? (
+                          <div className="relative w-full h-full bg-black flex items-center justify-center">
+                            <video src={item.type === 'new' ? item.previewUrl : item.url} className="w-full h-full object-cover" muted />
+                            <Film className="absolute text-white/70" size={24} />
+                          </div>
+                        ) : (
+                          <img src={item.type === 'new' ? item.previewUrl : item.url} alt={item.name} className="w-full h-full object-cover" />
+                        )}
+                      </div>
+                      <button 
+                        onClick={() => removeMedia(index)} 
+                        className="absolute top-1 right-1 p-1 bg-red-500 text-white rounded opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600"
+                        disabled={loading}
+                      >
+                        <Trash2 size={10} />
+                      </button>
+                      <span className="absolute bottom-1 right-1 px-1 py-0.5 bg-black/60 text-white text-[10px] rounded">
+                        {formatFileSize(item.size)}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
-          <div><label className="mb-2 block text-sm font-semibold font-['DM_Sans'] text-[#2a2118]">Tags</label><div className="flex flex-wrap gap-2 p-3 bg-white/10 border border-white/30 rounded-xl focus-within:ring-2 focus-within:ring-blue-500/50">{tags.map((tag, index) => (<span key={index} className="inline-flex items-center gap-1 px-2 py-1 bg-blue-500/20 text-blue-600 text-sm rounded-full"><span>{tag}</span><button type="button" onClick={() => removeTag(index)} className="hover:bg-blue-500/30 rounded p-0.5 transition-colors" disabled={loading}><X size={12} /></button></span>))}<input type="text" value={tagInput} onChange={(e) => setTagInput(e.target.value)} onKeyDown={handleTagKeyDown} placeholder={tags.length === 0 ? "Add tags (press Enter)" : "Add more tags..."} className="flex-1 min-w-[120px] outline-none text-sm bg-transparent font-['DM_Sans'] text-[#2a2118] placeholder:text-[#6b5f55]/50" disabled={loading} /></div><p className="mt-1 text-xs text-[#6b5f55] font-['DM_Sans']">Press Enter to add tag. Maximum 10 tags.</p></div>
+            {/* Upload Buttons */}
+            {totalMedia < 20 && (
+              <div className="space-y-3">
+                <button
+                  onClick={() => fileInputRef.current?.click()}
+                  className="w-full flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-gray-300 bg-gray-50 py-6 text-center transition-all hover:bg-gray-100"
+                >
+                  <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-blue-100">
+                    <ImageIcon className="text-blue-600" size={18} />
+                  </div>
+                  <p className="text-sm font-medium text-blue-600 font-['DM_Sans']">Upload Images</p>
+                  <p className="mt-1 text-xs text-gray-500">JPG, PNG, GIF • Max 10MB each</p>
+                </button>
+                <input ref={fileInputRef} type="file" className="hidden" multiple accept="image/*" onChange={(e) => handleFileChange(e, 'image')} disabled={loading || totalMedia >= 20} />
 
-          {uploadProgress > 0 && uploadProgress < 100 && (<div className="space-y-2"><div className="flex justify-between text-sm"><span className="text-[#2a2118]">Uploading...</span><span className="font-medium text-[#2a2118]">{uploadProgress}%</span></div><div className="h-2 bg-white/20 rounded-full overflow-hidden"><div className="h-full bg-gradient-to-r from-blue-500 to-cyan-500 transition-all duration-300" style={{ width: `${uploadProgress}%` }} /></div></div>)}
+                <button
+                  onClick={() => videoInputRef.current?.click()}
+                  className="w-full flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-gray-300 bg-gray-50 py-6 text-center transition-all hover:bg-gray-100"
+                >
+                  <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-purple-100">
+                    <Film className="text-purple-600" size={18} />
+                  </div>
+                  <p className="text-sm font-medium text-purple-600 font-['DM_Sans']">Upload Videos</p>
+                  <p className="mt-1 text-xs text-gray-500">MP4, WebM, MOV • Max 50MB each</p>
+                </button>
+                <input ref={videoInputRef} type="file" className="hidden" multiple accept="video/*" onChange={(e) => handleFileChange(e, 'video')} disabled={loading || totalMedia >= 20} />
 
-          {mediaPreviews.length > 0 && (<div className="space-y-3"><div className="flex items-center justify-between"><h3 className="text-sm font-semibold font-['DM_Sans'] text-[#2a2118]">Media ({totalMedia}/20)</h3>{!loading && (<button onClick={() => { setMedia([]); setExistingMedia([]); mediaPreviews.forEach(preview => { if (preview.previewUrl && preview.type === 'new') URL.revokeObjectURL(preview.previewUrl); }); setMediaPreviews([]); }} className="text-xs text-red-400 hover:text-red-500 font-['DM_Sans']">Remove All</button>)}</div><div className="grid grid-cols-2 md:grid-cols-4 gap-3">{mediaPreviews.map((item, index) => (<div key={item.id} className="relative group border border-white/30 rounded-xl overflow-hidden"><div className="aspect-square">{item.mediaType === 'video' ? (<div className="relative w-full h-full bg-black flex items-center justify-center"><video src={item.type === 'new' ? item.previewUrl : item.url} className="w-full h-full object-cover" muted /><Film className="absolute text-white opacity-70" size={30} /></div>) : (<img src={item.type === 'new' ? item.previewUrl : item.url} alt={item.name} className="w-full h-full object-cover" />)}</div><button onClick={() => removeMedia(index)} className="absolute top-1 right-1 p-1 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600" disabled={loading}><Trash2 size={12} /></button>{item.type === 'existing' && <span className="absolute bottom-1 left-1 px-1 py-0.5 bg-black/50 text-white text-xs rounded-full">Existing</span>}<span className="absolute bottom-1 right-1 px-1 py-0.5 bg-black/50 text-white text-xs rounded-full">{formatFileSize(item.size)}</span></div>))}</div></div>)}
-
-          {totalMedia < 20 && (<div className="space-y-3">
-            <div onClick={() => fileInputRef.current?.click()} className="flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-white/40 bg-white/5 py-4 text-center transition-all hover:bg-white/10"><div className="mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-blue-500/20 to-cyan-500/20"><ImageIcon className="text-blue-500" size={18} /></div><p className="text-sm font-medium text-blue-500 font-['DM_Sans']">Click to upload images</p><p className="mt-1 text-xs text-[#6b5f55]">JPG, PNG, GIF • Max 10MB</p></div><input ref={fileInputRef} type="file" className="hidden" multiple accept="image/*" onChange={(e) => handleFileChange(e, 'image')} disabled={loading || totalMedia >= 20} />
-            <div onClick={() => videoInputRef.current?.click()} className="flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-white/40 bg-white/5 py-4 text-center transition-all hover:bg-white/10"><div className="mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-purple-500/20 to-pink-500/20"><Film className="text-purple-500" size={18} /></div><p className="text-sm font-medium text-purple-500 font-['DM_Sans']">Click to upload videos</p><p className="mt-1 text-xs text-[#6b5f55]">MP4, WebM, MOV • Max 50MB</p></div><input ref={videoInputRef} type="file" className="hidden" multiple accept="video/*" onChange={(e) => handleFileChange(e, 'video')} disabled={loading || totalMedia >= 20} />
-            <p className="text-xs text-[#6b5f55] text-center font-['DM_Sans']">{20 - totalMedia} files remaining (max 20 total)</p>
-          </div>)}
+                <p className="text-xs text-gray-500 text-center font-['DM_Sans']">
+                  {20 - totalMedia} files remaining (max 20 total)
+                </p>
+              </div>
+            )}
+          </div>
         </div>
 
-        <div className="flex justify-end gap-3 border-t border-white/30 px-6 py-5">
-          <button onClick={onClose} disabled={loading} className="px-6 py-2 rounded-full bg-white/20 backdrop-blur-sm border border-white/40 text-[#2a2118] font-medium font-['DM_Sans'] hover:bg-white/30 transition-all">Cancel</button>
-          <button onClick={handleSubmit} disabled={loading || !formData.title || !formData.category || !formData.shortDescription || !formData.fullArticle} className="px-6 py-2 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-medium font-['DM_Sans'] hover:from-blue-600 hover:to-cyan-600 transition-all shadow-md disabled:opacity-50 flex items-center gap-2">{loading ? (<><span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span><span>{editData ? 'Updating...' : 'Creating...'}</span></>) : (editData ? 'Update News' : 'Create News')}</button>
+        {/* Footer Buttons */}
+        <div className="flex flex-col sm:flex-row justify-end gap-3 border-t border-gray-200 px-4 sm:px-6 py-4">
+          <button 
+            onClick={onClose} 
+            disabled={loading} 
+            className="px-6 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 font-medium font-['DM_Sans'] hover:bg-gray-50 transition-all order-2 sm:order-1"
+          >
+            Cancel
+          </button>
+          <button 
+            onClick={handleSubmit} 
+            disabled={loading || !formData.title || !formData.category || !formData.shortDescription || !formData.fullArticle} 
+            className="px-6 py-2 rounded-lg bg-blue-600 text-white font-medium font-['DM_Sans'] hover:bg-blue-700 transition-all shadow-sm disabled:opacity-50 flex items-center justify-center gap-2 order-1 sm:order-2"
+          >
+            {loading ? (
+              <>
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                <span>{editData ? 'Updating...' : 'Creating...'}</span>
+              </>
+            ) : (
+              editData ? 'Update News' : 'Create News'
+            )}
+          </button>
         </div>
       </div>
     </div>

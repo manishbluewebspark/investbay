@@ -1,9 +1,9 @@
+// AdminNews.jsx
 import { useEffect, useState, useCallback, useMemo, useRef } from "react";
-import { FiPlus, FiEdit2, FiTrash2, FiEye, FiCalendar, FiVideo, FiImage } from "react-icons/fi";
+import { FiPlus, FiEdit2, FiTrash2, FiEye, FiCalendar, FiVideo, FiImage, FiSearch, FiX, FiFilter } from "react-icons/fi";
 import { FaPlay } from "react-icons/fa";
-import NotFound from "../../components/NotFound";
 import axios from "axios";
-import AddNewsModal from '../../components/modals/AddNewsModal.jsx'
+import AddNewsModal from '../../components/modals/AddNewsModal.jsx';
 import { format } from "date-fns";
 
 const AdminNews = () => {
@@ -16,6 +16,7 @@ const AdminNews = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedNews, setSelectedNews] = useState(null);
   const [showPreview, setShowPreview] = useState(false);
+  const [showFilters, setShowFilters] = useState(false);
 
   const isInitialMount = useRef(true);
   const isFetching = useRef(false);
@@ -60,23 +61,17 @@ const AdminNews = () => {
 
     if (isVideo) {
       return (
-        <div className="relative group cursor-pointer" onClick={(e) => handleMediaClick(media.url, e)}>
-          <video src={media.url} className="h-20 w-20 rounded-xl object-cover" preload="metadata" />
-          <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl">
-            <div className="bg-white/90 rounded-full p-1.5"><FaPlay className="text-black text-xs" /></div>
-          </div>
-          <div className="absolute bottom-1 right-1 bg-black/70 text-white text-xs px-1.5 py-0.5 rounded-full flex items-center gap-1">
-            <FiVideo size={10} /><span>{fileExt}</span>
+        <div className="relative group cursor-pointer flex-shrink-0" onClick={(e) => handleMediaClick(media.url, e)}>
+          <video src={media.url} className="h-16 w-16 rounded-lg object-cover" preload="metadata" />
+          <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg">
+            <div className="bg-white rounded-full p-1"><FaPlay className="text-black text-xs" /></div>
           </div>
         </div>
       );
     }
     return (
-      <div className="relative group cursor-pointer" onClick={(e) => handleMediaClick(media.url, e)}>
-        <img src={media.url} alt="News media" className="h-20 w-20 rounded-xl object-cover" />
-        <div className="absolute bottom-1 right-1 bg-black/70 text-white text-xs px-1.5 py-0.5 rounded-full flex items-center gap-1">
-          <FiImage size={10} /><span>{fileExt}</span>
-        </div>
+      <div className="relative group cursor-pointer flex-shrink-0" onClick={(e) => handleMediaClick(media.url, e)}>
+        <img src={media.url} alt="News media" className="h-16 w-16 rounded-lg object-cover" />
       </div>
     );
   };
@@ -151,142 +146,296 @@ const AdminNews = () => {
     const isVideo = isVideoFile(media.url);
     if (isVideo) {
       return (
-        <div key={index} className="relative rounded-xl overflow-hidden bg-black">
-          <video src={media.url} controls className="rounded-xl w-full h-auto max-h-96" />
+        <div key={index} className="relative rounded-lg overflow-hidden bg-black">
+          <video src={media.url} controls className="rounded-lg w-full h-auto max-h-96" />
         </div>
       );
     }
-    return <img key={index} src={media.url} alt={`Media ${index + 1}`} className="rounded-xl w-full h-auto max-h-96 object-contain cursor-pointer" onClick={() => window.open(media.url, '_blank')} />;
+    return <img key={index} src={media.url} alt={`Media ${index + 1}`} className="rounded-lg w-full h-auto max-h-96 object-contain cursor-pointer" onClick={() => window.open(media.url, '_blank')} />;
   };
 
   return (
-    <div className="min-h-screen bg-[#c8b8a8]">
-      {/* Decorative Orbs */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-[-10%] left-[-5%] w-[500px] h-[500px] rounded-full bg-gradient-to-br from-blue-400/20 via-cyan-400/15 to-transparent blur-[80px]" />
-        <div className="absolute bottom-[-10%] right-[-5%] w-[450px] h-[450px] rounded-full bg-gradient-to-tl from-amber-400/15 to-orange-400/10 blur-[80px]" />
-        <div className="absolute top-1/3 right-1/4 w-[300px] h-[300px] rounded-full bg-gradient-to-tr from-purple-400/10 to-pink-400/10 blur-[70px]" />
-      </div>
-
-      <div className="relative z-10 space-y-6 p-6">
-        {/* Header with Stats - Glass */}
-        <div className="bg-white/15 backdrop-blur-xl border border-white/40 rounded-2xl p-6">
-          <div className="flex justify-between items-center mb-4">
+    <div className="min-h-screen bg-gray-50">
+      <div className="space-y-5 p-4 sm:p-6">
+        {/* Header with Stats */}
+        <div className="bg-white border border-gray-200 rounded-2xl p-4 sm:p-6 shadow-sm">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
             <div>
-              <h2 className="text-3xl font-bold font-['Sora'] text-[#2a2118]">
+              <h2 className="text-2xl sm:text-3xl font-bold font-['DM_Sans'] text-gray-900">
                 {isRA ? "My News Articles" : "News Management"}
               </h2>
-              <p className="text-sm font-['DM_Sans'] text-[#6b5f55] mt-1">
+              <p className="text-sm font-['DM_Sans'] text-gray-500 mt-1">
                 {isRA ? "Manage and track your published articles" : "Create and manage all news articles"}
               </p>
             </div>
             {isAdmin && (
-              <button onClick={() => { setEditNews(null); setShowModal(true); }} className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-5 py-2.5 rounded-full hover:from-blue-600 hover:to-cyan-600 transition-all shadow-lg shadow-blue-500/25 font-['DM_Sans']">
+              <button 
+                onClick={() => { setEditNews(null); setShowModal(true); }} 
+                className="flex items-center gap-2 bg-blue-600 text-white px-4 sm:px-5 py-2 rounded-lg hover:bg-blue-700 transition-all shadow-sm font-['DM_Sans'] text-sm sm:text-base whitespace-nowrap"
+              >
                 <FiPlus size={18} /> Add News
               </button>
             )}
           </div>
 
           {isAdmin && stats && (
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
-              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/30">
-                <p className="text-sm text-blue-600 font-medium font-['DM_Sans']">Total News</p>
-                <p className="text-2xl font-bold text-[#2a2118] font-['Sora']">{stats.total || 0}</p>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mt-6">
+              <div className="bg-gray-50 rounded-xl p-3 sm:p-4 border border-gray-100">
+                <p className="text-xs sm:text-sm text-blue-600 font-medium font-['DM_Sans']">Total News</p>
+                <p className="text-xl sm:text-2xl font-bold text-gray-900 font-['DM_Sans']">{stats.total || 0}</p>
               </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/30">
-                <p className="text-sm text-green-600 font-medium font-['DM_Sans']">Published</p>
-                <p className="text-2xl font-bold text-[#2a2118] font-['Sora']">{stats.byStatus?.published || 0}</p>
+              <div className="bg-gray-50 rounded-xl p-3 sm:p-4 border border-gray-100">
+                <p className="text-xs sm:text-sm text-green-600 font-medium font-['DM_Sans']">Published</p>
+                <p className="text-xl sm:text-2xl font-bold text-gray-900 font-['DM_Sans']">{stats.byStatus?.published || 0}</p>
               </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/30">
-                <p className="text-sm text-yellow-600 font-medium font-['DM_Sans']">Drafts</p>
-                <p className="text-2xl font-bold text-[#2a2118] font-['Sora']">{stats.byStatus?.draft || 0}</p>
+              <div className="bg-gray-50 rounded-xl p-3 sm:p-4 border border-gray-100">
+                <p className="text-xs sm:text-sm text-yellow-600 font-medium font-['DM_Sans']">Drafts</p>
+                <p className="text-xl sm:text-2xl font-bold text-gray-900 font-['DM_Sans']">{stats.byStatus?.draft || 0}</p>
               </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/30">
-                <p className="text-sm text-purple-600 font-medium font-['DM_Sans']">Total Views</p>
-                <p className="text-2xl font-bold text-[#2a2118] font-['Sora']">{stats.totalViews?.toLocaleString() || 0}</p>
+              <div className="bg-gray-50 rounded-xl p-3 sm:p-4 border border-gray-100">
+                <p className="text-xs sm:text-sm text-purple-600 font-medium font-['DM_Sans']">Total Views</p>
+                <p className="text-xl sm:text-2xl font-bold text-gray-900 font-['DM_Sans']">{stats.totalViews?.toLocaleString() || 0}</p>
               </div>
             </div>
           )}
         </div>
 
-        {/* Filters - Glass */}
-        <div className="bg-white/15 backdrop-blur-xl border border-white/40 rounded-2xl p-4">
-          <div className="flex flex-wrap gap-4 items-center">
-            <input type="text" placeholder="Search news..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="flex-1 min-w-[200px] rounded-full bg-white/10 border border-white/30 px-4 py-2 text-sm font-['DM_Sans'] text-[#2a2118] placeholder:text-[#6b5f55]/50 focus:outline-none focus:ring-2 focus:ring-blue-500/50" />
-            <select value={filter.category} onChange={(e) => setFilter({ ...filter, category: e.target.value, status: "" })} className="rounded-full bg-white/10 border border-white/30 px-4 py-2 text-sm font-['DM_Sans'] text-[#2a2118] focus:outline-none focus:ring-2 focus:ring-blue-500/50 min-w-[150px]">
-              <option value="">All Categories</option>
-              {categories.map(cat => <option key={cat} value={cat}>{cat}</option>)}
-            </select>
-            <select value={filter.status} onChange={(e) => setFilter({ ...filter, status: e.target.value, category: "" })} className="rounded-full bg-white/10 border border-white/30 px-4 py-2 text-sm font-['DM_Sans'] text-[#2a2118] focus:outline-none focus:ring-2 focus:ring-blue-500/50 min-w-[150px]">
-              <option value="">All Status</option>
-              {statuses.map(status => <option key={status.value} value={status.value}>{status.label}</option>)}
-            </select>
+        {/* Filters - Mobile friendly */}
+        <div className="bg-white border border-gray-200 rounded-2xl p-4 shadow-sm">
+          <div className="flex flex-col sm:flex-row gap-3">
+            <div className="flex-1">
+              <div className="relative">
+                <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
+                <input 
+                  type="text" 
+                  placeholder="Search news..." 
+                  value={searchTerm} 
+                  onChange={(e) => setSearchTerm(e.target.value)} 
+                  className="w-full rounded-lg border border-gray-300 bg-white pl-9 pr-4 py-2 text-sm font-['DM_Sans'] text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+            </div>
+            
+            {/* Mobile filter toggle */}
+            <button 
+              onClick={() => setShowFilters(!showFilters)}
+              className="sm:hidden flex items-center justify-center gap-2 px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 font-['DM_Sans'] text-sm"
+            >
+              <FiFilter size={16} /> Filters
+            </button>
+            
+            {/* Desktop filters always visible, mobile conditional */}
+            <div className={`${showFilters ? 'flex' : 'hidden'} sm:flex flex-col sm:flex-row gap-3 sm:flex-1`}>
+              <select 
+                value={filter.category} 
+                onChange={(e) => setFilter({ ...filter, category: e.target.value, status: "" })} 
+                className="w-full sm:w-auto rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-['DM_Sans'] text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="">All Categories</option>
+                {categories.map(cat => <option key={cat} value={cat}>{cat}</option>)}
+              </select>
+              <select 
+                value={filter.status} 
+                onChange={(e) => setFilter({ ...filter, status: e.target.value, category: "" })} 
+                className="w-full sm:w-auto rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-['DM_Sans'] text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="">All Status</option>
+                {statuses.map(status => <option key={status.value} value={status.value}>{status.label}</option>)}
+              </select>
+            </div>
+            
             {(filter.category || filter.status || searchTerm) && (
-              <button onClick={clearFilters} className="text-sm text-red-500 hover:text-red-600 font-['DM_Sans']">Clear Filters</button>
+              <button 
+                onClick={clearFilters} 
+                className="px-4 py-2 text-sm text-red-600 hover:text-red-700 font-['DM_Sans'] whitespace-nowrap"
+              >
+                Clear Filters
+              </button>
             )}
           </div>
         </div>
 
-        {/* Content - Glass Table */}
+        {/* Content - Responsive Table/Cards */}
         {loading ? (
-          <div className="flex items-center justify-center py-12">
-            <div className="text-center"><div className="w-8 h-8 border-2 border-white/20 border-t-blue-500 rounded-full animate-spin mx-auto mb-3"></div><p className="text-[#6b5f55] text-sm font-['DM_Sans']">Loading news...</p></div>
+          <div className="flex items-center justify-center py-12 bg-white border border-gray-200 rounded-2xl">
+            <div className="text-center">
+              <div className="w-8 h-8 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin mx-auto mb-3"></div>
+              <p className="text-gray-500 text-sm font-['DM_Sans']">Loading news...</p>
+            </div>
           </div>
         ) : news.length === 0 ? (
-          <NotFound message="No news articles found" />
-        ) : (
-          <div className="bg-white/15 backdrop-blur-xl border border-white/40 rounded-2xl overflow-hidden">
-            <table className="min-w-full">
-              <thead className="bg-white/10">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-semibold text-[#2a2118] uppercase tracking-wider font-['DM_Sans']">News</th>
-                  <th className="px-6 py-3 text-left text-xs font-semibold text-[#2a2118] uppercase tracking-wider font-['DM_Sans']">Category</th>
-                  <th className="px-6 py-3 text-left text-xs font-semibold text-[#2a2118] uppercase tracking-wider font-['DM_Sans']">Status</th>
-                  <th className="px-6 py-3 text-left text-xs font-semibold text-[#2a2118] uppercase tracking-wider font-['DM_Sans']">Date</th>
-                  <th className="px-6 py-3 text-left text-xs font-semibold text-[#2a2118] uppercase tracking-wider font-['DM_Sans']">Views</th>
-                  <th className="px-6 py-3 text-left text-xs font-semibold text-[#2a2118] uppercase tracking-wider font-['DM_Sans']">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-white/20">
-                {news.map((item) => (
-                  <tr key={item.id} className="hover:bg-white/5 transition-colors">
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-3">
-                        {item.images && item.images.length > 0 && renderMediaThumbnail(item.images[0])}
-                        {item.images && item.images.length > 1 && <div className="relative -ml-8 mt-8 bg-black/50 text-white text-xs px-1.5 py-0.5 rounded-full">+{item.images.length - 1}</div>}
-                        <div><div className="text-sm font-semibold font-['DM_Sans'] text-[#2a2118] line-clamp-1">{item.title}</div><div className="text-xs text-[#6b5f55] line-clamp-1">{item.shortDescription}</div></div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap"><span className="text-sm text-[#2a2118] font-['DM_Sans']">{item.category}</span></td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <select value={item.status} onChange={(e) => handleStatusChange(item.id, e.target.value)} className={`text-xs rounded-full px-2 py-1 font-semibold border-0 focus:ring-2 focus:ring-offset-2 ${item.status === 'published' ? 'bg-green-500/20 text-green-700' : item.status === 'draft' ? 'bg-gray-500/20 text-gray-700' : item.status === 'scheduled' ? 'bg-blue-500/20 text-blue-700' : 'bg-red-500/20 text-red-700'}`}>
-                        {statuses.map(status => <option key={status.value} value={status.value}>{status.label}</option>)}
-                      </select>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap"><div className="text-sm text-[#2a2118] font-['DM_Sans'] flex items-center gap-1">{item.scheduled_date ? <><FiCalendar size={12} className="text-[#6b5f55]" />{format(new Date(item.scheduled_date), 'dd MMM yyyy')}</> : item.created_at ? format(new Date(item.created_at), 'dd MMM yyyy') : '-'}</div></td>
-                    <td className="px-6 py-4 whitespace-nowrap"><div className="flex items-center gap-1 text-sm text-[#2a2118]"><FiEye size={12} className="text-[#6b5f55]" />{item.views || 0}</div></td>
-                    <td className="px-6 py-4 whitespace-nowrap"><div className="flex items-center gap-2"><button onClick={() => { setSelectedNews(item); setShowPreview(true); }} className="p-1.5 rounded-full bg-white/10 hover:bg-white/20 transition-colors" title="Preview"><FiEye size={16} className="text-blue-500" /></button><button onClick={() => handleEdit(item)} className="p-1.5 rounded-full bg-white/10 hover:bg-white/20 transition-colors" title="Edit"><FiEdit2 size={16} className="text-indigo-500" /></button>{isAdmin && <button onClick={() => handleDelete(item.id)} className="p-1.5 rounded-full bg-white/10 hover:bg-white/20 transition-colors" title="Delete"><FiTrash2 size={16} className="text-red-500" /></button>}</div></td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div className="bg-white border border-gray-200 rounded-2xl p-8 text-center">
+            <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-3">
+              <FiSearch size={24} className="text-gray-400" />
+            </div>
+            <p className="text-gray-500 font-['DM_Sans']">No news articles found</p>
           </div>
+        ) : (
+          <>
+            {/* Desktop Table View (hidden on mobile) */}
+            <div className="hidden lg:block bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
+              <div className="overflow-x-auto">
+                <table className="min-w-full">
+                  <thead className="bg-gray-50 border-b border-gray-200">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider font-['DM_Sans']">News</th>
+                      <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider font-['DM_Sans']">Category</th>
+                      <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider font-['DM_Sans']">Status</th>
+                      <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider font-['DM_Sans']">Date</th>
+                      <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider font-['DM_Sans']">Views</th>
+                      <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider font-['DM_Sans']">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    {news.map((item) => (
+                      <tr key={item.id} className="hover:bg-gray-50 transition-colors">
+                        <td className="px-6 py-4">
+                          <div className="flex items-center gap-3">
+                            {item.images && item.images.length > 0 && renderMediaThumbnail(item.images[0])}
+                            <div>
+                              <div className="text-sm font-semibold font-['DM_Sans'] text-gray-900 line-clamp-1">{item.title}</div>
+                              <div className="text-xs text-gray-500 line-clamp-1 mt-1">{item.shortDescription}</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span className="text-sm text-gray-700 font-['DM_Sans']">{item.category}</span>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <select 
+                            value={item.status} 
+                            onChange={(e) => handleStatusChange(item.id, e.target.value)} 
+                            className={`text-xs rounded-lg px-2 py-1 font-semibold border-0 focus:ring-2 focus:ring-offset-2 cursor-pointer ${
+                              item.status === 'published' ? 'bg-green-100 text-green-700' : 
+                              item.status === 'draft' ? 'bg-gray-100 text-gray-700' : 
+                              item.status === 'scheduled' ? 'bg-blue-100 text-blue-700' : 
+                              'bg-red-100 text-red-700'
+                            }`}
+                          >
+                            {statuses.map(status => <option key={status.value} value={status.value}>{status.label}</option>)}
+                          </select>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="text-sm text-gray-700 font-['DM_Sans'] flex items-center gap-1">
+                            <FiCalendar size={12} className="text-gray-400" />
+                            {item.scheduled_date ? format(new Date(item.scheduled_date), 'dd MMM yyyy') : 
+                             item.created_at ? format(new Date(item.created_at), 'dd MMM yyyy') : '-'}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="flex items-center gap-1 text-sm text-gray-700">
+                            <FiEye size={12} className="text-gray-400" />
+                            {item.views || 0}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="flex items-center gap-2">
+                            <button onClick={() => { setSelectedNews(item); setShowPreview(true); }} className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors" title="Preview">
+                              <FiEye size={16} className="text-blue-600" />
+                            </button>
+                            <button onClick={() => handleEdit(item)} className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors" title="Edit">
+                              <FiEdit2 size={16} className="text-indigo-600" />
+                            </button>
+                            {isAdmin && (
+                              <button onClick={() => handleDelete(item.id)} className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors" title="Delete">
+                                <FiTrash2 size={16} className="text-red-600" />
+                              </button>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* Mobile Card View (visible on mobile/tablet) */}
+            <div className="lg:hidden space-y-3">
+              {news.map((item) => (
+                <div key={item.id} className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+                  <div className="flex gap-3 mb-3">
+                    {item.images && item.images.length > 0 && renderMediaThumbnail(item.images[0])}
+                    <div className="flex-1 min-w-0">
+                      <div className="text-sm font-semibold font-['DM_Sans'] text-gray-900 line-clamp-2">{item.title}</div>
+                      <div className="text-xs text-gray-500 line-clamp-2 mt-1">{item.shortDescription}</div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    <span className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded-lg">{item.category}</span>
+                    <select 
+                      value={item.status} 
+                      onChange={(e) => handleStatusChange(item.id, e.target.value)} 
+                      className={`text-xs rounded-lg px-2 py-1 font-semibold border-0 ${
+                        item.status === 'published' ? 'bg-green-100 text-green-700' : 
+                        item.status === 'draft' ? 'bg-gray-100 text-gray-700' : 
+                        item.status === 'scheduled' ? 'bg-blue-100 text-blue-700' : 
+                        'bg-red-100 text-red-700'
+                      }`}
+                    >
+                      {statuses.map(status => <option key={status.value} value={status.value}>{status.label}</option>)}
+                    </select>
+                  </div>
+                  
+                  <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+                    <div className="flex items-center gap-3 text-xs text-gray-500">
+                      <span className="flex items-center gap-1"><FiCalendar size={12} />{item.scheduled_date ? format(new Date(item.scheduled_date), 'dd MMM') : item.created_at ? format(new Date(item.created_at), 'dd MMM') : '-'}</span>
+                      <span className="flex items-center gap-1"><FiEye size={12} />{item.views || 0}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <button onClick={() => { setSelectedNews(item); setShowPreview(true); }} className="p-2 rounded-lg hover:bg-gray-100">
+                        <FiEye size={14} className="text-blue-600" />
+                      </button>
+                      <button onClick={() => handleEdit(item)} className="p-2 rounded-lg hover:bg-gray-100">
+                        <FiEdit2 size={14} className="text-indigo-600" />
+                      </button>
+                      {isAdmin && (
+                        <button onClick={() => handleDelete(item.id)} className="p-2 rounded-lg hover:bg-gray-100">
+                          <FiTrash2 size={14} className="text-red-600" />
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
         )}
 
-        {/* Preview Modal - Glass */}
+        {/* Preview Modal */}
         {showPreview && selectedNews && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#c8b8a8]/50 backdrop-blur-md">
-            <div className="w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-white/15 backdrop-blur-xl border border-white/40 rounded-2xl shadow-2xl">
-              <div className="sticky top-0 bg-white/15 backdrop-blur-xl border-b border-white/30 px-6 py-4 flex justify-between items-center">
-                <h3 className="text-lg font-semibold font-['Sora'] text-[#2a2118]">News Preview</h3>
-                <button onClick={() => setShowPreview(false)} className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm border border-white/40 flex items-center justify-center hover:bg-white/30 transition-all"><FiPlus size={16} className="rotate-45 text-[#2a2118]" /></button>
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+            <div className="w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-white rounded-2xl shadow-xl">
+              <div className="sticky top-0 bg-white border-b border-gray-200 px-4 sm:px-6 py-4 flex justify-between items-center">
+                <h3 className="text-lg font-semibold font-['DM_Sans'] text-gray-900">News Preview</h3>
+                <button onClick={() => setShowPreview(false)} className="w-8 h-8 rounded-lg hover:bg-gray-100 flex items-center justify-center transition-all">
+                  <FiX size={18} className="text-gray-600" />
+                </button>
               </div>
-              <div className="p-6">
-                {selectedNews.images && selectedNews.images.length > 0 && (<div className="mb-6"><div className={`grid gap-4 ${selectedNews.images.length === 2 ? 'grid-cols-2' : selectedNews.images.length === 3 ? 'grid-cols-3' : 'grid-cols-2 md:grid-cols-3'}`}>{selectedNews.images.map((media, idx) => renderMediaPreview(media, idx))}</div></div>)}
-                <h1 className="text-2xl font-bold font-['Sora'] text-[#2a2118] mb-3">{selectedNews.title}</h1>
-                <div className="flex items-center gap-4 mb-4"><span className="px-3 py-1 rounded-full bg-blue-500/20 text-blue-600 text-sm font-['DM_Sans']">{selectedNews.category}</span><span className="text-sm text-[#6b5f55] font-['DM_Sans']">By {selectedNews.author_name || 'Unknown'}</span><span className="text-sm text-[#6b5f55] font-['DM_Sans']">{format(new Date(selectedNews.created_at), 'dd MMM yyyy')}</span></div>
-                <div className="prose max-w-none"><p className="text-[#2a2118]/70 mb-4 italic font-['DM_Sans']">{selectedNews.shortDescription}</p><div className="whitespace-pre-wrap text-[#2a2118] font-['DM_Sans']">{selectedNews.fullArticle}</div></div>
-                {selectedNews.tags && selectedNews.tags.length > 0 && (<div className="mt-6 flex gap-2">{selectedNews.tags.map((tag, idx) => (<span key={idx} className="text-xs bg-white/10 px-2 py-1 rounded-full text-[#2a2118]">#{tag.replace(/^#+/, '')}</span>))}</div>)}
+              <div className="p-4 sm:p-6">
+                {selectedNews.images && selectedNews.images.length > 0 && (
+                  <div className="mb-6">
+                    <div className={`grid gap-3 ${selectedNews.images.length === 2 ? 'grid-cols-2' : selectedNews.images.length === 3 ? 'grid-cols-2 sm:grid-cols-3' : 'grid-cols-2 sm:grid-cols-3'}`}>
+                      {selectedNews.images.map((media, idx) => renderMediaPreview(media, idx))}
+                    </div>
+                  </div>
+                )}
+                <h1 className="text-xl sm:text-2xl font-bold font-['DM_Sans'] text-gray-900 mb-3">{selectedNews.title}</h1>
+                <div className="flex flex-wrap items-center gap-3 mb-4">
+                  <span className="px-2 py-1 rounded-lg bg-blue-100 text-blue-700 text-xs sm:text-sm font-['DM_Sans']">{selectedNews.category}</span>
+                  <span className="text-xs sm:text-sm text-gray-500 font-['DM_Sans']">By {selectedNews.author_name || 'Unknown'}</span>
+                  <span className="text-xs sm:text-sm text-gray-500 font-['DM_Sans']">{format(new Date(selectedNews.created_at), 'dd MMM yyyy')}</span>
+                </div>
+                <p className="text-gray-600 mb-4 italic font-['DM_Sans']">{selectedNews.shortDescription}</p>
+                <div className="whitespace-pre-wrap text-gray-700 font-['DM_Sans']">{selectedNews.fullArticle}</div>
+                {selectedNews.tags && selectedNews.tags.length > 0 && (
+                  <div className="mt-6 flex flex-wrap gap-2">
+                    {selectedNews.tags.map((tag, idx) => (
+                      <span key={idx} className="text-xs bg-gray-100 px-2 py-1 rounded-lg text-gray-600">#{tag.replace(/^#+/, '')}</span>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </div>
