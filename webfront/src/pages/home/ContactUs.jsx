@@ -97,7 +97,7 @@ export default function ContactUs() {
 
   return (
     <div className="min-h-screen bg-gray-50" style={{ fontFamily: "'Hind Siliguri', sans-serif" }}>
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-6">
 
         {/* Header */}
         <div className="text-center mb-14">

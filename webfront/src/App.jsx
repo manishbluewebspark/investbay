@@ -60,7 +60,8 @@ import CoachSupport from "./pages/CoachSupport";
 import Heatmap from "./pages/Heatmap";
 import ContactUs from "./pages/home/ContactUs";
 import Support from "./pages/home/Support";
-
+import UserKYC from "./pages/UserKYC";
+import UserKYCLanding from "./pages/UserKYCLanding"
 
 function PrivateRoute({ children }) {
   const token = localStorage.getItem("token");
@@ -102,6 +103,9 @@ function App() {
                   <Route path="/feed" element={<Signals />} />
                   <Route path="/contact" element={<ContactUs />} />
                   <Route path="/support" element={<Support />} />
+                    <Route path="/user-kyc" element={<UserKYCLanding />} />
+                  <Route path="/kyc-setup" element={<UserKYC />} />
+                
 
                   <Route
                     path="/signals"

@@ -139,7 +139,7 @@ export default function Footer() {
               <p className="text-[13px] text-gray-400 mt-2 leading-relaxed">
                 30 stocks for the long term, investing concepts, premium valuation tools and much more await you with InvestBay Subscription!
               </p>
-              <button className="mt-3 px-4 py-1.5 bg-black text-white text-[13px] font-medium rounded hover:bg-gray-800 transition-colors duration-200"
+              <button className="mt-3 px-4 py-1.5 bg-black text-white text-[13px] font-medium rounded hover:bg-gray-800 transition-colors duration-200 cursor-pointer"
                 onClick={() => navigate("/subscriptions")}>
                 View Plans →
               </button>

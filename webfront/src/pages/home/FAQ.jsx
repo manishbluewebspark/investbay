@@ -78,8 +78,8 @@ export default function FAQ() {
                 </span>
                 <div
                   className={`relative flex-shrink-0 w-7 h-7 rounded-full border transition-all duration-300 flex items-center justify-center
-                    ${openIndex === idx 
-                      ? "bg-black border-black" 
+                    ${openIndex === idx
+                      ? "bg-black border-black"
                       : "border-gray-200 group-hover:border-gray-400"
                     }`}
                 >
@@ -120,7 +120,7 @@ export default function FAQ() {
         {/* CTA */}
         <div className="mt-16 text-center">
           <button
-            onClick={() => navigate("/contact-us")}
+            onClick={() => navigate("/contact")}
             className="inline-flex items-center gap-2 px-8 py-4 bg-black hover:bg-gray-800 text-white font-bold rounded-xl text-[15px] transition-all duration-200 hover:-translate-y-0.5"
             style={{ fontFamily: "'Aileron Black', 'Arial Black', sans-serif" }}
           >
